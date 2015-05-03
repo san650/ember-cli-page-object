@@ -105,6 +105,7 @@ test('show all users', function(assert) {
   page.visit();
 
   andThen(function() {
+    assert.equal(login.users().count(), 2);
     assert.equal(login.users(1).firstName(), 'Jane');
     assert.equal(login.users(1).lastName(), 'Doe');
     assert.equal(login.users(2).firstName(), 'John');

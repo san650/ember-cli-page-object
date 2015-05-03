@@ -29,12 +29,13 @@ var page = PO.build({
 });
 
 test('Page contents', function(assert) {
-  assert.expect(3);
+  assert.expect(4);
 
   page.visit();
 
   andThen(function() {
     assert.equal(page.title(), 'Users');
+    assert.equal(page.users().count(), 2);
     assert.equal(page.users(1).userName(), 'jane');
     assert.equal(page.users(1).role(), 'admin');
   });
