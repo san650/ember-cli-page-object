@@ -56,6 +56,63 @@ test('Invalid log in', function(assert) {
 });
 ```
 
+Support for tables and collections
+
+```html
+<table id="users">
+  <tr>
+    <td>Jane</td>
+    <td>Doe</td>
+  </tr>
+  <tr>
+    <td>John</td>
+    <td>Doe</td>
+  </tr>
+</table>
+```
+
+```js
+import Ember from 'ember';
+import { module, test } from 'qunit';
+import startApp from '../helpers/start-app';
+import PO from 'page-object';
+
+var application;
+
+module('Users', {
+  beforeEach: function() {
+    application = startApp();
+  },
+  afterEach: function() {
+    Ember.run(application, 'destroy');
+  }
+});
+
+var page = PO.build({
+  visit: PO.visitable('/users'),
+
+  users: PO.collection({
+    itemScope: '#users tr',
+
+    item: {
+      firstName: PO.text('td:nth-of-type(1)'),
+      lastName: PO.text('td:nth-of-type(2)')
+    }
+  })
+});
+
+test('show all users', function(assert) {
+  page.visit();
+
+  andThen(function() {
+    assert.equal(login.users(1).firstName(), 'Jane');
+    assert.equal(login.users(1).lastName(), 'Doe');
+    assert.equal(login.users(2).firstName(), 'John');
+    assert.equal(login.users(2).lastName(), 'Doe');
+  });
+});
+```
+
 ## Development
 
 ### Installation
