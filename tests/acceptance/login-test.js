@@ -15,7 +15,7 @@ module('An Integration test', {
 });
 
 var page = PO.build({
-  visit: PO.visitable('/'),
+  visit: PO.visitable('/login'),
   userName: PO.fillable('#userName'),
   password: PO.fillable('#password'),
   click: PO.clickable('.login button'),

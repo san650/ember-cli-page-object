@@ -6,10 +6,9 @@ function query(fn) {
   return function(selector, options = {}) {
     return {
       build: function(key, page) {
-        let qualifiedSelector = qualifySelector(options.scope || page.scope, selector);
-
         return function(...args) {
-          let element = findWithAssert(qualifiedSelector);
+          let qualifiedSelector = qualifySelector(options.scope || page.scope, selector),
+              element = findWithAssert(qualifiedSelector);
 
           return fn(element, ...args);
         };
