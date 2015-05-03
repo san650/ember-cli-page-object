@@ -4,12 +4,24 @@ import { attribute, count, text, value } from './queries';
 import { clickable, fillable, visitable } from './actions';
 import { collection } from './collection';
 
+function component(definition) {
+  return {
+    build: function(/*key, parent*/) {
+      let component = build(definition);
+
+      return function() {
+        return component;
+      };
+    }
+  };
+}
 
 export default {
   attribute,
   build,
   clickable,
   collection,
+  component,
   count,
   fillable,
   hasClass,

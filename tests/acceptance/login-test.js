@@ -16,9 +16,12 @@ module('An Integration test', {
 
 var page = PO.build({
   visit: PO.visitable('/login'),
-  userName: PO.fillable('#userName'),
-  password: PO.fillable('#password'),
-  click: PO.clickable('.login button'),
+
+  form: PO.component({
+    userName: PO.fillable('#userName'),
+    password: PO.fillable('#password'),
+    click: PO.clickable('.login button'),
+  }),
 
   title: PO.text('.title'),
   message: PO.text('.message'),
@@ -38,6 +41,7 @@ test('Page contents', function(assert) {
   });
 
   page
+    .form()
     .userName('invalid')
     .password('invalid')
     .click();
@@ -48,6 +52,7 @@ test('Page contents', function(assert) {
   });
 
   page
+    .form()
     .userName('user@example.com')
     .password('secret')
     .click();
