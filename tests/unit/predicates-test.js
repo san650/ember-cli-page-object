@@ -1,5 +1,5 @@
 import { module, test as it } from 'qunit';
-import { hasClass } from 'ember-cli-page-object/predicates';
+import { hasClass } from 'page-object/predicates';
 
 module('Predicates - hasClass', {
   beforeEach: function() {

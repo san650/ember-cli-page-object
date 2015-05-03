@@ -1,7 +1,7 @@
 import Ember from 'ember';
 import { module, test } from 'qunit';
 import startApp from '../helpers/start-app';
-import PO from 'ember-cli-page-object';
+import PO from 'page-object';
 
 var application;
 
