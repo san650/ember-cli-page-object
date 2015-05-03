@@ -114,6 +114,8 @@ test('show all users', function(assert) {
 });
 ```
 
+Check [DOCUMENTATION](./DOCUMENTATION.md) for more information.
+
 ## Development
 
 ### Installation
