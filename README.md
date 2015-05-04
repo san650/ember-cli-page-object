@@ -142,4 +142,4 @@ Check [DOCUMENTATION](./DOCUMENTATION.md) for more information.
 
 ember-cli-page-object is licensed under the MIT license.
 
-See LICENSE for the full license text.
+See [LICENSE](./LICENSE) for the full license text.
