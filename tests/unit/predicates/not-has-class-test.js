@@ -1,24 +1,8 @@
-import { module, test as it } from 'qunit';
+import { test as it } from 'qunit';
+import { moduleFor } from '../test-helper';
 import { hasClass } from 'page-object/predicates';
 
-module('Predicates - hasClass', {
-  beforeEach: function() {
-    window.findWithAssert = function(selector) {
-      var element = $('#ember-testing').find(selector);
-
-      if (element.length === 0) {
-        throw 'Element not found';
-      }
-
-      return element;
-    };
-  },
-
-  afterEach: function() {
-    delete window.findWithAssert;
-    $('#ember-testing').html('');
-  }
-});
+moduleFor('Predicates', 'hasClass');
 
 it('responds to build', function(assert) {
   var builder = hasClass();
