@@ -23,7 +23,7 @@ Table of content
 
 ## Setup
 
-You can include `page-object` module using the `import` construction as follows
+You can include `page-object` module using the `import` construct as follows
 
 ```js
 import PO from 'page-object';
@@ -37,7 +37,7 @@ var page = PO.build({
 });
 ```
 
-You can define attributes using any JavaScript construction
+You can define attributes using any JavaScript construct
 
 ```js
 var page = PO.build({
