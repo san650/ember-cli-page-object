@@ -12,8 +12,7 @@ Represent the screens of your web app as a series of objects.
 First add the npm package to your ember-cli project
 
 ```sh
-npm install san650/ember-cli-page-object
-npm install
+npm install --save-dev ember-cli-page-object
 ```
 
 Now you can reference `page-object` from your Acceptance tests
