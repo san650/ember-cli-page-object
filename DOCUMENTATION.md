@@ -23,13 +23,17 @@ Table of content
 
 ## Setup
 
-You can include `page-object` module using the `import` construct as follows
+You can import the PageObject object using the `import` construct as follows:
 
 ```js
-import PO from 'page-object';
+import PO from '../page-object';
 ```
 
-Use `.build` method to create a new page definition
+The previous example assumes that your test file is one level deep under
+`tests/` folder. i.e. `tests/unit/my-unit-test.js`.
+
+
+In order to create a new PageObject definition use the `.build` method.
 
 ```js
 var page = PO.build({

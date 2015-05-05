@@ -6,7 +6,7 @@ import {
   itBehavesLikeAnAttribute,
   moduleFor
 } from '../test-helper';
-import { notHasClass } from 'page-object/predicates';
+import { notHasClass } from '../../page-object/predicates';
 
 moduleFor('Predicates', 'notHasClass');
 

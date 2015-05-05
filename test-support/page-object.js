@@ -1,8 +1,8 @@
-import { build } from './build';
-import { hasClass, notHasClass, isVisible, isHidden } from './predicates';
-import { attribute, count, text, value } from './queries';
-import { clickable, fillable, visitable } from './actions';
-import { collection } from './collection';
+import { build } from './page-object/build';
+import { hasClass, notHasClass, isVisible, isHidden } from './page-object/predicates';
+import { attribute, count, text, value } from './page-object/queries';
+import { clickable, fillable, visitable } from './page-object/actions';
+import { collection } from './page-object/collection';
 
 function component(definition) {
   return {

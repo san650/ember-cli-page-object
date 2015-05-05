@@ -15,13 +15,18 @@ First add the npm package to your ember-cli project
 npm install --save-dev ember-cli-page-object
 ```
 
-Now you can reference `page-object` from your Acceptance tests
+```js
+import PO from '../page-object';
+```
+
+The previous example assumes that your test file is one level deep under
+`tests/` folder. i.e. `tests/unit/my-unit-test.js`.
 
 ```js
 import Ember from 'ember';
 import { module, test } from 'qunit';
 import startApp from '../helpers/start-app';
-import PO from 'page-object';
+import PO from '../page-object';
 
 var application;
 
@@ -74,7 +79,7 @@ Support for tables and collections
 import Ember from 'ember';
 import { module, test } from 'qunit';
 import startApp from '../helpers/start-app';
-import PO from 'page-object';
+import PO from '../page-object';
 
 var application;
 
