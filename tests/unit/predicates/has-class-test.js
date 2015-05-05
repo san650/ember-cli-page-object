@@ -1,28 +1,22 @@
-import { test as it } from 'qunit';
-import { moduleFor } from '../test-helper';
+import {
+  buildAttribute,
+  buildAttributeWithOptions,
+  it,
+  itBehavesLikeAnAttribute,
+  moduleFor
+} from '../test-helper';
 import { notHasClass } from 'page-object/predicates';
 
 moduleFor('Predicates', 'notHasClass');
 
-it('responds to build', function(assert) {
-  var builder = notHasClass();
-
-  assert.ok($.isFunction(builder.build), '`build` is a function');
-});
-
-it('returns a builder function', function(assert) {
-  var builder = notHasClass(),
-      predicate = builder.build('dummy', {});
-
-  assert.ok($.isFunction(predicate), '`build()` is a function');
-});
+itBehavesLikeAnAttribute(notHasClass);
 
 it('returns false when the element has the class', function(assert) {
   $('<div>', {
     'class': 'element has-error'
   }).appendTo('#ember-testing');
 
-  var predicate = notHasClass('has-error', '.element').build('key', {});
+  var predicate = buildAttribute(notHasClass, 'has-error', '.element');
 
   assert.ok(!predicate());
 });
@@ -32,7 +26,7 @@ it('returns true when the element doesn\'t have the class', function(assert) {
     'class': 'element'
   }).appendTo('#ember-testing');
 
-  var predicate = notHasClass('has-error', '.element').build('key', {});
+  var predicate = buildAttribute(notHasClass, 'has-error', '.element');
 
   assert.ok(predicate());
 });
@@ -41,7 +35,7 @@ it('raises an error when the element doesn\'t exist', function(assert) {
   assert.expect(1);
 
   try {
-    let predicate = notHasClass('has-error', '.element').build('key', {});
+    let predicate = buildAttribute(notHasClass, 'has-error', '.element');
 
     predicate();
   } catch(e) {
@@ -59,7 +53,7 @@ it('uses scope', function(assert) {
         'class': 'element'
       }));
 
-  var predicate = notHasClass('has-error', '.element:first', { scope: '.scope' }).build('key', {});
+  var predicate = buildAttribute(notHasClass, 'has-error', '.element:first', { scope: '.scope' });
 
   assert.ok(predicate());
 });

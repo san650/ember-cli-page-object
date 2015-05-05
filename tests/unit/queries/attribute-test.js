@@ -1,28 +1,22 @@
-import { test as it } from 'qunit';
-import { moduleFor } from '../test-helper';
+import {
+  buildAttribute,
+  buildAttributeWithOptions,
+  it,
+  itBehavesLikeAnAttribute,
+  moduleFor
+} from '../test-helper';
 import { attribute } from 'page-object/queries';
 
 moduleFor('Queries', 'attribute');
 
-it('responds to build', function(assert) {
-  var builder = attribute();
-
-  assert.ok($.isFunction(builder.build), '`build` is a function');
-});
-
-it('returns a builder function', function(assert) {
-  var builder = attribute(),
-      predicate = builder.build('dummy', {});
-
-  assert.ok($.isFunction(predicate), '`build()` is a function');
-});
+itBehavesLikeAnAttribute(attribute);
 
 it('returns element attribute\'s value', function(assert) {
   $('<img>', {
     'src': '/path/to/image.png'
   }).appendTo('#ember-testing');
 
-  var attr = attribute('src', 'img').build('key', {});
+  var attr = buildAttribute(attribute, 'src', 'img');
 
   assert.equal(attr(), '/path/to/image.png');
 });
@@ -30,7 +24,7 @@ it('returns element attribute\'s value', function(assert) {
 it('returns null when the attribute doesn\'t exist', function(assert) {
   $('<img>').appendTo('#ember-testing');
 
-  var attr = attribute('alt', 'img').build('key', {});
+  var attr = buildAttribute(attribute, 'alt', 'img');
 
   assert.equal(attr(), null);
 });
@@ -39,7 +33,7 @@ it('raises an error when the element doesn\'t exist', function(assert) {
   assert.expect(1);
 
   try {
-    let attr = attribute('alt', 'img').build('key', {});
+    let attr = buildAttribute(attribute, 'alt', 'img');
 
     attr();
   } catch(e) {
@@ -58,7 +52,7 @@ it('uses scope', function(assert) {
         'alt': 'Logo small'
       }));
 
-  var attr = attribute('alt', 'img', { scope: '.scope' }).build('key', {});
+  var attr = buildAttribute(attribute, 'alt', 'img', { scope: '.scope' });
 
   assert.equal(attr(), 'Logo small');
 });
@@ -74,7 +68,7 @@ it('uses page scope', function(assert) {
         'alt': 'Logo small'
       }));
 
-  var attr = attribute('alt', 'img').build('key', { scope: '.scope' });
+  var attr = buildAttributeWithOptions(attribute, { scope: '.scope' }, 'alt', 'img');
 
   assert.equal(attr(), 'Logo small');
 });
