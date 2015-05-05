@@ -6,7 +6,7 @@ import {
   itBehavesLikeAnAttribute,
   moduleFor
 } from '../test-helper';
-import { attribute } from 'page-object/queries';
+import { attribute } from '../../page-object/queries';
 
 moduleFor('Queries', 'attribute');
 
