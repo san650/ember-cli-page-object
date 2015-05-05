@@ -1,6 +1,7 @@
 import {
   buildAttribute,
   buildAttributeWithOptions,
+  fixture,
   it,
   itBehavesLikeAnAttribute,
   moduleFor
@@ -12,9 +13,7 @@ moduleFor('Predicates', 'hasClass');
 itBehavesLikeAnAttribute(hasClass);
 
 it('returns true when the element has the class', function(assert) {
-  $('<div>', {
-    'class': 'element has-error'
-  }).appendTo('#ember-testing');
+  fixture('<div class="element has-error" />');
 
   var predicate = buildAttribute(hasClass, 'has-error', '.element');
 
@@ -22,9 +21,7 @@ it('returns true when the element has the class', function(assert) {
 });
 
 it('returns false when the element doesn\'t have the class', function(assert) {
-  $('<div>', {
-    'class': 'element'
-  }).appendTo('#ember-testing');
+  fixture('<div class="element" />');
 
   var predicate = buildAttribute(hasClass, 'has-error', '.element');
 
@@ -44,14 +41,7 @@ it('raises an error when the element doesn\'t exist', function(assert) {
 });
 
 it('uses scope', function(assert) {
-  $('<div>', {
-    'class': 'element scope'
-  })
-    .appendTo('#ember-testing')
-    .append(
-      $('<div>', {
-        'class': 'element has-error'
-      }));
+  fixture('<div class="element scope"><div class="element has-error" /></div>');
 
   var predicate = buildAttribute(hasClass, 'has-error', '.element:first', { scope: '.scope' });
 
@@ -59,14 +49,7 @@ it('uses scope', function(assert) {
 });
 
 it('uses page scope', function(assert) {
-  $('<div>', {
-    'class': 'element scope'
-  })
-    .appendTo('#ember-testing')
-    .append(
-      $('<div>', {
-        'class': 'element has-error'
-      }));
+  fixture('<div class="element scope"><div class="element has-error" /></div>');
 
   var predicate = buildAttributeWithOptions(hasClass, { scope: '.scope' }, 'has-error', '.element:first');
 

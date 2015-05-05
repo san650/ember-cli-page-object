@@ -1,6 +1,7 @@
 import {
   buildAttribute,
   buildAttributeWithOptions,
+  fixture,
   it,
   itBehavesLikeAnAttribute,
   moduleFor
@@ -12,9 +13,7 @@ moduleFor('Queries', 'attribute');
 itBehavesLikeAnAttribute(attribute);
 
 it('returns element attribute\'s value', function(assert) {
-  $('<img>', {
-    'src': '/path/to/image.png'
-  }).appendTo('#ember-testing');
+  fixture('<img src="/path/to/image.png" />');
 
   var attr = buildAttribute(attribute, 'src', 'img');
 
@@ -22,7 +21,7 @@ it('returns element attribute\'s value', function(assert) {
 });
 
 it('returns null when the attribute doesn\'t exist', function(assert) {
-  $('<img>').appendTo('#ember-testing');
+  fixture('<img />');
 
   var attr = buildAttribute(attribute, 'alt', 'img');
 
@@ -42,33 +41,17 @@ it('raises an error when the element doesn\'t exist', function(assert) {
 });
 
 it('uses scope', function(assert) {
-  $('<img>', {
-    'alt': 'Logo',
-    'class': 'scope'
-  })
-    .appendTo('#ember-testing')
-    .append(
-      $('<img>', {
-        'alt': 'Logo small'
-      }));
+  fixture('<div class="scope logo"><img class="logo" alt="Logo small" /></div>');
 
-  var attr = buildAttribute(attribute, 'alt', 'img', { scope: '.scope' });
+  var attr = buildAttribute(attribute, 'alt', '.logo', { scope: '.scope' });
 
   assert.equal(attr(), 'Logo small');
 });
 
 it('uses page scope', function(assert) {
-  $('<img>', {
-    'alt': 'Logo',
-    'class': 'element scope has-error'
-  })
-    .appendTo('#ember-testing')
-    .append(
-      $('<img>', {
-        'alt': 'Logo small'
-      }));
+  fixture('<div class="scope logo"><img class="logo" alt="Logo small" /></div>');
 
-  var attr = buildAttributeWithOptions(attribute, { scope: '.scope' }, 'alt', 'img');
+  var attr = buildAttributeWithOptions(attribute, { scope: '.scope' }, 'alt', '.logo');
 
   assert.equal(attr(), 'Logo small');
 });

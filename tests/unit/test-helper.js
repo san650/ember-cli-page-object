@@ -53,3 +53,7 @@ export function buildAttributeWithOptions(attribute, page, ...params) {
 export function it(description, fn) {
   test(`it ${description}`, fn);
 }
+
+export function fixture(str) {
+  $('#ember-testing').html(str);
+}
