@@ -53,7 +53,7 @@ var page = PO.build({
 });
 
 assert.equal(page.title(), 'My title');
-assert.equal(page.text(), 'A text');
+assert.equal(page.text, 'A text');
 ```
 
 There are many special attributes you can use defined under the PO namespace
@@ -224,7 +224,7 @@ assert.equal(page.imageCount(), 2);
 ### `.text`
 
 Returns the inner text of the element. Note that whitespace from the beginning
-and end of a string is removed for convenience.
+and end of the string is removed for convenience.
 
 Attribute signature
 
