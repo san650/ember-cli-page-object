@@ -15,13 +15,15 @@ export function attribute(attributeName, selector, options = {}) {
   };
 }
 
-function query(fn) {
+function query(fn, useFind = false) {
   return function(selector, options = {}) {
     return {
       build: function(key, page) {
         return function(...args) {
           let qualifiedSelector = qualifySelector(options.scope || page.scope, selector),
-              element = findWithAssert(qualifiedSelector);
+              element;
+
+          element = (useFind) ? find(qualifiedSelector) : findWithAssert(qualifiedSelector);
 
           return fn(element, ...args);
         };
@@ -30,7 +32,7 @@ function query(fn) {
   };
 }
 
-const count = query(elements => elements.length),
+const count = query(elements => elements.length, true),
       text = query(element => trim(element.text())),
       value = query(element => element.val());
 
