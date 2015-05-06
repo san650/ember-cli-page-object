@@ -2,10 +2,17 @@
 
 Represent the screens of your web app as a series of objects.
 
-## References
+## Description
 
-* [Page Objects](https://code.google.com/p/selenium/wiki/PageObjects) - Selenium wiki
-* [PageObject](http://martinfowler.com/bliki/PageObject.html) - Martin Fowler
+An excerpt from the Selenium Wiki
+> Within your web app's UI there are areas that your tests interact with. A Page Object simply models these as objects within the test code. This reduces the amount of duplicated code and means that if the UI changes, the fix need only be applied in one place.
+The pattern was first introduced by the Selenium
+
+This ember-cli addon ease the construction of Page Objects on your acceptance tests.
+
+You can find more information about the design pattern here:
+* [Page Objects - Selenium wiki](https://code.google.com/p/selenium/wiki/PageObjects)
+* [PageObject - Martin Fowler](http://martinfowler.com/bliki/PageObject.html)
 
 ## Usage
 
@@ -15,6 +22,8 @@ First add the npm package to your ember-cli project
 npm install --save-dev ember-cli-page-object
 ```
 
+then import the page-object helper
+
 ```js
 import PO from '../page-object';
 ```
@@ -22,28 +31,14 @@ import PO from '../page-object';
 The previous example assumes that your test file is one level deep under
 `tests/` folder. i.e. `tests/unit/my-unit-test.js`.
 
+Then you can start building your page objects as follows:
+
 ```js
-import Ember from 'ember';
-import { module, test } from 'qunit';
-import startApp from '../helpers/start-app';
-import PO from '../page-object';
-
-var application;
-
-module('An Integration test', {
-  beforeEach: function() {
-    application = startApp();
-  },
-  afterEach: function() {
-    Ember.run(application, 'destroy');
-  }
-});
-
 var login = PO.build({
-  visit: PO.visitable('/login'),
-  userName: PO.fillable('#username'),
-  password: PO.fillable('#password'),
-  submit: PO.clickable('#login'),
+  visit:        PO.visitable('/login'),
+  userName:     PO.fillable('#username'),
+  password:     PO.fillable('#password'),
+  submit:       PO.clickable('#login'),
   errorMessage: PO.text('.message')
 });
 
@@ -60,7 +55,7 @@ test('Invalid log in', function(assert) {
 });
 ```
 
-Support for tables and collections
+Built-in support for defining tables and collections:
 
 ```html
 <table id="users">
@@ -76,22 +71,6 @@ Support for tables and collections
 ```
 
 ```js
-import Ember from 'ember';
-import { module, test } from 'qunit';
-import startApp from '../helpers/start-app';
-import PO from '../page-object';
-
-var application;
-
-module('Users', {
-  beforeEach: function() {
-    application = startApp();
-  },
-  afterEach: function() {
-    Ember.run(application, 'destroy');
-  }
-});
-
 var page = PO.build({
   visit: PO.visitable('/users'),
 
@@ -100,7 +79,7 @@ var page = PO.build({
 
     item: {
       firstName: PO.text('td:nth-of-type(1)'),
-      lastName: PO.text('td:nth-of-type(2)')
+      lastName:  PO.text('td:nth-of-type(2)')
     }
   })
 });
@@ -118,7 +97,26 @@ test('show all users', function(assert) {
 });
 ```
 
-Check [DOCUMENTATION](./DOCUMENTATION.md) for more information.
+You can use ES6 destructuring to declutter even more your page definition:
+
+```js
+var { visitable, collection, text } = PO;
+
+var page = PO.build({
+  visit: visitable('/users'),
+
+  users: collection({
+    itemScope: '#users tr',
+
+    item: {
+      firstName: text('td:nth-of-type(1)'),
+      lastName:  text('td:nth-of-type(2)')
+    }
+  })
+});
+```
+
+Check the [DOCUMENTATION](./DOCUMENTATION.md) for more information.
 
 ## Development
 
