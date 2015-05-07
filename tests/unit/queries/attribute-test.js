@@ -55,3 +55,11 @@ it('uses page scope', function(assert) {
 
   assert.equal(attr(), 'Logo small');
 });
+
+it('searches for element by index if provided', function(assert) {
+  fixture('<img alt="img1" class="img"/><img alt="img2" class="img"/>');
+
+  var attr = buildAttribute(attributeAttribute, 'alt', '.img', { index: 2 });
+
+  assert.equal(attr(), 'img2');
+});

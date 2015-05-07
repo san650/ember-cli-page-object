@@ -2,8 +2,21 @@
 
 import { qualifySelector } from './helpers';
 
+function indexedSelector(baseSelector, index) {
+  var selector;
+  if ($.isNumeric(index) && index > 0) {
+    selector = `${baseSelector}:nth-of-type(${index})`;
+  } else {
+    selector = baseSelector;
+  }
+
+  return selector;
+}
+
 function qualifiedSelector(...extras) {
-  return qualifySelector(this.options.scope || this.page.scope, this.selector, ...extras);
+  return qualifySelector(this.options.scope || this.page.scope,
+                         indexedSelector(this.selector, this.options['index']),
+                         ...extras);
 }
 
 function findElementWithAssert() {
