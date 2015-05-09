@@ -1,22 +1,21 @@
 # Ember Page Objects
 
-Represent the screens of your web app as a series of objects.
+Represent the screens of your web app as a series of objects. This ember-cli
+addon ease the construction of these objects on your acceptance tests.
 
-## Description
+## What is a Page Object?
 
 An excerpt from the Selenium Wiki
 > Within your web app's UI there are areas that your tests interact with. A Page Object simply models these as objects within the test code. This reduces the amount of duplicated code and means that if the UI changes, the fix need only be applied in one place.
 The pattern was first introduced by the Selenium
 
-This ember-cli addon ease the construction of Page Objects on your acceptance tests.
-
-You can find more information about the design pattern here:
+You can find more information about this design pattern here:
 * [Page Objects - Selenium wiki](https://code.google.com/p/selenium/wiki/PageObjects)
 * [PageObject - Martin Fowler](http://martinfowler.com/bliki/PageObject.html)
 
 ## Usage
 
-First add the npm package to your ember-cli project
+Install the npm package on your ember-cli project
 
 ```sh
 npm install --save-dev ember-cli-page-object
@@ -29,7 +28,7 @@ import PO from '../page-object';
 ```
 
 The previous example assumes that your test file is one level deep under
-`tests/` folder. i.e. `tests/unit/my-unit-test.js`.
+`tests/` folder. i.e. `tests/acceptance/my-acceptance-test.js`.
 
 Then you can start building your page objects as follows:
 
