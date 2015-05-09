@@ -59,13 +59,13 @@ assert.equal(page.text, 'A text');
 There are many special attributes you can use defined under the PO namespace
 that simplify common patterns, i.e.
 
-```
+```js
 var page = PO.build({
-  title: PO.text('.title)
+  title: PO.text('.title')
 });
 ```
 
-The following is a comprehensive documentation of the available PO attribute
+The following is a comprehensive documentation of the available `PO` attribute
 helpers.
 
 ## Predicates
