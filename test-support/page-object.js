@@ -1,6 +1,16 @@
 import { build } from './page-object/build';
-import { hasClass, notHasClass, isVisible, isHidden } from './page-object/predicates';
-import { attribute, count, text, value } from './page-object/queries';
+import {
+  hasClassAttribute,
+  notHasClassAttribute,
+  isVisibleAttribute,
+  isHiddenAttribute
+} from './page-object/predicates';
+import {
+  attributeAttribute,
+  countAttribute,
+  textAttribute,
+  valueAttribute
+} from './page-object/queries';
 import { clickable, fillable, visitable } from './page-object/actions';
 import { collection } from './page-object/collection';
 
@@ -17,18 +27,18 @@ function component(definition) {
 }
 
 export default {
-  attribute,
+  attribute:   attributeAttribute,
   build,
   clickable,
   collection,
   component,
-  count,
+  count:       countAttribute,
   fillable,
-  hasClass,
-  isHidden,
-  isVisible,
-  notHasClass,
-  text,
-  value,
+  hasClass:    hasClassAttribute,
+  isHidden:    isHiddenAttribute,
+  isVisible:   isVisibleAttribute,
+  notHasClass: notHasClassAttribute,
+  text:        textAttribute,
+  value:       valueAttribute,
   visitable
 };

@@ -1,43 +1,44 @@
 /* global findWithAssert */
 
-import { qualifySelector, trim } from './helpers';
+import { trim } from './helpers';
+import Attribute from './attribute';
 
-export function attribute(attributeName, selector, options = {}) {
-  return {
-    build: function(key, page) {
-      return function(...args) {
-        let qualifiedSelector = qualifySelector(options.scope || page.scope, selector),
-            element = findWithAssert(qualifiedSelector);
+function attribute() {
+  let element = findWithAssert(this.qualifiedSelector());
 
-        return element.attr(attributeName);
-      };
-    }
-  };
+  return element.attr(this.attributeName);
 }
 
-function query(fn, useFind = false) {
-  return function(selector, options = {}) {
-    return {
-      build: function(key, page) {
-        return function(...args) {
-          let qualifiedSelector = qualifySelector(options.scope || page.scope, selector),
-              element;
+function count() {
+  let element = find(this.qualifiedSelector());
 
-          element = (useFind) ? find(qualifiedSelector) : findWithAssert(qualifiedSelector);
-
-          return fn(element, ...args);
-        };
-      }
-    };
-  };
+  return element.length;
 }
 
-const count = query(elements => elements.length, true),
-      text = query(element => trim(element.text())),
-      value = query(element => element.val());
+function text() {
+  let element = findWithAssert(this.qualifiedSelector());
 
-export {
-  count,
-  text,
-  value
-};
+  return trim(element.text());
+}
+
+function value() {
+  let element = findWithAssert(this.qualifiedSelector());
+
+  return trim(element.val());
+}
+
+export function attributeAttribute(attributeName, selector, options = {}) {
+  return new Attribute(attribute, selector, options, { attributeName });
+}
+
+export function countAttribute(selector, options = {}) {
+  return new Attribute(count, selector, options);
+}
+
+export function textAttribute(selector, options = {}) {
+  return new Attribute(text, selector, options);
+}
+
+export function valueAttribute(selector, options = {}) {
+  return new Attribute(value, selector, options);
+}

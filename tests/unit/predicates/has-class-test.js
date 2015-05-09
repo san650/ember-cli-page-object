@@ -6,16 +6,16 @@ import {
   itBehavesLikeAnAttribute,
   moduleFor
 } from '../test-helper';
-import { hasClass } from '../../page-object/predicates';
+import { hasClassAttribute } from '../../page-object/predicates';
 
-moduleFor('Predicates', 'hasClass');
+moduleFor('Predicates', 'hasClassAttribute');
 
-itBehavesLikeAnAttribute(hasClass);
+itBehavesLikeAnAttribute(hasClassAttribute);
 
 it('returns true when the element has the class', function(assert) {
   fixture('<div class="element has-error" />');
 
-  var predicate = buildAttribute(hasClass, 'has-error', '.element');
+  var predicate = buildAttribute(hasClassAttribute, 'has-error', '.element');
 
   assert.ok(predicate());
 });
@@ -23,7 +23,7 @@ it('returns true when the element has the class', function(assert) {
 it('returns false when the element doesn\'t have the class', function(assert) {
   fixture('<div class="element" />');
 
-  var predicate = buildAttribute(hasClass, 'has-error', '.element');
+  var predicate = buildAttribute(hasClassAttribute, 'has-error', '.element');
 
   assert.ok(!predicate());
 });
@@ -31,7 +31,7 @@ it('returns false when the element doesn\'t have the class', function(assert) {
 it('raises an error when the element doesn\'t exist', function(assert) {
   assert.expect(1);
 
-  var predicate = buildAttribute(hasClass, 'has-error', '.element');
+  var predicate = buildAttribute(hasClassAttribute, 'has-error', '.element');
 
   try {
     predicate();
@@ -43,7 +43,7 @@ it('raises an error when the element doesn\'t exist', function(assert) {
 it('uses scope', function(assert) {
   fixture('<div class="element scope"><div class="element has-error" /></div>');
 
-  var predicate = buildAttribute(hasClass, 'has-error', '.element:first', { scope: '.scope' });
+  var predicate = buildAttribute(hasClassAttribute, 'has-error', '.element:first', { scope: '.scope' });
 
   assert.ok(predicate());
 });
@@ -51,7 +51,7 @@ it('uses scope', function(assert) {
 it('uses page scope', function(assert) {
   fixture('<div class="element scope"><div class="element has-error" /></div>');
 
-  var predicate = buildAttributeWithOptions(hasClass, { scope: '.scope' }, 'has-error', '.element:first');
+  var predicate = buildAttributeWithOptions(hasClassAttribute, { scope: '.scope' }, 'has-error', '.element:first');
 
   assert.ok(predicate());
 });
