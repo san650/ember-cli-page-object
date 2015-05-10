@@ -11,7 +11,11 @@ import {
   textAttribute,
   valueAttribute
 } from './page-object/queries';
-import { clickable, fillable, visitable } from './page-object/actions';
+import {
+  clickableAttribute,
+  fillableAttribute,
+  visitableAttribute
+} from './page-object/actions';
 import { collection } from './page-object/collection';
 
 function component(definition) {
@@ -29,16 +33,16 @@ function component(definition) {
 export default {
   attribute:   attributeAttribute,
   build,
-  clickable,
+  clickable:   clickableAttribute,
   collection,
   component,
   count:       countAttribute,
-  fillable,
+  fillable:    fillableAttribute,
   hasClass:    hasClassAttribute,
   isHidden:    isHiddenAttribute,
   isVisible:   isVisibleAttribute,
   notHasClass: notHasClassAttribute,
   text:        textAttribute,
   value:       valueAttribute,
-  visitable
+  visitable:   visitableAttribute
 };

@@ -5,17 +5,17 @@ import {
   itBehavesLikeAnAttribute,
   moduleFor
 } from '../test-helper';
-import { fillable } from '../../page-object/actions';
+import { fillableAttribute } from '../../page-object/actions';
 
 let OriginalFillIn = window.fillIn;
 
-moduleFor('Actions', 'fillable', {
+moduleFor('Actions', 'fillableAttribute', {
   afterEach: function() {
     window.fillIn = OriginalFillIn;
   }
 });
 
-itBehavesLikeAnAttribute(fillable);
+itBehavesLikeAnAttribute(fillableAttribute);
 
 it('calls Ember\'s fillIn helper', function(assert) {
   assert.expect(2);
@@ -28,7 +28,7 @@ it('calls Ember\'s fillIn helper', function(assert) {
     assert.equal(actualText, text);
   };
 
-  buildAttribute(fillable, selector)(text);
+  buildAttribute(fillableAttribute, selector)(text);
 });
 
 it('uses scope', function(assert) {
@@ -38,7 +38,7 @@ it('uses scope', function(assert) {
     assert.equal(actualSelector, '.scope .element');
   };
 
-  buildAttribute(fillable, '.element', { scope: '.scope' })();
+  buildAttribute(fillableAttribute, '.element', { scope: '.scope' })();
 });
 
 it('uses page scope', function(assert) {
@@ -48,5 +48,5 @@ it('uses page scope', function(assert) {
     assert.equal(actualSelector, '.scope .element');
   };
 
-  buildAttributeWithOptions(fillable, { scope: '.scope' }, '.element')();
+  buildAttributeWithOptions(fillableAttribute, { scope: '.scope' }, '.element')();
 });

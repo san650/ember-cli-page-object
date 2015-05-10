@@ -4,17 +4,17 @@ import {
   itBehavesLikeAnAttribute,
   moduleFor
 } from '../test-helper';
-import { visitable } from '../../page-object/actions';
+import { visitableAttribute } from '../../page-object/actions';
 
 let OriginalVisit = window.visit;
 
-moduleFor('Actions', 'visitable', {
+moduleFor('Actions', 'visitableAttribute', {
   afterEach: function() {
     window.visit = OriginalVisit;
   }
 });
 
-itBehavesLikeAnAttribute(visitable);
+itBehavesLikeAnAttribute(visitableAttribute);
 
 it('calls Ember\'s visit helper', function(assert) {
   assert.expect(1);
@@ -25,5 +25,5 @@ it('calls Ember\'s visit helper', function(assert) {
     assert.equal(actualRoute, expectedRoute);
   };
 
-  buildAttribute(visitable, expectedRoute)();
+  buildAttribute(visitableAttribute, expectedRoute)();
 });

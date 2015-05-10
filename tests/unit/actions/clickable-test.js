@@ -5,17 +5,17 @@ import {
   itBehavesLikeAnAttribute,
   moduleFor
 } from '../test-helper';
-import { clickable } from '../../page-object/actions';
+import { clickableAttribute } from '../../page-object/actions';
 
 let OriginalClick = window.click;
 
-moduleFor('Actions', 'clickable', {
+moduleFor('Actions', 'clickableAttribute', {
   afterEach: function() {
     window.click = OriginalClick;
   }
 });
 
-itBehavesLikeAnAttribute(clickable);
+itBehavesLikeAnAttribute(clickableAttribute);
 
 it('calls Ember\'s click helper', function(assert) {
   assert.expect(1);
@@ -26,7 +26,7 @@ it('calls Ember\'s click helper', function(assert) {
     assert.equal(actualSelector, expectedSelector);
   };
 
-  buildAttribute(clickable, expectedSelector)();
+  buildAttribute(clickableAttribute, expectedSelector)();
 });
 
 it('uses scope', function(assert) {
@@ -36,7 +36,7 @@ it('uses scope', function(assert) {
     assert.equal(actualSelector, '.scope .element');
   };
 
-  buildAttribute(clickable, '.element', { scope: '.scope' })();
+  buildAttribute(clickableAttribute, '.element', { scope: '.scope' })();
 });
 
 it('uses page scope', function(assert) {
@@ -46,5 +46,5 @@ it('uses page scope', function(assert) {
     assert.equal(actualSelector, '.scope .element');
   };
 
-  buildAttributeWithOptions(clickable, { scope: '.scope' }, '.element')();
+  buildAttributeWithOptions(clickableAttribute, { scope: '.scope' }, '.element')();
 });
