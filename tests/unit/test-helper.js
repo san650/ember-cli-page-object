@@ -1,10 +1,19 @@
 import { module, test } from 'qunit';
 
-export function moduleFor(category, helperName) {
+export function moduleFor(category, helperName, options = {}) {
   module(`${category} - .${helperName}`, {
+    beforeEach: function() {
+      if (options.beforeEach) {
+        options.beforeEach();
+      }
+    },
     afterEach: function() {
       // Cleanup DOM
       $('#ember-testing').html('');
+
+      if (options.afterEach) {
+        options.afterEach();
+      }
     }
   });
 }
