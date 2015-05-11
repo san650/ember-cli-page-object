@@ -15,6 +15,7 @@ Table of content
   * [`.value`](#value)
 * [Actions](#actions)
   * [`.clickable`](#clickable)
+  * [`.clickOnText`](#clickontext)
   * [`.fillable`](#fillable)
   * [`.visitable`](#visitable)
 * [Components](#components)
@@ -302,6 +303,45 @@ andThen(function() {
   // form was submitted
 });
 ```
+
+### `.clickOnText`
+
+Creates an action to click on an element by text. The text is case sensitive.
+
+Attribute signature
+
+```js
+PO.clickOnText(selector, [, scope: ''])
+```
+
+Examples
+
+```html
+<button class="btn">Create</button>
+<button class="btn">Cancel</button>
+```
+
+```js
+var page = PO.build({
+  click: clickOnText('.btn')
+});
+
+page.click("Create");
+
+andThen(function() {
+  // ...
+});
+
+page.click("Cancel");
+
+andThen(function() {
+  // ...
+});
+```
+
+> A string of text to look for. It's case sensitive.
+> The text must have matching case to be selected.
+> gwill match elements with the desired text block:
 
 ### `.fillable`
 
