@@ -1,30 +1,20 @@
-/* global findWithAssert */
-
 import { trim } from './helpers';
 import Attribute from './attribute';
 
 function attribute() {
-  let element = findWithAssert(this.qualifiedSelector());
-
-  return element.attr(this.attributeName);
+  return this.elementOrRaise().attr(this.attributeName);
 }
 
 function count() {
-  let element = find(this.qualifiedSelector());
-
-  return element.length;
+  return this.element().length;
 }
 
 function text() {
-  let element = findWithAssert(this.qualifiedSelector());
-
-  return trim(element.text());
+  return trim(this.elementOrRaise().text())
 }
 
 function value() {
-  let element = findWithAssert(this.qualifiedSelector());
-
-  return trim(element.val());
+  return this.elementOrRaise().val();
 }
 
 export function attributeAttribute(attributeName, selector, options = {}) {

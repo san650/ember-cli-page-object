@@ -3,25 +3,19 @@
 import Attribute from './attribute';
 
 function hasClass() {
-  let element = findWithAssert(this.qualifiedSelector());
-
-  return element.hasClass(this.cssClass);
+  return this.elementOrRaise().hasClass(this.cssClass);
 }
 
 function notHasClass() {
-  let element = findWithAssert(this.qualifiedSelector());
-
-  return !element.hasClass(this.cssClass);
+  return !this.elementOrRaise().hasClass(this.cssClass);
 }
 
 function isVisible() {
-  let element = findWithAssert(this.qualifiedSelector());
-
-  return element.is(':visible');
+  return this.elementOrRaise().is(':visible');
 }
 
 function isHidden() {
-  let element = find(this.qualifiedSelector());
+  let element = this.element();
 
   return (element.length > 0) ? element.is(':hidden') : true;
 }
