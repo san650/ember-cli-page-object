@@ -1,6 +1,6 @@
 {
   "name": "ember-cli-page-object",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Helper functions to implement the Page Object pattern in your tests",
   "directories": {
     "doc": "doc",
