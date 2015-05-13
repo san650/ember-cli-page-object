@@ -8,7 +8,7 @@ export function build(definition) {
   keys.forEach(function(key) {
     let attr = definition[key];
 
-    component[key] = (attr.build) ? attr.build(key, component) : attr;
+    component[key] = (attr.buildPageObjectAttribute) ? attr.buildPageObjectAttribute(key, component) : attr;
   });
 
   return component;
