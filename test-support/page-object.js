@@ -17,25 +17,14 @@ import {
   visitableAttribute
 } from './page-object/actions';
 import { collection } from './page-object/collection';
-
-function component(definition) {
-  return {
-    build: function(/*key, parent*/) {
-      let component = build(definition);
-
-      return function() {
-        return component;
-      };
-    }
-  };
-}
+import { componentAttribute } from './page-object/component';
 
 export default {
   attribute:   attributeAttribute,
   build,
   clickable:   clickableAttribute,
   collection,
-  component,
+  component:   componentAttribute,
   count:       countAttribute,
   fillable:    fillableAttribute,
   hasClass:    hasClassAttribute,
