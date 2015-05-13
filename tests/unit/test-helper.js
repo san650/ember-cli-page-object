@@ -19,26 +19,26 @@ export function moduleFor(category, helperName, options = {}) {
 }
 
 export function itBehavesLikeAnAttribute(attribute) {
-  it('responds to build', function(assert) {
+  it('responds to buildPageObjectAttribute', function(assert) {
     var builder = attribute();
 
-    assert.ok($.isFunction(builder.build), '`build` is a function');
+    assert.ok($.isFunction(builder.buildPageObjectAttribute), '`buildPageObjectAttribute` is a function');
   });
 
   it('returns a builder function', function(assert) {
     var builder = attribute(),
-        predicate = builder.build('dummy', {});
+        predicate = builder.buildPageObjectAttribute('dummy', {});
 
-    assert.ok($.isFunction(predicate), '`build()` is a function');
+    assert.ok($.isFunction(predicate), '`buildPageObjectAttribute()` is a function');
   });
 }
 
 export function buildAttribute(attribute, ...params) {
-  return attribute(...params).build('key', {});
+  return attribute(...params).buildPageObjectAttribute('key', {});
 }
 
 export function buildAttributeWithOptions(attribute, page, ...params) {
-  return attribute(...params).build('key', page);
+  return attribute(...params).buildPageObjectAttribute('key', page);
 }
 
 export function it(description, fn) {

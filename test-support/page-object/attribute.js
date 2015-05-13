@@ -26,7 +26,7 @@ function Attribute(fn, selector = null, options = null, extraArgs = {}) {
 }
 
 Attribute.prototype = {
-  build: function(key, page) {
+  buildPageObjectAttribute: function(key, page) {
     var fn = this.fn,
         context = this.context;
 

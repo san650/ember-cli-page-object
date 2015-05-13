@@ -10,7 +10,7 @@ function dynamicScope(base, index) {
 
 export function collection(definition) {
   return {
-    build: function(/*key, page*/) {
+    buildPageObjectAttribute: function(/*key, page*/) {
       let itemComponent,
           itemScope,
           collectionComponent;

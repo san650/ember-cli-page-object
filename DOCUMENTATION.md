@@ -548,3 +548,20 @@ andThen(function() {
   // the form was submitted
 });
 ```
+
+You can define components implicity by creating a plain object with attributes on it
+
+```js
+var page = PO.build({
+  visit: PO.visitable('/user/create'),
+  title: PO.text('h1'),
+
+  form: {
+    firstName: PO.fillable('#firstName'),
+    lastName: PO.fillable('#lastName'),
+    submit: PO.clickable('button')
+  }
+});
+```
+
+Note that if the plain object doesn't have attributes defined, the object is returned as is.

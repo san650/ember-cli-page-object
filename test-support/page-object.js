@@ -1,4 +1,7 @@
-import { build } from './page-object/build';
+import {
+  build,
+  componentAttribute
+} from './page-object/build';
 import {
   hasClassAttribute,
   notHasClassAttribute,
@@ -13,29 +16,19 @@ import {
 } from './page-object/queries';
 import {
   clickableAttribute,
+  clickOnTextAttribute,
   fillableAttribute,
   visitableAttribute
 } from './page-object/actions';
 import { collection } from './page-object/collection';
 
-function component(definition) {
-  return {
-    build: function(/*key, parent*/) {
-      let component = build(definition);
-
-      return function() {
-        return component;
-      };
-    }
-  };
-}
-
 export default {
   attribute:   attributeAttribute,
   build,
   clickable:   clickableAttribute,
+  clickOnText: clickOnTextAttribute,
   collection,
-  component,
+  component:   componentAttribute,
   count:       countAttribute,
   fillable:    fillableAttribute,
   hasClass:    hasClassAttribute,
