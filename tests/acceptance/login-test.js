@@ -17,11 +17,11 @@ module('An Integration test', {
 var page = PO.build({
   visit: PO.visitable('/login'),
 
-  form: PO.component({
+  form: {
     userName: PO.fillable('#userName'),
     password: PO.fillable('#password'),
     click: PO.clickable('.login button'),
-  }),
+  },
 
   title: PO.text('.title'),
   message: PO.text('.message'),

@@ -1,4 +1,7 @@
-import { build } from './page-object/build';
+import {
+  build,
+  componentAttribute
+} from './page-object/build';
 import {
   hasClassAttribute,
   notHasClassAttribute,
@@ -17,7 +20,6 @@ import {
   visitableAttribute
 } from './page-object/actions';
 import { collection } from './page-object/collection';
-import { componentAttribute } from './page-object/component';
 
 export default {
   attribute:   attributeAttribute,
