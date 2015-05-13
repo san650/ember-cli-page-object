@@ -16,6 +16,7 @@ import {
 } from './page-object/queries';
 import {
   clickableAttribute,
+  clickOnTextAttribute,
   fillableAttribute,
   visitableAttribute
 } from './page-object/actions';
@@ -25,6 +26,7 @@ export default {
   attribute:   attributeAttribute,
   build,
   clickable:   clickableAttribute,
+  clickOnText: clickOnTextAttribute,
   collection,
   component:   componentAttribute,
   count:       countAttribute,
