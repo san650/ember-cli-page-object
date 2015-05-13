@@ -6,16 +6,16 @@ import {
   itBehavesLikeAnAttribute,
   moduleFor
 } from '../test-helper';
-import { attribute } from '../../page-object/queries';
+import { attributeAttribute } from '../../page-object/queries';
 
-moduleFor('Queries', 'attribute');
+moduleFor('Queries', 'attributeAttribute');
 
-itBehavesLikeAnAttribute(attribute);
+itBehavesLikeAnAttribute(attributeAttribute);
 
 it('returns element attribute\'s value', function(assert) {
   fixture('<img src="/path/to/image.png" />');
 
-  var attr = buildAttribute(attribute, 'src', 'img');
+  var attr = buildAttribute(attributeAttribute, 'src', 'img');
 
   assert.equal(attr(), '/path/to/image.png');
 });
@@ -23,7 +23,7 @@ it('returns element attribute\'s value', function(assert) {
 it('returns null when the attribute doesn\'t exist', function(assert) {
   fixture('<img />');
 
-  var attr = buildAttribute(attribute, 'alt', 'img');
+  var attr = buildAttribute(attributeAttribute, 'alt', 'img');
 
   assert.equal(attr(), null);
 });
@@ -32,7 +32,7 @@ it('raises an error when the element doesn\'t exist', function(assert) {
   assert.expect(1);
 
   try {
-    let attr = buildAttribute(attribute, 'alt', 'img');
+    let attr = buildAttribute(attributeAttribute, 'alt', 'img');
 
     attr();
   } catch(e) {
@@ -43,7 +43,7 @@ it('raises an error when the element doesn\'t exist', function(assert) {
 it('uses scope', function(assert) {
   fixture('<div class="scope logo"><img class="logo" alt="Logo small" /></div>');
 
-  var attr = buildAttribute(attribute, 'alt', '.logo', { scope: '.scope' });
+  var attr = buildAttribute(attributeAttribute, 'alt', '.logo', { scope: '.scope' });
 
   assert.equal(attr(), 'Logo small');
 });
@@ -51,7 +51,7 @@ it('uses scope', function(assert) {
 it('uses page scope', function(assert) {
   fixture('<div class="scope logo"><img class="logo" alt="Logo small" /></div>');
 
-  var attr = buildAttributeWithOptions(attribute, { scope: '.scope' }, 'alt', '.logo');
+  var attr = buildAttributeWithOptions(attributeAttribute, { scope: '.scope' }, 'alt', '.logo');
 
   assert.equal(attr(), 'Logo small');
 });

@@ -1,42 +1,33 @@
 /* global visit, fillIn, click */
 
-import { qualifySelector } from './helpers';
+import Attribute from './attribute';
 
-function action(fn) {
-  return function(selector, options = {}) {
-    return {
-      build: function(key, page) {
-        return function(...args) {
-          let qualifiedSelector = qualifySelector(options.scope || page.scope, selector);
+function visitable() {
+  this.page.lastPromise = visit(this.path);
 
-          page.lastPromise = fn(qualifiedSelector, ...args);
-
-          return page;
-        };
-      }
-    };
-  };
+  return this.page;
 }
 
-export function visitable(path) {
-  return {
-    build: function(key, page) {
-      return function() {
-        page.lastPromise = visit(path);
+function clickable() {
+  this.page.lastPromise = click(this.qualifiedSelector());
 
-        return page;
-      };
-    }
-  };
+  return this.page;
 }
 
-export var fillable = action((selector, text) => fillIn(selector, text));
-export var clickable = action((selector) => click(selector));
+function fillable(text) {
+  this.page.lastPromise = fillIn(this.qualifiedSelector(), text);
 
-// function clickableByText(selector, scope) {
-//   var qualifiedSelector = qualifySelector(scope, selector);
-// 
-//   return function(text) {
-//     return click('%@ :contains("%@"):last'.fmt(qualifiedSelector, text));
-//   };
-// }
+  return this.page;
+}
+
+export function visitableAttribute(path) {
+  return new Attribute(visitable, null, null, { path });
+}
+
+export function clickableAttribute(selector, options = {}) {
+  return new Attribute(clickable, selector, options);
+}
+
+export function fillableAttribute(selector, options = {}) {
+  return new Attribute(fillable, selector, options);
+}

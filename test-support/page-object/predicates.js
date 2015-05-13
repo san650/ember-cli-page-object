@@ -1,55 +1,37 @@
 /* global find, findWithAssert */
 
-import { qualifySelector } from './helpers';
+import Attribute from './attribute';
 
-export function hasClass(cssClass, selector, options = {}) {
-  return {
-    build: function(key, page) {
-      return function() {
-        let qualifiedSelector = qualifySelector(options.scope || page.scope, selector),
-            element = findWithAssert(qualifiedSelector);
-
-        return element.hasClass(cssClass);
-      };
-    }
-  };
+function hasClass() {
+  return this.elementOrRaise().hasClass(this.cssClass);
 }
 
-export function notHasClass(cssClass, selector, options = {}) {
-  return {
-    build: function(key, page) {
-      return function() {
-        let qualifiedSelector = qualifySelector(options.scope || page.scope, selector),
-            element = findWithAssert(qualifiedSelector);
-
-        return !element.hasClass(cssClass);
-      };
-    }
-  };
+function notHasClass() {
+  return !this.elementOrRaise().hasClass(this.cssClass);
 }
 
-export function isVisible(selector, options = {}) {
-  return {
-    build: function(key, page) {
-      return function() {
-        let qualifiedSelector = qualifySelector(options.scope || page.scope, selector),
-            element = findWithAssert(qualifiedSelector);
-
-        return element.is(':visible');
-      };
-    }
-  };
+function isVisible() {
+  return this.elementOrRaise().is(':visible');
 }
 
-export function isHidden(selector, options = {}) {
-  return {
-    build: function(key, page) {
-      return function() {
-        let qualifiedSelector = qualifySelector(options.scope || page.scope, selector),
-            element = find(qualifiedSelector);
+function isHidden() {
+  let element = this.element();
 
-        return (element.length > 0) ? element.is(':hidden') : true;
-      };
-    }
-  };
+  return (element.length > 0) ? element.is(':hidden') : true;
+}
+
+export function notHasClassAttribute(cssClass, selector, options = {}) {
+  return new Attribute(notHasClass, selector, options, { cssClass });
+}
+
+export function hasClassAttribute(cssClass, selector, options = {}) {
+  return new Attribute(hasClass, selector, options, { cssClass });
+}
+
+export function isVisibleAttribute(selector, options = {}) {
+  return new Attribute(isVisible, selector, options);
+}
+
+export function isHiddenAttribute(selector, options = {}) {
+  return new Attribute(isHidden, selector, options);
 }

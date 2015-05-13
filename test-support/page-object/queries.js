@@ -1,43 +1,34 @@
-/* global findWithAssert */
+import { trim } from './helpers';
+import Attribute from './attribute';
 
-import { qualifySelector, trim } from './helpers';
-
-export function attribute(attributeName, selector, options = {}) {
-  return {
-    build: function(key, page) {
-      return function(...args) {
-        let qualifiedSelector = qualifySelector(options.scope || page.scope, selector),
-            element = findWithAssert(qualifiedSelector);
-
-        return element.attr(attributeName);
-      };
-    }
-  };
+function attribute() {
+  return this.elementOrRaise().attr(this.attributeName);
 }
 
-function query(fn, useFind = false) {
-  return function(selector, options = {}) {
-    return {
-      build: function(key, page) {
-        return function(...args) {
-          let qualifiedSelector = qualifySelector(options.scope || page.scope, selector),
-              element;
-
-          element = (useFind) ? find(qualifiedSelector) : findWithAssert(qualifiedSelector);
-
-          return fn(element, ...args);
-        };
-      }
-    };
-  };
+function count() {
+  return this.element().length;
 }
 
-const count = query(elements => elements.length, true),
-      text = query(element => trim(element.text())),
-      value = query(element => element.val());
+function text() {
+  return trim(this.elementOrRaise().text())
+}
 
-export {
-  count,
-  text,
-  value
-};
+function value() {
+  return this.elementOrRaise().val();
+}
+
+export function attributeAttribute(attributeName, selector, options = {}) {
+  return new Attribute(attribute, selector, options, { attributeName });
+}
+
+export function countAttribute(selector, options = {}) {
+  return new Attribute(count, selector, options);
+}
+
+export function textAttribute(selector, options = {}) {
+  return new Attribute(text, selector, options);
+}
+
+export function valueAttribute(selector, options = {}) {
+  return new Attribute(value, selector, options);
+}

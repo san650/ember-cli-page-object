@@ -6,16 +6,16 @@ import {
   itBehavesLikeAnAttribute,
   moduleFor
 } from '../test-helper';
-import { value } from '../../page-object/queries';
+import { valueAttribute } from '../../page-object/queries';
 
-moduleFor('Queries', 'value');
+moduleFor('Queries', 'valueAttribute');
 
-itBehavesLikeAnAttribute(value);
+itBehavesLikeAnAttribute(valueAttribute);
 
 it('returns the text of the input', function(assert) {
   fixture('<input value="Hello world" />');
 
-  var attr = buildAttribute(value, 'input');
+  var attr = buildAttribute(valueAttribute, 'input');
 
   assert.equal(attr(), 'Hello world');
 });
@@ -23,7 +23,7 @@ it('returns the text of the input', function(assert) {
 it('raises an error when the element doesn\'t exist', function(assert) {
   assert.expect(1);
 
-  var attr = buildAttribute(value, 'span');
+  var attr = buildAttribute(valueAttribute, 'span');
 
   try {
     attr();
@@ -35,7 +35,7 @@ it('raises an error when the element doesn\'t exist', function(assert) {
 it('returns empty when the element doesn\'t have value attribute', function(assert) {
   fixture('<span />');
 
-  var attr = buildAttribute(value, 'span');
+  var attr = buildAttribute(valueAttribute, 'span');
 
   assert.equal(attr(), '');
 });
@@ -43,7 +43,7 @@ it('returns empty when the element doesn\'t have value attribute', function(asse
 it('uses scope', function(assert) {
   fixture('<div class="scope"><input value="Hello" /></div><input value="world!" />');
 
-  var attr = buildAttribute(value, 'input', { scope: '.scope' });
+  var attr = buildAttribute(valueAttribute, 'input', { scope: '.scope' });
 
   assert.equal(attr(), 'Hello');
 });
@@ -51,7 +51,7 @@ it('uses scope', function(assert) {
 it('uses page scope', function(assert) {
   fixture('<div class="scope"><input value="Hello" /></div><input value="world!" />');
 
-  var attr = buildAttributeWithOptions(value, { scope: '.scope' }, 'input');
+  var attr = buildAttributeWithOptions(valueAttribute, { scope: '.scope' }, 'input');
 
   assert.equal(attr(), 'Hello');
 });

@@ -1,6 +1,6 @@
 import Ember from 'ember';
 import { build } from './build';
-import { count } from './queries';
+import { countAttribute } from './queries';
 
 let extend = Ember.$.extend;
 
@@ -23,7 +23,7 @@ export function collection(definition) {
 
       // Add count attribute
       if (definition.count === undefined) {
-        definition.count = count(itemScope);
+        definition.count = countAttribute(itemScope);
       }
 
       collectionComponent = build(definition);
