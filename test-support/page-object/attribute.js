@@ -2,8 +2,8 @@
 
 import { qualifySelector } from './helpers';
 
-function qualifiedSelector() {
-  return qualifySelector(this.options.scope || this.page.scope, this.selector);
+function qualifiedSelector(...extras) {
+  return qualifySelector(this.options.scope || this.page.scope, this.selector, ...extras);
 }
 
 function findElementWithAssert() {

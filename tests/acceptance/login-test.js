@@ -29,7 +29,7 @@ var page = PO.build({
   notHasError: PO.notHasClass('is-error', '.login')
 });
 
-test('Page contents', function(assert) {
+test('Retries login', function(assert) {
   assert.expect(6);
 
   page
