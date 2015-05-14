@@ -22,8 +22,8 @@ var page = PO.build({
   users: PO.collection({
     itemScope: 'tbody tr',
     item: {
-      userName: PO.text('td:nth-of-type(1)'),
-      role: PO.text('td:nth-of-type(2)')
+      userName: PO.text('td', { index: 1 }),
+      role: PO.text('td', { index: 2})
     }
   })
 });

@@ -69,6 +69,18 @@ var page = PO.build({
 The following is a comprehensive documentation of the available `PO` attribute
 helpers.
 
+A set of options can be passed as parameters while defining attributes.
+
+```js
+var page = PO.build({
+  title: PO.text('.title', { index: 2 })
+});
+```
+
+The `index` option can be used when trying to specify a particular element,
+when the selector matches more than one element.
+In this example, the attribute will reference the second title of the page.
+
 ## Predicates
 
 Test conditions on elements
@@ -477,8 +489,8 @@ var page = PO.build({
     itemScope: '#users tr',
 
     item: {
-      firstName: PO.text('td:nth-of-type(1)'),
-      lastName: PO.text('td:nth-of-type(2)')
+      firstName: PO.text('td', { index: 1 }),
+      lastName: PO.text('td', { index: 2 })
     },
 
     caption: PO.text('#users caption')
@@ -501,7 +513,7 @@ test('show all users', function(assert) {
 
 ### `.component`
 
-Allows to group attributes togeather.
+Allows to group attributes together.
 
 Attribute signature
 
