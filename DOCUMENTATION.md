@@ -21,6 +21,10 @@ Table of content
 * [Components](#components)
   * [`.collection`](#collection)
   * [`.component`](#component)
+* [Page and component `scope`](pageandcomponentscope)
+* [Attribute options](#attributeoptions)
+  * [`scope`](#scope)
+  * [`index`](#index)
 
 ## Setup
 
@@ -68,18 +72,6 @@ var page = PO.build({
 
 The following is a comprehensive documentation of the available `PO` attribute
 helpers.
-
-A set of options can be passed as parameters while defining attributes.
-
-```js
-var page = PO.build({
-  title: PO.text('.title', { index: 2 })
-});
-```
-
-The `index` option can be used when trying to specify a particular element,
-when the selector matches more than one element.
-In this example, the attribute will reference the second title of the page.
 
 ## Predicates
 
@@ -489,8 +481,8 @@ var page = PO.build({
     itemScope: '#users tr',
 
     item: {
-      firstName: PO.text('td', { index: 1 }),
-      lastName: PO.text('td', { index: 2 })
+      firstName: PO.text('td:nth-of-type(1)'),
+      lastName: PO.text('td:nth-of-type(2)')
     },
 
     caption: PO.text('#users caption')
@@ -577,3 +569,131 @@ var page = PO.build({
 ```
 
 Note that if the plain object doesn't have attributes defined, the object is returned as is.
+
+## Page and component `scope`
+
+The `scope` attribute can be used to reduce the set of matched elements to the
+ones enclosed by the given selector.
+
+Given the following HTML
+
+```html
+<div class="article">
+  <p>Lorem ipsum dolor</p>
+</div>
+<div class="footer">
+  <p>Copyright 2015 - Acme Inc.</p>
+</p>
+```
+
+the following configuration will match the article paragraph element
+
+```js
+var page = PO.build({
+  scope: '.article',
+
+  textBody: PO.text('p'),
+});
+
+andThen(function() {
+  assert.equal(page.textBody(), 'Lorem ipsum dolor.');
+});
+```
+
+The attribute's selector can be omited when the scope matches the element we
+want to use.
+
+Given the following HTML
+
+```html
+<form>
+  <input id="userName" value="a value" />
+  <button>Submit</button>
+</form>
+```
+
+We can define several attributes on the same `input` element as follows
+
+```js
+var page = PO.build({
+  input: {
+    scope: '#userName',
+
+    hasError: hasClass('has-error'),
+    value: value(),
+    fillIn: fillable()
+  },
+
+  submit: clickable('button')
+});
+
+page
+  .input()
+  .fillIn('an invalid value');
+
+page.submit();
+
+andThen(function() {
+  assert.ok(input.hasError(), 'Input has an error');
+});
+```
+
+## Attribute options
+
+A set of options can be passed as parameters when defining attributes.
+
+### Attribute `scope`
+
+The `scope` option can be used to override the page's `scope` configuration.
+
+Given the following HTML
+
+```html
+<div class="article">
+  <p>Lorem ipsum dolor</p>
+</div>
+<div class="footer">
+  <p>Copyright 2015 - Acme Inc.</p>
+</p>
+```
+
+the following configuration will match the footer element
+
+```js
+var page = PO.build({
+  scope: '.article',
+
+  textBody: PO.text('p'),
+
+  copyrightNotice: PO.text('p', { scope: '.footer' })
+});
+
+andThen(function() {
+  assert.equal(page.copyrightNotice(), 'Copyright 2015 - Acme Inc.');
+});
+```
+
+### `index`
+
+The `index` option can be used to reduce the set of matched elements to the one
+at the specified index.
+
+Given the following HTML
+
+```html
+<span>Lorem</span>
+<span>ipsum</span>
+<span>dolor</span>
+```
+
+the following cofiguration will match the second `span` element
+
+```js
+var page = PO.build({
+  word: PO.text('span', { index: 2 })
+});
+
+andThen(function() {
+  assert.equal(page.word(), 'ipsum'); // => ok
+});
+```
