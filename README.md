@@ -139,6 +139,10 @@ Check the [DOCUMENTATION](./DOCUMENTATION.md) for more information.
 
 * `ember build`
 
+### Project's health
+
+[![Build Status](https://travis-ci.org/san650/ember-cli-page-object.svg?branch=master)](https://travis-ci.org/san650/ember-cli-page-object)
+
 ## License
 
 ember-cli-page-object is licensed under the MIT license.
