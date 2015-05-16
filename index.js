@@ -2,5 +2,5 @@
 'use strict';
 
 module.exports = {
-  name: 'page-object'
+  name: 'ember-cli-page-object'
 };
