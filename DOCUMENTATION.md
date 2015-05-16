@@ -634,7 +634,7 @@ page
 page.submit();
 
 andThen(function() {
-  assert.ok(input.hasError(), 'Input has an error');
+  assert.ok(page.input().hasError(), 'Input has an error');
 });
 ```
 
