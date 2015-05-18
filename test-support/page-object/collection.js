@@ -4,27 +4,40 @@ import { countAttribute } from './queries';
 
 let extend = Ember.$.extend;
 
-function dynamicScope(base, index) {
+function shallowCopyAndExtend(...objects) {
+  return extend({}, ...objects);
+}
+
+function scopeWithIndex(base, index) {
   return `${base}:nth-of-type(${index})`;
+}
+
+function plugAttribute(definition, attributeName, attributeDefinition, ...attributeParams) {
+  if (definition[attributeName] === undefined) {
+    definition[attributeName] = attributeDefinition(...attributeParams);
+  }
+}
+
+function extract(object, name) {
+  let attribute = object[name];
+
+  delete object[name];
+
+  return attribute;
 }
 
 export function collection(definition) {
   return {
-    buildPageObjectAttribute: function(/*key, page*/) {
+    buildPageObjectAttribute: function(/*key, parent*/) {
       let itemComponent,
           itemScope,
           collectionComponent;
 
-      itemComponent = definition.item;
-      itemScope = definition.itemScope;
-
-      delete definition.item;
-      delete definition.itemScope;
+      itemComponent = extract(definition, 'item');
+      itemScope = extract(definition, 'itemScope');
 
       // Add count attribute
-      if (definition.count === undefined) {
-        definition.count = countAttribute(itemScope);
-      }
+      plugAttribute(definition, 'count', countAttribute, itemScope);
 
       collectionComponent = build(definition);
 
@@ -32,7 +45,7 @@ export function collection(definition) {
         let component;
 
         if (index) {
-          component = build(extend({}, itemComponent, { scope: dynamicScope(itemScope, index) }));
+          component = build(shallowCopyAndExtend(itemComponent, { scope: scopeWithIndex(itemScope, index) }));
         } else {
           component = collectionComponent;
         }
