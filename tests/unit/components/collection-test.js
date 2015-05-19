@@ -61,3 +61,18 @@ it('generates component for collection object', function(assert) {
 
   assert.equal(attribute().text(), 'Submit');
 });
+
+it('sets scope to components under item object', function(assert) {
+  fixture('<button>Wrong</button><span><button>Wrong</button></span><span><button>Right</button></span>');
+
+  let attribute = buildAttribute(collection, {
+    itemScope: 'span',
+    item: {
+      button: {
+         text: textAttribute('button')
+      }
+    }
+  });
+
+  assert.equal(attribute(2).button().text(), 'Right');
+});

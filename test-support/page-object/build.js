@@ -27,8 +27,12 @@ function buildComponentIfNeeded(candidate, key, parent) {
 
 export function componentAttribute(definition) {
   return {
-    buildPageObjectAttribute: function(/*key, parent*/) {
+    buildPageObjectAttribute: function(key, parent) {
       let component = build(definition);
+
+      if (!component.scope) {
+        component.scope = parent.scope;
+      }
 
       return function() {
         return component;
@@ -40,6 +44,8 @@ export function componentAttribute(definition) {
 export function build(definition) {
   let component = new Component(),
       keys = Object.keys(definition);
+
+  component.scope = definition.scope;
 
   keys.forEach(function(key) {
     let attr = definition[key];
