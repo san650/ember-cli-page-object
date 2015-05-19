@@ -1,38 +1,69 @@
 import Ember from 'ember';
 import { build } from './build';
 import { countAttribute } from './queries';
+import {
+  isNullOrUndefined,
+  qualifySelector
+} from './helpers';
 
 let extend = Ember.$.extend;
 
-function dynamicScope(base, index) {
+function shallowCopyAndExtend(...objects) {
+  return extend({}, ...objects);
+}
+
+function scopeWithIndex(base, index) {
   return `${base}:nth-of-type(${index})`;
+}
+
+function plugAttribute(definition, attributeName, attributeDefinition, ...attributeParams) {
+  if (isNullOrUndefined(definition[attributeName])) {
+    definition[attributeName] = attributeDefinition(...attributeParams);
+  }
+}
+
+function extract(object, name) {
+  let attribute = object[name];
+
+  delete object[name];
+
+  return attribute;
 }
 
 export function collection(definition) {
   return {
-    buildPageObjectAttribute: function(/*key, page*/) {
+    buildPageObjectAttribute: function(key, parent) {
       let itemComponent,
           itemScope,
+          collectionScope,
           collectionComponent;
 
-      itemComponent = definition.item;
-      itemScope = definition.itemScope;
-
-      delete definition.item;
-      delete definition.itemScope;
+      itemComponent = extract(definition, 'item');
+      itemScope = extract(definition, 'itemScope');
 
       // Add count attribute
-      if (definition.count === undefined) {
-        definition.count = countAttribute(itemScope);
-      }
+      plugAttribute(definition, 'count', countAttribute, itemScope);
 
-      collectionComponent = build(definition);
+      collectionComponent = build(definition, key, parent);
+
+      if (isNullOrUndefined(collectionComponent.scope)) {
+        collectionScope = parent.scope;
+      } else {
+        collectionScope = collectionComponent.scope;
+      }
 
       return function(index) {
         let component;
 
         if (index) {
-          component = build(extend({}, itemComponent, { scope: dynamicScope(itemScope, index) }));
+          component = build(
+            shallowCopyAndExtend(
+              itemComponent,
+              { scope: qualifySelector(collectionScope, scopeWithIndex(itemScope, index)) }
+            ),
+            key,
+            parent
+          );
         } else {
           component = collectionComponent;
         }

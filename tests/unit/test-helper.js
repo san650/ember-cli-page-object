@@ -18,15 +18,15 @@ export function moduleFor(category, helperName, options = {}) {
   });
 }
 
-export function itBehavesLikeAnAttribute(attribute) {
+export function itBehavesLikeAnAttribute(attribute, ...params) {
   it('responds to buildPageObjectAttribute', function(assert) {
-    var builder = attribute();
+    var builder = attribute(...params);
 
     assert.ok($.isFunction(builder.buildPageObjectAttribute), '`buildPageObjectAttribute` is a function');
   });
 
   it('returns a builder function', function(assert) {
-    var builder = attribute(),
+    var builder = attribute(...params),
         predicate = builder.buildPageObjectAttribute('dummy', {});
 
     assert.ok($.isFunction(predicate), '`buildPageObjectAttribute()` is a function');
