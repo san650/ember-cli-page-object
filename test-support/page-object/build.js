@@ -41,7 +41,7 @@ export function componentAttribute(definition) {
   };
 }
 
-export function build(definition) {
+export function build(definition, key, parent) {
   let component = new Component(),
       keys = Object.keys(definition);
 

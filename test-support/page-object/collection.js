@@ -1,6 +1,7 @@
 import Ember from 'ember';
 import { build } from './build';
 import { countAttribute } from './queries';
+import { qualifySelector } from './helpers';
 
 let extend = Ember.$.extend;
 
@@ -28,9 +29,10 @@ function extract(object, name) {
 
 export function collection(definition) {
   return {
-    buildPageObjectAttribute: function(/*key, parent*/) {
+    buildPageObjectAttribute: function(key, parent) {
       let itemComponent,
           itemScope,
+          collectionScope,
           collectionComponent;
 
       itemComponent = extract(definition, 'item');
@@ -39,13 +41,21 @@ export function collection(definition) {
       // Add count attribute
       plugAttribute(definition, 'count', countAttribute, itemScope);
 
-      collectionComponent = build(definition);
+      collectionComponent = build(definition, key, parent);
+      collectionScope = collectionComponent.scope || parent.scope;
 
       return function(index) {
         let component;
 
         if (index) {
-          component = build(shallowCopyAndExtend(itemComponent, { scope: scopeWithIndex(itemScope, index) }));
+          component = build(
+            shallowCopyAndExtend(
+              itemComponent,
+              { scope: qualifySelector(collectionScope, scopeWithIndex(itemScope, index)) }
+            ),
+            key,
+            parent
+          );
         } else {
           component = collectionComponent;
         }

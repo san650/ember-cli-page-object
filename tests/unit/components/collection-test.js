@@ -25,7 +25,7 @@ it('generates a count attribute', function(assert) {
   assert.equal(attribute().count(), 2);
 });
 
-it('generates a count attribute', function(assert) {
+it('doesn\'t generate a count attribute when it\'s defined', function(assert) {
   fixture('<span>First</span><span>Second</span>');
 
   let attribute = buildAttribute(collection, {
@@ -36,7 +36,6 @@ it('generates a count attribute', function(assert) {
   assert.equal(attribute().count, 'myCount');
 });
 
-// Item
 it('generates component for item', function(assert) {
   fixture('<span>First</span><span>Second</span>');
 
@@ -75,4 +74,18 @@ it('sets scope to components under item object', function(assert) {
   });
 
   assert.equal(attribute(2).button().text(), 'Right');
+});
+
+it('inherits parent scope by default', function(assert) {
+  fixture('<span>Wrong</span><span class="scope"><span>First</span><span>Second</span></span>');
+
+  let attribute = buildAttributeWithOptions(collection, { scope: ".scope" }, {
+    itemScope: 'span',
+
+    item: {
+      text: textAttribute()
+    }
+  });
+
+  assert.equal(attribute(1).text(), 'First');
 });
