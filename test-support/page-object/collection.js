@@ -1,7 +1,10 @@
 import Ember from 'ember';
 import { build } from './build';
 import { countAttribute } from './queries';
-import { qualifySelector } from './helpers';
+import {
+  isNullOrUndefined,
+  qualifySelector
+} from './helpers';
 
 let extend = Ember.$.extend;
 
@@ -14,7 +17,7 @@ function scopeWithIndex(base, index) {
 }
 
 function plugAttribute(definition, attributeName, attributeDefinition, ...attributeParams) {
-  if (definition[attributeName] === undefined) {
+  if (isNullOrUndefined(definition[attributeName])) {
     definition[attributeName] = attributeDefinition(...attributeParams);
   }
 }
@@ -42,7 +45,12 @@ export function collection(definition) {
       plugAttribute(definition, 'count', countAttribute, itemScope);
 
       collectionComponent = build(definition, key, parent);
-      collectionScope = collectionComponent.scope || parent.scope;
+
+      if (isNullOrUndefined(collectionComponent.scope)) {
+        collectionScope = parent.scope;
+      } else {
+        collectionScope = collectionComponent.scope;
+      }
 
       return function(index) {
         let component;

@@ -7,3 +7,7 @@ export function qualifySelector(...selectors) {
 export function trim(text) {
   return Ember.$.trim(text);
 }
+
+export function isNullOrUndefined(object) {
+  return object === undefined || object === null;
+}

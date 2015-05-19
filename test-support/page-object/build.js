@@ -1,3 +1,5 @@
+import { isNullOrUndefined } from './helpers';
+
 function Component() {
 }
 
@@ -30,7 +32,7 @@ export function componentAttribute(definition) {
     buildPageObjectAttribute: function(key, parent) {
       let component = build(definition);
 
-      if (!component.scope) {
+      if (isNullOrUndefined(component.scope)) {
         component.scope = parent.scope;
       }
 
@@ -45,7 +47,9 @@ export function build(definition, key, parent) {
   let component = new Component(),
       keys = Object.keys(definition);
 
-  component.scope = definition.scope;
+  if (isNullOrUndefined(component.scope)) {
+    component.scope = definition.scope;
+  }
 
   keys.forEach(function(key) {
     let attr = definition[key];

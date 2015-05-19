@@ -89,3 +89,18 @@ it('inherits parent scope by default', function(assert) {
 
   assert.equal(attribute(1).text(), 'First');
 });
+
+it('resets parent scope', function(assert) {
+  fixture('<span>Dummy</span><p class="scope"></p>');
+
+  let attribute = buildAttributeWithOptions(collection, { scope: ".scope" }, {
+    scope: '',
+    itemScope: 'span',
+
+    item: {
+      text: textAttribute()
+    }
+  });
+
+  assert.equal(attribute(1).text(), 'Dummy');
+});
