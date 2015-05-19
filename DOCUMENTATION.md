@@ -21,10 +21,10 @@ Table of content
 * [Components](#components)
   * [`.collection`](#collection)
   * [`.component`](#component)
-* [Page and component `scope`](#page-and-component-scope)
 * [Attribute options](#attribute-options)
   * [`scope`](#attribute-scope)
   * [`index`](#index)
+* [Scopes](#scopes)
 
 ## Setup
 
@@ -570,7 +570,67 @@ var page = PO.build({
 
 Note that if the plain object doesn't have attributes defined, the object is returned as is.
 
-## Page and component `scope`
+## Attribute options
+
+A set of options can be passed as parameters when defining attributes.
+
+### Attribute `scope`
+
+The `scope` option can be used to override the page's `scope` configuration.
+
+Given the following HTML
+
+```html
+<div class="article">
+  <p>Lorem ipsum dolor</p>
+</div>
+<div class="footer">
+  <p>Copyright 2015 - Acme Inc.</p>
+</p>
+```
+
+the following configuration will match the footer element
+
+```js
+var page = PO.build({
+  scope: '.article',
+
+  textBody: PO.text('p'),
+
+  copyrightNotice: PO.text('p', { scope: '.footer' })
+});
+
+andThen(function() {
+  assert.equal(page.copyrightNotice(), 'Copyright 2015 - Acme Inc.');
+});
+```
+
+### `index`
+
+The `index` option can be used to reduce the set of matched elements to the one
+at the specified index.
+
+Given the following HTML
+
+```html
+<span>Lorem</span>
+<span>ipsum</span>
+<span>dolor</span>
+```
+
+the following configuration will match the second `span` element
+
+```js
+var page = PO.build({
+  word: PO.text('span', { index: 2 })
+});
+
+andThen(function() {
+  assert.equal(page.word(), 'ipsum'); // => ok
+});
+```
+
+## Scopes
 
 The `scope` attribute can be used to reduce the set of matched elements to the
 ones enclosed by the given selector.
@@ -583,7 +643,7 @@ Given the following HTML
 </div>
 <div class="footer">
   <p>Copyright 2015 - Acme Inc.</p>
-</p>
+</div>
 ```
 
 the following configuration will match the article paragraph element
@@ -638,62 +698,142 @@ andThen(function() {
 });
 ```
 
-## Attribute options
-
-A set of options can be passed as parameters when defining attributes.
-
-### Attribute `scope`
-
-The `scope` option can be used to override the page's `scope` configuration.
-
-Given the following HTML
+### `collection` inherits parent scope by default
 
 ```html
-<div class="article">
-  <p>Lorem ipsum dolor</p>
+<div class="todo">
+  <input type="text" value="invalid value" class="error" placeholder="To do..." />
+  <input type="text" placeholder="To do..." />
+  <input type="text" placeholder="To do..." />
+  <input type="text" placeholder="To do..." />
+
+  <button>Create</button>
 </div>
-<div class="footer">
-  <p>Copyright 2015 - Acme Inc.</p>
-</p>
 ```
-
-the following configuration will match the footer element
 
 ```js
-var page = PO.build({
-  scope: '.article',
+var page = PageObject.build({
+  scope: '.todo',
 
-  textBody: PO.text('p'),
+  todos: collection({
+    itemScope: 'input',
 
-  copyrightNotice: PO.text('p', { scope: '.footer' })
-});
+    item: {
+      value: value(),
+      hasError: hasClass('error')
+    },
 
-andThen(function() {
-  assert.equal(page.copyrightNotice(), 'Copyright 2015 - Acme Inc.');
+    create: clickable('button')
+  });
 });
 ```
 
-### `index`
+|  | translates to |
+| ------ | -------- |
+| `page.todos().create()` | `click('.todo button')` |
+| `page.todos(1).value()` | `find('.todo input:nth-of-type(1)').val()` |
 
-The `index` option can be used to reduce the set of matched elements to the one
-at the specified index.
+You can reset parent scope by setting the `scope` attribute on the collection declaration.
 
-Given the following HTML
+```js
+var page = PageObject.build({
+  scope: '.todo',
+
+  todos: collection({
+    scope: '',
+    itemScope: 'input',
+
+    item: {
+      value: value(),
+      hasError: hasClass('error')
+    },
+
+    create: clickable('button')
+  });
+});
+```
+
+| | translates to |
+| ------ | -------- |
+| `page.todos().create()` | `click('button')` |
+| `page.todos(1).value()` | `find('input:nth-of-type(1)').val()` |
+
+`itemScope` is inherited as default scope on components defined inside the item object.
 
 ```html
-<span>Lorem</span>
-<span>ipsum</span>
-<span>dolor</span>
+<ul class="todos">
+  <li>
+    <span>To do</span>
+    <input value="" />
+  </li>
+  ...
+</ul>
 ```
-
-the following cofiguration will match the second `span` element
 
 ```js
-var page = PO.build({
-  word: PO.text('span', { index: 2 })
-});
+var page = PageObject.build({
+  scope: '.todos',
 
-andThen(function() {
-  assert.equal(page.word(), 'ipsum'); // => ok
+  todos: collection({
+    itemScope: 'li',
+
+    item: {
+      label: text('span'),
+      input: {
+        value: value('input')
+      }
+    }
+  });
 });
 ```
+
+| | translates to |
+| ------ | ------------ |
+| `page.todos(1).input().value()` | `find('.todos li:nth-of-child(1) input).val()` |
+
+### `component` inherits parent scope by default
+
+```html
+<div class="search">
+  <input placeholder="Search..." />
+  <button>Search</button>
+</div>
+```
+
+```js
+var page = PageObject.build({
+  search: {
+    scope: '.search',
+
+    input: {
+      fillIn: fillable('input'),
+      value: value('input')
+    }
+  }
+});
+```
+
+| | translates |
+| ------- | -------- |
+| `page.search().input().value()` | `find('.search input').val()` |
+
+You can reset parent scope by setting the `scope` attribute on the component declaration.
+
+```js
+var page = PageObject.build({
+  search: {
+    scope: '.search',
+
+    input: {
+      scope: 'input',
+
+      fillIn: fillable(),
+      value: value()
+    }
+  }
+});
+```
+
+| | translates |
+| ------- | -------- |
+| `page.search().input().value()` | `find('input').val()` |
