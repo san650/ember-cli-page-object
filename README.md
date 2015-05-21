@@ -142,6 +142,7 @@ Check the [DOCUMENTATION](./DOCUMENTATION.md) for more information.
 ### Project's health
 
 [![Build Status](https://travis-ci.org/san650/ember-cli-page-object.svg?branch=master)](https://travis-ci.org/san650/ember-cli-page-object)
+[![Ember Observer Score](http://emberobserver.com/badges/ember-cli-page-object.svg)](http://emberobserver.com/addons/ember-cli-page-object)
 
 ## License
 
