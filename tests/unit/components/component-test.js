@@ -8,6 +8,10 @@ import {
 } from '../test-helper';
 import { componentAttribute } from '../../page-object/build';
 import { textAttribute } from '../../page-object/queries';
+import {
+  isHiddenAttribute,
+  isVisibleAttribute
+} from '../../page-object/predicates';
 
 moduleFor('Components', 'component');
 
@@ -57,4 +61,18 @@ it('sets child component scope', function(assert) {
   });
 
   assert.equal(attribute().childComponent().text(), 'Right');
+});
+
+it('lets define attributes without selector if page has scope defined', function(assert) {
+  fixture('<span class="scope" style="display:none;">Hidden</span>');
+
+  let attribute = buildAttribute(componentAttribute, {
+    scope: '.scope',
+
+    hidden: isHiddenAttribute(),
+    visible: isVisibleAttribute()
+  });
+
+  assert.equal(attribute().hidden(), true);
+  assert.equal(attribute().visible(), false);
 });
