@@ -30,13 +30,14 @@ function extract(object, name) {
   return attribute;
 }
 
-export function collection(definition) {
+export function collection(def) {
   return {
     buildPageObjectAttribute: function(key, parent) {
       let itemComponent,
           itemScope,
           collectionScope,
-          collectionComponent;
+          collectionComponent,
+          definition = shallowCopyAndExtend(def);
 
       itemComponent = extract(definition, 'item');
       itemScope = extract(definition, 'itemScope');
