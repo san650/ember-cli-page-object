@@ -104,3 +104,22 @@ it('resets parent scope', function(assert) {
 
   assert.equal(attribute(1).text(), 'Dummy');
 });
+
+it('does not mutate collection definition after been used', function(assert) {
+  fixture('<span>Dummy</span><p class="scope"></p>');
+
+  let def = {
+    scope: '',
+    itemScope: 'span',
+
+    item: {
+      text: textAttribute()
+    }
+  };
+
+  let attribute = buildAttribute(collection, def);
+
+  attribute = buildAttribute(collection, def);
+
+  assert.equal(attribute(1).text(), 'Dummy');
+});
