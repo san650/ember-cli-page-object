@@ -5,6 +5,7 @@
     <tr>
       <td>User name</td>
       <td>Role</td>
+      <td>Gender</td>
     </tr>
   </thead>
   <tbody>
@@ -12,6 +13,12 @@
       <tr>
         <td>{{user.userName}}</td>
         <td>{{user.role}}</td>
+        <td>
+          <select>
+            <option>Male</option>
+            <option>Female</option>
+          </select>
+        </td>
       </tr>
     {{/each}}
   </tbody>

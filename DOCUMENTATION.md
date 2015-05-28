@@ -375,6 +375,37 @@ andThen(function() {
 });
 ```
 
+### `.selectable`
+
+Selects an option.
+
+Attribute signature
+
+```js
+PO.selectable(selector [, scope: ''])
+```
+
+Examples
+
+```html
+<select id="gender">
+  <option>Male</options>
+  <option>Female</options>
+</select>
+```
+
+```js
+var page = PO.build({
+  selectGender: PO.selectable('#gender')
+});
+
+page.selectGender('Female');
+
+andThen(function() {
+  // the option is selected
+});
+```
+
 ### `.visitable`
 
 Visits a page.

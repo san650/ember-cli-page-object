@@ -35,6 +35,7 @@ export default {
   isHidden:    isHiddenAttribute,
   isVisible:   isVisibleAttribute,
   notHasClass: notHasClassAttribute,
+  selectable:  fillableAttribute,
   text:        textAttribute,
   value:       valueAttribute,
   visitable:   visitableAttribute
