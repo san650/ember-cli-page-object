@@ -430,6 +430,20 @@ andThen(function() {
 });
 ```
 
+You can define dynamic segments in the path as follows
+
+```js
+var page = PO.build({
+  visit: PO.visitable('/users/:user_id/comments/:comment_id')
+});
+
+page.visit({ user_id: 5, comment_id: 1 });
+
+andThen(function() {
+  assert.equal(currentURL(), '/users/5/comments/1');
+});
+```
+
 ### chaining
 
 Actions can be chained.
