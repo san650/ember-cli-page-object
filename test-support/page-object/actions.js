@@ -27,19 +27,19 @@ function visitable(params = {}) {
     path = fillInDynamicSegments(path, params);
   }
 
-  this.page.lastPromise = visit(path);
+  visit(path);
 
   return this.page;
 }
 
 function clickable() {
-  this.page.lastPromise = click(this.qualifiedSelector());
+  click(this.qualifiedSelector());
 
   return this.page;
 }
 
 function fillable(text) {
-  this.page.lastPromise = fillIn(this.qualifiedSelector(), text);
+  fillIn(this.qualifiedSelector(), text);
 
   return this.page;
 }
@@ -50,7 +50,7 @@ function clickOnText(text) {
   // want to __always__ click on the __last__ element that contains the text.
   let selector = this.qualifiedSelector(`:contains("${text}"):last`);
 
-  this.page.lastPromise = click(selector);
+  click(selector);
 
   return this.page;
 }
