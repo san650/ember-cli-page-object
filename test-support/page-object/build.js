@@ -1,7 +1,13 @@
+/* global wait */
+
 import { isNullOrUndefined } from './helpers';
 
 function Component() {
 }
+
+Component.prototype.then = function() {
+  return wait().then(...arguments);
+};
 
 function isAttribute(candidate) {
   return $.isFunction(candidate.buildPageObjectAttribute);

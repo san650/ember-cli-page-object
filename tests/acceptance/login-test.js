@@ -62,3 +62,16 @@ test('Retries login', function(assert) {
     assert.equal(page.message(), 'Valid user!');
   });
 });
+
+test('Action chains act like a promise', function(assert) {
+  assert.expect(1);
+
+  page
+    .visit()
+    .form()
+    .userName('invalid')
+    .password('invalid')
+    .click().then(function() {
+      assert.ok(page.hasError(), 'Page has error');
+    });
+});
