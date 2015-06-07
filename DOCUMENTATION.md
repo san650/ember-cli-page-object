@@ -615,6 +615,44 @@ var page = PO.build({
 
 Note that if the plain object doesn't have attributes defined, the object is returned as is.
 
+### `.customHelper`
+
+Defines a way in which custom components can be created using
+information of their surrounding context.
+
+It expects a function with selector, scope and options
+as parameters which the user can use as context when creating
+the custom component.
+
+Here is an example of usage:
+
+```js
+var input = customHelper(function(selector, scope, options) {
+    return {
+        scope: scope,
+        value: value(selector, options)
+    };
+});
+
+var page = PageObject.build({
+  search: input('.header input'),
+
+  users: collection({
+    itemScope: 'tr',
+    item: {
+      // This would work fine now
+      userName: input('input:first')
+    }
+  })
+});
+```
+
+If we execute:
+
+`page.users(3).userName().qualifiedSelector()`
+
+It would return `tr:nth-of-type(3) input:first`
+
 ## Attribute options
 
 A set of options can be passed as parameters when defining attributes.
