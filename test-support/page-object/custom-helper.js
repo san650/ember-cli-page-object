@@ -1,16 +1,22 @@
 import Ember from 'ember';
 import { build } from './build';
+import { qualifySelector } from './helpers';
 
 export function customHelper(userDefinedFunction) {
   return function(selector, options) {
+    // def
     return {
-      userDefinedFunction: userDefinedFunction,
       buildPageObjectAttribute: function(key, parent) {
-        let scope = parent.scope;
+        // def
+        return function() {
+          // eval
+          let customHelperRes = userDefinedFunction(selector, options),
+            scope = qualifySelector(parent.scope, selector);
 
-        return build(this.userDefinedFunction(scope, selector, options),
-                     key,
-                     parent);
+          return build($.extend(customHelperRes, { scope: scope }),
+                                key,
+                                parent);
+        }
       }
     }
   }
