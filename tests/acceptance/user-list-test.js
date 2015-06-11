@@ -17,7 +17,18 @@ module('Collections', {
 var selectBox = PO.customHelper(function(selector, options) {
   return {
     select: PO.selectable(),
-    selected: PO.text(`option:selected`)
+    selected: PO.text(`option:selected`),
+    disabled: disabled()
+  };
+});
+
+var disabled = PO.customHelper(function(selector, options) {
+  return $(selector).prop('disabled');
+});
+
+var admin = PO.customHelper(function(selector, options) {
+  return function() {
+    return $(selector).hasClass('admin');
   };
 });
 
@@ -31,13 +42,14 @@ var page = PO.build({
     item: {
       userName: PO.text('td', { index: 1 }),
       role: PO.text('td', { index: 2 }),
-      gender: selectBox('select')
+      gender: selectBox('select'),
+      isAdmin: admin()
     }
   })
 });
 
 test('Page contents', function(assert) {
-  assert.expect(5);
+  assert.expect(7);
 
   page.visit();
 
@@ -49,5 +61,7 @@ test('Page contents', function(assert) {
     assert.equal(page.users(1).userName(), 'jane');
     assert.equal(page.users(1).role(), 'admin');
     assert.equal(page.users(1).gender().selected(), 'Female');
+    assert.ok(page.users(1).isAdmin(), 'is not admin');
+    assert.equal(page.users(2).gender().disabled(), true);
   });
 });
