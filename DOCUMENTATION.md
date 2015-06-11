@@ -21,6 +21,7 @@ Table of content
 * [Components](#components)
   * [`.collection`](#collection)
   * [`.component`](#component)
+  * [`.customHelper`](#customHelper)
 * [Attribute options](#attribute-options)
   * [`scope`](#attribute-scope)
   * [`index`](#index)
@@ -620,18 +621,26 @@ Note that if the plain object doesn't have attributes defined, the object is ret
 Defines a way in which custom components can be created using
 information of their surrounding context.
 
-It expects a function with selector, scope and options
-as parameters which the user can use as context when creating
-the custom component.
-
-Here is an example of usage:
+It expects a function with the following signature:
 
 ```js
-var input = customHelper(function(selector, scope, options) {
-    return {
-        scope: scope,
-        value: value(selector, options)
-    };
+function(selector, options) {
+  // user magic goes here
+  return Value;
+}
+```
+
+`selector` includes all the knowledge of the context in which
+the function will be called (you can see examples of usage below).
+
+To understand which should the return value for this function, please
+check the code examples below.
+
+```js
+var input = customHelper(function(selector, options) {
+  return {
+    value: value(selector, options)
+  };
 });
 
 var page = PageObject.build({
@@ -640,7 +649,6 @@ var page = PageObject.build({
   users: collection({
     itemScope: 'tr',
     item: {
-      // This would work fine now
       userName: input('input:first')
     }
   })
@@ -649,9 +657,45 @@ var page = PageObject.build({
 
 If we execute:
 
-`page.users(3).userName().qualifiedSelector()`
+`page.users(3).userName()`
 
-It would return `tr:nth-of-type(3) input:first`
+It would look for `tr:nth-of-type(3) input:first` in our page.
+
+In this example, the user defined function returns a POJO which
+will be converted into a `PageObject` component.
+
+Here is another two examples of using `customHelper` but this time, the
+user defined functions return a function and a string.
+
+```js
+var admin = PO.customHelper(function(selector, options) {
+  return function() {
+    return $(selector).hasClass('admin');
+  };
+});
+
+var disabled = PO.customHelper(function(selector, options) {
+  return $(selector).prop('disabled');
+});
+
+var page = PO.build({
+  myText: {
+    scope: '#myInput',
+    isAdminField: admin(),
+    isDisabled: disabled()
+  }
+})
+```
+
+```html
+ <input id="myInput" disabled=true class="admin" type="text" disabled=true>
+```
+
+In this case `page.myText().isAdminField()` would look for `#myInput`
+and will check if the input has class `admin`, in this example, this is true.
+
+And if we run `page.myText().isDisabled()` would look for `#myInput` and
+will check if the input is disabled.
 
 ## Attribute options
 
