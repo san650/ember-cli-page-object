@@ -10,19 +10,21 @@ export function customHelper(userDefinedFunction) {
         // def
         return function() {
           // eval
-          let scopedSelector = qualifySelector(parent.scope, selector);
+          let qualifiedSelector = qualifySelector(parent.scope, selector),
+            response = userDefinedFunction(qualifiedSelector, options),
+            processedResponse;
 
-          let customHelperRes = userDefinedFunction(scopedSelector, options);
+          if ($.isPlainObject(response)) {
+            let definition = $.extend({ scope: qualifiedSelector }, response);
 
-          if ($.isPlainObject(customHelperRes)) {
-            return build($.extend(customHelperRes, { scope: scopedSelector }),
-                         key,
-                         parent);
-          } else if ($.isFunction(customHelperRes)) {
-            return customHelperRes(scopedSelector);
+            processedResponse = build(definition, key, parent);
+          } else if ($.isFunction(response)) {
+            processedResponse = response();
           } else {
-            return customHelperRes;
+            processedResponse = response;
           }
+
+          return processedResponse;
         }
       }
     }

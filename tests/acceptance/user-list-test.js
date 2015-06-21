@@ -18,15 +18,15 @@ var selectBox = PO.customHelper(function(selector, options) {
   return {
     select: PO.selectable(),
     selected: PO.text(`option:selected`),
-    disabled: disabled()
+    isDisabled: isDisabled()
   };
 });
 
-var disabled = PO.customHelper(function(selector, options) {
+var isDisabled = PO.customHelper(function(selector, options) {
   return $(selector).prop('disabled');
 });
 
-var admin = PO.customHelper(function(selector, options) {
+var isAdmin = PO.customHelper(function(selector, options) {
   return function() {
     return $(selector).hasClass('admin');
   };
@@ -43,7 +43,7 @@ var page = PO.build({
       userName: PO.text('td', { index: 1 }),
       role: PO.text('td', { index: 2 }),
       gender: selectBox('select'),
-      isAdmin: admin()
+      isAdmin: isAdmin()
     }
   })
 });
@@ -62,6 +62,6 @@ test('Page contents', function(assert) {
     assert.equal(page.users(1).role(), 'admin');
     assert.equal(page.users(1).gender().selected(), 'Female');
     assert.ok(page.users(1).isAdmin(), 'is not admin');
-    assert.equal(page.users(2).gender().disabled(), true);
+    assert.equal(page.users(2).gender().isDisabled(), true);
   });
 });

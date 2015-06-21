@@ -621,7 +621,11 @@ Note that if the plain object doesn't have attributes defined, the object is ret
 Defines a way in which custom components can be created using
 information of their surrounding context.
 
-It expects a function with the following signature:
+```js
+PO.customHelper(userFunction);
+```
+
+Where the provided user function has the following signature:
 
 ```js
 function(selector, options) {
@@ -668,21 +672,21 @@ Here is another two examples of using `customHelper` but this time, the
 user defined functions return a function and a string.
 
 ```js
-var admin = PO.customHelper(function(selector, options) {
+var isAdminField = PO.customHelper(function(selector, options) {
   return function() {
     return $(selector).hasClass('admin');
   };
 });
 
-var disabled = PO.customHelper(function(selector, options) {
+var isDisabled = PO.customHelper(function(selector, options) {
   return $(selector).prop('disabled');
 });
 
 var page = PO.build({
   myText: {
     scope: '#myInput',
-    isAdminField: admin(),
-    isDisabled: disabled()
+    isAdminField: isAdminField(),
+    isDisabled: isDisabled()
   }
 })
 ```
