@@ -10,11 +10,11 @@
   </thead>
   <tbody>
     {{#each model as |user|}}
-      <tr>
+    <tr {{bind-attr class="user.admin:admin"}}>
         <td>{{user.userName}}</td>
         <td>{{user.role}}</td>
         <td>
-          <select>
+          <select {{bind-attr disabled=user.disabledGender}}>
             <option>Male</option>
             <option>Female</option>
           </select>

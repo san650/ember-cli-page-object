@@ -21,12 +21,14 @@ import {
   visitableAttribute
 } from './page-object/actions';
 import { collection } from './page-object/collection';
+import { customHelper } from './page-object/custom-helper';
 
 export default {
   attribute:   attributeAttribute,
   build,
   clickable:   clickableAttribute,
   clickOnText: clickOnTextAttribute,
+  customHelper,
   collection,
   component:   componentAttribute,
   count:       countAttribute,

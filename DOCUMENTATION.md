@@ -21,6 +21,7 @@ Table of content
 * [Components](#components)
   * [`.collection`](#collection)
   * [`.component`](#component)
+  * [`.customHelper`](#customHelper)
 * [Attribute options](#attribute-options)
   * [`scope`](#attribute-scope)
   * [`index`](#index)
@@ -614,6 +615,91 @@ var page = PO.build({
 ```
 
 Note that if the plain object doesn't have attributes defined, the object is returned as is.
+
+### `.customHelper`
+
+Defines a way in which custom components can be created using
+information of their surrounding context.
+
+```js
+PO.customHelper(userFunction);
+```
+
+Where the provided user function has the following signature:
+
+```js
+function(selector, options) {
+  // user magic goes here
+  return Value;
+}
+```
+
+`selector` includes all the knowledge of the context in which
+the function will be called (you can see examples of usage below).
+
+To understand which should the return value for this function, please
+check the code examples below.
+
+```js
+var input = customHelper(function(selector, options) {
+  return {
+    value: value(selector, options)
+  };
+});
+
+var page = PageObject.build({
+  search: input('.header input'),
+
+  users: collection({
+    itemScope: 'tr',
+    item: {
+      userName: input('input:first')
+    }
+  })
+});
+```
+
+If we execute:
+
+`page.users(3).userName()`
+
+It would look for `tr:nth-of-type(3) input:first` in our page.
+
+In this example, the user defined function returns a POJO which
+will be converted into a `PageObject` component.
+
+Here is another two examples of using `customHelper` but this time, the
+user defined functions return a function and a string.
+
+```js
+var isAdminField = PO.customHelper(function(selector, options) {
+  return function() {
+    return $(selector).hasClass('admin');
+  };
+});
+
+var isDisabled = PO.customHelper(function(selector, options) {
+  return $(selector).prop('disabled');
+});
+
+var page = PO.build({
+  myText: {
+    scope: '#myInput',
+    isAdminField: isAdminField(),
+    isDisabled: isDisabled()
+  }
+})
+```
+
+```html
+ <input id="myInput" disabled=true class="admin" type="text" disabled=true>
+```
+
+In this case `page.myText().isAdminField()` would look for `#myInput`
+and will check if the input has class `admin`, in this example, this is true.
+
+And if we run `page.myText().isDisabled()` would look for `#myInput` and
+will check if the input is disabled.
 
 ## Attribute options
 
