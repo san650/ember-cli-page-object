@@ -2,6 +2,7 @@
   "name": "ember-cli-page-object",
   "version": "0.5.0",
   "description": "Helper functions to implement the Page Object pattern in your tests",
+  "bugs": "https://github.com/san650/ember-cli-page-object/issues",
   "directories": {
     "doc": "doc",
     "test": "tests"
@@ -19,7 +20,7 @@
     "node": ">= 0.10.0"
   },
   "author": "Santiago Ferreira",
-  "license": "MIT",
+  "license": "LicenseRef-LICENSE",
   "devDependencies": {
     "broccoli-asset-rev": "^2.0.2",
     "ember-cli": "0.2.6",
