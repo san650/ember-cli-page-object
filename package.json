@@ -38,7 +38,15 @@
     "ember-try": "0.0.4"
   },
   "keywords": [
-    "ember-addon"
+    "acceptance",
+    "ember",
+    "ember-addon",
+    "ember-cli",
+    "helper",
+    "page object",
+    "page-object",
+    "pageobject",
+    "testing"
   ],
   "dependencies": {
     "ember-cli-babel": "^5.0.0"
