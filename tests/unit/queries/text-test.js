@@ -28,6 +28,14 @@ it('removes white spaces from the beginning and end of the text', function(asser
   assert.equal(attr(), 'awesome!');
 });
 
+it('normalizes inner text of the element containing newlines', function(assert) {
+  fixture(['<span>', 'Hello', 'multi-line', 'world!', '</span>'].join("\n"));
+
+  var attr = buildAttribute(textAttribute, 'span');
+
+  assert.equal(attr(), 'Hello multi-line world!');
+});
+
 it('raises an error when the element doesn\'t exist', function(assert) {
   assert.expect(1);
 
