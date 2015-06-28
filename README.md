@@ -6,7 +6,11 @@ addon ease the construction of these objects on your acceptance tests.
 ## What is a Page Object?
 
 An excerpt from the Selenium Wiki
-> Within your web app's UI there are areas that your tests interact with. A Page Object simply models these as objects within the test code. This reduces the amount of duplicated code and means that if the UI changes, the fix need only be applied in one place.
+> Within your web app's UI there are areas that your tests interact with. A Page
+> Object simply models these as objects within the test code. This reduces the
+> amount of duplicated code and means that if the UI changes, the fix need only
+> be applied in one place.
+
 The pattern was first introduced by the Selenium
 
 You can find more information about this design pattern here:
@@ -87,11 +91,11 @@ test('show all users', function(assert) {
   page.visit();
 
   andThen(function() {
-    assert.equal(login.users().count(), 2);
-    assert.equal(login.users(1).firstName(), 'Jane');
-    assert.equal(login.users(1).lastName(), 'Doe');
-    assert.equal(login.users(2).firstName(), 'John');
-    assert.equal(login.users(2).lastName(), 'Doe');
+    assert.equal(page.users().count(), 2);
+    assert.equal(page.users(1).firstName(), 'Jane');
+    assert.equal(page.users(1).lastName(), 'Doe');
+    assert.equal(page.users(2).firstName(), 'John');
+    assert.equal(page.users(2).lastName(), 'Doe');
   });
 });
 ```
@@ -116,6 +120,47 @@ var page = PO.build({
 ```
 
 Check the [DOCUMENTATION](./DOCUMENTATION.md) for more information.
+
+## Blueprints
+
+You can create a new page object called `users` using the `generate` command
+
+```sh
+$ ember generate page-object users
+
+installing
+  create tests/pages/users.js
+```
+
+A new file will be generated under `tests/pages` folder and can be included on
+an acceptance test like follows
+
+```js
+import Ember from 'ember';
+import { module, test } from 'qunit';
+import startApp from '../helpers/start-app';
+import page from '../pages/users';
+
+var application;
+
+module('Acceptance: UserList', {
+  beforeEach: function() {
+    application = startApp();
+  },
+
+  afterEach: function() {
+    Ember.run(application, 'destroy');
+  }
+});
+
+test('visiting /users', function(assert) {
+  page.visit();
+
+  andThen(function() {
+    assert.equal(currentPath(), 'users');
+  });
+});
+```
 
 ## Development
 
