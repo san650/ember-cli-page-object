@@ -90,6 +90,27 @@ it('inherits parent scope by default', function(assert) {
   assert.equal(attribute(1).text(), 'First');
 });
 
+it('inherits parent scope for generated count attribute', function(assert) {
+  fixture('<span>Wrong</span><span class="scope"><span>First</span><span>Second</span></span>');
+
+  let attribute = buildAttributeWithOptions(collection, { scope: ".scope" }, {
+    itemScope: 'span'
+  });
+
+  assert.equal(attribute().count(), 2);
+});
+
+it('resets parent scope for generated count attribute', function(assert) {
+  fixture('<span>Wrong</span><span class="scope"><span>First</span><span>Second</span></span>');
+
+  let attribute = buildAttributeWithOptions(collection, { scope: ".scope" }, {
+    scope: '',
+    itemScope: 'span'
+  });
+
+  assert.equal(attribute().count(), 4);
+});
+
 it('resets parent scope', function(assert) {
   fixture('<span>Dummy</span><p class="scope"></p>');
 

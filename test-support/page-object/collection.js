@@ -42,16 +42,16 @@ export function collection(def) {
       itemComponent = extract(definition, 'item');
       itemScope = extract(definition, 'itemScope');
 
-      // Add count attribute
-      plugAttribute(definition, 'count', countAttribute, itemScope);
-
-      collectionComponent = build(definition, key, parent);
-
-      if (isNullOrUndefined(collectionComponent.scope)) {
+      if (isNullOrUndefined(definition.scope)) {
         collectionScope = parent.scope;
       } else {
-        collectionScope = collectionComponent.scope;
+        collectionScope = definition.scope;
       }
+
+      // Add count attribute
+      plugAttribute(definition, 'count', countAttribute, qualifySelector(collectionScope, itemScope));
+
+      collectionComponent = build(definition, key, parent);
 
       return function(index) {
         let component;
