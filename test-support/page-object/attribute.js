@@ -1,17 +1,9 @@
 /* global findWithAssert, find */
 
-import { qualifySelector } from './helpers';
-
-function indexedSelector(baseSelector, index) {
-  var selector;
-  if ($.isNumeric(index) && index > 0) {
-    selector = `${baseSelector}:nth-of-type(${index})`;
-  } else {
-    selector = baseSelector;
-  }
-
-  return selector;
-}
+import {
+  qualifySelector,
+  indexedSelector
+} from './helpers';
 
 function qualifiedSelector(...extras) {
   return qualifySelector(this.options.scope || this.page.scope,

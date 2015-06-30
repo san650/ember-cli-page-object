@@ -53,9 +53,7 @@ export function build(definition, key, parent) {
   let component = new Component(),
       keys = Object.keys(definition);
 
-  if (isNullOrUndefined(component.scope)) {
-    component.scope = definition.scope;
-  }
+  component.scope = definition.scope;
 
   keys.forEach(function(key) {
     let attr = definition[key];

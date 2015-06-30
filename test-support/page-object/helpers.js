@@ -19,3 +19,15 @@ export function trim(text) {
 export function isNullOrUndefined(object) {
   return object === undefined || object === null;
 }
+
+export function indexedSelector(baseSelector, index) {
+  let selector;
+
+  if ($.isNumeric(index) && index > 0) {
+    selector = `${baseSelector}:nth-of-type(${index})`;
+  } else {
+    selector = baseSelector;
+  }
+
+  return selector;
+}
