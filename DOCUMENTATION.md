@@ -614,92 +614,135 @@ var page = PO.build({
 });
 ```
 
-Note that if the plain object doesn't have attributes defined, the object is returned as is.
+Note that if the plain object doesn't have attributes defined, the object is
+returned as is.
 
 ### `.customHelper`
 
-Defines a way in which custom components can be created using
-information of their surrounding context.
+Allows to define reusable helpers using information of the surrounding context.
 
 ```js
-PO.customHelper(userFunction);
-```
-
-Where the provided user function has the following signature:
-
-```js
-function(selector, options) {
+PO.customHelper(function(selector, options) {
   // user magic goes here
-  return Value;
-}
+  return value;
+});
 ```
 
-`selector` includes all the knowledge of the context in which
-the function will be called (you can see examples of usage below).
+There are three different types of custom helpers and are differentiated by the
+return value. You can define custom helpers that return:
 
-To understand which should the return value for this function, please
-check the code examples below.
+1. A _basic type_ value
+2. A _plain object_ value
+3. A _function_ value
+
+Given this HTML snippet, the following is an example of each type of custom
+helpers
+
+```html
+<form>
+  <label class="has-error">
+    User name
+    <input id="userName" />
+  </label>
+</form>
+```
+
+#### 1. Basic type value
+
+This type of custom helper is useful to return the result of a calculation, for
+example the result of a jQuery expression.
+
+```js
+var disabled = customHelper(function(selector, options) {
+  return $(selector).prop('disabled');
+});
+
+var page = PageObject.build({
+  userName: {
+    disabled: disabled('#userName')
+  }
+});
+
+assert.ok(!page.userName().disabled(), 'user name input is not disabled');
+```
+
+As you can see the jQuery expression is returned returned.
+
+#### 2. Plain Object
+
+This is very similar to a `component`. The difference with components is that we
+can do calculations or use custom options before returning the component.
 
 ```js
 var input = customHelper(function(selector, options) {
   return {
-    value: value(selector, options)
+    value: value(selector),
+    hasError: function() {
+      return $(selector).parent().hasClass('has-error');
+    }
   };
 });
 
 var page = PageObject.build({
-  search: input('.header input'),
-
-  users: collection({
-    itemScope: 'tr',
-    item: {
-      userName: input('input:first')
-    }
-  })
+  scope: 'form',
+  userName: input('#userName')
 });
+
+assert.ok(page.userName().hasError(), 'user name has errors');
 ```
 
-If we execute:
+As you can see the returned plain object is converted to a component.
 
-`page.users(3).userName()`
+#### 3. Functions
 
-It would look for `tr:nth-of-type(3) input:first` in our page.
-
-In this example, the user defined function returns a POJO which
-will be converted into a `PageObject` component.
-
-Here is another two examples of using `customHelper` but this time, the
-user defined functions return a function and a string.
+The main difference with the previous custom helpers is that the returned
+functions receive invocation parameters. This is most useful when creating
+custom actions that receives options when invoked (like `fillIn` helper).
 
 ```js
-var isAdminField = PO.customHelper(function(selector, options) {
-  return function() {
-    return $(selector).hasClass('admin');
+/* global click */
+var clickManyTimes = customHelper(function(selector, options) {
+  return function(numberOfTimes) {
+    click(selector);
+
+    for(let i = 0; i < numberOfTimes - 1; i++) {
+      click(selector);
+    }
   };
 });
 
-var isDisabled = PO.customHelper(function(selector, options) {
-  return $(selector).prop('disabled');
+var page = PageObject.build({
+  clickAgeSelector: clickManyTimes('#ageSelector .spinner-button'),
+  ageValue: value('#ageSelector input')
 });
 
-var page = PO.build({
-  myText: {
-    scope: '#myInput',
-    isAdminField: isAdminField(),
-    isDisabled: isDisabled()
+page.visit().clickOnAgeSelector(18 /* times*/);
+
+andThen(function() {
+  assert.equal(page.ageValue(), 18, 'User is 18 years old');
+});
+```
+
+We can see that our `clickOnAgeSelector` takes one parameter that's used by the
+returned function.
+
+#### Custom options
+
+Custom helpers can receive custom options, here's an example of this:
+
+```js
+var prop = customHelper(function(selector, options) {
+  return $(selector).prop(options.name);
+});
+
+var page = PageObject.build({
+  userName: {
+    disabled: prop('#userName', { name: 'disabled' })
   }
-})
+});
+
+assert.ok(!page.userName().disabled(), 'user name input is not disabled');
 ```
-
-```html
- <input id="myInput" disabled=true class="admin" type="text" disabled=true>
-```
-
-In this case `page.myText().isAdminField()` would look for `#myInput`
-and will check if the input has class `admin`, in this example, this is true.
-
-And if we run `page.myText().isDisabled()` would look for `#myInput` and
-will check if the input is disabled.
 
 ## Attribute options
 
