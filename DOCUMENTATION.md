@@ -17,6 +17,7 @@ Table of content
   * [`.clickable`](#clickable)
   * [`.clickOnText`](#clickontext)
   * [`.fillable`](#fillable)
+  * [`.selectable`](#selectable)
   * [`.visitable`](#visitable)
 * [Components](#components)
   * [`.collection`](#collection)
