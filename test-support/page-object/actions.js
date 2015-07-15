@@ -1,5 +1,5 @@
 /* global visit, fillIn, click */
-
+import Ember from 'ember';
 import Attribute from './attribute';
 
 function fillInDynamicSegments(path, params) {
@@ -20,11 +20,15 @@ function fillInDynamicSegments(path, params) {
   }).join('/');
 }
 
-function visitable(params = {}) {
+function visitable(params = {}, queryParams = {}) {
   let path = this.path;
 
   if (path.indexOf(':') !== -1) {
     path = fillInDynamicSegments(path, params);
+  }
+
+  if (Ember.keys(queryParams).length > 0) {
+    path += "?" + Ember.$.param(queryParams);
   }
 
   visit(path);
