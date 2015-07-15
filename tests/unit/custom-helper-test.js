@@ -41,7 +41,7 @@ it('uses index', function(assert) {
   assert.expect(1);
 
   let helper = customHelper(function(selector) {
-    assert.equal(selector, '.selector:nth-of-type(3)');
+    assert.equal(selector, '.selector:eq(2)');
   });
 
   let attribute = buildAttribute(helper, '.selector', { index: 3 });
