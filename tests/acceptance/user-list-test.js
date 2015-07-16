@@ -14,7 +14,7 @@ module('Collections', {
   }
 });
 
-var selectBox = PO.customHelper(function(selector, options) {
+var selectBox = PO.customHelper(function() {
   return {
     select: PO.selectable(),
     selected: PO.text(`option:selected`),
@@ -22,11 +22,11 @@ var selectBox = PO.customHelper(function(selector, options) {
   };
 });
 
-var isDisabled = PO.customHelper(function(selector, options) {
+var isDisabled = PO.customHelper(function(selector) {
   return $(selector).prop('disabled');
 });
 
-var isAdmin = PO.customHelper(function(selector, options) {
+var isAdmin = PO.customHelper(function(selector) {
   return function() {
     return $(selector).hasClass('admin');
   };
