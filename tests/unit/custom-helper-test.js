@@ -62,7 +62,7 @@ it('uses page scope', function(assert) {
 });
 
 it('returns simple values', function(assert) {
-  let helper = customHelper(function(selector) {
+  let helper = customHelper(function() {
     return 'dummy string';
   });
 
@@ -88,7 +88,7 @@ it('returns components', function(assert) {
 
 it('returns functions', function(assert) {
   let helper = customHelper(function() {
-    return function(param1, param2) {
+    return function() {
       return 'dummy string';
     };
   });
