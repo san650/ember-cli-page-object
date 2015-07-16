@@ -50,6 +50,20 @@ it('generates component for item', function(assert) {
   assert.equal(attribute(2).text(), 'Second');
 });
 
+it('generates component for scoped items', function(assert) {
+  fixture("<span class='cero'>Cero</span><span>First</span><span>Second</span>");
+
+  let attribute = buildAttribute(collection, {
+    itemScope: 'span:not(.cero)',
+    item: {
+      text: textAttribute()
+    }
+  });
+
+  assert.equal(attribute(1).text(), 'First');
+  assert.equal(attribute(2).text(), 'Second');
+});
+
 it('generates component for collection object', function(assert) {
   fixture('<span>First</span><span>Second</span><button>Submit</button>');
 

@@ -905,7 +905,7 @@ var page = PageObject.build({
 |  | translates to |
 | ------ | -------- |
 | `page.todos().create()` | `click('.todo button')` |
-| `page.todos(1).value()` | `find('.todo input:nth-of-type(1)').val()` |
+| `page.todos(1).value()` | `find('.todo input:eq(0)').val()` |
 
 You can reset parent scope by setting the `scope` attribute on the collection declaration.
 
@@ -930,7 +930,7 @@ var page = PageObject.build({
 | | translates to |
 | ------ | -------- |
 | `page.todos().create()` | `click('button')` |
-| `page.todos(1).value()` | `find('input:nth-of-type(1)').val()` |
+| `page.todos(1).value()` | `find('input:eq(0)').val()` |
 
 `itemScope` is inherited as default scope on components defined inside the item object.
 

@@ -24,7 +24,7 @@ export function indexedSelector(baseSelector, index) {
   let selector;
 
   if ($.isNumeric(index) && index > 0) {
-    selector = `${baseSelector}:nth-of-type(${index})`;
+    selector = `${baseSelector}:eq(${index - 1})`;
   } else {
     selector = baseSelector;
   }

@@ -13,7 +13,7 @@ function shallowCopyAndExtend(...objects) {
 }
 
 function scopeWithIndex(base, index) {
-  return `${base}:nth-of-type(${index})`;
+  return `${base}:eq(${index - 1})`;
 }
 
 function plugAttribute(definition, attributeName, attributeDefinition, ...attributeParams) {
