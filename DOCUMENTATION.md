@@ -22,7 +22,7 @@ Table of content
 * [Components](#components)
   * [`.collection`](#collection)
   * [`.component`](#component)
-  * [`.customHelper`](#customHelper)
+  * [`.customHelper`](#customhelper)
 * [Attribute options](#attribute-options)
   * [`scope`](#attribute-scope)
   * [`index`](#index)
