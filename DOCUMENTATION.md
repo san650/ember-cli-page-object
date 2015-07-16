@@ -445,6 +445,20 @@ andThen(function() {
 });
 ```
 
+You can also use query params when invoking the action as follows
+
+```js
+var page = PO.build({
+  visit: PO.visitable('/users')
+});
+
+page.visit({}, { display: "collapsed" });
+
+andThen(function() {
+  assert.equal(currentURL(), '/users?display=collapsed');
+});
+```
+
 ### chaining
 
 Actions can be chained.

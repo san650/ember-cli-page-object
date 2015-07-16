@@ -50,3 +50,13 @@ it("raises an exception if params aren't given for all dynamic segments", functi
     assert.equal(e.message, "Missing parameter for 'user_id'");
   }
 });
+
+it('adds appends queryParams to the path', function(assert) {
+  assert.expect(1);
+
+  window.visit = function(actualRoute) {
+    assert.equal(actualRoute, '/dummy-page?hello=world&lorem=ipsum');
+  };
+
+  buildAttribute(visitableAttribute, '/dummy-page')({}, { hello: "world", lorem: "ipsum" });
+});
