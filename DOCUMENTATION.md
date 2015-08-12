@@ -169,7 +169,7 @@ Examples
 
 ```js
 var page = PO.build({
-  isImageHidden: PO.isVisible('.img')
+  isImageHidden: PO.isHidden('.img')
 });
 
 assert.ok(page.isImageHidden(), 'Image is hidden');
