@@ -123,6 +123,14 @@ Check the [DOCUMENTATION](./DOCUMENTATION.md) for more information.
 
 ## Blueprints
 
+The addon includes the following blueprints
+
+| Name | Description |
+| -------- | --------------- |
+| `page-object` | Creates a new page object under `tests/pages` folder |
+| `page-object-component` | Creates a new a component object to be used on a page object under `tests/pages/components` folder. |
+| `page-object-helper` |  Creates a new a helper object to be used on a page object under `tests/pages/helpers` folder. |
+
 You can create a new page object called `users` using the `generate` command
 
 ```sh
