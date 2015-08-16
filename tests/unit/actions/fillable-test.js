@@ -1,3 +1,5 @@
+import Ember from 'ember';
+import startApp from '../../helpers/start-app';
 import {
   buildAttribute,
   buildAttributeWithOptions,
@@ -7,11 +9,14 @@ import {
 } from '../test-helper';
 import { fillableAttribute } from '../../page-object/actions';
 
-let OriginalFillIn = window.fillIn;
+var application;
 
 moduleFor('Actions', 'fillableAttribute', {
+  beforeEach: function() {
+    application = startApp();
+  },
   afterEach: function() {
-    window.fillIn = OriginalFillIn;
+    Ember.run(application, 'destroy');
   }
 });
 

@@ -1,3 +1,5 @@
+import Ember from 'ember';
+import startApp from '../../helpers/start-app';
 import {
   buildAttribute,
   buildAttributeWithOptions,
@@ -8,7 +10,16 @@ import {
 } from '../test-helper';
 import { textAttribute } from '../../page-object/queries';
 
-moduleFor('Queries', 'textAttribute');
+var application;
+
+moduleFor('Queries', 'textAttribute', {
+  beforeEach: function() {
+    application = startApp();
+  },
+  afterEach: function() {
+    Ember.run(application, 'destroy');
+  }
+});
 
 itBehavesLikeAnAttribute(textAttribute);
 

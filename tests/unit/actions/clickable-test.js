@@ -1,3 +1,5 @@
+import Ember from 'ember';
+import startApp from '../../helpers/start-app';
 import {
   buildAttribute,
   buildAttributeWithOptions,
@@ -7,11 +9,14 @@ import {
 } from '../test-helper';
 import { clickableAttribute } from '../../page-object/actions';
 
-let OriginalClick = window.click;
+var application;
 
 moduleFor('Actions', 'clickableAttribute', {
+  beforeEach: function() {
+    application = startApp();
+  },
   afterEach: function() {
-    window.click = OriginalClick;
+    Ember.run(application, 'destroy');
   }
 });
 

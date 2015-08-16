@@ -1,3 +1,5 @@
+import Ember from 'ember';
+import startApp from '../../helpers/start-app';
 import {
   buildAttribute,
   buildAttributeWithOptions,
@@ -9,7 +11,16 @@ import {
 import { collection } from '../../page-object/collection';
 import { textAttribute } from '../../page-object/queries';
 
-moduleFor('Components', 'collection');
+var application;
+
+moduleFor('Components', 'collection', {
+  beforeEach: function() {
+    application = startApp();
+  },
+  afterEach: function() {
+    Ember.run(application, 'destroy');
+  }
+});
 
 itBehavesLikeAnAttribute(collection, {});
 
