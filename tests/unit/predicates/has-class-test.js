@@ -1,3 +1,5 @@
+import Ember from 'ember';
+import startApp from '../../helpers/start-app';
 import {
   buildAttribute,
   buildAttributeWithOptions,
@@ -8,7 +10,16 @@ import {
 } from '../test-helper';
 import { hasClassAttribute } from '../../page-object/predicates';
 
-moduleFor('Predicates', 'hasClassAttribute');
+var application;
+
+moduleFor('Predicates', 'hasClassAttribute', {
+  beforeEach: function() {
+    application = startApp();
+  },
+  afterEach: function() {
+    Ember.run(application, 'destroy');
+  }
+});
 
 itBehavesLikeAnAttribute(hasClassAttribute);
 

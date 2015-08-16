@@ -1,3 +1,5 @@
+import Ember from 'ember';
+import startApp from '../../helpers/start-app';
 import {
   buildAttribute,
   it,
@@ -6,11 +8,14 @@ import {
 } from '../test-helper';
 import { visitableAttribute } from '../../page-object/actions';
 
-let OriginalVisit = window.visit;
+var application;
 
 moduleFor('Actions', 'visitableAttribute', {
+  beforeEach: function() {
+    application = startApp();
+  },
   afterEach: function() {
-    window.visit = OriginalVisit;
+    Ember.run(application, 'destroy');
   }
 });
 

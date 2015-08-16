@@ -1,5 +1,3 @@
-/* global findWithAssert, find */
-
 import {
   qualifySelector,
   indexedSelector
@@ -12,11 +10,11 @@ function qualifiedSelector(...extras) {
 }
 
 function findElementWithAssert() {
-  return findWithAssert(this.qualifiedSelector());
+  return window.findWithAssert(this.qualifiedSelector());
 }
 
 function findElement() {
-  return find(this.qualifiedSelector());
+  return window.find(this.qualifiedSelector());
 }
 
 function Attribute(fn, selector = null, options = null, extraArgs = {}) {

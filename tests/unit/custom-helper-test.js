@@ -1,3 +1,5 @@
+import Ember from 'ember';
+import startApp from '../helpers/start-app';
 import {
   buildAttribute,
   buildAttributeWithOptions,
@@ -9,7 +11,16 @@ import {
 import { customHelper } from '../page-object/custom-helper';
 import { textAttribute } from '../page-object/queries';
 
-moduleFor('Helpers', 'customHelper');
+var application;
+
+moduleFor('Helpers', 'customHelper', {
+  beforeEach: function() {
+    application = startApp();
+  },
+  afterEach: function() {
+    Ember.run(application, 'destroy');
+  }
+});
 
 itBehavesLikeAnAttribute(customHelper(function() {}));
 
