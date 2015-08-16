@@ -1,3 +1,5 @@
+import Ember from 'ember';
+import startApp from '../../helpers/start-app';
 import {
   buildAttribute,
   buildAttributeWithOptions,
@@ -13,7 +15,16 @@ import {
   isVisibleAttribute
 } from '../../page-object/predicates';
 
-moduleFor('Components', 'component');
+var application;
+
+moduleFor('Components', 'component', {
+  beforeEach: function() {
+    application = startApp();
+  },
+  afterEach: function() {
+    Ember.run(application, 'destroy');
+  }
+});
 
 itBehavesLikeAnAttribute(componentAttribute, {});
 
