@@ -681,7 +681,7 @@ var page = PageObject.build({
 assert.ok(!page.userName().disabled(), 'user name input is not disabled');
 ```
 
-As you can see the jQuery expression is returned returned.
+As you can see the jQuery expression is returned.
 
 #### 2. Plain Object
 
