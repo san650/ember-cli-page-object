@@ -7,7 +7,7 @@ import component from '../../page-object/properties/component';
 moduleFor('Components', 'component');
 
 test('unfolds content (needed for backwards compatibility)', function(assert) {
-  let expected = 'dummy content',
+  let expected = { key: 'value' },
       property = component(expected),
       actual = property.unfoldPageObjectDefinition();
 

@@ -8,6 +8,10 @@ function action(target, key, options, ...args){
 
   let response = options.userDefinedFunction(selector, options);
 
+  if (response && response.unfoldPageObjectDefinition) {
+    response = response.unfoldPageObjectDefinition();
+  }
+
   if ($.isPlainObject(response)) {
     let definition = $.extend({ scope: selector }, response);
 

@@ -15,15 +15,7 @@ module('Collections', {
 });
 
 var selectBox = PO.customHelper(function() {
-  return {
-    select: PO.selectable(),
-    selected: PO.text(`option:selected`),
-    isDisabled: isDisabled()
-  };
-});
-
-var isDisabled = PO.customHelper(function(selector) {
-  return $(selector).prop('disabled');
+  return PO.component('select');
 });
 
 var isAdmin = PO.customHelper(function(selector) {
