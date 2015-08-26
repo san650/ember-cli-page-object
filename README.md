@@ -119,7 +119,9 @@ var page = PO.build({
 });
 ```
 
-Check the [DOCUMENTATION](./DOCUMENTATION.md) for more information.
+## Documentation
+
+Check the full [DOCUMENTATION](./DOCUMENTATION.md) for more information.
 
 ## Blueprints
 
