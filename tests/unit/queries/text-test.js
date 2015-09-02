@@ -47,6 +47,12 @@ it('normalizes inner text of the element containing newlines', function(assert) 
   assert.equal(attr(), 'Hello multi-line world!');
 });
 
+it('converts &nbsp; characters into standard whitespace characters', function(assert) {
+  fixture('<span>This&nbsp;is&nbsp;awesome.</span>');
+  var attr = buildAttribute(textAttribute, 'span');
+  assert.equal(attr(), 'This is awesome.');
+});
+
 it('raises an error when the element doesn\'t exist', function(assert) {
   assert.expect(1);
 
