@@ -13,7 +13,7 @@ export function qualifySelector(...selectors) {
  * @see http://api.jquery.com/text/
  */
 export function trim(text) {
-  return Ember.$.trim(text).replace(/\n/g, ' ').replace(/\s\s+/g, ' ');
+  return Ember.$.trim(text).replace(/\n/g, ' ').replace(/\s\s*/g, ' ');
 }
 
 export function isNullOrUndefined(object) {
