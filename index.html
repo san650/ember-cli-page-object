@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="description" content="Ember-cli-page-object : Represent the screens of your web app as a series of objects. This ember-cli addon ease the construction of these objects on your acceptance tests.">
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>Ember-cli-page-object</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/san650/ember-cli-page-object">View on GitHub</a>
+
+          <h1 id="project_title">Ember-cli-page-object</h1>
+          <h2 id="project_tagline">Represent the screens of your web app as a series of objects. This ember-cli addon ease the construction of these objects on your acceptance tests.</h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/san650/ember-cli-page-object/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/san650/ember-cli-page-object/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h1>
+<a id="ember-page-objects-" class="anchor" href="#ember-page-objects-" aria-hidden="true"><span class="octicon octicon-link"></span></a>Ember Page Objects <a href="https://travis-ci.org/san650/ember-cli-page-object"><img src="https://travis-ci.org/san650/ember-cli-page-object.svg?branch=master" alt="Build Status"></a>
+</h1>
+
+<p>Represent the screens of your web app as a series of objects. This ember-cli
+addon ease the construction of these objects on your acceptance tests.</p>
+
+<h2>
+<a id="what-is-a-page-object" class="anchor" href="#what-is-a-page-object" aria-hidden="true"><span class="octicon octicon-link"></span></a>What is a Page Object?</h2>
+
+<p>An excerpt from the Selenium Wiki</p>
+
+<blockquote>
+<p>Within your web app's UI there are areas that your tests interact with. A Page
+Object simply models these as objects within the test code. This reduces the
+amount of duplicated code and means that if the UI changes, the fix need only
+be applied in one place.</p>
+</blockquote>
+
+<p>The pattern was first introduced by the Selenium</p>
+
+<p>You can find more information about this design pattern here:</p>
+
+<ul>
+<li><a href="https://code.google.com/p/selenium/wiki/PageObjects">Page Objects - Selenium wiki</a></li>
+<li><a href="http://martinfowler.com/bliki/PageObject.html">PageObject - Martin Fowler</a></li>
+</ul>
+
+<h2>
+<a id="usage" class="anchor" href="#usage" aria-hidden="true"><span class="octicon octicon-link"></span></a>Usage</h2>
+
+<p>Install the npm package on your ember-cli project</p>
+
+<div class="highlight highlight-sh"><pre>npm install --save-dev ember-cli-page-object</pre></div>
+
+<p>then import the page-object helper</p>
+
+<div class="highlight highlight-js"><pre><span class="pl-k">import</span> PO <span class="pl-k">from</span> <span class="pl-s"><span class="pl-pds">'</span>../page-object<span class="pl-pds">'</span></span>;</pre></div>
+
+<p>The previous example assumes that your test file is one level deep under
+<code>tests/</code> folder. i.e. <code>tests/acceptance/my-acceptance-test.js</code>.</p>
+
+<p>Then you can start building your page objects as follows:</p>
+
+<div class="highlight highlight-js"><pre><span class="pl-k">var</span> login <span class="pl-k">=</span> <span class="pl-c1">PO</span>.build({
+  visit<span class="pl-k">:</span>        <span class="pl-c1">PO</span>.visitable(<span class="pl-s"><span class="pl-pds">'</span>/login<span class="pl-pds">'</span></span>),
+  userName<span class="pl-k">:</span>     <span class="pl-c1">PO</span>.fillable(<span class="pl-s"><span class="pl-pds">'</span>#username<span class="pl-pds">'</span></span>),
+  password<span class="pl-k">:</span>     <span class="pl-c1">PO</span>.fillable(<span class="pl-s"><span class="pl-pds">'</span>#password<span class="pl-pds">'</span></span>),
+  submit<span class="pl-k">:</span>       <span class="pl-c1">PO</span>.clickable(<span class="pl-s"><span class="pl-pds">'</span>#login<span class="pl-pds">'</span></span>),
+  errorMessage<span class="pl-k">:</span> <span class="pl-c1">PO</span>.<span class="pl-c1">text</span>(<span class="pl-s"><span class="pl-pds">'</span>.message<span class="pl-pds">'</span></span>)
+});
+
+<span class="pl-c1">test</span>(<span class="pl-s"><span class="pl-pds">'</span>Invalid log in<span class="pl-pds">'</span></span>, <span class="pl-k">function</span>(<span class="pl-smi">assert</span>) {
+  login
+    .visit()
+    .userName(<span class="pl-s"><span class="pl-pds">'</span>user@example.com<span class="pl-pds">'</span></span>)
+    .password(<span class="pl-s"><span class="pl-pds">'</span>secret<span class="pl-pds">'</span></span>)
+    .<span class="pl-c1">submit</span>();
+
+  andThen(<span class="pl-k">function</span>() {
+    assert.equal(login.errorMessage(), <span class="pl-s"><span class="pl-pds">'</span>Invalid credentials!<span class="pl-pds">'</span></span>);
+  });
+});</pre></div>
+
+<p>Built-in support for defining tables and collections:</p>
+
+<div class="highlight highlight-html"><pre>&lt;<span class="pl-ent">table</span> <span class="pl-e">id</span>=<span class="pl-s"><span class="pl-pds">"</span>users<span class="pl-pds">"</span></span>&gt;
+  &lt;<span class="pl-ent">tr</span>&gt;
+    &lt;<span class="pl-ent">td</span>&gt;Jane&lt;/<span class="pl-ent">td</span>&gt;
+    &lt;<span class="pl-ent">td</span>&gt;Doe&lt;/<span class="pl-ent">td</span>&gt;
+  &lt;/<span class="pl-ent">tr</span>&gt;
+  &lt;<span class="pl-ent">tr</span>&gt;
+    &lt;<span class="pl-ent">td</span>&gt;John&lt;/<span class="pl-ent">td</span>&gt;
+    &lt;<span class="pl-ent">td</span>&gt;Doe&lt;/<span class="pl-ent">td</span>&gt;
+  &lt;/<span class="pl-ent">tr</span>&gt;
+&lt;/<span class="pl-ent">table</span>&gt;</pre></div>
+
+<div class="highlight highlight-js"><pre><span class="pl-k">var</span> page <span class="pl-k">=</span> <span class="pl-c1">PO</span>.build({
+  visit<span class="pl-k">:</span> <span class="pl-c1">PO</span>.visitable(<span class="pl-s"><span class="pl-pds">'</span>/users<span class="pl-pds">'</span></span>),
+
+  users<span class="pl-k">:</span> <span class="pl-c1">PO</span>.collection({
+    itemScope<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>#users tr<span class="pl-pds">'</span></span>,
+
+    item<span class="pl-k">:</span> {
+      firstName<span class="pl-k">:</span> <span class="pl-c1">PO</span>.<span class="pl-c1">text</span>(<span class="pl-s"><span class="pl-pds">'</span>td:nth-of-type(1)<span class="pl-pds">'</span></span>),
+      lastName<span class="pl-k">:</span>  <span class="pl-c1">PO</span>.<span class="pl-c1">text</span>(<span class="pl-s"><span class="pl-pds">'</span>td:nth-of-type(2)<span class="pl-pds">'</span></span>)
+    }
+  })
+});
+
+<span class="pl-c1">test</span>(<span class="pl-s"><span class="pl-pds">'</span>show all users<span class="pl-pds">'</span></span>, <span class="pl-k">function</span>(<span class="pl-smi">assert</span>) {
+  page.visit();
+
+  andThen(<span class="pl-k">function</span>() {
+    assert.equal(page.users().count(), <span class="pl-c1">2</span>);
+    assert.equal(page.users(<span class="pl-c1">1</span>).firstName(), <span class="pl-s"><span class="pl-pds">'</span>Jane<span class="pl-pds">'</span></span>);
+    assert.equal(page.users(<span class="pl-c1">1</span>).lastName(), <span class="pl-s"><span class="pl-pds">'</span>Doe<span class="pl-pds">'</span></span>);
+    assert.equal(page.users(<span class="pl-c1">2</span>).firstName(), <span class="pl-s"><span class="pl-pds">'</span>John<span class="pl-pds">'</span></span>);
+    assert.equal(page.users(<span class="pl-c1">2</span>).lastName(), <span class="pl-s"><span class="pl-pds">'</span>Doe<span class="pl-pds">'</span></span>);
+  });
+});</pre></div>
+
+<p>You can use ES6 destructuring to declutter even more your page definition:</p>
+
+<div class="highlight highlight-js"><pre><span class="pl-k">var</span> { visitable, collection, text } <span class="pl-k">=</span> <span class="pl-c1">PO</span>;
+
+<span class="pl-k">var</span> page <span class="pl-k">=</span> <span class="pl-c1">PO</span>.build({
+  visit<span class="pl-k">:</span> visitable(<span class="pl-s"><span class="pl-pds">'</span>/users<span class="pl-pds">'</span></span>),
+
+  users<span class="pl-k">:</span> collection({
+    itemScope<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>#users tr<span class="pl-pds">'</span></span>,
+
+    item<span class="pl-k">:</span> {
+      firstName<span class="pl-k">:</span> text(<span class="pl-s"><span class="pl-pds">'</span>td:nth-of-type(1)<span class="pl-pds">'</span></span>),
+      lastName<span class="pl-k">:</span>  text(<span class="pl-s"><span class="pl-pds">'</span>td:nth-of-type(2)<span class="pl-pds">'</span></span>)
+    }
+  })
+});</pre></div>
+
+<h2>
+<a id="documentation" class="anchor" href="#documentation" aria-hidden="true"><span class="octicon octicon-link"></span></a>Documentation</h2>
+
+<p>Check the full <a href="./DOCUMENTATION.md">DOCUMENTATION</a> for more information.</p>
+
+<h2>
+<a id="blueprints" class="anchor" href="#blueprints" aria-hidden="true"><span class="octicon octicon-link"></span></a>Blueprints</h2>
+
+<p>The addon includes the following blueprints</p>
+
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>page-object</code></td>
+<td>Creates a new page object under <code>tests/pages</code> folder</td>
+</tr>
+<tr>
+<td><code>page-object-component</code></td>
+<td>Creates a new a component object to be used on a page object under <code>tests/pages/components</code> folder.</td>
+</tr>
+<tr>
+<td><code>page-object-helper</code></td>
+<td>Creates a new a helper object to be used on a page object under <code>tests/pages/helpers</code> folder.</td>
+</tr>
+</tbody>
+</table>
+
+<p>You can create a new page object called <code>users</code> using the <code>generate</code> command</p>
+
+<div class="highlight highlight-sh"><pre>$ ember generate page-object users
+
+installing
+  create tests/pages/users.js</pre></div>
+
+<p>A new file will be generated under <code>tests/pages</code> folder and can be included on
+an acceptance test like follows</p>
+
+<div class="highlight highlight-js"><pre><span class="pl-k">import</span> Ember <span class="pl-k">from</span> <span class="pl-s"><span class="pl-pds">'</span>ember<span class="pl-pds">'</span></span>;
+<span class="pl-k">import</span> { module, test } <span class="pl-k">from</span> <span class="pl-s"><span class="pl-pds">'</span>qunit<span class="pl-pds">'</span></span>;
+<span class="pl-k">import</span> startApp <span class="pl-k">from</span> <span class="pl-s"><span class="pl-pds">'</span>../helpers/start-app<span class="pl-pds">'</span></span>;
+<span class="pl-k">import</span> page <span class="pl-k">from</span> <span class="pl-s"><span class="pl-pds">'</span>../pages/users<span class="pl-pds">'</span></span>;
+
+<span class="pl-k">var</span> application;
+
+<span class="pl-c1">module</span>(<span class="pl-s"><span class="pl-pds">'</span>Acceptance: UserList<span class="pl-pds">'</span></span>, {
+  <span class="pl-en">beforeEach</span><span class="pl-k">:</span> <span class="pl-k">function</span>() {
+    application <span class="pl-k">=</span> startApp();
+  },
+
+  <span class="pl-en">afterEach</span><span class="pl-k">:</span> <span class="pl-k">function</span>() {
+    Ember.run(application, <span class="pl-s"><span class="pl-pds">'</span>destroy<span class="pl-pds">'</span></span>);
+  }
+});
+
+<span class="pl-c1">test</span>(<span class="pl-s"><span class="pl-pds">'</span>visiting /users<span class="pl-pds">'</span></span>, <span class="pl-k">function</span>(<span class="pl-smi">assert</span>) {
+  page.visit();
+
+  andThen(<span class="pl-k">function</span>() {
+    assert.equal(currentPath(), <span class="pl-s"><span class="pl-pds">'</span>users<span class="pl-pds">'</span></span>);
+  });
+});</pre></div>
+
+<h2>
+<a id="development" class="anchor" href="#development" aria-hidden="true"><span class="octicon octicon-link"></span></a>Development</h2>
+
+<h3>
+<a id="installation" class="anchor" href="#installation" aria-hidden="true"><span class="octicon octicon-link"></span></a>Installation</h3>
+
+<ul>
+<li>
+<code>git clone</code> this repository</li>
+<li><code>npm install</code></li>
+<li><code>bower install</code></li>
+</ul>
+
+<h3>
+<a id="running" class="anchor" href="#running" aria-hidden="true"><span class="octicon octicon-link"></span></a>Running</h3>
+
+<ul>
+<li><code>ember server</code></li>
+<li>Visit your app at http://localhost:4200.</li>
+</ul>
+
+<h3>
+<a id="running-tests" class="anchor" href="#running-tests" aria-hidden="true"><span class="octicon octicon-link"></span></a>Running Tests</h3>
+
+<ul>
+<li><code>ember test</code></li>
+<li><code>ember test --server</code></li>
+</ul>
+
+<h3>
+<a id="building" class="anchor" href="#building" aria-hidden="true"><span class="octicon octicon-link"></span></a>Building</h3>
+
+<ul>
+<li><code>ember build</code></li>
+</ul>
+
+<h3>
+<a id="projects-health" class="anchor" href="#projects-health" aria-hidden="true"><span class="octicon octicon-link"></span></a>Project's health</h3>
+
+<p><a href="https://travis-ci.org/san650/ember-cli-page-object"><img src="https://travis-ci.org/san650/ember-cli-page-object.svg?branch=master" alt="Build Status"></a>
+<a href="http://emberobserver.com/addons/ember-cli-page-object"><img src="http://emberobserver.com/badges/ember-cli-page-object.svg" alt="Ember Observer Score"></a></p>
+
+<h2>
+<a id="license" class="anchor" href="#license" aria-hidden="true"><span class="octicon octicon-link"></span></a>License</h2>
+
+<p>ember-cli-page-object is licensed under the MIT license.</p>
+
+<p>See <a href="./LICENSE">LICENSE</a> for the full license text.</p>
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Ember-cli-page-object maintained by <a href="https://github.com/san650">san650</a></p>
+        <p>Published with <a href="https://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+              <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-67184721-1");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+
+
+  </body>
+</html>
