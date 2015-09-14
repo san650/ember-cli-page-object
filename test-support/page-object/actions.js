@@ -36,12 +36,6 @@ function visitable(params = {}, queryParams = {}) {
   return this.page;
 }
 
-function clickable() {
-  click(this.qualifiedSelector());
-
-  return this.page;
-}
-
 function fillable(text) {
   fillIn(this.qualifiedSelector(), text);
 
@@ -61,10 +55,6 @@ function clickOnText(text) {
 
 export function visitableAttribute(path) {
   return new Attribute(visitable, null, null, { path });
-}
-
-export function clickableAttribute(selector, options = {}) {
-  return new Attribute(clickable, selector, options);
 }
 
 export function fillableAttribute(selector, options = {}) {

@@ -1,55 +1,66 @@
-import Ember from 'ember';
-import startApp from '../../helpers/start-app';
-import {
-  buildAttribute,
-  buildAttributeWithOptions,
-  it,
-  itBehavesLikeAnAttribute,
-  moduleFor
-} from '../test-helper';
-import { clickableAttribute } from '../../page-object/actions';
+import { module, test } from 'qunit';
+import clickable from '../../page-object/properties/clickable';
 
-var application;
+module('Actions | clickable');
 
-moduleFor('Actions', 'clickableAttribute', {
-  beforeEach: function() {
-    application = startApp();
-  },
-  afterEach: function() {
-    Ember.run(application, 'destroy');
-  }
-});
+function buildProperty(descriptor, parent = {}) {
+  return descriptor.propertyFor(parent, 'key');
+}
 
-itBehavesLikeAnAttribute(clickableAttribute);
-
-it('calls Ember\'s click helper', function(assert) {
+test('calls Ember\'s click helper', function(assert) {
   assert.expect(1);
 
-  let expectedSelector = 'button';
+  let expectedSelector = 'button',
+      property;
 
   window.click = function(actualSelector) {
     assert.equal(actualSelector, expectedSelector);
   };
 
-  buildAttribute(clickableAttribute, expectedSelector)();
+  property = buildProperty(clickable(expectedSelector));
+
+  property.invoke();
 });
 
-it('uses scope', function(assert) {
+test('uses scope', function(assert) {
   assert.expect(1);
+
+  let property;
 
   window.click = function(actualSelector) {
     assert.equal(actualSelector, '.scope .element');
   };
 
-  buildAttribute(clickableAttribute, '.element', { scope: '.scope' })();
+  property = buildProperty(clickable('.element', { scope: '.scope' }));
+
+  property.invoke();
 });
 
-it('uses page scope', function(assert) {
+test('uses page scope', function(assert) {
   assert.expect(1);
+
+  let property;
 
   window.click = function(actualSelector) {
     assert.equal(actualSelector, '.scope .element');
   };
 
-  buildAttributeWithOptions(clickableAttribute, { scope: '.scope' }, '.element')();
+  property = buildProperty(clickable('.element'), { scope: '.scope' });
+
+  property.invoke();
+});
+
+test('returns window.click value', function(assert) {
+  assert.expect(1);
+
+  let returnValue = "A value",
+      property;
+
+  window.click = function() {
+    return returnValue;
+  };
+
+  property = buildProperty(clickable());
+
+  assert.equal(property.invoke(), returnValue);
 });
