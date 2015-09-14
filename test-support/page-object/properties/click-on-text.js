@@ -12,7 +12,7 @@ import { qualifySelector } from '../helpers';
  * @param {string} options.selector - CSS selector of the container of the element to click
  * @param {string} options.scope - Overrides parent scope
  * @param {string} textToClick - Text to find the element to click
- * @return {Promise}
+ * @return {Object} target component (this allows chaining)
  */
 function doClick(target, key, options, textToClick) {
   // Suppose that we have something like `<form><button>Submit</button></form>`

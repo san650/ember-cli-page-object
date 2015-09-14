@@ -11,7 +11,8 @@ import { qualifySelector } from '../helpers';
  * @param {Object} options - Additional options
  * @param {string} options.selector - CSS selector of the element to fill
  * @param {string} options.scope - Overrides parent scope
- * @return {Promise}
+ * @param {string} textToUse - Text to use to fill the input
+ * @return {Object} target component (this allows chaining)
  */
 function doFillIn(target, key, options, textToUse) {
   let selector = qualifySelector(options.scope || target.scope, options.selector);

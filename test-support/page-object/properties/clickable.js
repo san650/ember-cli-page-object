@@ -11,7 +11,7 @@ import { qualifySelector } from '../helpers';
  * @param {Object} options - Additional options
  * @param {string} options.selector - CSS selector of the element to click
  * @param {string} options.scope - Overrides parent scope
- * @return {Promise}
+ * @return {Object} target component (this allows chaining)
  */
 function doClick(target, key, options) {
   let selector = qualifySelector(options.scope || target.scope, options.selector);
