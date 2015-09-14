@@ -15,19 +15,19 @@ import {
   valueAttribute
 } from './page-object/queries';
 import {
-  clickOnTextAttribute,
   fillableAttribute,
   visitableAttribute
 } from './page-object/actions';
 import { collection } from './page-object/collection';
 import { customHelper } from './page-object/custom-helper';
 import clickable from './page-object/properties/clickable';
+import clickOnText from './page-object/properties/click-on-text';
 
 export default {
   attribute:   attributeAttribute,
   build,
   clickable,
-  clickOnText: clickOnTextAttribute,
+  clickOnText,
   customHelper,
   collection,
   component:   componentAttribute,

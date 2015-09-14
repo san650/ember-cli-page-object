@@ -14,7 +14,7 @@ export default class Descriptor {
     return new Property(target, key, this.options, this.action);
   }
 
-  buildPageObjectAttribute(target, key) {
+  buildPageObjectAttribute(key, target) {
     Ember.deprecate('Use `Descriptor.propertyFor` to build the property.');
 
     let property = this.propertyFor(target, key);

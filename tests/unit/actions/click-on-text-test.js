@@ -1,55 +1,62 @@
-import Ember from 'ember';
-import startApp from '../../helpers/start-app';
-import {
-  buildAttribute,
-  buildAttributeWithOptions,
-  it,
-  itBehavesLikeAnAttribute,
-  moduleFor
-} from '../test-helper';
-import { clickOnTextAttribute } from '../../page-object/actions';
+import { module, test } from 'qunit';
+import { buildProperty } from '../test-helper';
+import clickOnText from '../../page-object/properties/click-on-text';
 
-var application;
+module('Actions | clickOnText');
 
-moduleFor('Actions', 'clickOnTextAttribute', {
-  beforeEach: function() {
-    application = startApp();
-  },
-  afterEach: function() {
-    Ember.run(application, 'destroy');
-  }
-});
-
-itBehavesLikeAnAttribute(clickOnTextAttribute);
-
-it('calls Ember\' click helper', function(assert) {
+test('calls Ember\'s click helper', function(assert) {
   assert.expect(1);
 
-  let expectedSelector = 'button :contains("dummy text"):last';
+  let expectedSelector = 'button :contains("dummy text"):last',
+      property;
 
   window.click = function(actualSelector) {
     assert.equal(actualSelector, expectedSelector);
   };
 
-  buildAttribute(clickOnTextAttribute, 'button')('dummy text');
+  property = buildProperty(clickOnText('button'));
+
+  property.invoke('dummy text');
 });
 
-it('uses scope', function(assert) {
+test('uses scope', function(assert) {
   assert.expect(1);
+
+  let property;
 
   window.click = function(actualSelector) {
     assert.equal(actualSelector, '.scope .element :contains("dummy text"):last');
   };
 
-  buildAttribute(clickOnTextAttribute, '.element', { scope: '.scope' })('dummy text');
+  property = buildProperty(clickOnText('.element', { scope: '.scope' }));
+
+  property.invoke('dummy text');
 });
 
-it('uses page scope', function(assert) {
+test('uses parent scope', function(assert) {
   assert.expect(1);
 
+  let property;
+
   window.click = function(actualSelector) {
-    assert.equal(actualSelector, '.scope .element :contains("dummy text"):last');
+    assert.equal(actualSelector, '.parent-scope .element :contains("dummy text"):last');
   };
 
-  buildAttributeWithOptions(clickOnTextAttribute, { scope: '.scope' }, '.element')('dummy text');
+  property = buildProperty(clickOnText('.element'), { scope: '.parent-scope' });
+
+  property.invoke('dummy text');
+});
+
+test('returns target object', function(assert) {
+  assert.expect(1);
+
+  let target = { dummy: "value" },
+      property;
+
+  window.click = function() {
+  };
+
+  property = buildProperty(clickOnText(), target);
+
+  assert.equal(property.invoke('dummy text'), target);
 });

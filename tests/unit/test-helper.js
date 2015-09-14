@@ -48,3 +48,7 @@ export function it(description, fn) {
 export function fixture(str) {
   $('#ember-testing').html(str);
 }
+
+export function buildProperty(descriptor, parent = {}) {
+  return descriptor.propertyFor(parent, 'key');
+}

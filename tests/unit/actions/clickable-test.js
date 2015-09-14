@@ -1,11 +1,8 @@
 import { module, test } from 'qunit';
+import { buildProperty } from '../test-helper';
 import clickable from '../../page-object/properties/clickable';
 
 module('Actions | clickable');
-
-function buildProperty(descriptor, parent = {}) {
-  return descriptor.propertyFor(parent, 'key');
-}
 
 test('calls Ember\'s click helper', function(assert) {
   assert.expect(1);
@@ -36,31 +33,30 @@ test('uses scope', function(assert) {
   property.invoke();
 });
 
-test('uses page scope', function(assert) {
+test('uses parent scope', function(assert) {
   assert.expect(1);
 
   let property;
 
   window.click = function(actualSelector) {
-    assert.equal(actualSelector, '.scope .element');
+    assert.equal(actualSelector, '.parent-scope .element');
   };
 
-  property = buildProperty(clickable('.element'), { scope: '.scope' });
+  property = buildProperty(clickable('.element'), { scope: '.parent-scope' });
 
   property.invoke();
 });
 
-test('returns window.click value', function(assert) {
+test('returns target object', function(assert) {
   assert.expect(1);
 
-  let returnValue = "A value",
+  let target = { dummy: "value" },
       property;
 
   window.click = function() {
-    return returnValue;
   };
 
-  property = buildProperty(clickable());
+  property = buildProperty(clickable(), target);
 
-  assert.equal(property.invoke(), returnValue);
+  assert.equal(property.invoke(), target);
 });
