@@ -1,4 +1,4 @@
-/* global visit, fillIn */
+/* global visit */
 import Ember from 'ember';
 import Attribute from './attribute';
 
@@ -36,16 +36,6 @@ function visitable(params = {}, queryParams = {}) {
   return this.page;
 }
 
-function fillable(text) {
-  fillIn(this.qualifiedSelector(), text);
-
-  return this.page;
-}
-
 export function visitableAttribute(path) {
   return new Attribute(visitable, null, null, { path });
-}
-
-export function fillableAttribute(selector, options = {}) {
-  return new Attribute(fillable, selector, options);
 }

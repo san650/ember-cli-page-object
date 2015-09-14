@@ -19,8 +19,8 @@ export default class Descriptor {
 
     let property = this.propertyFor(target, key);
 
-    return function() {
-      return property.invoke();
+    return function(...params) {
+      return property.invoke(...params);
     };
   }
 }

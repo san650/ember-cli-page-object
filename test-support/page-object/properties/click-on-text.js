@@ -11,7 +11,6 @@ import { qualifySelector } from '../helpers';
  * @param {Object} options - Additional options
  * @param {string} options.selector - CSS selector of the container of the element to click
  * @param {string} options.scope - Overrides parent scope
- * @param {string} options.index - Reduce the set of matched elements to the one at the specified index
  * @param {string} textToClick - Text to find the element to click
  * @return {Promise}
  */
@@ -44,7 +43,6 @@ function doClick(target, key, options, textToClick) {
  * @param {string} selector - CSS selector of the element to click
  * @param {Object} options - Additional options
  * @param {string} options.scope - Overrides parent scope
- * @param {string} options.index - Reduce the set of matched elements to the one at the specified index
  * @return {Descriptor}
  */
 export default function clickable(selector, options = {}) {
