@@ -3,7 +3,6 @@ import {
   componentAttribute
 } from './page-object/build';
 import {
-  countAttribute,
   textAttribute,
   valueAttribute
 } from './page-object/queries';
@@ -18,6 +17,7 @@ import notHasClass from './page-object/properties/not-has-class';
 import isVisible from './page-object/properties/is-visible';
 import isHidden from './page-object/properties/is-hidden';
 import attribute from './page-object/properties/attribute';
+import count from './page-object/properties/attribute';
 
 export default {
   attribute,
@@ -27,7 +27,7 @@ export default {
   customHelper,
   collection,
   component:   componentAttribute,
-  count:       countAttribute,
+  count,
   fillable,
   hasClass,
   isHidden,

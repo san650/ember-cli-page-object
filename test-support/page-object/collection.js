@@ -1,6 +1,6 @@
 import Ember from 'ember';
 import { build } from './build';
-import { countAttribute } from './queries';
+import count from './properties/count';
 import {
   isNullOrUndefined,
   qualifySelector
@@ -49,7 +49,7 @@ export function collection(def) {
       }
 
       // Add count attribute
-      plugAttribute(definition, 'count', countAttribute, qualifySelector(collectionScope, itemScope));
+      plugAttribute(definition, 'count', count, qualifySelector(collectionScope, itemScope));
 
       collectionComponent = build(definition, key, parent);
 

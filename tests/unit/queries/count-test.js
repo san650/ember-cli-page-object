@@ -1,54 +1,35 @@
-import Ember from 'ember';
-import startApp from '../../helpers/start-app';
-import {
-  buildAttribute,
-  buildAttributeWithOptions,
-  fixture,
-  it,
-  itBehavesLikeAnAttribute,
-  moduleFor
-} from '../test-helper';
-import { countAttribute } from '../../page-object/queries';
+import { test } from 'qunit';
+import { buildProperty, fixture, moduleFor } from '../test-helper';
+import count from '../../page-object/properties/count';
 
-var application;
+moduleFor('Queries', 'count');
 
-moduleFor('Queries', 'countAttribute', {
-  beforeEach: function() {
-    application = startApp();
-  },
-  afterEach: function() {
-    Ember.run(application, 'destroy');
-  }
-});
-
-itBehavesLikeAnAttribute(countAttribute);
-
-it('returns the number of elements that match the selector', function(assert) {
+test('returns the number of elements that match the selector', function(assert) {
   fixture('<span /><span />');
 
-  var attr = buildAttribute(countAttribute, 'span');
+  let property = buildProperty(count('span'));
 
-  assert.equal(attr(), 2);
+  assert.equal(property.invoke(), 2);
 });
 
-it('returns 0 when the selector doesn\'t match elements', function(assert) {
-  var attr = buildAttribute(countAttribute, '.nothing');
+test('returns 0 when the selector doesn\'t match elements', function(assert) {
+  let property = buildProperty(count('.nothing'));
 
-  assert.equal(attr(), 0);
+  assert.equal(property.invoke(), 0);
 });
 
-it('uses scope', function(assert) {
+test('uses scope', function(assert) {
   fixture('<div class="scope"><span /></div><span />');
 
-  var attr = buildAttribute(countAttribute, 'span', { scope: '.scope' });
+  let property = buildProperty(count('span', { scope: '.scope' }));
 
-  assert.equal(attr(), 1);
+  assert.equal(property.invoke(), 1);
 });
 
-it('uses page scope', function(assert) {
+test('uses page scope', function(assert) {
   fixture('<div class="scope"><span /></div><span />');
 
-  var attr = buildAttributeWithOptions(countAttribute, { scope: '.scope' }, 'span');
+  let property = buildProperty(count('span'), { scope: '.scope' });
 
-  assert.equal(attr(), 1);
+  assert.equal(property.invoke(), 1);
 });
