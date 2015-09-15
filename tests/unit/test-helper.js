@@ -4,12 +4,9 @@ import startApp from '../helpers/start-app';
 
 let application;
 
-export function moduleFor(category, helperName, options = {}) {
+export function moduleFor(category, helperName) {
   module(`${category} | .${helperName}`, {
     beforeEach: function() {
-      if (options.beforeEach) {
-        options.beforeEach();
-      }
       application = startApp();
     },
     afterEach: function() {
@@ -17,10 +14,6 @@ export function moduleFor(category, helperName, options = {}) {
 
       // Cleanup DOM
       $('#ember-testing').html('');
-
-      if (options.afterEach) {
-        options.afterEach();
-      }
     }
   });
 }

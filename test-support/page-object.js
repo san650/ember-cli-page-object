@@ -2,9 +2,6 @@ import {
   build,
   componentAttribute
 } from './page-object/build';
-import {
-  valueAttribute
-} from './page-object/queries';
 import { collection } from './page-object/collection';
 import { customHelper } from './page-object/custom-helper';
 import clickable from './page-object/properties/clickable';
@@ -18,6 +15,7 @@ import isHidden from './page-object/properties/is-hidden';
 import attribute from './page-object/properties/attribute';
 import count from './page-object/properties/count';
 import text from './page-object/properties/text';
+import value from './page-object/properties/value';
 
 export default {
   attribute,
@@ -35,6 +33,6 @@ export default {
   notHasClass,
   selectable:  fillable,
   text,
-  value:       valueAttribute,
+  value,
   visitable
 };

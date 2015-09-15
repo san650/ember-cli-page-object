@@ -1,68 +1,49 @@
-import Ember from 'ember';
-import startApp from '../../helpers/start-app';
-import {
-  buildAttribute,
-  buildAttributeWithOptions,
-  fixture,
-  it,
-  itBehavesLikeAnAttribute,
-  moduleFor
-} from '../test-helper';
-import { valueAttribute } from '../../page-object/queries';
+import { test } from 'qunit';
+import { buildProperty, fixture, moduleFor } from '../test-helper';
+import value from '../../page-object/properties/value';
 
-var application;
+moduleFor('Queries', 'value');
 
-moduleFor('Queries', 'valueAttribute', {
-  beforeEach: function() {
-    application = startApp();
-  },
-  afterEach: function() {
-    Ember.run(application, 'destroy');
-  }
-});
-
-itBehavesLikeAnAttribute(valueAttribute);
-
-it('returns the text of the input', function(assert) {
+test('returns the text of the input', function(assert) {
   fixture('<input value="Hello world" />');
 
-  var attr = buildAttribute(valueAttribute, 'input');
+  let property = buildProperty(value('input'));
 
-  assert.equal(attr(), 'Hello world');
+  assert.equal(property.invoke(), 'Hello world');
 });
 
-it('raises an error when the element doesn\'t exist', function(assert) {
+test('raises an error when the element doesn\'t exist', function(assert) {
   assert.expect(1);
 
-  var attr = buildAttribute(valueAttribute, 'span');
+  let property = buildProperty(value('span'));
 
   try {
-    attr();
+    property.invoke();
   } catch(e) {
     assert.ok(true, 'Element not found');
   }
 });
 
-it('returns empty when the element doesn\'t have value attribute', function(assert) {
+test('returns empty when the element doesn\'t have value attribute', function(assert) {
   fixture('<span />');
 
-  var attr = buildAttribute(valueAttribute, 'span');
+  let property = buildProperty(value('span'));
 
-  assert.equal(attr(), '');
+  assert.equal(property.invoke(), '');
 });
 
-it('uses scope', function(assert) {
+test('uses scope', function(assert) {
   fixture('<div class="scope"><input value="Hello" /></div><input value="world!" />');
 
-  var attr = buildAttribute(valueAttribute, 'input', { scope: '.scope' });
+  var property = buildProperty(value('input', { scope: '.scope' }));
 
-  assert.equal(attr(), 'Hello');
+  assert.equal(property.invoke(), 'Hello');
 });
 
-it('uses page scope', function(assert) {
+test('uses page scope', function(assert) {
   fixture('<div class="scope"><input value="Hello" /></div><input value="world!" />');
 
-  var attr = buildAttributeWithOptions(valueAttribute, { scope: '.scope' }, 'input');
+  var property = buildProperty(value('input'), { scope: '.scope' });
 
-  assert.equal(attr(), 'Hello');
+  assert.equal(property.invoke(), 'Hello');
 });
