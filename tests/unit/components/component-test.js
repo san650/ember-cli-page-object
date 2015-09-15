@@ -8,7 +8,7 @@ import {
 } from '../test-helper';
 import { componentAttribute } from '../../page-object/build';
 import { textAttribute } from '../../page-object/queries';
-import { isHiddenAttribute } from '../../page-object/predicates';
+import isHidden from '../../page-object/properties/is-hidden';
 import isVisible from '../../page-object/properties/is-visible';
 
 moduleFor('Components', 'component');
@@ -67,7 +67,7 @@ it('lets define attributes without selector if page has scope defined', function
   let attribute = buildAttribute(componentAttribute, {
     scope: '.scope',
 
-    hidden: isHiddenAttribute(),
+    hidden: isHidden(),
     visible: isVisible()
   });
 

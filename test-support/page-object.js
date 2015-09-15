@@ -3,9 +3,6 @@ import {
   componentAttribute
 } from './page-object/build';
 import {
-  isHiddenAttribute
-} from './page-object/predicates';
-import {
   attributeAttribute,
   countAttribute,
   textAttribute,
@@ -20,6 +17,7 @@ import visitable from './page-object/properties/visitable';
 import hasClass from './page-object/properties/has-class';
 import notHasClass from './page-object/properties/not-has-class';
 import isVisible from './page-object/properties/is-visible';
+import isHidden from './page-object/properties/is-hidden';
 
 export default {
   attribute:   attributeAttribute,
@@ -32,7 +30,7 @@ export default {
   count:       countAttribute,
   fillable,
   hasClass,
-  isHidden:    isHiddenAttribute,
+  isHidden,
   isVisible,
   notHasClass,
   selectable:  fillable,
