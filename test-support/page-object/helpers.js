@@ -4,6 +4,12 @@ export function qualifySelector(...selectors) {
   return selectors.filter(item => !!item).join(' ');
 }
 
+export function findElementWithAssert(options, target) {
+  let selector = qualifySelector(options.scope || target.scope, options.selector);
+
+  return findWithAssert(selector);
+}
+
 /**
  * Trim whitespaces at both ends and normalize whitespaces inside `text`
  *

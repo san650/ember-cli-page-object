@@ -1,7 +1,7 @@
 /* global findWithAssert */
 
 import Descriptor from '../descriptor';
-import { qualifySelector } from '../helpers';
+import { findElementWithAssert } from '../helpers';
 
 /**
  * Checks if an element has the CSS class name
@@ -16,8 +16,7 @@ import { qualifySelector } from '../helpers';
  * @return {Boolean} true if the element has the CSS class
  */
 function doHasClass(target, key, options) {
-  let selector = qualifySelector(options.scope || target.scope, options.selector),
-      element = findWithAssert(selector);
+  let element = findElementWithAssert(options, target);
 
   return element.hasClass(options.cssClass);
 }
