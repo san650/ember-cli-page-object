@@ -1,5 +1,3 @@
-import Ember from 'ember';
-import startApp from '../../helpers/start-app';
 import {
   buildAttribute,
   buildAttributeWithOptions,
@@ -10,21 +8,10 @@ import {
 } from '../test-helper';
 import { componentAttribute } from '../../page-object/build';
 import { textAttribute } from '../../page-object/queries';
-import {
-  isHiddenAttribute,
-  isVisibleAttribute
-} from '../../page-object/predicates';
+import { isHiddenAttribute } from '../../page-object/predicates';
+import isVisible from '../../page-object/properties/is-visible';
 
-var application;
-
-moduleFor('Components', 'component', {
-  beforeEach: function() {
-    application = startApp();
-  },
-  afterEach: function() {
-    Ember.run(application, 'destroy');
-  }
-});
+moduleFor('Components', 'component');
 
 itBehavesLikeAnAttribute(componentAttribute, {});
 
@@ -81,7 +68,7 @@ it('lets define attributes without selector if page has scope defined', function
     scope: '.scope',
 
     hidden: isHiddenAttribute(),
-    visible: isVisibleAttribute()
+    visible: isVisible()
   });
 
   assert.equal(attribute().hidden(), true);

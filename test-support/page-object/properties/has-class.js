@@ -1,5 +1,3 @@
-/* global findWithAssert */
-
 import Descriptor from '../descriptor';
 import { findElementWithAssert } from '../helpers';
 
