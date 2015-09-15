@@ -3,7 +3,6 @@ import {
   componentAttribute
 } from './page-object/build';
 import {
-  notHasClassAttribute,
   isVisibleAttribute,
   isHiddenAttribute
 } from './page-object/predicates';
@@ -20,6 +19,7 @@ import clickOnText from './page-object/properties/click-on-text';
 import fillable from './page-object/properties/fillable';
 import visitable from './page-object/properties/visitable';
 import hasClass from './page-object/properties/has-class';
+import notHasClass from './page-object/properties/not-has-class';
 
 export default {
   attribute:   attributeAttribute,
@@ -34,7 +34,7 @@ export default {
   hasClass,
   isHidden:    isHiddenAttribute,
   isVisible:   isVisibleAttribute,
-  notHasClass: notHasClassAttribute,
+  notHasClass,
   selectable:  fillable,
   text:        textAttribute,
   value:       valueAttribute,

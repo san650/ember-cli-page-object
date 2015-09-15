@@ -1,68 +1,49 @@
-import Ember from 'ember';
-import startApp from '../../helpers/start-app';
-import {
-  buildAttribute,
-  buildAttributeWithOptions,
-  fixture,
-  it,
-  itBehavesLikeAnAttribute,
-  moduleFor
-} from '../test-helper';
-import { notHasClassAttribute } from '../../page-object/predicates';
+import { test } from 'qunit';
+import { buildProperty, fixture, moduleFor } from '../test-helper';
+import notHasClass from '../../page-object/properties/not-has-class';
 
-var application;
+moduleFor('propertys', 'notHasClass');
 
-moduleFor('Predicates', 'notHasClassAttribute', {
-  beforeEach: function() {
-    application = startApp();
-  },
-  afterEach: function() {
-    Ember.run(application, 'destroy');
-  }
-});
-
-itBehavesLikeAnAttribute(notHasClassAttribute);
-
-it('returns false when the element has the class', function(assert) {
+test('returns false when the element has the class', function(assert) {
   fixture('<div class="element has-error" />');
 
-  var predicate = buildAttribute(notHasClassAttribute, 'has-error', '.element');
+  var property = buildProperty(notHasClass('has-error', '.element'));
 
-  assert.ok(!predicate());
+  assert.ok(!property.invoke());
 });
 
-it('returns true when the element doesn\'t have the class', function(assert) {
+test('returns true when the element doesn\'t have the class', function(assert) {
   fixture('<div class="element" />');
 
-  var predicate = buildAttribute(notHasClassAttribute, 'has-error', '.element');
+  var property = buildProperty(notHasClass('has-error', '.element'));
 
-  assert.ok(predicate());
+  assert.ok(property.invoke());
 });
 
-it('raises an error when the element doesn\'t exist', function(assert) {
+test('raises an error when the element doesn\'t exist', function(assert) {
   assert.expect(1);
 
-  var predicate = buildAttribute(notHasClassAttribute, 'has-error', '.element');
+  var property = buildProperty(notHasClass('has-error', '.element'));
 
   try {
-    predicate();
+    property.invoke();
   } catch(e) {
     assert.ok(true, 'Element not found');
   }
 });
 
-it('uses scope', function(assert) {
+test('uses scope', function(assert) {
   fixture('<div class="element scope has-error"><div class="element" /></div>');
 
-  var predicate = buildAttribute(notHasClassAttribute, 'has-error', '.element:first', { scope: '.scope' });
+  var property = buildProperty(notHasClass('has-error', '.element:first', { scope: '.scope' }));
 
-  assert.ok(predicate());
+  assert.ok(property.invoke());
 });
 
-it('uses page scope', function(assert) {
+test('uses parent scope', function(assert) {
   fixture('<div class="element scope has-error"><div class="element" /></div>');
 
-  var predicate = buildAttributeWithOptions(notHasClassAttribute, { scope: '.scope' }, 'has-error', '.element:first');
+  var property = buildProperty(notHasClass('has-error', '.element:first'), { scope: '.scope' });
 
-  assert.ok(predicate());
+  assert.ok(property.invoke());
 });
