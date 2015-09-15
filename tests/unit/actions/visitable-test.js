@@ -1,8 +1,8 @@
-import { module, test } from 'qunit';
-import { buildProperty } from '../test-helper';
+import { test } from 'qunit';
+import { moduleFor, buildProperty } from '../test-helper';
 import visitable from '../../page-object/properties/visitable';
 
-module('Actions | visitable');
+moduleFor('Actions', 'visitable');
 
 test('calls Ember\'s visit helper', function(assert) {
   assert.expect(1);

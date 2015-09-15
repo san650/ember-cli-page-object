@@ -1,8 +1,8 @@
-import { module, test } from 'qunit';
-import { buildProperty } from '../test-helper';
+import { test } from 'qunit';
+import { moduleFor, buildProperty } from '../test-helper';
 import fillable from '../../page-object/properties/fillable';
 
-module('Actions | fillable');
+moduleFor('Actions', 'fillable');
 
 test('calls Ember\'s fillIn helper', function(assert) {
   assert.expect(2);

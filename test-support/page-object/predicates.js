@@ -1,10 +1,4 @@
-/* global find, findWithAssert */
-
 import Attribute from './attribute';
-
-function hasClass() {
-  return this.elementOrRaise().hasClass(this.cssClass);
-}
 
 function notHasClass() {
   return !this.elementOrRaise().hasClass(this.cssClass);
@@ -22,10 +16,6 @@ function isHidden() {
 
 export function notHasClassAttribute(cssClass, selector, options = {}) {
   return new Attribute(notHasClass, selector, options, { cssClass });
-}
-
-export function hasClassAttribute(cssClass, selector, options = {}) {
-  return new Attribute(hasClass, selector, options, { cssClass });
 }
 
 export function isVisibleAttribute(selector, options = {}) {

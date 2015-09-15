@@ -1,8 +1,8 @@
-import { module, test } from 'qunit';
-import { buildProperty } from '../test-helper';
+import { test } from 'qunit';
+import { buildProperty, moduleFor } from '../test-helper';
 import clickOnText from '../../page-object/properties/click-on-text';
 
-module('Actions | clickOnText');
+moduleFor('Actions', 'clickOnText');
 
 test('calls Ember\'s click helper', function(assert) {
   assert.expect(1);
