@@ -3,7 +3,6 @@ import {
   componentAttribute
 } from './page-object/build';
 import {
-  attributeAttribute,
   countAttribute,
   textAttribute,
   valueAttribute
@@ -18,9 +17,10 @@ import hasClass from './page-object/properties/has-class';
 import notHasClass from './page-object/properties/not-has-class';
 import isVisible from './page-object/properties/is-visible';
 import isHidden from './page-object/properties/is-hidden';
+import attribute from './page-object/properties/attribute';
 
 export default {
-  attribute:   attributeAttribute,
+  attribute,
   build,
   clickable,
   clickOnText,

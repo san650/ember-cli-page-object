@@ -7,13 +7,19 @@ export function qualifySelector(...selectors) {
 }
 
 export function findElementWithAssert(options, target) {
-  let selector = qualifySelector(options.scope || target.scope, options.selector);
+  let selector = qualifySelector(
+    options.scope || target.scope,
+    indexedSelector(options.selector, options.index)
+  );
 
   return findWithAssert(selector);
 }
 
 export function findElement(options, target) {
-  let selector = qualifySelector(options.scope || target.scope, options.selector);
+  let selector = qualifySelector(
+    options.scope || target.scope,
+    indexedSelector(options.selector, options.index)
+  );
 
   return find(selector);
 }
