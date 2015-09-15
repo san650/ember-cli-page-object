@@ -1,5 +1,3 @@
-import Ember from 'ember';
-import startApp from '../../helpers/start-app';
 import {
   buildAttribute,
   buildAttributeWithOptions,
@@ -9,18 +7,9 @@ import {
   moduleFor
 } from '../test-helper';
 import { collection } from '../../page-object/collection';
-import { textAttribute } from '../../page-object/queries';
+import text from '../../page-object/properties/text';
 
-var application;
-
-moduleFor('Components', 'collection', {
-  beforeEach: function() {
-    application = startApp();
-  },
-  afterEach: function() {
-    Ember.run(application, 'destroy');
-  }
-});
+moduleFor('Components', 'collection');
 
 itBehavesLikeAnAttribute(collection, {});
 
@@ -53,7 +42,7 @@ it('generates component for item', function(assert) {
   let attribute = buildAttribute(collection, {
     itemScope: 'span',
     item: {
-      text: textAttribute()
+      text: text()
     }
   });
 
@@ -67,7 +56,7 @@ it('generates component for scoped items', function(assert) {
   let attribute = buildAttribute(collection, {
     itemScope: 'span:not(.cero)',
     item: {
-      text: textAttribute()
+      text: text()
     }
   });
 
@@ -80,7 +69,7 @@ it('generates component for collection object', function(assert) {
 
   let attribute = buildAttribute(collection, {
     itemScope: 'span',
-    text: textAttribute('button')
+    text: text('button')
   });
 
   assert.equal(attribute().text(), 'Submit');
@@ -93,7 +82,7 @@ it('sets scope to components under item object', function(assert) {
     itemScope: 'span',
     item: {
       button: {
-         text: textAttribute('button')
+         text: text('button')
       }
     }
   });
@@ -108,7 +97,7 @@ it('inherits parent scope by default', function(assert) {
     itemScope: 'span',
 
     item: {
-      text: textAttribute()
+      text: text()
     }
   });
 
@@ -144,7 +133,7 @@ it('resets parent scope', function(assert) {
     itemScope: 'span',
 
     item: {
-      text: textAttribute()
+      text: text()
     }
   });
 
@@ -159,7 +148,7 @@ it('does not mutate collection definition after been used', function(assert) {
     itemScope: 'span',
 
     item: {
-      text: textAttribute()
+      text: text()
     }
   };
 

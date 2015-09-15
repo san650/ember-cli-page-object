@@ -1,5 +1,3 @@
-import Ember from 'ember';
-import startApp from '../helpers/start-app';
 import {
   buildAttribute,
   buildAttributeWithOptions,
@@ -9,18 +7,9 @@ import {
   moduleFor
 } from './test-helper';
 import { customHelper } from '../page-object/custom-helper';
-import { textAttribute } from '../page-object/queries';
+import text from '../page-object/properties/text';
 
-var application;
-
-moduleFor('Helpers', 'customHelper', {
-  beforeEach: function() {
-    application = startApp();
-  },
-  afterEach: function() {
-    Ember.run(application, 'destroy');
-  }
-});
+moduleFor('Helpers', 'customHelper');
 
 itBehavesLikeAnAttribute(customHelper(function() {}));
 
@@ -88,7 +77,7 @@ it('returns components', function(assert) {
   let helper = customHelper(function() {
     return {
       scope: '.scope',
-      text: textAttribute('strong')
+      text: text('strong')
     };
   });
 

@@ -7,7 +7,7 @@ import {
   moduleFor
 } from '../test-helper';
 import { componentAttribute } from '../../page-object/build';
-import { textAttribute } from '../../page-object/queries';
+import text from '../../page-object/properties/text';
 import isHidden from '../../page-object/properties/is-hidden';
 import isVisible from '../../page-object/properties/is-visible';
 
@@ -20,7 +20,7 @@ it('uses scope', function(assert) {
 
   let attribute = buildAttribute(componentAttribute, {
     scope: '.scope',
-    text: textAttribute('strong')
+    text: text('strong')
   });
 
   assert.equal(attribute().text(), 'Right');
@@ -30,7 +30,7 @@ it('uses parent scope', function(assert) {
   fixture('<strong>Wrong</strong><span class="scope"><strong>Right</strong></span>');
 
   let attribute = buildAttributeWithOptions(componentAttribute, { scope: '.scope' }, {
-    text: textAttribute('strong')
+    text: text('strong')
   });
 
   assert.equal(attribute().text(), 'Right');
@@ -41,7 +41,7 @@ it('overrides parent scope', function(assert) {
 
   let attribute = buildAttributeWithOptions(componentAttribute, { scope: '.wrong' }, {
     scope: '.scope',
-    text: textAttribute('strong')
+    text: text('strong')
   });
 
   assert.equal(attribute().text(), 'Right');
@@ -54,7 +54,7 @@ it('sets child component scope', function(assert) {
     scope: '.scope',
 
     childComponent: {
-      text: textAttribute('strong')
+      text: text('strong')
     }
   });
 
