@@ -1,75 +1,72 @@
-import {
-  buildAttribute,
-  buildAttributeWithOptions,
-  fixture,
-  it,
-  moduleFor
-} from './test-helper';
-import { customHelper } from '../page-object/custom-helper';
+import { test } from 'qunit';
+import { buildProperty, moduleFor, fixture } from './test-helper';
+import customHelper from '../page-object/properties/custom-helper';
 import text from '../page-object/properties/text';
 
 moduleFor('Helpers', 'customHelper');
 
-
-it('accepts a selector', function(assert) {
+test('accepts a selector', function(assert) {
   assert.expect(1);
 
-  let helper = customHelper(function(selector) {
-    assert.equal(selector, '.selector');
+  let expectedSelector = '.selector';
+
+  let helper = customHelper(function(actualSelector) {
+    assert.equal(actualSelector, expectedSelector);
   });
 
-  let attribute = buildAttribute(helper, '.selector');
+  let property = buildProperty(helper(expectedSelector));
 
-  attribute();
+  property.invoke();
 });
 
-it('uses scope', function(assert) {
-  assert.expect(1);
+test('accepts an options hash', function(assert) {
+  assert.expect(2);
 
-  let helper = customHelper(function(selector) {
-    assert.equal(selector, '.scope .selector');
+  let helper = customHelper(function(selector, options) {
+    assert.equal(options.dummy, 'value');
+    assert.equal(options.another, 'dummy value');
   });
 
-  let attribute = buildAttribute(helper, '.selector', { scope: '.scope' });
+  let property = buildProperty(helper('.selector', { dummy: 'value', another: 'dummy value' }));
 
-  attribute();
+  property.invoke();
 });
 
-it('uses index', function(assert) {
-  assert.expect(1);
-
-  let helper = customHelper(function(selector) {
-    assert.equal(selector, '.selector:eq(2)');
-  });
-
-  let attribute = buildAttribute(helper, '.selector', { index: 3 });
-
-  attribute();
-});
-
-it('uses page scope', function(assert) {
+test('uses scope', function(assert) {
   assert.expect(1);
 
   let helper = customHelper(function(selector) {
     assert.equal(selector, '.scope .selector');
   });
 
-  let attribute = buildAttributeWithOptions(helper, { scope: '.scope' }, '.selector');
+  let property = buildProperty(helper('.selector', { scope: '.scope' }));
 
-  attribute();
+  property.invoke();
 });
 
-it('returns simple values', function(assert) {
+test('uses page scope', function(assert) {
+  assert.expect(1);
+
+  let helper = customHelper(function(selector) {
+    assert.equal(selector, '.scope .selector');
+  });
+
+  let property = buildProperty(helper('.selector'), { scope: '.scope' });
+
+  property.invoke();
+});
+
+test('returns simple values', function(assert) {
   let helper = customHelper(function() {
     return 'dummy string';
   });
 
-  let attribute = buildAttribute(helper);
+  let property = buildProperty(helper());
 
-  assert.equal(attribute(), 'dummy string');
+  assert.equal(property.invoke(), 'dummy string');
 });
 
-it('returns components', function(assert) {
+test('returns components', function(assert) {
   fixture('<strong>Wrong</strong><span class="scope"><strong>Right</strong></span>');
 
   let helper = customHelper(function() {
@@ -79,24 +76,24 @@ it('returns components', function(assert) {
     };
   });
 
-  let attribute = buildAttribute(helper);
+  let property = buildProperty(helper());
 
-  assert.equal(attribute().text(), 'Right');
+  assert.equal(property.invoke().text(), 'Right');
 });
 
-it('returns functions', function(assert) {
+test('returns functions', function(assert) {
   let helper = customHelper(function() {
     return function() {
       return 'dummy string';
     };
   });
 
-  let attribute = buildAttribute(helper);
+  let property = buildProperty(helper());
 
-  assert.equal(attribute(), 'dummy string');
+  assert.equal(property.invoke(), 'dummy string');
 });
 
-it('pass function invocation params to inner function', function(assert) {
+test('pass function invocation params to inner function', function(assert) {
   assert.expect(2);
 
   let helper = customHelper(function() {
@@ -106,20 +103,7 @@ it('pass function invocation params to inner function', function(assert) {
     };
   });
 
-  let attribute = buildAttribute(helper);
+  let property = buildProperty(helper());
 
-  attribute('lorem', 'ipsum');
-});
-
-it('pass options hash to helper', function(assert) {
-  assert.expect(2);
-
-  let helper = customHelper(function(selector, options) {
-    assert.equal(options.dummy, 'value');
-    assert.equal(options.another, 'dummy value');
-  });
-
-  let attribute = buildAttribute(helper, '.selector', { dummy: 'value', another: 'dummy value' });
-
-  attribute();
+  property.invoke('lorem', 'ipsum');
 });

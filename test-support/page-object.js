@@ -3,7 +3,7 @@ import {
   componentAttribute
 } from './page-object/build';
 import { collection } from './page-object/collection';
-import { customHelper } from './page-object/custom-helper';
+import customHelper from './page-object/properties/custom-helper';
 import clickable from './page-object/properties/clickable';
 import clickOnText from './page-object/properties/click-on-text';
 import fillable from './page-object/properties/fillable';
