@@ -3,15 +3,12 @@ import {
   buildAttributeWithOptions,
   fixture,
   it,
-  itBehavesLikeAnAttribute,
   moduleFor
 } from '../test-helper';
 import { collection } from '../../page-object/collection';
 import text from '../../page-object/properties/text';
 
 moduleFor('Components', 'collection');
-
-itBehavesLikeAnAttribute(collection, {});
 
 // Count
 

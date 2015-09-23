@@ -32,7 +32,7 @@ function extract(object, name) {
 
 export function collection(def) {
   return {
-    buildPageObjectAttribute: function(key, parent) {
+    propertyFor: function(parent, key) {
       let itemComponent,
           itemScope,
           collectionScope,
@@ -51,25 +51,29 @@ export function collection(def) {
       // Add count attribute
       plugAttribute(definition, 'count', count, qualifySelector(collectionScope, itemScope));
 
-      collectionComponent = build(definition, key, parent);
+      collectionComponent = build(definition, parent, key);
 
-      return function(index) {
-        let component;
+      return {
+        toFunction() {
+          return function(index) {
+            let component;
 
-        if (index) {
-          component = build(
-            shallowCopyAndExtend(
-              itemComponent,
-              { scope: qualifySelector(collectionScope, scopeWithIndex(itemScope, index)) }
-            ),
-            key,
-            parent
-          );
-        } else {
-          component = collectionComponent;
+            if (index) {
+              component = build(
+                shallowCopyAndExtend(
+                  itemComponent,
+                  { scope: qualifySelector(collectionScope, scopeWithIndex(itemScope, index)) }
+                ),
+                key,
+                parent
+              );
+            } else {
+              component = collectionComponent;
+            }
+
+            return component;
+          };
         }
-
-        return component;
       };
     }
   };

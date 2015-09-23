@@ -3,7 +3,6 @@ import {
   buildAttributeWithOptions,
   fixture,
   it,
-  itBehavesLikeAnAttribute,
   moduleFor
 } from './test-helper';
 import { customHelper } from '../page-object/custom-helper';
@@ -11,7 +10,6 @@ import text from '../page-object/properties/text';
 
 moduleFor('Helpers', 'customHelper');
 
-itBehavesLikeAnAttribute(customHelper(function() {}));
 
 it('accepts a selector', function(assert) {
   assert.expect(1);

@@ -12,4 +12,12 @@ export default class Property {
   invoke(...params) {
     return this.action(this.target, this.key, this.options, ...params);
   }
+
+  toFunction() {
+    let property = this;
+
+    return function(...params) {
+      return property.invoke(...params);
+    };
+  }
 }

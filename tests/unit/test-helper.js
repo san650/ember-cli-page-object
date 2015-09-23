@@ -18,27 +18,12 @@ export function moduleFor(category, helperName) {
   });
 }
 
-export function itBehavesLikeAnAttribute(attribute, ...params) {
-  it('responds to buildPageObjectAttribute', function(assert) {
-    var builder = attribute(...params);
-
-    assert.ok($.isFunction(builder.buildPageObjectAttribute), '`buildPageObjectAttribute` is a function');
-  });
-
-  it('returns a builder function', function(assert) {
-    var builder = attribute(...params),
-        predicate = builder.buildPageObjectAttribute('dummy', {});
-
-    assert.ok($.isFunction(predicate), '`buildPageObjectAttribute()` is a function');
-  });
-}
-
 export function buildAttribute(attribute, ...params) {
-  return attribute(...params).buildPageObjectAttribute('key', {});
+  return attribute(...params).propertyFor({}, 'key').toFunction();
 }
 
 export function buildAttributeWithOptions(attribute, page, ...params) {
-  return attribute(...params).buildPageObjectAttribute('key', page);
+  return attribute(...params).propertyFor(page, 'key').toFunction();
 }
 
 export function it(description, fn) {

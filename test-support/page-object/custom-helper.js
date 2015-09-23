@@ -14,28 +14,32 @@ export function customHelper(userDefinedFunction) {
     options = options || {};
 
     return {
-      buildPageObjectAttribute: function(key, parent) {
-        return function(...params) {
-          let qualifiedSelector = qualifySelectorWithOptions(
-                parent.scope,
-                options.scope,
-                options.index,
-                selector
-              ),
-              response = userDefinedFunction(qualifiedSelector, options),
-              processedResponse;
+      propertyFor(parent, key) {
+        return {
+          toFunction() {
+            return function(...params) {
+              let qualifiedSelector = qualifySelectorWithOptions(
+                    parent.scope,
+                    options.scope,
+                    options.index,
+                    selector
+                  ),
+                  response = userDefinedFunction(qualifiedSelector, options),
+                  processedResponse;
 
-          if ($.isPlainObject(response)) {
-            let definition = $.extend({ scope: qualifiedSelector }, response);
+              if ($.isPlainObject(response)) {
+                let definition = $.extend({ scope: qualifiedSelector }, response);
 
-            processedResponse = build(definition, key, parent);
-          } else if ($.isFunction(response)) {
-            processedResponse = response(...params);
-          } else {
-            processedResponse = response;
+                processedResponse = build(definition, key, parent);
+              } else if ($.isFunction(response)) {
+                processedResponse = response(...params);
+              } else {
+                processedResponse = response;
+              }
+
+              return processedResponse;
+            }
           }
-
-          return processedResponse;
         }
       }
     }
