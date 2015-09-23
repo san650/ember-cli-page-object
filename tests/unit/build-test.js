@@ -1,4 +1,4 @@
-import { skip, test, module } from 'qunit';
+import { test, module } from 'qunit';
 import { build } from '../page-object/build';
 
 module('Base | build');
@@ -52,4 +52,14 @@ test('builds a component from a plain object', function(assert) {
   assert.equal(pageObject.dummyComponent().dummyProp, "a value");
 });
 
-skip('behaves like a promise', function(/*assert*/) {});
+test('behaves like a promise', function(assert) {
+  let dummyProp = {
+    propertyFor: function() {}
+  };
+
+  let dummyComponent = { dummyProp },
+    pageObject = build({ dummyComponent });
+
+  assert.ok($.isFunction(pageObject.then), "result page object is thennable");
+  assert.ok($.isFunction(pageObject.dummyComponent().then), "result component within page object is thennable");
+});
