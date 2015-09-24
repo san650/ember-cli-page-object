@@ -2,6 +2,14 @@
 import Ember from 'ember';
 import Attribute from './attribute';
 
+function keys(object) {
+  if (!Object.keys && Ember.keys) {
+    return Ember.keys(object);
+  } else {
+    return Object.keys(object);
+  }
+}
+
 function fillInDynamicSegments(path, params) {
   return path.split('/').map(function(segment) {
     let match;
@@ -27,7 +35,7 @@ function visitable(params = {}, queryParams = {}) {
     path = fillInDynamicSegments(path, params);
   }
 
-  if (Ember.keys(queryParams).length > 0) {
+  if (keys(queryParams).length > 0) {
     path += "?" + Ember.$.param(queryParams);
   }
 
