@@ -9,18 +9,6 @@ test('returns an object', function(assert) {
   assert.ok(pageObject);
 });
 
-test('copies keys recursively', function(assert) {
-  let pageObject = build({
-    key1: "a string",
-    key2: {
-      childKey: "another string"
-    }
-  });
-
-  assert.equal(pageObject.key1, "a string");
-  assert.equal(pageObject.key2.childKey, "another string");
-});
-
 test('builds properties', function(assert) {
   assert.expect(2);
 
@@ -52,13 +40,47 @@ test('builds a component from a plain object', function(assert) {
   assert.equal(pageObject.dummyComponent().dummyProp, "a value");
 });
 
+test('builds components recursively', function(assert) {
+  let dummyProp = {
+     propertyFor: function(target, key) {
+       return key;
+     }
+  };
+
+  let definition = {
+    one: dummyProp,
+    two: {
+      three: dummyProp,
+      four: {
+        five: dummyProp
+      }
+    },
+    six: {
+      seven: dummyProp
+    },
+    eight: {
+      nine: {
+        ten: dummyProp
+      }
+    }
+  };
+
+  let pageObject = build(definition);
+
+  assert.equal(pageObject.one, 'one');
+  assert.equal(pageObject.two().three, 'three');
+  assert.equal(pageObject.two().four().five, 'five');
+  assert.equal(pageObject.six().seven, 'seven');
+  assert.equal(pageObject.eight().nine().ten, 'ten');
+});
+
 test('behaves like a promise', function(assert) {
   let dummyProp = {
     propertyFor: function() {}
   };
 
   let dummyComponent = { dummyProp },
-    pageObject = build({ dummyComponent });
+      pageObject = build({ dummyComponent });
 
   assert.ok($.isFunction(pageObject.then), "result page object is thennable");
   assert.ok($.isFunction(pageObject.dummyComponent().then), "result component within page object is thennable");

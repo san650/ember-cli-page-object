@@ -8,19 +8,13 @@ Node.prototype.then = function() {
   return wait().then(...arguments);
 };
 
-Node.prototype.__isPageObjectNode = true;
+Node.prototype.toFunction = function() {
+  let tmp = buildPageObject(this);
 
-function peekForAttributes(parent, method) {
-  let keys = Object.keys(parent);
-
-  for(let i = 0; i < keys.length; i++) {
-    if (typeof(parent[keys[i]]) !== 'undefined' && parent[keys[i]][method]) {
-      return true;
-    }
-  }
-
-  return false;
-}
+  return function() {
+    return tmp;
+  };
+};
 
 /**
  * Converts properties of type `component` to plain objects (`component` is
@@ -38,9 +32,11 @@ function preProcess(definition) {
     let attr = definition[key];
 
     if (attr.unfoldPageObjectDefinition) {
-      node[key] = attr.unfoldPageObjectDefinition();
-    } else if ($.isPlainObject(attr)) {
-      node[key] = preProcess(definition[key]);
+      attr = attr.unfoldPageObjectDefinition();
+    }
+
+    if ($.isPlainObject(attr)) {
+      node[key] = preProcess(attr);
     } else {
       node[key] = attr;
     }
@@ -86,7 +82,7 @@ function buildTree(definition) {
       // continue
     } else if (attr.propertyFor) {
       root[key] = attr.propertyFor(root, key);
-    } else if ($.isPlainObject(attr) && peekForAttributes(attr, 'propertyFor')) {
+    } else if ($.isPlainObject(attr)) {
       root[key] = buildTree(attr);
     } else {
       root[key] = attr;
@@ -114,12 +110,6 @@ function buildPageObject(definition) {
       // continue
     } else if (attr.toFunction) {
       definition[key] = attr.toFunction();
-
-    // FIXME: Keep peekForAttribute for backwards compatibility
-    } else if (attr.__isPageObjectNode) {
-      tmp = buildPageObject(attr);
-
-      definition[key] = function() { return tmp; };
     } else {
       definition[key] = attr;
     }
