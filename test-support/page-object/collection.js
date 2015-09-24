@@ -52,10 +52,10 @@ export function collection(def) {
       plugAttribute(definition, 'count', countAttribute, qualifySelector(collectionScope, itemScope));
 
       collectionComponent = build(definition, key, parent);
-      
+
       return function(index) {
         let component;
-        
+
         if (index === 0) {
           throw new Error('ember-cli-page-object collections are 1-based arrays. Use index 1 to access the first item.');
         }

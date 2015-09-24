@@ -564,6 +564,8 @@ test('show all users', function(assert) {
 });
 ```
 
+**Note that ember-cli-page-object collections are 1-based arrays.**
+
 ### `.component`
 
 Allows to group attributes together.
