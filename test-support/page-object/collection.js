@@ -58,6 +58,10 @@ export function collection(def) {
           return function(index) {
             let component;
 
+            if (index === 0) {
+              throw new Error('ember-cli-page-object collections are 1-based arrays. Use index 1 to access the first item.');
+            }
+
             if (index) {
               component = build(
                 shallowCopyAndExtend(

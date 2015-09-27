@@ -155,3 +155,15 @@ it('does not mutate collection definition after been used', function(assert) {
 
   assert.equal(attribute(1).text(), 'Dummy');
 });
+
+it('throws an error when trying to access to element 0', function(assert) {
+  let attribute = buildAttributeWithOptions(collection, { scope: ".scope" }, {
+    itemScope: 'span',
+
+    item: {
+      text: text()
+    }
+  });
+
+  assert.throws(function() { attribute(0); }, /collections are 1-based arrays/, 'throws error');
+});
