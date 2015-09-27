@@ -1,143 +1,162 @@
+import { test } from 'qunit';
 import {
-  buildAttribute,
-  buildAttributeWithOptions,
   fixture,
-  it,
-  moduleFor
+  moduleFor,
+  buildProperty
 } from '../test-helper';
 import { collection } from '../../page-object/collection';
 import text from '../../page-object/properties/text';
 
 moduleFor('Components', 'collection');
 
-// Count
-
-it('generates a count attribute', function(assert) {
+test('generates a count attribute', function(assert) {
   fixture('<span>First</span><span>Second</span>');
 
-  let attribute = buildAttribute(collection, {
-    itemScope: 'span'
-  });
+  let attribute = buildProperty(
+    collection({itemScope: 'span'})
+  ).toFunction();
 
   assert.equal(attribute().count(), 2);
 });
 
-it('doesn\'t generate a count attribute when it\'s defined', function(assert) {
+test('doesn\'t generate a count attribute when it\'s defined', function(assert) {
   fixture('<span>First</span><span>Second</span>');
 
-  let attribute = buildAttribute(collection, {
-    itemScope: 'span',
-    count: 'myCount'
-  });
+  let attribute = buildProperty(
+    collection({
+      itemScope: 'span',
+      count: 'myCount'
+    })
+  ).toFunction();
 
   assert.equal(attribute().count, 'myCount');
 });
 
-it('generates component for item', function(assert) {
+test('generates component for item', function(assert) {
   fixture('<span>First</span><span>Second</span>');
 
-  let attribute = buildAttribute(collection, {
-    itemScope: 'span',
-    item: {
-      text: text()
-    }
-  });
+  let attribute = buildProperty(
+    collection({
+      itemScope: 'span',
+      item: {
+        text: text()
+      }
+    })
+  ).toFunction();
 
   assert.equal(attribute(1).text(), 'First');
   assert.equal(attribute(2).text(), 'Second');
 });
 
-it('generates component for scoped items', function(assert) {
+test('generates component for scoped items', function(assert) {
   fixture("<span class='cero'>Cero</span><span>First</span><span>Second</span>");
 
-  let attribute = buildAttribute(collection, {
-    itemScope: 'span:not(.cero)',
-    item: {
-      text: text()
-    }
-  });
+  let attribute = buildProperty(
+    collection({
+      itemScope: 'span:not(.cero)',
+      item: {
+        text: text()
+      }
+    })
+  ).toFunction();
 
   assert.equal(attribute(1).text(), 'First');
   assert.equal(attribute(2).text(), 'Second');
 });
 
-it('generates component for collection object', function(assert) {
+test('generates component for collection object', function(assert) {
   fixture('<span>First</span><span>Second</span><button>Submit</button>');
 
-  let attribute = buildAttribute(collection, {
-    itemScope: 'span',
-    text: text('button')
-  });
+  let attribute = buildProperty(
+    collection({
+      itemScope: 'span',
+      text: text('button')
+    })
+  ).toFunction();
 
   assert.equal(attribute().text(), 'Submit');
 });
 
-it('sets scope to components under item object', function(assert) {
+test('sets scope to components under item object', function(assert) {
   fixture('<button>Wrong</button><span><button>Wrong</button></span><span><button>Right</button></span>');
 
-  let attribute = buildAttribute(collection, {
-    itemScope: 'span',
-    item: {
-      button: {
-         text: text('button')
+  let attribute = buildProperty(
+    collection({
+      itemScope: 'span',
+      item: {
+        button: {
+           text: text('button')
+        }
       }
-    }
-  });
+    })
+  ).toFunction();
 
   assert.equal(attribute(2).button().text(), 'Right');
 });
 
-it('inherits parent scope by default', function(assert) {
+test('inherits parent scope by default', function(assert) {
   fixture('<span>Wrong</span><span class="scope"><span>First</span><span>Second</span></span>');
 
-  let attribute = buildAttributeWithOptions(collection, { scope: ".scope" }, {
-    itemScope: 'span',
+  let attribute = buildProperty(
+    collection({
+      itemScope: 'span',
 
-    item: {
-      text: text()
-    }
-  });
+      item: {
+        text: text()
+      }
+    }),
+    { scope: ".scope" }
+  ).toFunction();
 
   assert.equal(attribute(1).text(), 'First');
 });
 
-it('inherits parent scope for generated count attribute', function(assert) {
+test('inherits parent scope for generated count attribute', function(assert) {
   fixture('<span>Wrong</span><span class="scope"><span>First</span><span>Second</span></span>');
 
-  let attribute = buildAttributeWithOptions(collection, { scope: ".scope" }, {
-    itemScope: 'span'
-  });
+  let attribute = buildProperty(
+    collection({
+      itemScope: 'span'
+    }),
+    { scope: ".scope" }
+  ).toFunction();
 
   assert.equal(attribute().count(), 2);
 });
 
-it('resets parent scope for generated count attribute', function(assert) {
+test('resets parent scope for generated count attribute', function(assert) {
   fixture('<span>Wrong</span><span class="scope"><span>First</span><span>Second</span></span>');
 
-  let attribute = buildAttributeWithOptions(collection, { scope: ".scope" }, {
-    scope: '',
-    itemScope: 'span'
-  });
+  let attribute = buildProperty(
+    collection({
+      scope: '',
+      itemScope: 'span'
+    }),
+    { scope: ".scope" }
+  ).toFunction();
 
   assert.equal(attribute().count(), 4);
 });
 
-it('resets parent scope', function(assert) {
+test('resets parent scope', function(assert) {
   fixture('<span>Dummy</span><p class="scope"></p>');
 
-  let attribute = buildAttributeWithOptions(collection, { scope: ".scope" }, {
-    scope: '',
-    itemScope: 'span',
+  let attribute = buildProperty(
+    collection({
+      scope: '',
+      itemScope: 'span',
 
-    item: {
-      text: text()
-    }
-  });
+      item: {
+        text: text()
+      }
+    }),
+    { scope: ".scope" }
+  ).toFunction();
 
   assert.equal(attribute(1).text(), 'Dummy');
 });
 
-it('does not mutate collection definition after been used', function(assert) {
+test('does not mutate collection definition after been used', function(assert) {
   fixture('<span>Dummy</span><p class="scope"></p>');
 
   let def = {
@@ -149,21 +168,24 @@ it('does not mutate collection definition after been used', function(assert) {
     }
   };
 
-  let attribute = buildAttribute(collection, def);
+  buildProperty(collection(def)).toFunction();
 
-  attribute = buildAttribute(collection, def);
+  let attribute = buildProperty(collection(def)).toFunction();
 
   assert.equal(attribute(1).text(), 'Dummy');
 });
 
-it('throws an error when trying to access to element 0', function(assert) {
-  let attribute = buildAttributeWithOptions(collection, { scope: ".scope" }, {
-    itemScope: 'span',
+test('throws an error when trying to access to element 0', function(assert) {
+  let attribute = buildProperty(
+      collection({
+      itemScope: 'span',
 
-    item: {
-      text: text()
-    }
-  });
+      item: {
+        text: text()
+      }
+    }),
+    { scope: ".scope" }
+  ).toFunction();
 
   assert.throws(function() { attribute(0); }, /collections are 1-based arrays/, 'throws error');
 });
