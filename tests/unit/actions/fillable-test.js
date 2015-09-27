@@ -1,57 +1,65 @@
-import Ember from 'ember';
-import startApp from '../../helpers/start-app';
-import {
-  buildAttribute,
-  buildAttributeWithOptions,
-  it,
-  itBehavesLikeAnAttribute,
-  moduleFor
-} from '../test-helper';
-import { fillableAttribute } from '../../page-object/actions';
+import { test } from 'qunit';
+import { moduleFor, buildProperty } from '../test-helper';
+import fillable from '../../page-object/properties/fillable';
 
-var application;
+moduleFor('Actions', 'fillable');
 
-moduleFor('Actions', 'fillableAttribute', {
-  beforeEach: function() {
-    application = startApp();
-  },
-  afterEach: function() {
-    Ember.run(application, 'destroy');
-  }
-});
-
-itBehavesLikeAnAttribute(fillableAttribute);
-
-it('calls Ember\'s fillIn helper', function(assert) {
+test('calls Ember\'s fillIn helper', function(assert) {
   assert.expect(2);
 
-  let selector = '.element',
-      text = 'dummy text';
+  let expectedSelector = '.element',
+      expectedText = 'dummy text',
+      property;
+
 
   window.fillIn = function(actualSelector, actualText) {
-    assert.equal(actualSelector, selector);
-    assert.equal(actualText, text);
+    assert.equal(actualSelector, expectedSelector);
+    assert.equal(actualText, expectedText);
   };
 
-  buildAttribute(fillableAttribute, selector)(text);
+  property = buildProperty(fillable(expectedSelector));
+
+  property.invoke(expectedText);
 });
 
-it('uses scope', function(assert) {
+test('uses scope', function(assert) {
   assert.expect(1);
+
+  let property;
 
   window.fillIn = function(actualSelector) {
     assert.equal(actualSelector, '.scope .element');
   };
 
-  buildAttribute(fillableAttribute, '.element', { scope: '.scope' })();
+  property = buildProperty(fillable('.element', { scope: '.scope' }));
+
+  property.invoke('dummy text');
 });
 
-it('uses page scope', function(assert) {
+test('uses parent scope', function(assert) {
   assert.expect(1);
 
+  let property;
+
   window.fillIn = function(actualSelector) {
-    assert.equal(actualSelector, '.scope .element');
+    assert.equal(actualSelector, '.parent-scope .element');
   };
 
-  buildAttributeWithOptions(fillableAttribute, { scope: '.scope' }, '.element')();
+  property = buildProperty(fillable('.element'), { scope: '.parent-scope' });
+
+  property.invoke('dummy text');
+});
+
+test('returns target object', function(assert) {
+  assert.expect(1);
+
+  let target = { dummy: "value" },
+      property;
+
+  window.fillIn = function() {
+  };
+
+  property = buildProperty(fillable(), target);
+
+  assert.equal(property.invoke('dummy text'), target);
 });

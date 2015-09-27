@@ -1,76 +1,57 @@
-import Ember from 'ember';
-import startApp from '../../helpers/start-app';
-import {
-  buildAttribute,
-  buildAttributeWithOptions,
-  fixture,
-  it,
-  itBehavesLikeAnAttribute,
-  moduleFor
-} from '../test-helper';
-import { attributeAttribute } from '../../page-object/queries';
+import { test } from 'qunit';
+import { buildProperty, fixture, moduleFor } from '../test-helper';
+import attribute from '../../page-object/properties/attribute';
 
-var application;
+moduleFor('Queries', 'attribute');
 
-moduleFor('Queries', 'attributeAttribute', {
-  beforeEach: function() {
-    application = startApp();
-  },
-  afterEach: function() {
-    Ember.run(application, 'destroy');
-  }
-});
-
-itBehavesLikeAnAttribute(attributeAttribute);
-
-it('returns element attribute\'s value', function(assert) {
+test('returns element attribute\'s value', function(assert) {
   fixture('<img src="/path/to/image.png" />');
 
-  var attr = buildAttribute(attributeAttribute, 'src', 'img');
+  let property = buildProperty(attribute('src', 'img'));
 
-  assert.equal(attr(), '/path/to/image.png');
+  assert.equal(property.invoke(), '/path/to/image.png');
 });
 
-it('returns null when the attribute doesn\'t exist', function(assert) {
+test('returns null when the attribute doesn\'t exist', function(assert) {
   fixture('<img />');
 
-  var attr = buildAttribute(attributeAttribute, 'alt', 'img');
+  let property = buildProperty(attribute('alt', 'img'));
 
-  assert.equal(attr(), null);
+  assert.equal(property.invoke(), null);
 });
 
-it('raises an error when the element doesn\'t exist', function(assert) {
+test('raises an error when the element doesn\'t exist', function(assert) {
   assert.expect(1);
 
   try {
-    let attr = buildAttribute(attributeAttribute, 'alt', 'img');
+    let property = buildProperty(attribute('alt', 'img'));
 
-    attr();
+    property.invoke();
   } catch(e) {
     assert.ok(true, 'Element not found');
   }
 });
 
-it('uses scope', function(assert) {
+test('uses scope', function(assert) {
   fixture('<div class="scope logo"><img class="logo" alt="Logo small" /></div>');
 
-  var attr = buildAttribute(attributeAttribute, 'alt', '.logo', { scope: '.scope' });
+  let property = buildProperty(attribute('alt', '.logo', { scope: '.scope' }));
 
-  assert.equal(attr(), 'Logo small');
+  assert.equal(property.invoke(), 'Logo small');
 });
 
-it('uses page scope', function(assert) {
+test('uses parent scope', function(assert) {
   fixture('<div class="scope logo"><img class="logo" alt="Logo small" /></div>');
 
-  var attr = buildAttributeWithOptions(attributeAttribute, { scope: '.scope' }, 'alt', '.logo');
+  let property = buildProperty(attribute('alt', '.logo'), { scope: '.scope' });
 
-  assert.equal(attr(), 'Logo small');
+  assert.equal(property.invoke(), 'Logo small');
 });
 
-it('searches for element by index if provided', function(assert) {
+test('searches for element by index if provided', function(assert) {
   fixture('<img alt="img1" class="img"/><img alt="img2" class="img"/>');
 
-  var attr = buildAttribute(attributeAttribute, 'alt', '.img', { index: 2 });
+  let property = buildProperty(attribute('alt', '.img', { index: 2 }));
 
-  assert.equal(attr(), 'img2');
+  assert.equal(property.invoke(), 'img2');
 });

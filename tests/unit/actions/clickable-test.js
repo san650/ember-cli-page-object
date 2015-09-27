@@ -1,55 +1,62 @@
-import Ember from 'ember';
-import startApp from '../../helpers/start-app';
-import {
-  buildAttribute,
-  buildAttributeWithOptions,
-  it,
-  itBehavesLikeAnAttribute,
-  moduleFor
-} from '../test-helper';
-import { clickableAttribute } from '../../page-object/actions';
+import { test } from 'qunit';
+import { moduleFor, buildProperty } from '../test-helper';
+import clickable from '../../page-object/properties/clickable';
 
-var application;
+moduleFor('Actions', 'clickable');
 
-moduleFor('Actions', 'clickableAttribute', {
-  beforeEach: function() {
-    application = startApp();
-  },
-  afterEach: function() {
-    Ember.run(application, 'destroy');
-  }
-});
-
-itBehavesLikeAnAttribute(clickableAttribute);
-
-it('calls Ember\'s click helper', function(assert) {
+test('calls Ember\'s click helper', function(assert) {
   assert.expect(1);
 
-  let expectedSelector = 'button';
+  let expectedSelector = 'button',
+      property;
 
   window.click = function(actualSelector) {
     assert.equal(actualSelector, expectedSelector);
   };
 
-  buildAttribute(clickableAttribute, expectedSelector)();
+  property = buildProperty(clickable(expectedSelector));
+
+  property.invoke();
 });
 
-it('uses scope', function(assert) {
+test('uses scope', function(assert) {
   assert.expect(1);
+
+  let property;
 
   window.click = function(actualSelector) {
     assert.equal(actualSelector, '.scope .element');
   };
 
-  buildAttribute(clickableAttribute, '.element', { scope: '.scope' })();
+  property = buildProperty(clickable('.element', { scope: '.scope' }));
+
+  property.invoke();
 });
 
-it('uses page scope', function(assert) {
+test('uses parent scope', function(assert) {
   assert.expect(1);
 
+  let property;
+
   window.click = function(actualSelector) {
-    assert.equal(actualSelector, '.scope .element');
+    assert.equal(actualSelector, '.parent-scope .element');
   };
 
-  buildAttributeWithOptions(clickableAttribute, { scope: '.scope' }, '.element')();
+  property = buildProperty(clickable('.element'), { scope: '.parent-scope' });
+
+  property.invoke();
+});
+
+test('returns target object', function(assert) {
+  assert.expect(1);
+
+  let target = { dummy: "value" },
+      property;
+
+  window.click = function() {
+  };
+
+  property = buildProperty(clickable(), target);
+
+  assert.equal(property.invoke(), target);
 });

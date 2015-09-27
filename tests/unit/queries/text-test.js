@@ -1,90 +1,73 @@
-import Ember from 'ember';
-import startApp from '../../helpers/start-app';
-import {
-  buildAttribute,
-  buildAttributeWithOptions,
-  fixture,
-  it,
-  itBehavesLikeAnAttribute,
-  moduleFor
-} from '../test-helper';
-import { textAttribute } from '../../page-object/queries';
+import { test } from 'qunit';
+import { buildProperty, fixture, moduleFor } from '../test-helper';
+import text from '../../page-object/properties/text';
 
-var application;
+moduleFor('Queries', 'text');
 
-moduleFor('Queries', 'textAttribute', {
-  beforeEach: function() {
-    application = startApp();
-  },
-  afterEach: function() {
-    Ember.run(application, 'destroy');
-  }
-});
-
-itBehavesLikeAnAttribute(textAttribute);
-
-it('returns the inner text of the element', function(assert) {
+test('returns the inner text of the element', function(assert) {
   fixture('Hello <span>world!</span>');
 
-  var attr = buildAttribute(textAttribute, 'span');
+  let property = buildProperty(text('span'));
 
-  assert.equal(attr(), 'world!');
+  assert.equal(property.invoke(), 'world!');
 });
 
-it('removes white spaces from the beginning and end of the text', function(assert) {
+test('removes white spaces from the beginning and end of the text', function(assert) {
   fixture('<span>  awesome!  </span>');
 
-  var attr = buildAttribute(textAttribute, 'span');
+  let property = buildProperty(text('span'));
 
-  assert.equal(attr(), 'awesome!');
+  assert.equal(property.invoke(), 'awesome!');
 });
 
-it('normalizes inner text of the element containing newlines', function(assert) {
+test('normalizes inner text of the element containing newlines', function(assert) {
   fixture(['<span>', 'Hello', 'multi-line', 'world!', '</span>'].join("\n"));
 
-  var attr = buildAttribute(textAttribute, 'span');
+  let property = buildProperty(text('span'));
 
-  assert.equal(attr(), 'Hello multi-line world!');
+  assert.equal(property.invoke(), 'Hello multi-line world!');
 });
 
-it('converts &nbsp; characters into standard whitespace characters', function(assert) {
+test('converts &nbsp; characters into standard whitespace characters', function(assert) {
   fixture('<span>This&nbsp;is&nbsp;awesome.</span>');
-  var attr = buildAttribute(textAttribute, 'span');
-  assert.equal(attr(), 'This is awesome.');
+
+  let property = buildProperty(text('span'));
+
+  assert.equal(property.invoke(), 'This is awesome.');
 });
 
-it('raises an error when the element doesn\'t exist', function(assert) {
+test('raises an error when the element doesn\'t exist', function(assert) {
   assert.expect(1);
 
-  var attr = buildAttribute(textAttribute, 'span');
+  let property = buildProperty(text('span'));
 
   try {
-    attr();
+    property.invoke();
   } catch(e) {
     assert.ok(true, 'Element not found');
   }
 });
 
-it('returns empty when the element doesn\'t have text', function(assert) {
+test('returns empty when the element doesn\'t have text', function(assert) {
   fixture('<span />');
 
-  var attr = buildAttribute(textAttribute, 'span');
+  let property = buildProperty(text('span'));
 
-  assert.equal(attr(), '');
+  assert.equal(property.invoke(), '');
 });
 
-it('uses scope', function(assert) {
+test('uses scope', function(assert) {
   fixture('<div class="scope"><span>Hello</span></div><span> world!</span>');
 
-  var attr = buildAttribute(textAttribute, 'span', { scope: '.scope' });
+  var property = buildProperty(text('span', { scope: '.scope' }));
 
-  assert.equal(attr(), 'Hello');
+  assert.equal(property.invoke(), 'Hello');
 });
 
-it('uses page scope', function(assert) {
+test('uses page scope', function(assert) {
   fixture('<div class="scope"><span>Hello</span></div><span> world!</span>');
 
-  var attr = buildAttributeWithOptions(textAttribute, { scope: '.scope' }, 'span');
+  var property = buildProperty(text('span'), { scope: '.scope' });
 
-  assert.equal(attr(), 'Hello');
+  assert.equal(property.invoke(), 'Hello');
 });

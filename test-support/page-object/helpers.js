@@ -1,7 +1,27 @@
+/* global findWithAssert find */
+
 import Ember from 'ember';
 
 export function qualifySelector(...selectors) {
   return selectors.filter(item => !!item).join(' ');
+}
+
+export function findElementWithAssert(options, target) {
+  let selector = qualifySelector(
+    options.scope || target.scope,
+    indexedSelector(options.selector, options.index)
+  );
+
+  return findWithAssert(selector);
+}
+
+export function findElement(options, target) {
+  let selector = qualifySelector(
+    options.scope || target.scope,
+    indexedSelector(options.selector, options.index)
+  );
+
+  return find(selector);
 }
 
 /**

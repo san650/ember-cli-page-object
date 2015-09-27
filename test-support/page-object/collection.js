@@ -1,6 +1,6 @@
 import Ember from 'ember';
 import { build } from './build';
-import { countAttribute } from './queries';
+import count from './properties/count';
 import {
   isNullOrUndefined,
   qualifySelector
@@ -32,7 +32,7 @@ function extract(object, name) {
 
 export function collection(def) {
   return {
-    buildPageObjectAttribute: function(key, parent) {
+    propertyFor: function(parent, key) {
       let itemComponent,
           itemScope,
           collectionScope,
@@ -49,31 +49,35 @@ export function collection(def) {
       }
 
       // Add count attribute
-      plugAttribute(definition, 'count', countAttribute, qualifySelector(collectionScope, itemScope));
+      plugAttribute(definition, 'count', count, qualifySelector(collectionScope, itemScope));
 
-      collectionComponent = build(definition, key, parent);
+      collectionComponent = build(definition, parent, key);
 
-      return function(index) {
-        let component;
+      return {
+        toFunction() {
+          return function(index) {
+            let component;
 
-        if (index === 0) {
-          throw new Error('ember-cli-page-object collections are 1-based arrays. Use index 1 to access the first item.');
+            if (index === 0) {
+              throw new Error('ember-cli-page-object collections are 1-based arrays. Use index 1 to access the first item.');
+            }
+
+            if (index) {
+              component = build(
+                shallowCopyAndExtend(
+                  itemComponent,
+                  { scope: qualifySelector(collectionScope, scopeWithIndex(itemScope, index)) }
+                ),
+                key,
+                parent
+              );
+            } else {
+              component = collectionComponent;
+            }
+
+            return component;
+          };
         }
-
-        if (index) {
-          component = build(
-            shallowCopyAndExtend(
-              itemComponent,
-              { scope: qualifySelector(collectionScope, scopeWithIndex(itemScope, index)) }
-            ),
-            key,
-            parent
-          );
-        } else {
-          component = collectionComponent;
-        }
-
-        return component;
       };
     }
   };

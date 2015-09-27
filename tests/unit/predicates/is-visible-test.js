@@ -1,68 +1,49 @@
-import Ember from 'ember';
-import startApp from '../../helpers/start-app';
-import {
-  buildAttribute,
-  buildAttributeWithOptions,
-  fixture,
-  it,
-  itBehavesLikeAnAttribute,
-  moduleFor
-} from '../test-helper';
-import { isVisibleAttribute } from '../../page-object/predicates';
+import { test } from 'qunit';
+import { buildProperty, fixture, moduleFor } from '../test-helper';
+import isVisible from '../../page-object/properties/is-visible';
 
-var application;
+moduleFor('propertys', 'isVisible');
 
-moduleFor('Predicates', 'isVisibleAttribute', {
-  beforeEach: function() {
-    application = startApp();
-  },
-  afterEach: function() {
-    Ember.run(application, 'destroy');
-  }
-});
-
-itBehavesLikeAnAttribute(isVisibleAttribute);
-
-it('returns true when the element is visible', function(assert) {
+test('returns true when the element is visible', function(assert) {
   fixture('<div class="element" />');
 
-  var predicate = buildAttribute(isVisibleAttribute, '.element');
+  var property = buildProperty(isVisible('.element'));
 
-  assert.ok(predicate());
+  assert.ok(property.invoke());
 });
 
-it('returns false when the element is hidden', function(assert) {
+test('returns false when the element is hidden', function(assert) {
   fixture('<div class="element" style="display:none" />');
 
-  var predicate = buildAttribute(isVisibleAttribute, '.element');
+  var property = buildProperty(isVisible('.element'));
 
-  assert.ok(!predicate());
+  assert.ok(!property.invoke());
 });
 
-it('throws an error when the element doesn\'t exist in the DOM', function(assert) {
+test('throws an error when the element doesn\'t exist in the DOM', function(assert) {
   assert.expect(1);
 
-  var predicate = buildAttribute(isVisibleAttribute, '.element');
+  var property = buildProperty(isVisible('.element'));
 
   try {
-    predicate();
+    property.invoke();
   } catch(e) {
     assert.ok(true, 'Element not found');
   }
 });
 
-it('uses scope', function(assert) {
+test('uses scope', function(assert) {
   fixture('<div class="element" style="display:none" /><div class="scope"><div class="element" /></div>');
 
-  var predicate = buildAttribute(isVisibleAttribute, '.element:first', { scope: '.scope' });
+  var property = buildProperty(isVisible('.element:first', { scope: '.scope' }));
 
-  assert.ok(predicate());
+  assert.ok(property.invoke());
 });
 
-it('uses page scope', function(assert) {
+test('uses parent scope', function(assert) {
   fixture('<div class="element" style="display:none" /><div class="scope"><div class="element" /></div>');
 
-  var predicate = buildAttributeWithOptions(isVisibleAttribute, { scope: '.scope' }, '.element:first');
+  var property = buildProperty(isVisible('.element:first'), { scope: '.scope' });
 
-  assert.ok(predicate());
+  assert.ok(property.invoke());
 });
