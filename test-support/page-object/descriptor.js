@@ -15,6 +15,7 @@ export default class Descriptor {
   }
 
   propertyFor(target, key) {
+    // don't mutate options hash
     let optionsCopy = copy(this.options);
 
     if (isFunction(this.preProcess)) {

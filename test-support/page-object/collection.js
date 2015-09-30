@@ -27,11 +27,14 @@ function extract(object, name) {
 function preProcess(target, key, options) {
   let definition = extract(options, 'definition');
 
+  // don't mutate original definition
+  definition = copy(definition);
+
   options.itemDefinition = extract(definition, 'item');
   options.itemScope = extract(definition, 'itemScope');
 
   if (isNullOrUndefined(definition.scope)) {
-    definition.scope = definition.scope || target.scope;
+    definition.scope = target.scope;
   }
 
   options.scope = definition.scope;
@@ -53,6 +56,7 @@ function getCollection(target, key, options, index) {
   if (index) {
     component = copy(options.itemDefinition);
     component.scope = qualifySelector(options.scope, scopeWithIndex(options.itemScope, index));
+    component.__forceScopeToChildren = true;
     component = build(component);
   } else {
     component = options.collectionComponent;

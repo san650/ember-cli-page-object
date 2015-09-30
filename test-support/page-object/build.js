@@ -54,7 +54,9 @@ function setScopes(definition) {
 
     if ($.isPlainObject(attr)) {
 
-      if (typeof attr.scope === 'undefined' && typeof definition.scope !== 'undefined') {
+      if (definition.__forceScopeToChildren) {
+        attr.scope = [definition.scope, attr.scope].join(' ');
+      } else if (typeof(attr.scope) === 'undefined' && typeof(definition.scope) !== 'undefined') {
         attr.scope = definition.scope;
       }
 
