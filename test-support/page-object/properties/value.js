@@ -35,7 +35,7 @@ function getValue(target, key, options) {
  * @param {number} options.index - Reduce the set of matched elements to the one at the specified index
  * @return {Descriptor}
  */
-export default function text(selector, options = {}) {
+export default function value(selector, options = {}) {
   options.selector = selector;
 
   return new Descriptor(getValue, options);

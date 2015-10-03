@@ -37,7 +37,7 @@ function getAttribute(target, key, options) {
  * @param {number} options.index - Reduce the set of matched elements to the one at the specified index
  * @return {Descriptor}
  */
-export default function hasClass(attributeName, selector, options = {}) {
+export default function attribute(attributeName, selector, options = {}) {
   options.attributeName = attributeName;
   options.selector = selector;
 
