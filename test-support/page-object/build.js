@@ -31,7 +31,7 @@ function preProcess(definition) {
   keys.forEach(function(key) {
     let attr = definition[key];
 
-    if (attr.unfoldPageObjectDefinition) {
+    if (attr && attr.unfoldPageObjectDefinition) {
       attr = attr.unfoldPageObjectDefinition();
     }
 
