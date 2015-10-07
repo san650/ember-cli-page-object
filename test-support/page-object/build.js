@@ -100,8 +100,7 @@ function buildTree(definition) {
  * @return [Node] The representation of the page object
  */
 function buildPageObject(definition) {
-  let keys = Object.keys(definition),
-      tmp;
+  let keys = Object.keys(definition);
 
   keys.forEach(function(key) {
     let attr = definition[key];

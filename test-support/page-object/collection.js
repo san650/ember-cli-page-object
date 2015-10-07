@@ -1,25 +1,19 @@
 import Ember from 'ember';
+import Descriptor from './descriptor';
 import { build } from './build';
 import count from './properties/count';
 import {
-  isNullOrUndefined,
   qualifySelector
 } from './helpers';
 
-let extend = Ember.$.extend;
+let copy = Ember.copy;
 
-function shallowCopyAndExtend(...objects) {
-  return extend({}, ...objects);
+function isNullOrUndefined(value) {
+  return typeof(value) === 'undefined' || value === null;
 }
 
 function scopeWithIndex(base, index) {
   return `${base}:eq(${index - 1})`;
-}
-
-function plugAttribute(definition, attributeName, attributeDefinition, ...attributeParams) {
-  if (isNullOrUndefined(definition[attributeName])) {
-    definition[attributeName] = attributeDefinition(...attributeParams);
-  }
 }
 
 function extract(object, name) {
@@ -30,55 +24,45 @@ function extract(object, name) {
   return attribute;
 }
 
-export function collection(def) {
-  return {
-    propertyFor: function(parent, key) {
-      let itemComponent,
-          itemScope,
-          collectionScope,
-          collectionComponent,
-          definition = shallowCopyAndExtend(def);
+function preProcess(target, key, options) {
+  let definition = extract(options, 'definition');
 
-      itemComponent = extract(definition, 'item');
-      itemScope = extract(definition, 'itemScope');
+  options.itemDefinition = extract(definition, 'item');
+  options.itemScope = extract(definition, 'itemScope');
 
-      if (isNullOrUndefined(definition.scope)) {
-        collectionScope = parent.scope;
-      } else {
-        collectionScope = definition.scope;
-      }
+  if (isNullOrUndefined(definition.scope)) {
+    definition.scope = definition.scope || target.scope;
+  }
 
-      // Add count attribute
-      plugAttribute(definition, 'count', count, qualifySelector(collectionScope, itemScope));
+  options.scope = definition.scope;
 
-      collectionComponent = build(definition, parent, key);
+  if (!definition.count) {
+    definition.count = count(options.itemScope);
+  }
 
-      return {
-        toFunction() {
-          return function(index) {
-            let component;
+  options.collectionComponent = build(definition);
+}
 
-            if (index === 0) {
-              throw new Error('ember-cli-page-object collections are 1-based arrays. Use index 1 to access the first item.');
-            }
+function getCollection(target, key, options, index) {
+  let component;
 
-            if (index) {
-              component = build(
-                shallowCopyAndExtend(
-                  itemComponent,
-                  { scope: qualifySelector(collectionScope, scopeWithIndex(itemScope, index)) }
-                ),
-                key,
-                parent
-              );
-            } else {
-              component = collectionComponent;
-            }
+  if (index === 0) {
+    throw new Error('ember-cli-page-object collections are 1-based arrays. Use index 1 to access the first item.');
+  }
 
-            return component;
-          };
-        }
-      };
-    }
-  };
+  if (index) {
+    component = copy(options.itemDefinition);
+    component.scope = qualifySelector(options.scope, scopeWithIndex(options.itemScope, index));
+    component = build(component);
+  } else {
+    component = options.collectionComponent;
+  }
+
+  return component;
+}
+
+export function collection(definition) {
+  let options = { definition: copy(definition) };
+
+  return new Descriptor(getCollection, options, preProcess);
 }

@@ -36,10 +36,6 @@ export function trim(text) {
   return Ember.$.trim(text).replace(/\n/g, ' ').replace(/\s\s*/g, ' ');
 }
 
-export function isNullOrUndefined(object) {
-  return object === undefined || object === null;
-}
-
 export function indexedSelector(baseSelector, index) {
   let selector;
 
