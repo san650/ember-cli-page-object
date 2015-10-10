@@ -1,7 +1,7 @@
 # Ember Page Objects [![Build Status](https://travis-ci.org/san650/ember-cli-page-object.svg?branch=master)](https://travis-ci.org/san650/ember-cli-page-object)
 
 Represent the screens of your web app as a series of objects. This ember-cli
-addon ease the construction of these objects on your acceptance tests.
+addon eases the construction of these objects on your acceptance tests.
 
 ## What is a Page Object?
 
