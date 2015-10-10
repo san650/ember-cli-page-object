@@ -1,6 +1,6 @@
 {
   "name": "ember-cli-page-object",
-  "version": "0.8.0",
+  "version": "0.8.1",
   "description": "Helper functions to implement the Page Object pattern in your tests",
   "homepage": "http://san650.github.io/ember-cli-page-object/",
   "bugs": "https://github.com/san650/ember-cli-page-object/issues",
