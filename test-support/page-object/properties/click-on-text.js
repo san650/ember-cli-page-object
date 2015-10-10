@@ -45,7 +45,7 @@ function doClick(target, key, options, textToClick) {
  * @param {string} options.scope - Overrides parent scope
  * @return {Descriptor}
  */
-export default function clickable(selector, options = {}) {
+export default function clickOnText(selector, options = {}) {
   options.selector = selector;
 
   return new Descriptor(doClick, options);

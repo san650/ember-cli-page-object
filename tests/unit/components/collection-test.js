@@ -177,7 +177,7 @@ test('does not mutate collection definition after been used', function(assert) {
 
 test('throws an error when trying to access to element 0', function(assert) {
   let attribute = buildProperty(
-      collection({
+    collection({
       itemScope: 'span',
 
       item: {
@@ -188,4 +188,73 @@ test('throws an error when trying to access to element 0', function(assert) {
   ).toFunction();
 
   assert.throws(function() { attribute(0); }, /collections are 1-based arrays/, 'throws error');
+});
+
+test('assigns the correct scope to item sub components', function(assert) {
+  fixture('<span><p>Lorem</p></span><span><p>Ipsum</p></span>');
+
+  let attribute = buildProperty(
+    collection({
+      itemScope: 'span',
+      item: {
+        anotherComponent: {
+          scope: 'p',
+          text: text()
+        }
+      }
+    })
+  ).toFunction();
+
+  assert.equal(attribute(1).anotherComponent().text(), 'Lorem');
+});
+
+test('assigns the correct scope to item sub components when component doesn\'t defines a scope', function(assert) {
+  fixture('<span><p>Lorem</p></span><span><p>Ipsum</p></span>');
+
+  let attribute = buildProperty(
+    collection({
+      itemScope: 'span',
+      item: {
+        anotherComponent: {
+          text: text()
+        }
+      }
+    })
+  ).toFunction();
+
+  assert.equal(attribute(1).anotherComponent().text(), 'Lorem');
+});
+
+import { build } from '../../page-object/build';
+
+test('doesn\'t mutate collection definition', function(assert) {
+  fixture('<div>Lorem <p> Ipsum <span>Dolor</span> <span> Ergo</span></p></div>');
+
+  let component = {
+    scope: 'p',
+
+    four: collection({
+      itemScope: 'span',
+      item: {
+        text: text(),
+      }
+    })
+  };
+
+  build({
+    one: {
+      scope: 'div',
+
+      two: component
+    }
+  });
+  let pageObject = build({
+    one: {
+      scope: 'div',
+
+      two: component
+    }
+  });
+
+  assert.equal(pageObject.one().two().four(1).text(), 'Dolor');
 });

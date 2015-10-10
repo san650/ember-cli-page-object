@@ -85,3 +85,9 @@ test('behaves like a promise', function(assert) {
   assert.ok($.isFunction(pageObject.then), "result page object is thennable");
   assert.ok($.isFunction(pageObject.dummyComponent().then), "result component within page object is thennable");
 });
+
+test('allows `undefined` keys', function(assert) {
+  assert.expect(0);
+
+  build({ key: undefined });
+});

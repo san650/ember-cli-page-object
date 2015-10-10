@@ -31,7 +31,7 @@ function preProcess(definition) {
   keys.forEach(function(key) {
     let attr = definition[key];
 
-    if (attr.unfoldPageObjectDefinition) {
+    if (attr && attr.unfoldPageObjectDefinition) {
       attr = attr.unfoldPageObjectDefinition();
     }
 
@@ -54,7 +54,9 @@ function setScopes(definition) {
 
     if ($.isPlainObject(attr)) {
 
-      if (typeof attr.scope === 'undefined' && typeof definition.scope !== 'undefined') {
+      if (definition.__forceScopeToChildren) {
+        attr.scope = [definition.scope, attr.scope].join(' ');
+      } else if (typeof(attr.scope) === 'undefined' && typeof(definition.scope) !== 'undefined') {
         attr.scope = definition.scope;
       }
 
@@ -100,8 +102,7 @@ function buildTree(definition) {
  * @return [Node] The representation of the page object
  */
 function buildPageObject(definition) {
-  let keys = Object.keys(definition),
-      tmp;
+  let keys = Object.keys(definition);
 
   keys.forEach(function(key) {
     let attr = definition[key];
