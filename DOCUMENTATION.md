@@ -23,6 +23,7 @@ Table of content
   * [`.collection`](#collection)
   * [`.component`](#component)
   * [`.customHelper`](#customhelper)
+  * [Default behaviour](#defaultBehavior)
 * [Attribute options](#attribute-options)
   * [`scope`](#attribute-scope)
   * [`index`](#index)
@@ -760,6 +761,16 @@ var page = PageObject.build({
 
 assert.ok(!page.userName().disabled(), 'user name input is not disabled');
 ```
+
+### Default Behavior
+
+By default, all created components will inherit handy behavior to be
+used without been explicitely declared.
+
+Any component will respond to the `isVisible` and `isHidden`
+predicates which will use the component scope to determine if its
+visible or not.
+
 
 ## Attribute options
 

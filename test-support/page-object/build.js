@@ -1,19 +1,29 @@
 /* global wait */
 import componentProperty from './properties/component';
+import isHiddenProperty from './properties/is-hidden';
+import isVisibleProperty from './properties/is-visible';
 
-function Node() {
-}
+class Node {
+  constructor() {
+    this.initComponentBehavior();
+  }
 
-Node.prototype.then = function() {
-  return wait().then(...arguments);
-};
+  then() {
+    return wait().then(...arguments);
+  }
 
-Node.prototype.toFunction = function() {
-  let tmp = buildPageObject(this);
+  toFunction() {
+    let tmp = buildPageObject(this);
 
-  return function() {
-    return tmp;
-  };
+    return function() {
+      return tmp;
+    };
+  }
+
+  initComponentBehavior() {
+    this.isHidden = isHiddenProperty().propertyFor(this, 'isHidden');
+    this.isVisible = isVisibleProperty().propertyFor(this, 'isVisible');
+  }
 };
 
 /**
