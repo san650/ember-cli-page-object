@@ -48,6 +48,27 @@ test('raises an error when the element doesn\'t exist', function(assert) {
   }
 });
 
+test('throws an error when more than one element in the DOM match', function(assert) {
+  assert.expect(1);
+  fixture('<span class="element"/> <span class="element"/>');
+
+  let property = buildProperty(text('.element'));
+
+  try {
+    property.invoke();
+  } catch(e) {
+    assert.ok(true, 'More than one element found');
+  }
+});
+
+test("doesn't throw error if matches more than one element but multiple: true option was used", function(assert) {
+  fixture('<span class="element">Multiple</span><div class="element">Text</span>');
+
+  let property = buildProperty(text('.element', { multiple: true }));
+
+  assert.equal(property.invoke(), "MultipleText");
+});
+
 test('returns empty when the element doesn\'t have text', function(assert) {
   fixture('<span />');
 

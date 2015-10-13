@@ -10,8 +10,13 @@ export function findElementWithAssert(options, target) {
     indexedSelector(options.selector, options.index)
   );
 
-  /* global findWithAssert */
-  return findWithAssert(selector);
+  let elementToAssert = findWithAssert(selector);
+
+  if (!options['multiple'] && elementToAssert.length > 1) {
+    throw new Error(`${selector} matched more than one element. If this is not an error use { multiple: true }`);
+  }
+
+  return elementToAssert;
 }
 
 export function findElement(options, target) {

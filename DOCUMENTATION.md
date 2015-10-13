@@ -876,6 +876,28 @@ andThen(function() {
 });
 ```
 
+### `multiple`
+
+This option can be used to avoid errors been thrown when `visible`,
+`hidden`, `text` and `value` attributes are used and match more than one
+element in the page.
+
+```html
+<span>Lorem</span>
+<span>ipsum</span>
+<span>dolor</span>
+```
+
+```js
+var page = PO.build({
+  word: PO.text('span', { multiple: true })
+});
+
+andThen(function() {
+  assert.equal(page.word(), 'Loremipsumdolor'); // => won't throw error
+});
+```
+
 ## Scopes
 
 The `scope` attribute can be used to reduce the set of matched elements to the
