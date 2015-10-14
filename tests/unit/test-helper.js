@@ -20,6 +20,8 @@ export function moduleFor(category, helperName) {
 
 export function fixture(str) {
   $('#ember-testing').html(str);
+
+  return $('#ember-testing').children(':first');
 }
 
 export function buildProperty(descriptor, parent = {}) {

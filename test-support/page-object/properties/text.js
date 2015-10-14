@@ -1,5 +1,5 @@
 import Descriptor from '../descriptor';
-import { findElementWithAssert, trim } from '../helpers';
+import { findElementWithAssert, trim, BetterError } from '../helpers';
 
 /**
  * Gets the text of the matched element
@@ -13,7 +13,8 @@ import { findElementWithAssert, trim } from '../helpers';
  * @return {string} value of the attribute
  */
 function getText(target, key, options) {
-  let element = findElementWithAssert(options, target);
+  let error = new BetterError('text', key, target, options.selector, { scope: options.scope, index: options.index }),
+      element = findElementWithAssert(options, target, error);
 
   return trim(element.text());
 }
