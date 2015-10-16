@@ -225,6 +225,23 @@ test('assigns the correct scope to item sub components when component doesn\'t d
   assert.equal(attribute(1).anotherComponent().text(), 'Lorem');
 });
 
+test('assigns the correct scope to sub collection items', function(assert) {
+  fixture('<div><span></span><span></span></div><div><span></span></div>');
+
+  let attribute = buildProperty(
+    collection({
+      itemScope: 'div',
+      item: {
+        spans: collection({
+          itemScope: 'span'
+        })
+      }
+    })
+  ).toFunction();
+
+  assert.equal(attribute(1).spans().count(), 2);
+});
+
 import { build } from '../../page-object/build';
 
 test('doesn\'t mutate collection definition', function(assert) {
