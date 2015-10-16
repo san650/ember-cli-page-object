@@ -8,6 +8,7 @@ Table of content
   * [`.notHasClass`](#nothasclass)
   * [`.isVisible`](#isvisible)
   * [`.isHidden`](#ishidden)
+  * [`.contains`](#contains)
 * [Queries](#queries)
   * [`.attribute`](#attribute)
   * [`.count`](#count)
@@ -173,6 +174,30 @@ var page = PO.build({
 });
 
 assert.ok(page.isImageHidden(), 'Image is hidden');
+```
+
+### `.contains`
+
+Returns `true` if the given text is found within element's text.
+
+Attribute signature
+
+```js
+PO.contains(selector [, scope: ''])
+```
+
+Examples
+
+```html
+<h1> Page Title </h1>
+```
+
+```js
+var page = PO.build({
+  titleIncludes: contains('h1')
+});
+
+assert.ok(page.titleIncludes('Page'));
 ```
 
 ## Queries
