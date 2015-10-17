@@ -49,7 +49,7 @@ var page = PO.build({
 });
 
 test('Page contents', function(assert) {
-  assert.expect(7);
+  assert.expect(8);
 
   page.visit();
 
@@ -58,6 +58,7 @@ test('Page contents', function(assert) {
   andThen(function() {
     assert.equal(page.title(), 'Users');
     assert.equal(page.users().count(), 2);
+    assert.ok(page.users(1).isVisible());
     assert.equal(page.users(1).userName(), 'jane');
     assert.equal(page.users(1).role(), 'admin');
     assert.equal(page.users(1).gender().selected(), 'Female');

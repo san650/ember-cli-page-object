@@ -28,6 +28,7 @@ Table of contents
   * [`scope`](#attribute-scope)
   * [`index`](#index)
 * [Scopes](#scopes)
+* [Default behavior](#default-behavior)
 
 ## Setup
 
@@ -1053,3 +1054,17 @@ var page = PageObject.build({
 | | translates |
 | ------- | -------- |
 | `page.search().input().value()` | `find('input').val()` |
+
+## Default behavior
+
+By default, all components will inherit handy behavior to be used without been
+explicitely declared.
+
+* `isVisible`
+* `isHidden`
+* `clickOn`
+* `click`
+* `contains`
+* `text`
+
+Note that these attributes will use the component scope.

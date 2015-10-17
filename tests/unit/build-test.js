@@ -91,3 +91,57 @@ test('allows `undefined` keys', function(assert) {
 
   build({ key: undefined });
 });
+
+test('adds `isVisible` attribute to base page object', function(assert) {
+  let pageObject = build({});
+
+  assert.ok(
+    $.isFunction(pageObject.isVisible),
+    "page object has is visible predicate"
+  );
+});
+
+test('adds `isVisible` attribute to base page object', function(assert) {
+  let pageObject = build({});
+
+  assert.ok(
+    $.isFunction(pageObject.isHidden),
+    "page object has is hidden predicate"
+  );
+});
+
+test('adds `clickOn` attribute to base page object', function(assert) {
+  let pageObject = build({});
+
+  assert.ok(
+    $.isFunction(pageObject.clickOn),
+    "page object has is clickOn action"
+  );
+});
+
+test('adds `click` attribute to base page object', function(assert) {
+  let pageObject = build({});
+
+  assert.ok(
+    $.isFunction(pageObject.click),
+    "page object has is click action"
+  );
+});
+
+test('adds `contains` attribute to base page object', function(assert) {
+  let pageObject = build({});
+
+  assert.ok(
+    $.isFunction(pageObject.contains),
+    "page object has is contains predicate"
+  );
+});
+
+test('adds `text` attribute to base page object', function(assert) {
+  let pageObject = build({});
+
+  assert.ok(
+    $.isFunction(pageObject.text),
+    "page object has is text query"
+  );
+});

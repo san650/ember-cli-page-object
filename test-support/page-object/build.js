@@ -1,7 +1,19 @@
 /* global wait */
 import componentProperty from './properties/component';
+import isHidden from './properties/is-hidden';
+import isVisible from './properties/is-visible';
+import clickOnText from './properties/click-on-text';
+import clickable from './properties/clickable';
+import contains from './properties/contains';
+import text from './properties/text';
 
 function Node() {
+  this.isHidden = isHidden().propertyFor(this, 'isHidden');
+  this.isVisible = isVisible().propertyFor(this, 'isVisible');
+  this.clickOn = clickOnText().propertyFor(this, 'clickOn');
+  this.click = clickable().propertyFor(this, 'click');
+  this.contains = contains().propertyFor(this, 'contains');
+  this.text = text().propertyFor(this, 'text');
 }
 
 Node.prototype.then = function() {
