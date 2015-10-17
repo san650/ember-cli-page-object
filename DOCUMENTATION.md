@@ -1,6 +1,6 @@
 # Page Object
 
-Table of content
+Table of contents
 
 * [Setup](#setup)
 * [Predicates](#predicates)
