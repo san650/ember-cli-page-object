@@ -28,7 +28,7 @@ npm install --save-dev ember-cli-page-object
 then import the page-object helper
 
 ```js
-import PO from '../page-object';
+import PageObject from '../page-object';
 ```
 
 The previous example assumes that your test file is one level deep under
@@ -37,12 +37,14 @@ The previous example assumes that your test file is one level deep under
 Then you can start building your page objects as follows:
 
 ```js
-var login = PO.build({
-  visit:        PO.visitable('/login'),
-  userName:     PO.fillable('#username'),
-  password:     PO.fillable('#password'),
-  submit:       PO.clickable('#login'),
-  errorMessage: PO.text('.message')
+var { clickable, fillable, text, visitable } = PageObject;
+
+var login = PageObject.create({
+  visit: visitable('/login'),
+  userName: fillable('#username'),
+  password: fillable('#password'),
+  submit: clickable('#login'),
+  errorMessage: text('.message')
 });
 
 test('Invalid log in', function(assert) {
@@ -74,15 +76,17 @@ Built-in support for defining tables and collections:
 ```
 
 ```js
-var page = PO.build({
-  visit: PO.visitable('/users'),
+var { collection, text, visitable } = PageObject;
 
-  users: PO.collection({
+var page = PageObject.create({
+  visit: visitable('/users'),
+
+  users: collection({
     itemScope: '#users tr',
 
     item: {
-      firstName: PO.text('td:nth-of-type(1)'),
-      lastName:  PO.text('td:nth-of-type(2)')
+      firstName: text('td:nth-of-type(1)'),
+      lastName: text('td:nth-of-type(2)')
     }
   })
 });
@@ -97,25 +101,6 @@ test('show all users', function(assert) {
     assert.equal(page.users(2).firstName(), 'John');
     assert.equal(page.users(2).lastName(), 'Doe');
   });
-});
-```
-
-You can use ES6 destructuring to declutter even more your page definition:
-
-```js
-var { visitable, collection, text } = PO;
-
-var page = PO.build({
-  visit: visitable('/users'),
-
-  users: collection({
-    itemScope: '#users tr',
-
-    item: {
-      firstName: text('td:nth-of-type(1)'),
-      lastName:  text('td:nth-of-type(2)')
-    }
-  })
 });
 ```
 

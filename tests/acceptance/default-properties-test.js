@@ -18,7 +18,7 @@ var {
 } = PageObject;
 
 test('Adds default properties', function(assert) {
-  var page = PageObject.build({
+  var page = PageObject.create({
     visit: visitable('/calculator'),
 
     one: {
@@ -46,7 +46,7 @@ test('Adds default properties', function(assert) {
 });
 
 test('Overrides default properties', function(assert) {
-  var page = PageObject.build({
+  var page = PageObject.create({
     dummy: {
       isHidden() {
         return 'isHidden';

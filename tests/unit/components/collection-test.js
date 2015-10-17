@@ -262,7 +262,7 @@ test('assigns the correct scope to sub collection items', function(assert) {
   assert.equal(attribute(1).spans(2).text(), 'Ipsum');
 });
 
-import { build } from '../../page-object/build';
+import { create } from '../../page-object/create';
 
 test('doesn\'t mutate collection definition', function(assert) {
   fixture('<div>Lorem <p> Ipsum <span>Dolor</span> <span> Ergo</span></p></div>');
@@ -278,14 +278,15 @@ test('doesn\'t mutate collection definition', function(assert) {
     })
   };
 
-  build({
+  create({
     one: {
       scope: 'div',
 
       two: component
     }
   });
-  let pageObject = build({
+
+  let pageObject = create({
     one: {
       scope: 'div',
 

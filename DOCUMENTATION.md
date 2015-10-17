@@ -35,17 +35,17 @@ Table of contents
 You can import the PageObject object using the `import` construct as follows:
 
 ```js
-import PO from '../page-object';
+import PageObject from '../page-object';
 ```
 
 The previous example assumes that your test file is one level deep under
 `tests/` folder. i.e. `tests/unit/my-unit-test.js`.
 
 
-In order to create a new PageObject definition use the `.build` method.
+In order to create a new PageObject definition use the `.create` method.
 
 ```js
-var page = PO.build({
+var page = PageObject.create({
   // page attributes
 });
 ```
@@ -53,7 +53,7 @@ var page = PO.build({
 You can define attributes using any JavaScript construct
 
 ```js
-var page = PO.build({
+var page = PageObject.create({
   title: function() {
     return $('.title').text();
   },
@@ -65,16 +65,16 @@ assert.equal(page.title(), 'My title');
 assert.equal(page.text, 'A text');
 ```
 
-There are many special attributes you can use defined under the PO namespace
+There are many special attributes you can use defined under the PageObject namespace
 that simplify common patterns, i.e.
 
 ```js
-var page = PO.build({
-  title: PO.text('.title')
+var page = PageObject.create({
+  title: PageObject.text('.title')
 });
 ```
 
-The following is a comprehensive documentation of the available `PO` attribute
+The following is a comprehensive documentation of the available `PageObject` attribute
 helpers.
 
 ## Predicates
@@ -88,7 +88,7 @@ Returns `true` if the element has the css class.
 Attribute signature
 
 ```js
-PO.hasClass(cssClass, selector [, scope: ''])
+PageObject.hasClass(cssClass, selector [, scope: ''])
 ```
 
 Examples
@@ -98,8 +98,8 @@ Examples
 ```
 
 ```js
-var page = PO.build({
-  isImageActive: PO.hasClass('is-active', '.img')
+var page = PageObject.create({
+  isImageActive: PageObject.hasClass('is-active', '.img')
 });
 
 assert.ok(page.isImageActive(), 'Image is active');
@@ -112,7 +112,7 @@ Returns `true` if the element doesn't have the css class.
 Attribute signature
 
 ```js
-PO.notHasClass(cssClass, selector [, scope: ''])
+PageObject.notHasClass(cssClass, selector [, scope: ''])
 ```
 
 Examples
@@ -122,8 +122,8 @@ Examples
 ```
 
 ```js
-var page = PO.build({
-  isImageDeactivated: PO.notHasClass('is-active', '.img')
+var page = PageObject.create({
+  isImageDeactivated: PageObject.notHasClass('is-active', '.img')
 });
 
 assert.ok(page.isImageDeactivated(), 'Image is not active');
@@ -136,7 +136,7 @@ Returns `true` if the element exists and is visible.
 Attribute signature
 
 ```js
-PO.isVisible(selector [, scope: ''])
+PageObject.isVisible(selector [, scope: ''])
 ```
 
 Examples
@@ -146,8 +146,8 @@ Examples
 ```
 
 ```js
-var page = PO.build({
-  isImageVisible: PO.isVisible('.img')
+var page = PageObject.create({
+  isImageVisible: PageObject.isVisible('.img')
 });
 
 assert.ok(page.isImageVisible(), 'Image is visible');
@@ -160,7 +160,7 @@ Returns `true` if the element doesn't exist or it exists and is hidden.
 Attribute signature
 
 ```js
-PO.isHidden(selector [, scope: ''])
+PageObject.isHidden(selector [, scope: ''])
 ```
 
 Examples
@@ -170,8 +170,8 @@ Examples
 ```
 
 ```js
-var page = PO.build({
-  isImageHidden: PO.isHidden('.img')
+var page = PageObject.create({
+  isImageHidden: PageObject.isHidden('.img')
 });
 
 assert.ok(page.isImageHidden(), 'Image is hidden');
@@ -184,7 +184,7 @@ Returns `true` if the given text is found within element's text.
 Attribute signature
 
 ```js
-PO.contains(selector [, scope: ''])
+PageObject.contains(selector [, scope: ''])
 ```
 
 Examples
@@ -194,7 +194,7 @@ Examples
 ```
 
 ```js
-var page = PO.build({
+var page = PageObject.create({
   titleIncludes: contains('h1')
 });
 
@@ -212,7 +212,7 @@ Returns the element's attribute value.
 Attribute signature
 
 ```js
-PO.attribute(attributeName, selector [, scope: ''])
+PageObject.attribute(attributeName, selector [, scope: ''])
 ```
 
 Examples
@@ -222,8 +222,8 @@ Examples
 ```
 
 ```js
-var page = PO.build({
-  imageAlternateText: PO.attribute('alt', '.img')
+var page = PageObject.create({
+  imageAlternateText: PageObject.attribute('alt', '.img')
 });
 
 assert.equal(page.imageAlternateText(), 'Logo');
@@ -236,7 +236,7 @@ Returns the count of elements that match the css selector.
 Attribute signature
 
 ```js
-PO.count(selector [, scope: ''])
+PageObject.count(selector [, scope: ''])
 ```
 
 Examples
@@ -247,8 +247,8 @@ Examples
 ```
 
 ```js
-var page = PO.build({
-  imageCount: PO.count('.img')
+var page = PageObject.create({
+  imageCount: PageObject.count('.img')
 });
 
 assert.equal(page.imageCount(), 2);
@@ -262,7 +262,7 @@ and end of the string is removed for convenience.
 Attribute signature
 
 ```js
-PO.text(selector [, scope: ''])
+PageObject.text(selector [, scope: ''])
 ```
 
 Examples
@@ -272,8 +272,8 @@ Examples
 ```
 
 ```js
-var page = PO.build({
-  title: PO.text('h1')
+var page = PageObject.create({
+  title: PageObject.text('h1')
 });
 
 assert.equal(page.title(), 'Page title');
@@ -286,7 +286,7 @@ Returns the value of an input.
 Attribute signature
 
 ```js
-PO.value(selector [, scope: ''])
+PageObject.value(selector [, scope: ''])
 ```
 
 Examples
@@ -296,8 +296,8 @@ Examples
 ```
 
 ```js
-var page = PO.build({
-  name: PO.value('#name')
+var page = PageObject.create({
+  name: PageObject.value('#name')
 });
 
 assert.equal(page.name(), 'John Doe');
@@ -315,7 +315,7 @@ Creates an action to click an element.
 Attribute signature
 
 ```js
-PO.clickable(selector [, scope: ''])
+PageObject.clickable(selector [, scope: ''])
 ```
 
 Examples
@@ -325,8 +325,8 @@ Examples
 ```
 
 ```js
-var page = PO.build({
-  submitForm: PO.clickable('#submit')
+var page = PageObject.create({
+  submitForm: PageObject.clickable('#submit')
 });
 
 page.submitForm();
@@ -343,7 +343,7 @@ Creates an action to click on an element by text. The text is case sensitive.
 Attribute signature
 
 ```js
-PO.clickOnText(selector, [, scope: ''])
+PageObject.clickOnText(selector, [, scope: ''])
 ```
 
 Examples
@@ -354,7 +354,7 @@ Examples
 ```
 
 ```js
-var page = PO.build({
+var page = PageObject.create({
   click: clickOnText('.btn')
 });
 
@@ -382,7 +382,7 @@ Fills an input.
 Attribute signature
 
 ```js
-PO.fillable(selector [, scope: ''])
+PageObject.fillable(selector [, scope: ''])
 ```
 
 Examples
@@ -392,8 +392,8 @@ Examples
 ```
 
 ```js
-var page = PO.build({
-  name: PO.fillable('#name')
+var page = PageObject.create({
+  name: PageObject.fillable('#name')
 });
 
 page.name('John Doe');
@@ -410,7 +410,7 @@ Selects an option.
 Attribute signature
 
 ```js
-PO.selectable(selector [, scope: ''])
+PageObject.selectable(selector [, scope: ''])
 ```
 
 Examples
@@ -423,8 +423,8 @@ Examples
 ```
 
 ```js
-var page = PO.build({
-  selectGender: PO.selectable('#gender')
+var page = PageObject.create({
+  selectGender: PageObject.selectable('#gender')
 });
 
 page.selectGender('Female');
@@ -441,14 +441,14 @@ Visits a page.
 Attribute signature
 
 ```js
-PO.visitable(routePath)
+PageObject.visitable(routePath)
 ```
 
 Examples
 
 ```js
-var page = PO.build({
-  visit: PO.visitable('/users')
+var page = PageObject.create({
+  visit: PageObject.visitable('/users')
 });
 
 page.visit();
@@ -461,8 +461,8 @@ andThen(function() {
 You can define dynamic segments in the path as follows
 
 ```js
-var page = PO.build({
-  visit: PO.visitable('/users/:user_id/comments/:comment_id')
+var page = PageObject.create({
+  visit: PageObject.visitable('/users/:user_id/comments/:comment_id')
 });
 
 page.visit({ user_id: 5, comment_id: 1 });
@@ -475,8 +475,8 @@ andThen(function() {
 You can also use query params when invoking the action as follows
 
 ```js
-var page = PO.build({
-  visit: PO.visitable('/users')
+var page = PageObject.create({
+  visit: PageObject.visitable('/users')
 });
 
 page.visit({}, { display: "collapsed" });
@@ -498,10 +498,10 @@ Example
 ```
 
 ```js
-var page = PO.build({
-  visit: PO.visitable('/user/new'),
-  submitForm: PO.clickable('#submit'),
-  name: PO.fillable('#name')
+var page = PageObject.create({
+  visit: PageObject.visitable('/user/new'),
+  submitForm: PageObject.clickable('#submit'),
+  name: PageObject.fillable('#name')
 });
 
 page
@@ -523,7 +523,7 @@ Allows to easily model a table or list of items.
 Attribute signature
 
 ```js
-PO.collection(definition)
+PageObject.collection(definition)
 ```
 
 The collection definition has the following structure
@@ -561,18 +561,18 @@ Examples
 ```
 
 ```js
-var page = PO.build({
-  visit: PO.visitable('/users'),
+var page = PageObject.create({
+  visit: PageObject.visitable('/users'),
 
-  users: PO.collection({
+  users: PageObject.collection({
     itemScope: '#users tr',
 
     item: {
-      firstName: PO.text('td:nth-of-type(1)'),
-      lastName: PO.text('td:nth-of-type(2)')
+      firstName: PageObject.text('td:nth-of-type(1)'),
+      lastName: PageObject.text('td:nth-of-type(2)')
     },
 
-    caption: PO.text('#users caption')
+    caption: PageObject.text('#users caption')
   })
 });
 
@@ -599,7 +599,7 @@ Allows to group attributes together.
 Attribute signature
 
 ```js
-PO.component(definition)
+PageObject.component(definition)
 ```
 
 Examples
@@ -614,14 +614,14 @@ Examples
 ```
 
 ```js
-var page = PO.build({
-  visit: PO.visitable('/user/create'),
-  title: PO.text('h1'),
+var page = PageObject.create({
+  visit: PageObject.visitable('/user/create'),
+  title: PageObject.text('h1'),
 
-  form: PO.component({
-    firstName: PO.fillable('#firstName'),
-    lastName: PO.fillable('#lastName'),
-    submit: PO.clickable('button')
+  form: PageObject.component({
+    firstName: PageObject.fillable('#firstName'),
+    lastName: PageObject.fillable('#lastName'),
+    submit: PageObject.clickable('button')
   })
 });
 
@@ -645,14 +645,14 @@ andThen(function() {
 You can define components implicity by creating a plain object with attributes on it
 
 ```js
-var page = PO.build({
-  visit: PO.visitable('/user/create'),
-  title: PO.text('h1'),
+var page = PageObject.create({
+  visit: PageObject.visitable('/user/create'),
+  title: PageObject.text('h1'),
 
   form: {
-    firstName: PO.fillable('#firstName'),
-    lastName: PO.fillable('#lastName'),
-    submit: PO.clickable('button')
+    firstName: PageObject.fillable('#firstName'),
+    lastName: PageObject.fillable('#lastName'),
+    submit: PageObject.clickable('button')
   }
 });
 ```
@@ -665,7 +665,7 @@ returned as is.
 Allows to define reusable helpers using information of the surrounding context.
 
 ```js
-PO.customHelper(function(selector, options) {
+PageObject.customHelper(function(selector, options) {
   // user magic goes here
   return value;
 });
@@ -700,7 +700,7 @@ var disabled = customHelper(function(selector, options) {
   return $(selector).prop('disabled');
 });
 
-var page = PageObject.build({
+var page = PageObject.create({
   userName: {
     disabled: disabled('#userName')
   }
@@ -726,7 +726,7 @@ var input = customHelper(function(selector, options) {
   };
 });
 
-var page = PageObject.build({
+var page = PageObject.create({
   scope: 'form',
   userName: input('#userName')
 });
@@ -754,7 +754,7 @@ var clickManyTimes = customHelper(function(selector, options) {
   };
 });
 
-var page = PageObject.build({
+var page = PageObject.create({
   clickAgeSelector: clickManyTimes('#ageSelector .spinner-button'),
   ageValue: value('#ageSelector input')
 });
@@ -778,7 +778,7 @@ var prop = customHelper(function(selector, options) {
   return $(selector).prop(options.name);
 });
 
-var page = PageObject.build({
+var page = PageObject.create({
   userName: {
     disabled: prop('#userName', { name: 'disabled' })
   }
@@ -809,12 +809,12 @@ Given the following HTML
 the following configuration will match the footer element
 
 ```js
-var page = PO.build({
+var page = PageObject.create({
   scope: '.article',
 
-  textBody: PO.text('p'),
+  textBody: PageObject.text('p'),
 
-  copyrightNotice: PO.text('p', { scope: '.footer' })
+  copyrightNotice: PageObject.text('p', { scope: '.footer' })
 });
 
 andThen(function() {
@@ -838,8 +838,8 @@ Given the following HTML
 the following configuration will match the second `span` element
 
 ```js
-var page = PO.build({
-  word: PO.text('span', { index: 2 })
+var page = PageObject.create({
+  word: PageObject.text('span', { index: 2 })
 });
 
 andThen(function() {
@@ -866,10 +866,10 @@ Given the following HTML
 the following configuration will match the article paragraph element
 
 ```js
-var page = PO.build({
+var page = PageObject.create({
   scope: '.article',
 
-  textBody: PO.text('p'),
+  textBody: PageObject.text('p'),
 });
 
 andThen(function() {
@@ -892,7 +892,7 @@ Given the following HTML
 We can define several attributes on the same `input` element as follows
 
 ```js
-var page = PO.build({
+var page = PageObject.create({
   input: {
     scope: '#userName',
 
@@ -929,7 +929,7 @@ andThen(function() {
 ```
 
 ```js
-var page = PageObject.build({
+var page = PageObject.create({
   scope: '.todo',
 
   todos: collection({
@@ -953,7 +953,7 @@ var page = PageObject.build({
 You can reset parent scope by setting the `scope` attribute on the collection declaration.
 
 ```js
-var page = PageObject.build({
+var page = PageObject.create({
   scope: '.todo',
 
   todos: collection({
@@ -988,7 +988,7 @@ var page = PageObject.build({
 ```
 
 ```js
-var page = PageObject.build({
+var page = PageObject.create({
   scope: '.todos',
 
   todos: collection({
@@ -1018,7 +1018,7 @@ var page = PageObject.build({
 ```
 
 ```js
-var page = PageObject.build({
+var page = PageObject.create({
   search: {
     scope: '.search',
 
@@ -1037,7 +1037,7 @@ var page = PageObject.build({
 You can reset parent scope by setting the `scope` attribute on the component declaration.
 
 ```js
-var page = PageObject.build({
+var page = PageObject.create({
   search: {
     scope: '.search',
 

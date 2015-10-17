@@ -27,7 +27,7 @@ function doFillIn(target, key, options, textToUse) {
  *
  * @example
  *
- *   var page = PO.build({
+ *   var page = PageObject.create({
  *     name: fillable('#name')
  *   });
  *

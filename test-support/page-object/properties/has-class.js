@@ -24,7 +24,7 @@ function doHasClass(target, key, options) {
  *
  * @example
  *
- *   var page = PageObject.build({
+ *   var page = PageObject.create({
  *     isImageActive: hasClass('is-active', '.img')
  *   });
  *

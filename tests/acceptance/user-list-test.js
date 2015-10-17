@@ -1,7 +1,7 @@
 import Ember from 'ember';
 import { module, test } from 'qunit';
 import startApp from '../helpers/start-app';
-import PO from '../page-object';
+import PageObject from '../page-object';
 
 var application;
 
@@ -14,34 +14,34 @@ module('Collections', {
   }
 });
 
-var selectBox = PO.customHelper(function() {
+var selectBox = PageObject.customHelper(function() {
   return {
-    select: PO.selectable(),
-    selected: PO.text(`option:selected`),
+    select: PageObject.selectable(),
+    selected: PageObject.text(`option:selected`),
     isDisabled: isDisabled()
   };
 });
 
-var isDisabled = PO.customHelper(function(selector) {
+var isDisabled = PageObject.customHelper(function(selector) {
   return $(selector).prop('disabled');
 });
 
-var isAdmin = PO.customHelper(function(selector) {
+var isAdmin = PageObject.customHelper(function(selector) {
   return function() {
     return $(selector).hasClass('admin');
   };
 });
 
-var page = PO.build({
-  visit: PO.visitable('/users'),
+var page = PageObject.create({
+  visit: PageObject.visitable('/users'),
 
-  title: PO.text('h1'),
+  title: PageObject.text('h1'),
 
-  users: PO.collection({
+  users: PageObject.collection({
     itemScope: 'tbody tr',
     item: {
-      userName: PO.text('td', { index: 1 }),
-      role: PO.text('td', { index: 2 }),
+      userName: PageObject.text('td', { index: 1 }),
+      role: PageObject.text('td', { index: 2 }),
       gender: selectBox('select'),
       isAdmin: isAdmin()
     }

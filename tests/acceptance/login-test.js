@@ -1,7 +1,7 @@
 import Ember from 'ember';
 import { module, test } from 'qunit';
 import startApp from '../helpers/start-app';
-import PO from '../page-object';
+import PageObject from '../page-object';
 
 var application;
 
@@ -14,19 +14,28 @@ module('An Integration test', {
   }
 });
 
-var page = PO.build({
-  visit: PO.visitable('/login'),
+var {
+  clickable,
+  fillable,
+  hasClass,
+  notHasClass,
+  text,
+  visitable
+} = PageObject;
+
+var page = PageObject.create({
+  visit: visitable('/login'),
 
   form: {
-    userName: PO.fillable('#userName'),
-    password: PO.fillable('#password'),
-    click: PO.clickable('.login button'),
+    userName: fillable('#userName'),
+    password: fillable('#password'),
+    click: clickable('.login button'),
   },
 
-  title: PO.text('.title'),
-  message: PO.text('.message'),
-  hasError: PO.hasClass('is-error', '.login'),
-  notHasError: PO.notHasClass('is-error', '.login')
+  title: text('.title'),
+  message: text('.message'),
+  hasError: hasClass('is-error', '.login'),
+  notHasError: notHasClass('is-error', '.login')
 });
 
 test('Retries login', function(assert) {

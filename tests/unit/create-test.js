@@ -1,10 +1,10 @@
 import { test, module } from 'qunit';
-import { build } from '../page-object/build';
+import { create } from '../page-object/create';
 
-module('Base | build');
+module('Base | create');
 
 test('returns an object', function(assert) {
-  let pageObject = build({});
+  let pageObject = create({});
 
   assert.ok(pageObject);
 });
@@ -19,7 +19,7 @@ test('builds properties', function(assert) {
      }
   };
 
-  build({ dummyKey: dummyProp });
+  create({ dummyKey: dummyProp });
 });
 
 test('builds a component from a plain object', function(assert) {
@@ -35,7 +35,7 @@ test('builds a component from a plain object', function(assert) {
   };
 
   let dummyComponent = { dummyProp },
-      pageObject = build({ dummyComponent });
+      pageObject = create({ dummyComponent });
 
   assert.equal(pageObject.dummyComponent().dummyProp, "a value");
 });
@@ -65,7 +65,7 @@ test('builds components recursively', function(assert) {
     }
   };
 
-  let pageObject = build(definition);
+  let pageObject = create(definition);
 
   assert.equal(pageObject.one, 'one');
   assert.equal(pageObject.two().three, 'three');
@@ -80,7 +80,7 @@ test('behaves like a promise', function(assert) {
   };
 
   let dummyComponent = { dummyProp },
-      pageObject = build({ dummyComponent });
+      pageObject = create({ dummyComponent });
 
   assert.ok($.isFunction(pageObject.then), "result page object is thennable");
   assert.ok($.isFunction(pageObject.dummyComponent().then), "result component within page object is thennable");
@@ -89,11 +89,11 @@ test('behaves like a promise', function(assert) {
 test('allows `undefined` keys', function(assert) {
   assert.expect(0);
 
-  build({ key: undefined });
+  create({ key: undefined });
 });
 
 test('adds `isVisible` attribute to base page object', function(assert) {
-  let pageObject = build({});
+  let pageObject = create({});
 
   assert.ok(
     $.isFunction(pageObject.isVisible),
@@ -102,7 +102,7 @@ test('adds `isVisible` attribute to base page object', function(assert) {
 });
 
 test('adds `isVisible` attribute to base page object', function(assert) {
-  let pageObject = build({});
+  let pageObject = create({});
 
   assert.ok(
     $.isFunction(pageObject.isHidden),
@@ -111,7 +111,7 @@ test('adds `isVisible` attribute to base page object', function(assert) {
 });
 
 test('adds `clickOn` attribute to base page object', function(assert) {
-  let pageObject = build({});
+  let pageObject = create({});
 
   assert.ok(
     $.isFunction(pageObject.clickOn),
@@ -120,7 +120,7 @@ test('adds `clickOn` attribute to base page object', function(assert) {
 });
 
 test('adds `click` attribute to base page object', function(assert) {
-  let pageObject = build({});
+  let pageObject = create({});
 
   assert.ok(
     $.isFunction(pageObject.click),
@@ -129,7 +129,7 @@ test('adds `click` attribute to base page object', function(assert) {
 });
 
 test('adds `contains` attribute to base page object', function(assert) {
-  let pageObject = build({});
+  let pageObject = create({});
 
   assert.ok(
     $.isFunction(pageObject.contains),
@@ -138,7 +138,7 @@ test('adds `contains` attribute to base page object', function(assert) {
 });
 
 test('adds `text` attribute to base page object', function(assert) {
-  let pageObject = build({});
+  let pageObject = create({});
 
   assert.ok(
     $.isFunction(pageObject.text),

@@ -1,6 +1,6 @@
 import Ember from 'ember';
 import Descriptor from './descriptor';
-import { build } from './build';
+import { create } from './create';
 import count from './properties/count';
 import {
   qualifySelector
@@ -57,13 +57,13 @@ function getCollection(target, key, options, index) {
     component = copy(options.itemDefinition);
     component.scope = qualifySelector(options.scope, scopeWithIndex(options.itemScope, index));
     component.__forceScopeToChildren = true;
-    component = build(component);
+    component = create(component);
   } else {
     if (target.__forceScopeToChildren) {
       options.collectionComponent.scope = target.scope;
     }
 
-    component = build(options.collectionComponent);
+    component = create(options.collectionComponent);
   }
 
   return component;

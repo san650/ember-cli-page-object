@@ -34,7 +34,7 @@ function doClick(target, key, options, textToClick) {
  *
  * @example
  *
- *   var page = PageObject.build({
+ *   var page = PageObject.create({
  *     click: clickOnText('button[type=submit]')
  *   });
  *

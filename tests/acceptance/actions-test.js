@@ -31,7 +31,7 @@ var button = customHelper(function(scope) {
   };
 });
 
-var page = PageObject.build({
+var page = PageObject.create({
   visit: visitable('/calculator'),
 
   numbers: collection({

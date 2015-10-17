@@ -26,7 +26,7 @@ function doClick(target, key, options) {
  *
  * @example
  *
- *   var page = PageObject.build({
+ *   var page = PageObject.create({
  *     submit: clickable('button[type=submit]')
  *   });
  *

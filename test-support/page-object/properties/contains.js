@@ -25,7 +25,7 @@ function doContains(target, key, options, textToSearch) {
  * @example
  *   <h1> Page Title </h1>
  *
- *   var page = PageObject.build({
+ *   var page = PageObject.create({
  *     titleIncludes: contains('h1')
  *   });
  *
