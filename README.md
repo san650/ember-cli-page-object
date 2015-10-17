@@ -185,6 +185,7 @@ test('visiting /users', function(assert) {
 [![Ember Observer Score](http://emberobserver.com/badges/ember-cli-page-object.svg)](http://emberobserver.com/addons/ember-cli-page-object)
 [![Dependency Status](https://www.versioneye.com/user/projects/5622d5e836d0ab0021000b31/badge.svg?style=flat)](https://www.versioneye.com/user/projects/5622d5e836d0ab0021000b31)
 [![Codacy Badge](https://api.codacy.com/project/badge/35545e8e8ade48dfa999a3f5e1aa4b3b)](https://www.codacy.com/app/san650/ember-cli-page-object)
+[![Code Climate](https://codeclimate.com/github/san650/ember-cli-page-object/badges/gpa.svg)](https://codeclimate.com/github/san650/ember-cli-page-object)
 
 ## License
 
