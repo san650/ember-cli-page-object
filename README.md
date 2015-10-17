@@ -183,6 +183,7 @@ test('visiting /users', function(assert) {
 
 [![Build Status](https://travis-ci.org/san650/ember-cli-page-object.svg?branch=master)](https://travis-ci.org/san650/ember-cli-page-object)
 [![Ember Observer Score](http://emberobserver.com/badges/ember-cli-page-object.svg)](http://emberobserver.com/addons/ember-cli-page-object)
+[![Dependency Status](https://www.versioneye.com/user/projects/5622d5e836d0ab0021000b31/badge.svg?style=flat)](https://www.versioneye.com/user/projects/5622d5e836d0ab0021000b31)
 
 ## License
 
