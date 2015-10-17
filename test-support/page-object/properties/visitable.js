@@ -52,7 +52,7 @@ function doVisit(target, key, options, params = {}, queryParams = {}) {
  *
  * @example
  *
- *   var page = PO.build({
+ *   var page = PageObject.create({
  *     visit: visitalbe('/users')
  *   });
  *

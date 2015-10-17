@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import { build } from '../build';
+import { create } from '../create';
 import Descriptor from '../descriptor';
 import { qualifySelector } from '../helpers';
 
@@ -11,7 +11,7 @@ function action(target, key, options, ...args){
   if ($.isPlainObject(response)) {
     let definition = $.extend({ scope: selector }, response);
 
-    return build(definition);
+    return create(definition);
   } else if ($.isFunction(response)) {
     return response(...args);
   } else {

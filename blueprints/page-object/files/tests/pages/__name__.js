@@ -4,6 +4,6 @@ let {
   visitable
 } = PageObject;
 
-export default PageObject.build({
+export default PageObject.create({
   visit: visitable('/')
 });

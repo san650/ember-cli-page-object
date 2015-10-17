@@ -1,4 +1,5 @@
 /* global wait */
+import Ember from 'ember';
 import componentProperty from './properties/component';
 import isHidden from './properties/is-hidden';
 import isVisible from './properties/is-visible';
@@ -131,7 +132,7 @@ function buildPageObject(definition) {
   return definition;
 }
 
-export function build(definition) {
+export function create(definition) {
   let copy;
 
   copy = preProcess(definition);
@@ -140,4 +141,10 @@ export function build(definition) {
   copy = buildPageObject(copy);
 
   return copy;
+}
+
+export function build(definition) {
+  Ember.deprecate('`build` is deprecated in favor of `create`.');
+
+  return create(definition);
 }

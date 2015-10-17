@@ -23,7 +23,7 @@ function getCount(target, key, options) {
  *
  * @example
  *
- *   var page = PageObject.build({
+ *   var page = PageObject.create({
  *     imageCount: count('.img')
  *   });
  *

@@ -24,7 +24,7 @@ function getAttribute(target, key, options) {
  *
  * @example
  *
- *   var page = PageObject.build({
+ *   var page = PageObject.create({
  *     imageAlternateText: attribute('alt', '.img')
  *   });
  *

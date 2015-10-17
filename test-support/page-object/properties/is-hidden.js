@@ -23,7 +23,7 @@ function doIsHidden(target, key, options) {
  *
  * @example
  *
- *   var page = PageObject.build({
+ *   var page = PageObject.create({
  *     isImageVisible: isVisible('.img')
  *   });
  *

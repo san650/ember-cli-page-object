@@ -23,7 +23,7 @@ function getValue(target, key, options) {
  *
  * @example
  *
- *   var page = PageObject.build({
+ *   var page = PageObject.create({
  *     name: value('#name')
  *   });
  *

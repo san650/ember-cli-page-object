@@ -23,7 +23,7 @@ function getText(target, key, options) {
  *
  * @example
  *
- *   var page = PageObject.build({
+ *   var page = PageObject.create({
  *     title: text('h1')
  *   });
  *

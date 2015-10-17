@@ -24,7 +24,7 @@ function doNotHasClass(target, key, options) {
  *
  * @example
  *
- *   var page = PageObject.build({
+ *   var page = PageObject.create({
  *     isImageDeactivated: notHasClass('is-active', '.img')
  *   });
  *

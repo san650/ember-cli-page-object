@@ -1,6 +1,7 @@
 import {
-  build
-} from './page-object/build';
+  build,
+  create
+} from './page-object/create';
 import { collection } from './page-object/collection';
 import attribute from './page-object/properties/attribute';
 import clickOnText from './page-object/properties/click-on-text';
@@ -20,12 +21,13 @@ import visitable from './page-object/properties/visitable';
 export default {
   attribute,
   build,
-  clickable,
   clickOnText,
-  customHelper,
+  clickable,
   collection,
   component,
   count,
+  create,
+  customHelper,
   fillable,
   hasClass,
   isHidden,
