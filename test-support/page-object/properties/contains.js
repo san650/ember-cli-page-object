@@ -1,5 +1,5 @@
 import Descriptor from '../descriptor';
-import { findElementWithAssert, trim } from '../helpers';
+import { findElementWithAssert } from '../helpers';
 
 /**
  * Checks if an element has a subtext
