@@ -1,6 +1,5 @@
 /* global wait */
 import Ember from 'ember';
-import componentProperty from './properties/component';
 import isHidden from './properties/is-hidden';
 import isVisible from './properties/is-visible';
 import clickOnText from './properties/click-on-text';
@@ -42,7 +41,7 @@ function preProcess(definition) {
       attr;
 
   keys.forEach(function(key) {
-    let attr = definition[key];
+    attr = definition[key];
 
     if (attr && attr.unfoldPageObjectDefinition) {
       attr = attr.unfoldPageObjectDefinition();

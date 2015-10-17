@@ -14,16 +14,16 @@ module('Collections', {
   }
 });
 
+var isDisabled = PageObject.customHelper(function(selector) {
+  return $(selector).prop('disabled');
+});
+
 var selectBox = PageObject.customHelper(function() {
   return {
     select: PageObject.selectable(),
     selected: PageObject.text(`option:selected`),
     isDisabled: isDisabled()
   };
-});
-
-var isDisabled = PageObject.customHelper(function(selector) {
-  return $(selector).prop('disabled');
 });
 
 var isAdmin = PageObject.customHelper(function(selector) {

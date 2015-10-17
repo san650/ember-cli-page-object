@@ -1,5 +1,3 @@
-/* global findWithAssert find */
-
 import Ember from 'ember';
 
 export function qualifySelector(...selectors) {
@@ -12,6 +10,7 @@ export function findElementWithAssert(options, target) {
     indexedSelector(options.selector, options.index)
   );
 
+  /* global findWithAssert */
   return findWithAssert(selector);
 }
 
@@ -21,6 +20,7 @@ export function findElement(options, target) {
     indexedSelector(options.selector, options.index)
   );
 
+  /* global find */
   return find(selector);
 }
 

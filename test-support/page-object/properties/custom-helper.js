@@ -1,4 +1,3 @@
-import Ember from 'ember';
 import { create } from '../create';
 import Descriptor from '../descriptor';
 import { qualifySelector } from '../helpers';

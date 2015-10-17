@@ -5,9 +5,9 @@ import Descriptor from '../descriptor';
 
 function fillInDynamicSegments(path, params) {
   return path.split('/').map(function(segment) {
-    let match;
+    let match = segment.match(/^:(.+)$/);
 
-    if (match = segment.match(/^:(.+)$/)) {
+    if (match) {
       let key = match[1];
 
       if (!params[key]) {
