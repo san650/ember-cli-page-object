@@ -24,11 +24,11 @@ Table of contents
   * [`.collection`](#collection)
   * [`.component`](#component)
   * [`.customHelper`](#customhelper)
-  * [Default behaviour](#defaultBehavior)
 * [Attribute options](#attribute-options)
   * [`scope`](#attribute-scope)
   * [`index`](#index)
 * [Scopes](#scopes)
+* [Default behaviour](#defaultBehavior)
 
 ## Setup
 
@@ -787,16 +787,6 @@ var page = PageObject.build({
 assert.ok(!page.userName().disabled(), 'user name input is not disabled');
 ```
 
-### Default Behavior
-
-By default, all created components will inherit handy behavior to be
-used without been explicitely declared.
-
-Any component will respond to the `isVisible` and `isHidden`
-predicates which will use the component scope to determine if its
-visible or not.
-
-
 ## Attribute options
 
 A set of options can be passed as parameters when defining attributes.
@@ -1064,3 +1054,13 @@ var page = PageObject.build({
 | | translates |
 | ------- | -------- |
 | `page.search().input().value()` | `find('input').val()` |
+
+## Default Behavior
+
+By default, all components will inherit handy behavior to be used without been
+explicitely declared.
+
+* `isVisible`
+* `isHidden`
+
+Note that these attributes will use the component scope.

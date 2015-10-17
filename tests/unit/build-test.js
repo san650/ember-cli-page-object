@@ -92,21 +92,20 @@ test('allows `undefined` keys', function(assert) {
   build({ key: undefined });
 });
 
-test('support inherited component behavior', function(assert) {
-  let pageObject = build({
-    key: {
-      propertyFor: function(target, key) {
-        return key;
-      }
-    }
-  });
+test('adds `isVisible` attribute to base page object', function(assert) {
+  let pageObject = build({});
 
   assert.ok(
     $.isFunction(pageObject.isVisible),
-    "result page object has visible predicate"
+    "page object has is visible predicate"
   );
+});
+
+test('adds `isVisible` attribute to base page object', function(assert) {
+  let pageObject = build({});
+
   assert.ok(
     $.isFunction(pageObject.isHidden),
-    "result page object has hidden predicate"
+    "page object has is hidden predicate"
   );
 });
