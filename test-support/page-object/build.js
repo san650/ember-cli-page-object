@@ -1,29 +1,31 @@
 /* global wait */
 import componentProperty from './properties/component';
-import isHiddenProperty from './properties/is-hidden';
-import isVisibleProperty from './properties/is-visible';
+import isHidden from './properties/is-hidden';
+import isVisible from './properties/is-visible';
+import clickOnText from './properties/click-on-text';
+import clickable from './properties/clickable';
+import contains from './properties/contains';
+import text from './properties/text';
 
-class Node {
-  constructor() {
-    this.initComponentBehavior();
-  }
+function Node() {
+  this.isHidden = isHidden().propertyFor(this, 'isHidden');
+  this.isVisible = isVisible().propertyFor(this, 'isVisible');
+  this.clickOn = clickOnText().propertyFor(this, 'clickOn');
+  this.click = clickable().propertyFor(this, 'click');
+  this.contains = contains().propertyFor(this, 'contains');
+  this.text = text().propertyFor(this, 'text');
+}
 
-  then() {
-    return wait().then(...arguments);
-  }
+Node.prototype.then = function() {
+  return wait().then(...arguments);
+};
 
-  toFunction() {
-    let tmp = buildPageObject(this);
+Node.prototype.toFunction = function() {
+  let tmp = buildPageObject(this);
 
-    return function() {
-      return tmp;
-    };
-  }
-
-  initComponentBehavior() {
-    this.isHidden = isHiddenProperty().propertyFor(this, 'isHidden');
-    this.isVisible = isVisibleProperty().propertyFor(this, 'isVisible');
-  }
+  return function() {
+    return tmp;
+  };
 };
 
 /**
