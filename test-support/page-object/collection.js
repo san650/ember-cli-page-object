@@ -43,7 +43,7 @@ function preProcess(target, key, options) {
     definition.count = count(options.itemScope);
   }
 
-  options.collectionComponent = build(definition);
+  options.collectionComponent = definition;
 }
 
 function getCollection(target, key, options, index) {
@@ -59,7 +59,11 @@ function getCollection(target, key, options, index) {
     component.__forceScopeToChildren = true;
     component = build(component);
   } else {
-    component = options.collectionComponent;
+    if (target.__forceScopeToChildren) {
+      options.collectionComponent.scope = target.scope;
+    }
+
+    component = build(options.collectionComponent);
   }
 
   return component;
