@@ -54,6 +54,10 @@ function getCollection(target, key, options, index) {
   }
 
   if (index) {
+    if (target.__forceScopeToChildren) {
+      options.scope = target.scope;
+    }
+
     component = copy(options.itemDefinition);
     component.scope = qualifySelector(options.scope, scopeWithIndex(options.itemScope, index));
     component.__forceScopeToChildren = true;
