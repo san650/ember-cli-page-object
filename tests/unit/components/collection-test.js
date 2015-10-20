@@ -259,7 +259,7 @@ test('assigns the correct scope to sub collection items', function(assert) {
     })
   ).toFunction();
 
-  assert.equal(attribute(1).spans(2).text(), 'Ipsum');
+  assert.equal(attribute(2).spans(1).text(), 'Dolor');
 });
 
 import { create } from '../../page-object/create';
