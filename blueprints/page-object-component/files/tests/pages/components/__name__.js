@@ -4,6 +4,6 @@ let {
   text
 } = PageObject;
 
-export default PageObject.component({
+export default {
   title: text('h1')
-});
+};
