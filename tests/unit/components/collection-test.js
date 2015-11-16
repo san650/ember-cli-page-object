@@ -94,6 +94,28 @@ test('sets scope to components under item object', function(assert) {
   assert.equal(attribute(2).button().text(), 'Right');
 });
 
+test('sets scope to deeper components under item object', function(assert) {
+  fixture('<ul><li><main><header>Wrong Title</header></main></li><li><main><header>Right Title</header></main></li></ul>');
+
+  let attribute = buildProperty(
+    collection({
+      itemScope: 'li',
+      item: {
+        main: {
+          scope: 'main',
+
+          header: {
+            scope: 'header',
+            text: text()
+          }
+        }
+      }
+    })
+  ).toFunction();
+
+  assert.equal(attribute(2).main().header().text(), 'Right Title');
+});
+
 test('inherits parent scope by default', function(assert) {
   fixture('<span>Wrong</span><span class="scope"><span>First</span><span>Second</span></span>');
 
