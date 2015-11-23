@@ -15,6 +15,7 @@ import isHidden from './page-object/properties/is-hidden';
 import isVisible from './page-object/properties/is-visible';
 import notHasClass from './page-object/properties/not-has-class';
 import text from './page-object/properties/text';
+import textList from './page-object/properties/text-list';
 import value from './page-object/properties/value';
 import visitable from './page-object/properties/visitable';
 
@@ -35,6 +36,7 @@ export default {
   notHasClass,
   selectable: fillable,
   text,
+  textList,
   value,
   visitable
 };
