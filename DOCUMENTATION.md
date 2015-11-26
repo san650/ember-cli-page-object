@@ -13,6 +13,7 @@ Table of contents
   * [`.attribute`](#attribute)
   * [`.count`](#count)
   * [`.text`](#text)
+  * [`.textList`](#text-list)
   * [`.value`](#value)
 * [Actions](#actions)
   * [`.clickable`](#clickable)
@@ -277,6 +278,34 @@ var page = PageObject.create({
 });
 
 assert.equal(page.title(), 'Page title');
+```
+
+### `.textList`
+
+Returns the inner text of all elements matched by the provided selector.
+The result is returned as a list.
+
+Attribute signature
+
+```js
+PageObject.textList(selector [, scope: ''])
+```
+
+Examples
+
+```html
+<ul>
+  <li>John</li>
+  <li>Jane</li>
+</ul>
+```
+
+```js
+var page = PageObject.create({
+  userNameList: PageObject.textList('li')
+});
+
+assert.equal(page.userNameList()[0], 'John');
 ```
 
 ### `.value`
