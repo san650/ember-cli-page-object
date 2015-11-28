@@ -979,14 +979,15 @@ var page = PageObject.create({
 | `page.todos().create()` | `click('.todo button')` |
 | `page.todos(1).value()` | `find('.todo input:eq(0)').val()` |
 
-You can reset parent scope by setting the `scope` attribute on the collection declaration.
+You can reset parent scope by setting the `scope` attribute on the collection declaration
+and adding the `resetScope` flag.
 
 ```js
 var page = PageObject.create({
   scope: '.todo',
 
   todos: collection({
-    scope: '',
+    resetScope: true,
     itemScope: 'input',
 
     item: {
@@ -1052,8 +1053,10 @@ var page = PageObject.create({
     scope: '.search',
 
     input: {
-      fillIn: fillable('input'),
-      value: value('input')
+      scope: 'input',
+
+      fillIn: fillable(),
+      value: value()
     }
   }
 });
@@ -1063,7 +1066,8 @@ var page = PageObject.create({
 | ------- | -------- |
 | `page.search().input().value()` | `find('.search input').val()` |
 
-You can reset parent scope by setting the `scope` attribute on the component declaration.
+You can reset parent scope by setting the `scope` attribute on the component declaration
+and adding the `resetScope` flag.
 
 ```js
 var page = PageObject.create({
@@ -1072,6 +1076,7 @@ var page = PageObject.create({
 
     input: {
       scope: 'input',
+      resetScope: true,
 
       fillIn: fillable(),
       value: value()

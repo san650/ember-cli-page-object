@@ -3,6 +3,37 @@ import { create } from '../page-object/create';
 
 module('Base | create');
 
+test('nests scope by default', function(assert) {
+  let definition = {
+    scope: '.page',
+
+    component: {
+      scope: '.component'
+    }
+  };
+
+  let pageObject = create(definition);
+
+  assert.equal(pageObject.scope, '.page');
+  assert.equal(pageObject.component().scope, '.page .component');
+});
+
+test('resets scope if resetScope flag is used', function(assert) {
+  let definition = {
+    scope: '.page',
+
+    component: {
+      scope: '.component',
+      resetScope: true
+    }
+  };
+
+  let pageObject = create(definition);
+
+  assert.equal(pageObject.scope, '.page');
+  assert.equal(pageObject.component().scope, '.component');
+});
+
 test('returns an object', function(assert) {
   let pageObject = create({});
 

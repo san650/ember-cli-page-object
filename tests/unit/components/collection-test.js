@@ -124,13 +124,23 @@ test('inherits parent scope for generated count attribute', function(assert) {
   assert.equal(attribute().count(), 2);
 });
 
-test('resets parent scope for generated count attribute', function(assert) {
-  fixture('<span>Wrong</span><span class="scope"><span>First</span><span>Second</span></span>');
+test('resets parent scope for generated count attribute if reset', function(assert) {
+  fixture(`
+    <span>Wrong</span>
+    <span class="scope">
+      <span>First</span>
+      <span>Second</span>
+    </span>
+  `);
 
   let attribute = buildProperty(
     collection({
-      scope: '',
-      itemScope: 'span'
+      resetScope: true,
+      itemScope: 'span',
+
+      item: {
+        text: text()
+      }
     }),
     { scope: ".scope" }
   ).toFunction();
@@ -143,7 +153,7 @@ test('resets parent scope', function(assert) {
 
   let attribute = buildProperty(
     collection({
-      scope: '',
+      resetScope: true,
       itemScope: 'span',
 
       item: {
@@ -243,7 +253,15 @@ test('assigns the correct scope to sub collection component', function(assert) {
 });
 
 test('assigns the correct scope to sub collection items', function(assert) {
-  fixture('<div><span>Lorem</span><span>Ipsum</span></div><div><span>Dolor</span></div>');
+  fixture(`
+    <div>
+      <span>Lorem</span>
+      <span>Ipsum</span>
+    </div>
+    <div>
+      <span>Dolor</span>
+    </div>`
+  );
 
   let attribute = buildProperty(
     collection({
@@ -295,4 +313,26 @@ test('doesn\'t mutate collection definition', function(assert) {
   });
 
   assert.equal(pageObject.one().two().four(1).text(), 'Dolor');
+});
+
+test('sets scope to deeper components under item object', function(assert) {
+  fixture('<ul><li><main><header>Wrong Title</header></main></li><li><main><header>Right Title</header></main></li></ul>');
+
+  let attribute = buildProperty(
+    collection({
+      itemScope: 'li',
+      item: {
+        main: {
+          scope: 'main',
+
+          header: {
+            scope: 'header',
+            text: text()
+          }
+        }
+      }
+    })
+  ).toFunction();
+
+  assert.equal(attribute(2).main().header().text(), 'Right Title');
 });

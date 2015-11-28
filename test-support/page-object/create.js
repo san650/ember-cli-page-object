@@ -7,6 +7,8 @@ import clickable from './properties/clickable';
 import contains from './properties/contains';
 import text from './properties/text';
 
+let trim = Ember.$.trim;
+
 function Node() {
   this.isHidden = isHidden().propertyFor(this, 'isHidden');
   this.isVisible = isVisible().propertyFor(this, 'isVisible');
@@ -65,11 +67,12 @@ function setScopes(definition) {
     let attr = definition[key];
 
     if ($.isPlainObject(attr)) {
-
-      if (definition.__forceScopeToChildren) {
-        attr.scope = [definition.scope, attr.scope].join(' ');
-      } else if (typeof(attr.scope) === 'undefined' && typeof(definition.scope) !== 'undefined') {
-        attr.scope = definition.scope;
+      if (typeof(attr.resetScope) !== "undefined" && attr) {
+        if (typeof(attr.scope) === 'undefined' && typeof(definition.scope) !== 'undefined') {
+          attr.scope = definition.scope;
+        }
+      } else {
+        attr.scope = trim([definition.scope, attr.scope].join(' '));
       }
 
       setScopes(attr);
