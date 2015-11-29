@@ -1,18 +1,8 @@
-import Ember from 'ember';
-import { module, test } from 'qunit';
-import startApp from '../helpers/start-app';
+import { test } from 'qunit';
+import moduleForAcceptance from '../helpers/module-for-acceptance';
 import PageObject from '../page-object';
 
-var application;
-
-module('An Integration test', {
-  beforeEach: function() {
-    application = startApp();
-  },
-  afterEach: function() {
-    Ember.run(application, 'destroy');
-  }
-});
+moduleForAcceptance('Acceptance | login');
 
 var {
   clickable,

@@ -1,17 +1,8 @@
-import Ember from 'ember';
-import { module, test } from 'qunit';
-import startApp from '../helpers/start-app';
+import { test } from 'qunit';
+import moduleForAcceptance from '../helpers/module-for-acceptance';
 import PageObject from '../page-object';
 
-module('Acceptance | actions', {
-  beforeEach: function() {
-    this.application = startApp();
-  },
-
-  afterEach: function() {
-    Ember.run(this.application, 'destroy');
-  }
-});
+moduleForAcceptance('Acceptance | actions');
 
 var {
   clickOnText,

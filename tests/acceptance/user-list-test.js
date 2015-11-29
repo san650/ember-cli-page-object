@@ -1,18 +1,8 @@
-import Ember from 'ember';
-import { module, test } from 'qunit';
-import startApp from '../helpers/start-app';
+import { test } from 'qunit';
+import moduleForAcceptance from '../helpers/module-for-acceptance';
 import PageObject from '../page-object';
 
-var application;
-
-module('Collections', {
-  beforeEach: function() {
-    application = startApp();
-  },
-  afterEach: function() {
-    Ember.run(application, 'destroy');
-  }
-});
+moduleForAcceptance('Acceptance | collections');
 
 var isDisabled = PageObject.customHelper(function(selector) {
   return $(selector).prop('disabled');
