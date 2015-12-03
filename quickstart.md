@@ -6,7 +6,8 @@ permalink: /quickstart/
 
 Let's assume the following is your acceptance test to test the login form.
 
-```html
+{% highlight html+handlebars %}
+{% raw %}
 <form>
   {{input id="username"}}
   {{input type="password" id="password"}}
@@ -17,9 +18,10 @@ Let's assume the following is your acceptance test to test the login form.
     {{error}}
   </p>
 {{/if}}
-```
+{% endraw %}
+{% endhighlight %}
 
-```js
+{% highlight javascript %}
 import Ember from 'ember';
 import { module, test } from 'qunit';
 import startApp from '../helpers/start-app';
@@ -56,7 +58,7 @@ test('shows error when password is wrong', function(assert) {
     assert.equal($.trim(find('.errors').text()), 'Invalid credentials');
   });
 });
-```
+{% endhighlight %}
 
 Now we're going to convert this test to use a page object.
 
