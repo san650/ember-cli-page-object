@@ -3,6 +3,7 @@
 Table of contents
 
 * [Setup](#setup)
+  * [Global config](#global-config)
 * [Predicates](#predicates)
   * [`.hasClass`](#hasclass)
   * [`.notHasClass`](#nothasclass)
@@ -74,6 +75,20 @@ var page = PageObject.create({
   title: PageObject.text('.title')
 });
 ```
+
+### Global config
+
+By default, an error is thrown when `visible`,
+`hidden`, `text` and `value` attributes are used and match more than one
+element in the page.
+
+To globally enable these attributes to match multiple elements, use the following
+code. (See [`multiple`](#multiple) for more info)
+
+```js
+PageObject.matchMultipleElements = true;
+```
+
 
 The following is a comprehensive documentation of the available `PageObject` attribute
 helpers.
@@ -878,7 +893,7 @@ andThen(function() {
 
 ### `multiple`
 
-This option can be used to avoid errors been thrown when `visible`,
+This option can be used to avoid errors being thrown when `visible`,
 `hidden`, `text` and `value` attributes are used and match more than one
 element in the page.
 
