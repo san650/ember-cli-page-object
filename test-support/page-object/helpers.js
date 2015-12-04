@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import PageObject from '../page-object';
 
 export function qualifySelector(...selectors) {
   return selectors.filter(item => !!item).join(' ');
@@ -10,9 +11,14 @@ export function findElementWithAssert(options, target) {
     indexedSelector(options.selector, options.index)
   );
 
-  let elementToAssert = findWithAssert(selector);
+  let elementToAssert = findWithAssert(selector),
+      allowMultiple = options['multiple'];
 
-  if (!options['multiple'] && elementToAssert.length > 1) {
+  if (typeof(allowMultiple) === 'undefined') {
+    allowMultiple = PageObject.matchMultipleElements;
+  }
+
+  if (!allowMultiple && elementToAssert.length > 1) {
     throw new Error(`${selector} matched more than one element. If this is not an error use { multiple: true }`);
   }
 
