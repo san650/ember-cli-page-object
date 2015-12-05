@@ -21,6 +21,11 @@
     font-weight: bold;
     padding: 13px 0 0 100px;
     display: block;
+    transition: font-size 0.5s;
+
+    &:hover {
+      font-size: 21px;
+    }
   }
 }
 
