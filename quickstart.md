@@ -6,7 +6,7 @@ permalink: /quickstart/
 
 Let's assume the following is your acceptance test to test the login form.
 
-{% highlight html+handlebars %}
+{% highlight handlebars %}
 {% raw %}
 <form>
   {{input id="username"}}
@@ -21,7 +21,7 @@ Let's assume the following is your acceptance test to test the login form.
 {% endraw %}
 {% endhighlight %}
 
-{% highlight javascript %}
+{% highlight js %}
 import Ember from 'ember';
 import { module, test } from 'qunit';
 import startApp from '../helpers/start-app';
@@ -64,16 +64,16 @@ Now we're going to convert this test to use a page object.
 
 First, create a new page object
 
-```
+{% highlight bash %}
 $ ember generate page-object login
 
 installing
   create tests/pages/login.js
-```
+{% endhighlight %}
 
 Then update the generated file to add the login page structure
 
-```js
+{% highlight js %}
 import PageObject from '../page-object';
 
 let { clickable, fillable, text, visitable } = PageObject;
@@ -86,11 +86,11 @@ export default PageObject.build({
   submit: clickable('button'),
   error: text('.errors')
 });
-```
+{% endhighlight %}
 
 and then we use the page object from our acceptance test
 
-```js
+{% highlight javascript %}
 import Ember from 'ember';
 import { module, test } from 'qunit';
 import startApp from '../helpers/start-app';
@@ -129,6 +129,6 @@ test('log in error', function(assert) {
     assert.equal(page.error(), 'Invalid credentials');
   });
 });
-```
+{% endhighlight %}
 
 And that's it!

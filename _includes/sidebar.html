@@ -1,7 +1,20 @@
-<ul class="nav nav-pills nav-stacked">
-  {% for my_page in site.pages %}
-    {% if my_page.title %}
-      <li><a class="page-link" href="{{ my_page.url | prepend: site.baseurl }}">{{ my_page.title }}</a></li>
-    {% endif %}
-  {% endfor %}
+<header>
+  <h2>Getting started</h2>
+</header>
+<ul class="nav nav-stacked left-nav">
+  <li>
+    <a class="page-link" href="/">Overview</a>
+    <a class="page-link" href="/installation/">Installation</a>
+    <a class="page-link" href="/quickstart/">Quickstart</a>
+  </li>
+</ul>
+
+<header>
+  <h2>API reference</h2>
+</header>
+<ul class="nav nav-stacked left-nav">
+  <li>
+    <a class="page-link" href="/api/setup/">Setup</a>
+    <a class="page-link" href="/api/predicates/">Predicates</a>
+  </li>
 </ul>
