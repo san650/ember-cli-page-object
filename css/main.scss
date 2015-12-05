@@ -58,19 +58,19 @@ body {
 pre {
   width: 100%;
   padding: 10px;
-  box-shadow: 0 0 5px rgba(0,0,0,.1);
   overflow: auto;
   background-color: #fff;
-  border: 1px solid rgba(0,0,0,.05);
+  background-color: rgba(0,0,0,0.02);
+  border: none;
+  border-left: 1px solid rgba(0,0,0,.05);
   margin: 15px 0 20px;
+  border-radius: 0;
 
   code {
     width: 100%;
     color: #222;
-    background-color: #fff;
     font-family: Monaco, "Bitstream Vera Sans Mono", "Lucida Console", Terminal, monospace;
     font-size: 12px;
-    border-radius: 2px;
   }
 }
 
