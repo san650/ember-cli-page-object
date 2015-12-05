@@ -12,7 +12,7 @@ Test conditions on elements
 * [.isHidden](#ishidden)
 * [.contains](#contains)
 
-### .hasClass
+## .hasClass
 
 Returns `true` if the element has the css class.
 
@@ -36,7 +36,7 @@ var page = PageObject.create({
 assert.ok(page.isImageActive(), 'Image is active');
 ```
 
-### .notHasClass
+## .notHasClass
 
 Returns `true` if the element doesn't have the css class.
 
@@ -60,7 +60,7 @@ var page = PageObject.create({
 assert.ok(page.isImageDeactivated(), 'Image is not active');
 ```
 
-### .isVisible
+## .isVisible
 
 Returns `true` if the element exists and is visible.
 
@@ -84,7 +84,7 @@ var page = PageObject.create({
 assert.ok(page.isImageVisible(), 'Image is visible');
 ```
 
-### .isHidden
+## .isHidden
 
 Returns `true` if the element doesn't exist or it exists and is hidden.
 
@@ -108,7 +108,7 @@ var page = PageObject.create({
 assert.ok(page.isImageHidden(), 'Image is hidden');
 ```
 
-### .contains
+## .contains
 
 Returns `true` if the given text is found within element's text.
 
