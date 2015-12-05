@@ -4,17 +4,22 @@ title: Setup
 permalink: /api/setup/
 ---
 
+- [Importing the PageObject object](#importing-the-pageobject-object)
+- [The `create` method](#the-create-method)
+
+## Importing the PageObject object
+
 You can import the PageObject object using the `import` construct as follows:
 
 ```js
 import PageObject from '../page-object';
 ```
 
-The previous example assumes that your test file is one level deep under
-`tests/` folder. i.e. `tests/unit/my-unit-test.js`.
+The previous example assumes that your test file is one level deep under `tests/` folder. e.g. `tests/acceptance/login-test.js`.
 
+## The `create` method
 
-In order to create a new PageObject definition use the `.create` method.
+To create a new PageObject definition use the `.create` method.
 
 ```js
 var page = PageObject.create({
@@ -22,7 +27,7 @@ var page = PageObject.create({
 });
 ```
 
-You can define attributes using any JavaScript construct
+You can define attributes using any JavaScript construct.
 
 ```js
 var page = PageObject.create({
@@ -37,8 +42,7 @@ assert.equal(page.title(), 'My title');
 assert.equal(page.text, 'A text');
 ```
 
-There are many special attributes you can use defined under the PageObject namespace
-that simplify common patterns, i.e.
+There are many special attributes defined under the PageObject _namespace_ that implement common patterns, for example, retrieving the text of an element.
 
 ```js
 var page = PageObject.create({
@@ -46,5 +50,4 @@ var page = PageObject.create({
 });
 ```
 
-The following is a comprehensive documentation of the available `PageObject` attribute
-helpers.
+The advantage of using this attribute for example is that it normalizes white spaces and trims the white spaces at both ends of the string. Like this attributes, there are many more that can help you write better page objects.
