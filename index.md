@@ -3,17 +3,9 @@ layout: page
 title: Overview
 ---
 
-This addon makes creating Page Objects for your acceptance test really easy. It tries hard to
-
-* Be declarative
-* Propose a convention
-* Be extremely easy to extend
-* Be unobtrusive
-* Be independant of a specific testing framework (but be really tie to Ember!)
-
 <div class="row" style="display: flex;margin-top: 10px">
   <div class="col-sm-5">
-    <strong>Page Object</strong>
+    <span class="text-info">Page Object</span>
 {% highlight javascript %}
 page = PageObject.create({
   visit: visitable('/'),
@@ -26,7 +18,7 @@ page = PageObject.create({
 {% endhighlight %}
   </div>
   <div class="col-sm-7" style="margin-left: -20px;">
-    <strong>Test</strong>
+    <span class="text-info">Test</span>
 {% highlight javascript %}
 page
   .visit()
@@ -40,6 +32,14 @@ andThen(() => {
 {% endhighlight %}
   </div>
 </div>
+
+This addon makes creating Page Objects for your acceptance test really easy. It tries hard to
+
+* Be declarative
+* Propose a convention
+* Be extremely easy to extend
+* Be unobtrusive
+* Be independant of a specific testing framework (but be really tie to Ember!)
 
 ## So, What is a Page Object?
 
