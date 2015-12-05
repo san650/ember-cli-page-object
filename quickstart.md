@@ -78,7 +78,7 @@ import PageObject from '../page-object';
 
 let { clickable, fillable, text, visitable } = PageObject;
 
-export default PageObject.build({
+export default PageObject.create({
   visit: visitable('/'),
 
   username: fillable('#username'),
