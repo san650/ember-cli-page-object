@@ -37,11 +37,10 @@ Node.prototype.toFunction = function() {
  */
 function preProcess(definition) {
   let node = {},
-      keys = Object.keys(definition),
-      attr;
+      keys = Object.keys(definition);
 
   keys.forEach(function(key) {
-    attr = definition[key];
+    let attr = definition[key];
 
     if (attr && attr.unfoldPageObjectDefinition) {
       attr = attr.unfoldPageObjectDefinition();
@@ -58,8 +57,7 @@ function preProcess(definition) {
 }
 
 function setScopes(definition) {
-  let keys = Object.keys(definition),
-      attr;
+  let keys = Object.keys(definition);
 
   keys.forEach(function(key) {
     let attr = definition[key];
