@@ -22,6 +22,10 @@ You can find more information about this design pattern here:
 * [Page Objects - Selenium wiki](https://code.google.com/p/selenium/wiki/PageObjects)
 * [PageObject - Martin Fowler](http://martinfowler.com/bliki/PageObject.html)
 
+## Documentation
+
+Check the [site](http://ember-cli-page-object.js.org/) for full documentation.
+
 ## Usage
 
 Install the npm package on your ember-cli project
@@ -30,25 +34,17 @@ Install the npm package on your ember-cli project
 npm install --save-dev ember-cli-page-object
 ```
 
-then import the page-object helper
+then you can use it from your acceptance tests
 
 ```js
 import PageObject from '../page-object';
-```
 
-The previous example assumes that your test file is one level deep under
-`tests/` folder. i.e. `tests/acceptance/my-acceptance-test.js`.
+const { fillable, text, visitable } = PageObject;
 
-Then you can start building your page objects as follows:
-
-```js
-var { clickable, fillable, text, visitable } = PageObject;
-
-var login = PageObject.create({
+const login = PageObject.create({
   visit: visitable('/login'),
   userName: fillable('#username'),
   password: fillable('#password'),
-  submit: clickable('#login'),
   errorMessage: text('.message')
 });
 
@@ -57,7 +53,7 @@ test('Invalid log in', function(assert) {
     .visit()
     .userName('user@example.com')
     .password('secret')
-    .submit();
+    .clickOn('Log in');
 
   andThen(function() {
     assert.equal(login.errorMessage(), 'Invalid credentials!');
@@ -65,63 +61,13 @@ test('Invalid log in', function(assert) {
 });
 ```
 
-Built-in support for defining tables and collections:
-
-```html
-<table id="users">
-  <tr>
-    <td>Jane</td>
-    <td>Doe</td>
-  </tr>
-  <tr>
-    <td>John</td>
-    <td>Doe</td>
-  </tr>
-</table>
-```
-
-```js
-var { collection, text, visitable } = PageObject;
-
-var page = PageObject.create({
-  visit: visitable('/users'),
-
-  users: collection({
-    itemScope: '#users tr',
-
-    item: {
-      firstName: text('td:nth-of-type(1)'),
-      lastName: text('td:nth-of-type(2)')
-    }
-  })
-});
-
-test('show all users', function(assert) {
-  page.visit();
-
-  andThen(function() {
-    assert.equal(page.users().count(), 2);
-    assert.equal(page.users(1).firstName(), 'Jane');
-    assert.equal(page.users(1).lastName(), 'Doe');
-    assert.equal(page.users(2).firstName(), 'John');
-    assert.equal(page.users(2).lastName(), 'Doe');
-  });
-});
-```
-
-## Documentation
-
-Check the [site](http://ember-cli-page-object.js.org/) for full documentation.
-
 ## Blueprints
 
 The addon includes the following blueprints
 
-| Name | Description |
-| -------- | --------------- |
-| `page-object` | Creates a new page object under `tests/pages` folder |
-| `page-object-component` | Creates a new a component object to be used on a page object under `tests/pages/components` folder. |
-| `page-object-helper` |  Creates a new a helper object to be used on a page object under `tests/pages/helpers` folder. |
+* `page-object` Creates a new page object
+* `page-object-component` Creates a new a component to be used in a page object
+* `page-object-helper` Creates a new a helper to be used in a page object
 
 You can create a new page object called `users` using the `generate` command
 
@@ -132,26 +78,12 @@ installing
   create tests/pages/users.js
 ```
 
-A new file will be generated under `tests/pages` folder and can be included on
-an acceptance test like follows
-
 ```js
-import Ember from 'ember';
-import { module, test } from 'qunit';
-import startApp from '../helpers/start-app';
+import { test } from 'qunit';
+import moduleForAcceptance from '../helpers/module-for-acceptance';
 import page from '../pages/users';
 
-var application;
-
-module('Acceptance: UserList', {
-  beforeEach: function() {
-    application = startApp();
-  },
-
-  afterEach: function() {
-    Ember.run(application, 'destroy');
-  }
-});
+moduleForAcceptance();
 
 test('visiting /users', function(assert) {
   page.visit();
