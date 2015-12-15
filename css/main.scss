@@ -46,6 +46,10 @@
   }
 }
 
+.post-title {
+  margin-bottom: 20px;
+}
+
 /* Sticky footer styles
 -------------------------------------------------- */
 html {
@@ -108,4 +112,15 @@ pre {
   .nav > li > a {
     padding: 2px 15px;
   }
+}
+
+/* Overview page
+------------------------------------------------- */
+.overview {
+  display: flex;
+  margin-top: 10px;
+}
+
+.overview-code pre {
+  margin-top: 0;
 }

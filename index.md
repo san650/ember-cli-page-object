@@ -3,11 +3,27 @@ layout: page
 title: Overview
 ---
 
-<div class="row" style="display: flex;margin-top: 10px">
+<div class="row" class="overview">
   <div class="col-sm-5">
-    <span class="text-info">Page Object</span>
+    <p>
+      This addon makes creating Page Objects for your acceptance test really easy.
+    </p>
+    <p>
+      It tries hard to:
+    </p>
+
+    <ul>
+      <li>Be declarative</li>
+      <li>Propose a convention</li>
+      <li>Be extremely easy to extend</li>
+      <li>Be unobtrusive</li>
+      <li>Be independant of a specific testing framework (but be really tie to Ember!)</li>
+     </ul>
+  </div>
+  <div class="col-sm-7" class="overview-code">
 {% highlight javascript %}
-page = PageObject.create({
+
+var page = PageObject.create({
   visit: visitable('/'),
 
   username: fillable('#username'),
@@ -15,35 +31,26 @@ page = PageObject.create({
   submit: clickable('button'),
   error: text('.errors')
 });
-{% endhighlight %}
-  </div>
-  <div class="col-sm-7" style="margin-left: -20px;">
-    <span class="text-info">Test</span>
-{% highlight javascript %}
-page
-  .visit()
-  .username('admin')
-  .password('invalid')
-  .submit();
 
-andThen(() => {
-  assert.equal(page.error(), 'Invalid credentials');
+test('my awesome test', function(assert) {
+  page
+    .visit()
+    .username('admin')
+    .password('invalid')
+    .submit();
+
+  andThen(() => {
+    assert.equal(page.error(), 'Invalid credentials');
+  });
 });
+
 {% endhighlight %}
   </div>
 </div>
 
-This addon makes creating Page Objects for your acceptance test really easy. It tries hard to
-
-* Be declarative
-* Propose a convention
-* Be extremely easy to extend
-* Be unobtrusive
-* Be independant of a specific testing framework (but be really tie to Ember!)
-
 ## So, What is a Page Object?
 
-Ember, and more specifically `ember-testing` provide a DSL that simplifies creation and validation of conditions on our tests.
+Ember, and more specifically `ember-testing` provides a DSL that simplifies creation and validation of conditions on our tests.
 
 One of the problems with acceptance tests is that many of the CSS selectors used to look up elements are repeated across tests. In some cases, this repetition seems like a smell.
 
