@@ -6,6 +6,8 @@
 Represent the screens of your web app as a series of objects. This ember-cli
 addon eases the construction of these objects on your acceptance tests.
 
+http://ember-cli-page-object.js.org/
+
 ## What is a Page Object?
 
 An excerpt from the Selenium Wiki
@@ -109,7 +111,7 @@ test('show all users', function(assert) {
 
 ## Documentation
 
-Check the full [DOCUMENTATION](./DOCUMENTATION.md) for more information.
+Check the [site](http://ember-cli-page-object.js.org/) for full documentation.
 
 ## Blueprints
 
