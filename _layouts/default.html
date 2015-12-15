@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+
+  {% include head.html %}
+
+  <body>
+
+    <header class="header">
+      <div class="container">
+        <span class="title">
+          ember-cli-page-object
+        </span>
+      </div>
+    </header>
+    <div class="container">
+      <div class="row">
+        <div class="sidebar col-sm-2 col-sm-offset-1">
+          {% include sidebar.html %}
+        </div>
+
+        <div class="content col-sm-8">
+          {{ content }}
+        </div>
+      </div>
+    </div>
+
+    <footer class="footer">
+      <div class="container">
+        <div class="row">
+          <div class="col-sm-6">
+            <span>
+              Project and site maintained by <a href="https://twitter.com/san650">Santiago Ferreira</a>
+            </span>
+          </div>
+          <div class="col-sm-6">
+            <span class="pull-right">
+              <iframe src="https://ghbtns.com/github-btn.html?user=san650&repo=ember-cli-page-object&type=star&count=true" frameborder="0" scrolling="0" width="170px" height="20px"></iframe>
+            </span>
+          </div>
+        </div>
+      </div>
+    </footer>
+    {% include ga.html %}
+  </body>
+</html>

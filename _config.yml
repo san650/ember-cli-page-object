@@ -1,0 +1,18 @@
+# Site settings
+title: ember-cli-page-object
+email: san650@gmail.com
+description: >
+  Represent the screens of your web app as a series of objects. This ember-cli
+  addon eases the construction of these objects on your acceptance tests. Works
+  with every version of Ember.
+baseurl: ""
+url: "http://ember-cli-page-object.js.org"
+twitter_username: san650
+github_username: san650
+
+# Build settings
+markdown: kramdown
+
+kramdown:
+  input: GFM
+  syntax_highlighter: rouge
