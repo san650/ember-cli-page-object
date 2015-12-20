@@ -139,9 +139,3 @@ export function create(definition) {
 
   return copy;
 }
-
-export function build(definition) {
-  Ember.deprecate('`build` is deprecated in favor of `create`.');
-
-  return create(definition);
-}

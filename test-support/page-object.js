@@ -1,7 +1,4 @@
-import {
-  build,
-  create
-} from './page-object/create';
+import { create } from './page-object/create';
 import { collection } from './page-object/collection';
 import attribute from './page-object/properties/attribute';
 import clickOnText from './page-object/properties/click-on-text';
@@ -21,7 +18,6 @@ import visitable from './page-object/properties/visitable';
 
 export default {
   attribute,
-  build,
   clickOnText,
   clickable,
   collection,
