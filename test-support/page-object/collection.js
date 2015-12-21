@@ -33,8 +33,8 @@ function preProcess(target, key, options) {
   options.itemDefinition = extract(definition, 'item');
   options.itemScope = extract(definition, 'itemScope');
 
-  if (isNullOrUndefined(definition.scope)) {
-    definition.scope = target.scope;
+  if (definition.resetScope) {
+    target.scope = "";
   }
 
   options.scope = definition.scope;
@@ -54,18 +54,13 @@ function getCollection(target, key, options, index) {
   }
 
   if (index) {
-    if (target.__forceScopeToChildren) {
-      options.scope = target.scope;
-    }
+    options.scope = target.scope;
 
     component = copy(options.itemDefinition);
     component.scope = qualifySelector(options.scope, scopeWithIndex(options.itemScope, index));
-    component.__forceScopeToChildren = true;
     component = create(component);
   } else {
-    if (target.__forceScopeToChildren) {
-      options.collectionComponent.scope = target.scope;
-    }
+    options.collectionComponent.scope = target.scope;
 
     component = create(options.collectionComponent);
   }
