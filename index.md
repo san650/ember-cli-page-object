@@ -9,15 +9,15 @@ title: Overview
       This addon makes creating Page Objects for your acceptance test really easy.
     </p>
     <p>
-      It tries hard to:
+      It's main characteristics are
     </p>
 
     <ul>
-      <li>Be declarative</li>
-      <li>Propose a convention</li>
-      <li>Be extremely easy to extend</li>
-      <li>Be unobtrusive</li>
-      <li>Be independant of a specific testing framework (but be really tie to Ember!)</li>
+      <li>Mostly declarative</li>
+      <li>Proposes a convention</li>
+      <li>Extremely easy to extend</li>
+      <li>Unobtrusive</li>
+      <li>Agnostic to the testing framework (but really hooked on Ember!)</li>
      </ul>
   </div>
   <div class="col-sm-7" class="overview-code">
