@@ -32,7 +32,7 @@ export function findElement(options, target) {
  *
  * @see http://api.jquery.com/text/
  */
-export function trim(text) {
+export function normalizeText(text) {
   return Ember.$.trim(text).replace(/\n/g, ' ').replace(/\s\s*/g, ' ');
 }
 

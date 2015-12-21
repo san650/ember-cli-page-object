@@ -4,8 +4,8 @@ import startApp from '../helpers/start-app';
 
 let application;
 
-export function moduleFor(category, helperName) {
-  module(`${category} | .${helperName}`, {
+export function moduleFor(helperName) {
+  module(`${helperName}`, {
     beforeEach: function() {
       application = startApp();
     },
@@ -20,8 +20,4 @@ export function moduleFor(category, helperName) {
 
 export function fixture(str) {
   $('#ember-testing').html(str);
-}
-
-export function buildProperty(descriptor, parent = {}) {
-  return descriptor.propertyFor(parent, 'key');
 }
