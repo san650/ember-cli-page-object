@@ -6,7 +6,6 @@ import count from './page-object/properties/count';
 import fillable from './page-object/properties/fillable';
 import hasClass from './page-object/properties/has-class';
 import isHidden from './page-object/properties/is-hidden';
-import isVisible from './page-object/properties/is-visible';
 import notHasClass from './page-object/properties/not-has-class';
 import textList from './page-object/properties/text-list';
 import value from './page-object/properties/value';
@@ -16,6 +15,7 @@ export { create } from './page-object/create';
 export { text } from './page-object/properties/text';
 export { attribute } from './page-object/properties/attribute';
 export { contains } from './page-object/properties/contains';
+export { isVisible } from './page-object/properties/is-visible';
 
 export default {
   attribute,
@@ -27,7 +27,6 @@ export default {
   fillable,
   hasClass,
   isHidden,
-  isVisible,
   notHasClass,
   selectable: fillable,
   textList,

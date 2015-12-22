@@ -1,49 +1,57 @@
 import { test } from 'qunit';
-import { buildProperty, fixture, moduleFor } from '../test-helper';
-import isVisible from '../../page-object/properties/is-visible';
+import { fixture, moduleFor } from '../test-helper';
+import { create, isVisible } from '../../page-object';
 
-moduleFor('propertys', 'isVisible');
+moduleFor('.isVisible');
 
 test('returns true when the element is visible', function(assert) {
   fixture('<div class="element" />');
 
-  var property = buildProperty(isVisible('.element'));
+  let page = create({
+    elementIsVisible: isVisible('.element')
+  });
 
-  assert.ok(property.invoke());
+  assert.ok(page.elementIsVisible);
 });
 
 test('returns false when the element is hidden', function(assert) {
   fixture('<div class="element" style="display:none" />');
 
-  var property = buildProperty(isVisible('.element'));
+  let page = create({
+    elementIsVisible: isVisible('.element')
+  });
 
-  assert.ok(!property.invoke());
+  assert.ok(!page.elementIsVisible);
 });
 
 test('throws an error when the element doesn\'t exist in the DOM', function(assert) {
-  assert.expect(1);
+  let page = create({
+    elementIsVisible: isVisible('.element')
+  });
 
-  var property = buildProperty(isVisible('.element'));
-
-  try {
-    property.invoke();
-  } catch(e) {
-    assert.ok(true, 'Element not found');
-  }
+  assert.throws(function() {
+    page.elementIsVisible;
+  });
 });
 
 test('uses scope', function(assert) {
   fixture('<div class="element" style="display:none" /><div class="scope"><div class="element" /></div>');
 
-  var property = buildProperty(isVisible('.element:first', { scope: '.scope' }));
+  let page = create({
+    firstElementIsVisible: isVisible('.element:first', { scope: '.scope' })
+  });
 
-  assert.ok(property.invoke());
+  assert.ok(page.firstElementIsVisible);
 });
 
 test('uses parent scope', function(assert) {
   fixture('<div class="element" style="display:none" /><div class="scope"><div class="element" /></div>');
 
-  var property = buildProperty(isVisible('.element:first'), { scope: '.scope' });
+  let page = create({
+    scope: '.scope',
 
-  assert.ok(property.invoke());
+    firstElementIsVisible: isVisible('.element:first')
+  });
+
+  assert.ok(page.firstElementIsVisible);
 });
