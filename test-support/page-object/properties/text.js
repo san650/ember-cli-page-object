@@ -1,50 +1,22 @@
-import Ceibo from '../ceibo';
-import { normalizeText } from '../helpers';
+import { findElementWithAssert, normalizeText } from '../helpers';
 
-function getScopes(target) {
-  var scopes = [];
-
-  if (target.scope) {
-    scopes.push(target.scope);
-  }
-
-  if (Ceibo.parent(target)) {
-    scopes = scopes.concat(calculateScope(Ceibo.parent(target)));
-  }
-
-  return scopes;
-}
-
-function calculateScope(target, propertyScope) {
-  var scopes = getScopes(target);
-
-  scopes.reverse();
-  scopes.push(propertyScope);
-
-  return $.trim(scopes.join(' '));
-}
-
-function findElementWithAssert(tree, selector, options) {
-  var scope;
-
-  if (options.resetScope) {
-    scope = options.scope;
-  } else {
-    scope = calculateScope(tree, options.scope);
-  }
-
-  if (!selector) {
-    selector = scope;
-    scope = undefined;
-  }
-
-  if (options.at) {
-    selector = `${selector}:eq(${options.at})`;
-  }
-
-  return findWithAssert(selector, scope);
-}
-
+/**
+ * Gets the text of the matched element
+ *
+ * @example
+ *
+ *   var page = PageObject.create({
+ *     title: text('h1')
+ *   });
+ *
+ *   assert.equal(page.title(), 'Page title');
+ *
+ * @param {string} selector - CSS selector of the element to check
+ * @param {Object} options - Additional options
+ * @param {string} options.scope - Overrides parent scope
+ * @param {number} options.index - Reduce the set of matched elements to the one at the specified index
+ * @return {Descriptor}
+ */
 export function text(selector, options = {}) {
   return {
     isDescriptor: true,

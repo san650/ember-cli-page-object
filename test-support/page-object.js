@@ -1,5 +1,4 @@
 import { collection } from './page-object/collection';
-import attribute from './page-object/properties/attribute';
 import clickOnText from './page-object/properties/click-on-text';
 import clickable from './page-object/properties/clickable';
 import component from './page-object/properties/component';
@@ -15,6 +14,7 @@ import visitable from './page-object/properties/visitable';
 
 export { create } from './page-object/create';
 export { text } from './page-object/properties/text';
+export { attribute } from './page-object/properties/attribute';
 
 export default {
   attribute,

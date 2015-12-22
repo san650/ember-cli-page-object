@@ -1,57 +1,91 @@
 import { test } from 'qunit';
-import { buildProperty, fixture, moduleFor } from '../test-helper';
-import attribute from '../../page-object/properties/attribute';
+import { fixture, moduleFor } from '../test-helper';
+import { create, attribute } from '../../page-object';
 
-moduleFor('Queries', 'attribute');
+moduleFor('.attribute');
 
-test('returns element attribute\'s value', function(assert) {
-  fixture('<img src="/path/to/image.png" />');
+test('returns attribute value', function(assert) {
+  fixture('<input placeholder="a value">');
 
-  let property = buildProperty(attribute('src', 'img'));
+  let page = create({
+    foo: attribute('placeholder', ':input')
+  });
 
-  assert.equal(property.invoke(), '/path/to/image.png');
+  assert.equal(page.foo, 'a value');
 });
 
-test('returns null when the attribute doesn\'t exist', function(assert) {
-  fixture('<img />');
+test("returns null when attribute doesn't exist", function(assert) {
+  fixture('<input>');
 
-  let property = buildProperty(attribute('alt', 'img'));
+  let page = create({
+    foo: attribute('placeholder', ':input')
+  });
 
-  assert.equal(property.invoke(), null);
+  assert.equal(page.foo, null);
 });
 
-test('raises an error when the element doesn\'t exist', function(assert) {
-  assert.expect(1);
+test("raises an error when the element doesn't exist", function(assert) {
+  let page = create({
+    foo: attribute('placeholder', ':input')
+  });
 
-  try {
-    let property = buildProperty(attribute('alt', 'img'));
-
-    property.invoke();
-  } catch(e) {
-    assert.ok(true, 'Element not found');
-  }
+  assert.throws(() => page.foo, 'Throws element not found error');
 });
 
-test('uses scope', function(assert) {
-  fixture('<div class="scope logo"><img class="logo" alt="Logo small" /></div>');
+test('looks for elements inside the scope', function(assert) {
+  fixture(`
+    <div><input></div>
+    <div class="scope"><input placeholder="a value">></div>
+    <div><input></div>
+  `);
 
-  let property = buildProperty(attribute('alt', '.logo', { scope: '.scope' }));
+  let page = create({
+    foo: attribute('placeholder', ':input', { scope: '.scope' })
+  });
 
-  assert.equal(property.invoke(), 'Logo small');
+  assert.equal(page.foo, 'a value');
 });
 
-test('uses parent scope', function(assert) {
-  fixture('<div class="scope logo"><img class="logo" alt="Logo small" /></div>');
+test("looks for elements inside page's scope", function(assert) {
+  fixture(`
+    <div><input></div>
+    <div class="scope"><input placeholder="a value">></div>
+    <div><input></div>
+  `);
 
-  let property = buildProperty(attribute('alt', '.logo'), { scope: '.scope' });
+  let page = create({
+    scope: '.scope',
 
-  assert.equal(property.invoke(), 'Logo small');
+    foo: attribute('placeholder', ':input')
+  });
+
+  assert.equal(page.foo, 'a value');
 });
 
-test('searches for element by index if provided', function(assert) {
-  fixture('<img alt="img1" class="img"/><img alt="img2" class="img"/>');
+test('resets scope', function(assert) {
+  fixture(`
+    <div class="scope"></div>
+    <div><input placeholder="a value"></div>
+  `);
 
-  let property = buildProperty(attribute('alt', '.img', { index: 2 }));
+  let page = create({
+    scope: '.scope',
 
-  assert.equal(property.invoke(), 'img2');
+    foo: attribute('placeholder', ':input', { resetScope: true })
+  });
+
+  assert.equal(page.foo, 'a value');
+});
+
+test('finds element by index', function(assert) {
+  fixture(`
+    <input>
+    <input placeholder="a value">
+  `);
+
+  let page = create({
+    foo: attribute('placeholder', ':input', { at: 1 })
+  });
+
+  assert.equal(page.foo, 'a value');
 });

@@ -1,28 +1,59 @@
 import Ember from 'ember';
+import Ceibo from './ceibo';
 
-export function qualifySelector(...selectors) {
-  return selectors.filter(item => !!item).join(' ');
+function getScopes(target) {
+  var scopes = [];
+
+  if (target.scope) {
+    scopes.push(target.scope);
+  }
+
+  if (Ceibo.parent(target)) {
+    scopes = scopes.concat(calculateScope(Ceibo.parent(target)));
+  }
+
+  return scopes;
 }
 
-export function findElementWithAssert(options, target) {
-  let selector = qualifySelector(
-    options.scope || target.scope,
-    indexedSelector(options.selector, options.index)
-  );
+function calculateScope(target, propertyScope) {
+  var scopes = getScopes(target);
 
-  /* global findWithAssert */
-  return findWithAssert(selector);
+  scopes.reverse();
+  scopes.push(propertyScope);
+
+  return $.trim(scopes.join(' '));
 }
 
-export function findElement(options, target) {
-  let selector = qualifySelector(
-    options.scope || target.scope,
-    indexedSelector(options.selector, options.index)
-  );
+export function findElementWithAssert(tree, selector, options) {
+  var scope;
 
-  /* global find */
-  return find(selector);
+  if (options.resetScope) {
+    scope = options.scope;
+  } else {
+    scope = calculateScope(tree, options.scope);
+  }
+
+  if (!selector) {
+    selector = scope;
+    scope = undefined;
+  }
+
+  if (options.at) {
+    selector = `${selector}:eq(${options.at})`;
+  }
+
+  return findWithAssert(selector, scope);
 }
+
+// export function findElement(options, target) {
+//   let selector = qualifySelector(
+//     options.scope || target.scope,
+//     indexedSelector(options.selector, options.index)
+//   );
+//
+//   /* global find */
+//   return find(selector);
+// }
 
 /**
  * Trim whitespaces at both ends and normalize whitespaces inside `text`
@@ -34,16 +65,4 @@ export function findElement(options, target) {
  */
 export function normalizeText(text) {
   return Ember.$.trim(text).replace(/\n/g, ' ').replace(/\s\s*/g, ' ');
-}
-
-export function indexedSelector(baseSelector, index) {
-  let selector;
-
-  if ($.isNumeric(index) && index > 0) {
-    selector = `${baseSelector}:eq(${index - 1})`;
-  } else {
-    selector = baseSelector;
-  }
-
-  return selector;
 }
