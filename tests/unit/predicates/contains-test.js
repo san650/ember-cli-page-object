@@ -1,23 +1,27 @@
 import { test } from 'qunit';
-import { buildProperty, fixture, moduleFor } from '../test-helper';
-import contains from '../../page-object/properties/contains';
+import { fixture, moduleFor } from '../test-helper';
+import { create, contains } from '../../page-object';
 
-moduleFor('propertys', 'contains');
+moduleFor('.contains');
 
 test('returns true when the element contains the text', function(assert) {
   fixture('<div class="element"> Test something </div>');
 
-  var property = buildProperty(contains('.element'));
+  let page = create({
+    elementHas: contains('.element')
+  });
 
-  assert.ok(property.invoke('Test'));
+  assert.ok(page.elementHas('Test'));
 });
 
 test('returns false when the element does not contains the text', function(assert) {
   fixture('<div class="element"> Test something </div>');
 
-  var property = buildProperty(contains('.element'));
+  let page = create({
+    elementHas: contains('.element')
+  });
 
-  assert.ok(!property.invoke('Not here'));
+  assert.ok(!page.elementHas('Not here'));
 });
 
 test('uses scope', function(assert) {
@@ -26,9 +30,11 @@ test('uses scope', function(assert) {
              <div class="element"> Right </div>
            </div>`);
 
-  var property = buildProperty(contains('.element:first', { scope: '.scope' }));
+  let page = create({
+    firstElementHas: contains('.element:first', { scope: '.scope' })
+  });
 
-  assert.ok(property.invoke('Right'));
+  assert.ok(page.firstElementHas('Right'));
 });
 
 test('uses parent scope', function(assert) {
@@ -37,16 +43,23 @@ test('uses parent scope', function(assert) {
              <div class="element">Right</div>
            </div>`);
 
-  var property = buildProperty(contains('.element:first'), { scope: '.scope' });
+  let page = create({
+    scope: '.scope',
 
-  assert.ok(property.invoke('Right'));
+    firstElementHas: contains('.element:first')
+  });
+
+  assert.ok(page.firstElementHas('Right'));
 });
 
 test('raises an error when the element doesn\'t exist', function(assert) {
-  let property = buildProperty(contains('span'));
+
+  let page = create({
+    firstElementHas: contains('.element')
+  });
 
   assert.throws(function(){
-    property.invoke("Boom");
+    page.elementHas('Bla');
   });
 });
 

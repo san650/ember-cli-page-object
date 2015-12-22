@@ -15,6 +15,7 @@ import visitable from './page-object/properties/visitable';
 export { create } from './page-object/create';
 export { text } from './page-object/properties/text';
 export { attribute } from './page-object/properties/attribute';
+export { contains } from './page-object/properties/contains';
 
 export default {
   attribute,
