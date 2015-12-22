@@ -1,49 +1,57 @@
 import { test } from 'qunit';
-import { buildProperty, fixture, moduleFor } from '../test-helper';
-import hasClass from '../../page-object/properties/has-class';
+import { fixture, moduleFor } from '../test-helper';
+import { create, hasClass } from '../../page-object';
 
-moduleFor('Actions', 'hasClass');
+moduleFor('.hasClass');
 
 test('returns true when the element has the class', function(assert) {
   fixture('<div class="element has-error" />');
 
-  let property = buildProperty(hasClass('has-error', '.element'));
+  let page = create({
+    elementHasError: hasClass('has-error', '.element')
+  });
 
-  assert.ok(property.invoke());
+  assert.ok(page.elementHasError);
 });
 
 test('returns false when the element doesn\'t have the class', function(assert) {
   fixture('<div class="element" />');
 
-  let property = buildProperty(hasClass('has-error', '.element'));
+  let page = create({
+    elementHasError: hasClass('has-error', '.element')
+  });
 
-  assert.ok(!property.invoke());
+  assert.ok(!page.elementHasError);
 });
 
 test('raises an error when the element doesn\'t exist', function(assert) {
-  assert.expect(1);
+  let page = create({
+    elementHasError: hasClass('has-error', '.element')
+  });
 
-  let property = buildProperty(hasClass('has-error', '.element'));
-
-  try {
-    property.invoke();
-  } catch(e) {
-    assert.ok(true, 'Element not found');
-  }
+  assert.throws(function() {
+    page.elementHasError;
+  });
 });
 
 test('uses scope', function(assert) {
   fixture('<div class="element scope"><div class="element has-error" /></div>');
 
-  let property = buildProperty(hasClass('has-error', '.element:first', { scope: '.scope' }));
+  let page = create({
+    firstElementHasError: hasClass('has-error', '.element:first', { scope: '.scope' })
+  });
 
-  assert.ok(property.invoke());
+  assert.ok(page.firstElementHasError);
 });
 
 test('uses parent scope', function(assert) {
   fixture('<div class="element scope"><div class="element has-error" /></div>');
 
-  var property = buildProperty(hasClass('has-error', '.element:first'), { scope: '.scope' });
+  let page = create({
+    scope: '.scope',
 
-  assert.ok(property.invoke());
+    firstElementHasError: hasClass('has-error', '.element:first')
+  });
+
+  assert.ok(page.firstElementHasError);
 });
