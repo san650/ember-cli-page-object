@@ -24,8 +24,8 @@ function calculateScope(target, propertyScope) {
   return $.trim(scopes.join(' '));
 }
 
-export function findElementWithAssert(tree, selector, options) {
-  var scope;
+function selectorAndScope(tree, selector, options) {
+  let scope;
 
   if (options.resetScope) {
     scope = options.scope;
@@ -42,18 +42,17 @@ export function findElementWithAssert(tree, selector, options) {
     selector = `${selector}:eq(${options.at})`;
   }
 
-  return findWithAssert(selector, scope);
+  return [selector, scope];
 }
 
-// export function findElement(options, target) {
-//   let selector = qualifySelector(
-//     options.scope || target.scope,
-//     indexedSelector(options.selector, options.index)
-//   );
-//
-//   /* global find */
-//   return find(selector);
-// }
+export function findElementWithAssert(tree, selector, options) {
+  return findWithAssert(...selectorAndScope(tree, selector, options));
+}
+
+export function findElement(tree, selector, options) {
+  /* global find */
+  return find(...selectorAndScope(tree, selector, options));
+}
 
 /**
  * Trim whitespaces at both ends and normalize whitespaces inside `text`
