@@ -5,61 +5,84 @@ import { create, contains } from '../../page-object';
 moduleFor('.contains');
 
 test('returns true when the element contains the text', function(assert) {
-  fixture('<div class="element"> Test something </div>');
+  fixture('Lorem <span>ipsum</span>');
 
   let page = create({
-    elementHas: contains('.element')
+    foo: contains('span')
   });
 
-  assert.ok(page.elementHas('Test'));
+  assert.ok(!page.foo('Not here'));
+  assert.ok(page.foo('ipsum'));
 });
 
-test('returns false when the element does not contains the text', function(assert) {
-  fixture('<div class="element"> Test something </div>');
+test('looks for elements inside the scope', function(assert) {
+  fixture(`
+    <div><span>lorem</span></div>
+    <div class="scope"><span>ipsum</span></div>
+    <div><span>dolor</span></div>
+  `);
 
   let page = create({
-    elementHas: contains('.element')
+    foo: contains('span', { scope: '.scope' })
   });
 
-  assert.ok(!page.elementHas('Not here'));
+  assert.ok(!page.foo('lorem'));
+  assert.ok(page.foo('ipsum'));
 });
 
-test('uses scope', function(assert) {
-  fixture(`<div class="element">Wrong</div>
-           <div class="scope">
-             <div class="element"> Right </div>
-           </div>`);
-
-  let page = create({
-    firstElementHas: contains('.element:first', { scope: '.scope' })
-  });
-
-  assert.ok(page.firstElementHas('Right'));
-});
-
-test('uses parent scope', function(assert) {
-  fixture(`<div class="element">Wrong</div>
-           <div class="scope">
-             <div class="element">Right</div>
-           </div>`);
+test("looks for elements inside page's scope", function(assert) {
+  fixture(`
+    <div><span>lorem</span></div>
+    <div class="scope"><span>ipsum</span></div>
+    <div><span>dolor</span></div>
+  `);
 
   let page = create({
     scope: '.scope',
 
-    firstElementHas: contains('.element:first')
+    foo: contains('span')
   });
 
-  assert.ok(page.firstElementHas('Right'));
+  assert.ok(!page.foo('lorem'));
+  assert.ok(page.foo('ipsum'));
 });
 
 test('raises an error when the element doesn\'t exist', function(assert) {
-
   let page = create({
-    firstElementHas: contains('.element')
+    foo: contains('.element')
   });
 
-  assert.throws(function(){
-    page.elementHas('Bla');
-  });
+  assert.throws(() => page.foo('baz'), 'Throws element not found error');
 });
 
+test('resets scope', function(assert) {
+  fixture(`
+    <div><span>lorem</span></div>
+    <div class="scope"><span>ipsum</span></div>
+    <div><span>dolor</span></div>
+  `);
+
+  let page = create({
+    scope: '.scope',
+
+    foo: contains('span', { resetScope: true })
+  });
+
+  assert.ok(page.foo('lorem'));
+  assert.ok(page.foo('ipsum'));
+});
+
+test('finds element by index', function(assert) {
+  fixture(`
+    <span>lorem</span>
+    <span>ipsum</span>
+    <span>dolor</span>
+  `);
+
+  let page = create({
+    foo: contains('span', { at: 1 })
+  });
+
+  assert.ok(!page.foo('lorem'));
+  assert.ok(page.foo('ipsum'));
+});

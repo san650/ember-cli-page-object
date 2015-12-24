@@ -29,9 +29,7 @@ test('raises an error when the element doesn\'t exist', function(assert) {
     elementDoesNotHaveError: notHasClass('has-error', '.element')
   });
 
-  assert.throws(function() {
-    page.elementDoesNotHaveError
-  });
+  assert.throws(() => page.elementDoesNotHaveError);
 });
 
 test('uses scope', function(assert) {

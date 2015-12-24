@@ -29,9 +29,7 @@ test('throws an error when the element doesn\'t exist in the DOM', function(asse
     elementIsVisible: isVisible('.element')
   });
 
-  assert.throws(function() {
-    page.elementIsVisible;
-  });
+  assert.throws(() => page.elementIsVisible);
 });
 
 test('uses scope', function(assert) {

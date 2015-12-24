@@ -24,8 +24,8 @@ function calculateScope(target, propertyScope) {
   return $.trim(scopes.join(' '));
 }
 
-function selectorAndScope(tree, selector, options) {
-  let scope;
+function query(tree, selector, options, fn) {
+  var scope;
 
   if (options.resetScope) {
     scope = options.scope;
@@ -42,16 +42,15 @@ function selectorAndScope(tree, selector, options) {
     selector = `${selector}:eq(${options.at})`;
   }
 
-  return [selector, scope];
+  return fn(selector, scope);
 }
 
 export function findElementWithAssert(tree, selector, options) {
-  return findWithAssert(...selectorAndScope(tree, selector, options));
+  return query(tree, selector, options, findWithAssert);
 }
 
-export function findElement(tree, selector, options) {
-  /* global find */
-  return find(...selectorAndScope(tree, selector, options));
+export function findElement(tree, selector, options, target) {
+  return query(tree, selector, options, find);
 }
 
 /**

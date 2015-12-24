@@ -54,7 +54,7 @@ test('returns empty text when the element doesn\'t have text', function(assert) 
   assert.equal(page.foo, '');
 });
 
-test('raises an error when the element doesn\'t exist', function(assert) {
+test("raises an error when the element doesn't exist", function(assert) {
   let page = create({
     foo: text('span')
   });

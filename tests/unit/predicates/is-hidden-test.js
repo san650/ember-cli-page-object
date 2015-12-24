@@ -5,51 +5,89 @@ import { create, isHidden } from '../../page-object';
 moduleFor('.isHidden');
 
 test('returns true when the element is hidden', function(assert) {
-  fixture('<div class="element" style="display:none" />');
+  fixture('Lorem <span style="display:none">ipsum</span>');
 
   let page = create({
-    elementIsHidden: isHidden('.element')
+    foo: isHidden('span')
   });
 
-  assert.ok(page.elementIsHidden);
+  assert.ok(page.foo);
 });
 
-test('returns true when the element doesn\'t exist in the DOM', function(assert) {
+test("returns true when the element doesn't exist in the DOM", function(assert) {
   let page = create({
-    elementIsHidden: isHidden('.element')
+    foo: isHidden('span')
   });
 
-  assert.ok(page.elementIsHidden);
+  assert.ok(page.foo);
 });
 
 test('returns false when the element is visible', function(assert) {
-  fixture('<div class="element" />');
+  fixture('Lorem <span>ipsum</span>');
 
   let page = create({
-    elementIsHidden: isHidden('.element')
+    foo: isHidden('span')
   });
 
-  assert.ok(!page.elementIsHidden);
+  assert.ok(!page.foo);
 });
 
-test('uses scope', function(assert) {
-  fixture('<div class="element" /><div class="scope"><div class="element" style="display:none" /></div>');
+test('looks for elements inside the scope', function(assert) {
+  fixture(`
+    <div><span>lorem</span></div>
+    <div class="scope"><span style="display:none">ipsum</span></div>
+    <div><span>dolor</span></div>
+  `);
 
   let page = create({
-    firstElementIsHidden: isHidden('.element:first', { scope: '.scope' })
+    foo: isHidden('span', { scope: '.scope' })
   });
 
-  assert.ok(page.firstElementIsHidden);
+  assert.ok(page.foo);
 });
 
-test('uses parent scope', function(assert) {
-  fixture('<div class="element" /><div class="scope"><div class="element" style="display:none" /></div>');
+test("looks for elements inside page's scope", function(assert) {
+  fixture(`
+    <div><span>lorem</span></div>
+    <div class="scope"><span style="display:none">ipsum</span></div>
+    <div><span>dolor</span></div>
+  `);
 
   let page = create({
     scope: '.scope',
 
-    firstElementIsHidden: isHidden('.element:first')
+    foo: isHidden('span')
   });
 
-  assert.ok(page.firstElementIsHidden);
+  assert.ok(page.foo);
+});
+
+test('resets scope', function(assert) {
+  fixture(`
+    <div><span style="display:none">lorem</span></div>
+    <div class="scope"><span>ipsum</span></div>
+    <div><span>dolor</span></div>
+  `);
+
+  let page = create({
+    scope: '.scope',
+
+    foo: isHidden('span', { resetScope: true, at: 0 })
+  });
+
+  assert.ok(page.foo);
+});
+
+test('finds element by index', function(assert) {
+  fixture(`
+    <em>lorem</em>
+    <em>ipsum</em>
+    <em style="display:none">dolor</em>
+  `);
+
+  let page = create({
+    foo: isHidden('em', { at: 2 })
+  });
+
+  assert.ok(page.foo);
 });

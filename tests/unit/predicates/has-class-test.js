@@ -5,53 +5,97 @@ import { create, hasClass } from '../../page-object';
 moduleFor('.hasClass');
 
 test('returns true when the element has the class', function(assert) {
-  fixture('<div class="element has-error" />');
+  fixture('<em class="lorem"></em><span class="ipsum"></span>');
 
   let page = create({
-    elementHasError: hasClass('has-error', '.element')
+    foo: hasClass('ipsum', 'span')
   });
 
-  assert.ok(page.elementHasError);
+  assert.ok(page.foo);
 });
 
 test('returns false when the element doesn\'t have the class', function(assert) {
-  fixture('<div class="element" />');
+  fixture('<em class="lorem"></em><span class="ipsum"></span>');
 
   let page = create({
-    elementHasError: hasClass('has-error', '.element')
+    foo: hasClass('lorem', 'span')
   });
 
-  assert.ok(!page.elementHasError);
+  assert.ok(!page.foo);
 });
 
-test('raises an error when the element doesn\'t exist', function(assert) {
+test("raises an error when the element doesn't exist", function(assert) {
   let page = create({
-    elementHasError: hasClass('has-error', '.element')
+    foo: hasClass('lorem', 'span')
   });
 
-  assert.throws(function() {
-    page.elementHasError;
-  });
+  assert.throws(() => page.foo);
 });
 
-test('uses scope', function(assert) {
-  fixture('<div class="element scope"><div class="element has-error" /></div>');
+test('looks for elements inside the scope', function(assert) {
+  fixture(`
+    <div>
+      <span class="lorem"></span>
+    </div>
+    <div class="scope">
+      <span class="ipsum"></span>
+    </div>
+  `);
 
   let page = create({
-    firstElementHasError: hasClass('has-error', '.element:first', { scope: '.scope' })
+    foo: hasClass('ipsum', 'span', { scope: '.scope' })
   });
 
-  assert.ok(page.firstElementHasError);
+  assert.ok(page.foo);
 });
 
-test('uses parent scope', function(assert) {
-  fixture('<div class="element scope"><div class="element has-error" /></div>');
+test("looks for elements inside page's scope", function(assert) {
+  fixture(`
+    <div>
+      <span class="lorem"></span>
+    </div>
+    <div class="scope">
+      <span class="ipsum"></span>
+    </div>
+  `);
 
   let page = create({
     scope: '.scope',
 
-    firstElementHasError: hasClass('has-error', '.element:first')
+    foo: hasClass('ipsum', 'span')
   });
 
-  assert.ok(page.firstElementHasError);
+  assert.ok(page.foo);
+});
+
+test('resets scope', function(assert) {
+  fixture(`
+    <div>
+      <span class="lorem"></span>
+    </div>
+    <div class="scope">
+      <span class="ipsum"></span>
+    </div>
+  `);
+
+  let page = create({
+    scope: '.scope',
+
+    foo: hasClass('lorem', 'div:first span', { resetScope: true })
+  });
+
+  assert.ok(page.foo);
+});
+
+test('finds element by index', function(assert) {
+  fixture(`
+    <span class="lorem"></span>
+    <span class="ipsum"></span>
+  `);
+
+  let page = create({
+    foo: hasClass('ipsum', 'span', { at: 1 })
+  });
+
+  assert.ok(page.foo);
 });
