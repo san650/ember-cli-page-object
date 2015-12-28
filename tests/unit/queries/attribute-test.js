@@ -35,7 +35,7 @@ test("raises an error when the element doesn't exist", function(assert) {
 test('looks for elements inside the scope', function(assert) {
   fixture(`
     <div><input></div>
-    <div class="scope"><input placeholder="a value">></div>
+    <div class="scope"><input placeholder="a value"></div>
     <div><input></div>
   `);
 
@@ -49,7 +49,7 @@ test('looks for elements inside the scope', function(assert) {
 test("looks for elements inside page's scope", function(assert) {
   fixture(`
     <div><input></div>
-    <div class="scope"><input placeholder="a value">></div>
+    <div class="scope"><input placeholder="a value"></div>
     <div><input></div>
   `);
 

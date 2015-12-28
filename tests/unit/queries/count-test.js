@@ -1,35 +1,69 @@
 import { test } from 'qunit';
-import { buildProperty, fixture, moduleFor } from '../test-helper';
-import count from '../../page-object/properties/count';
+import { fixture, moduleFor } from '../test-helper';
+import { create, count } from '../../page-object';
 
-moduleFor('Queries', 'count');
+moduleFor('.count');
 
 test('returns the number of elements that match the selector', function(assert) {
-  fixture('<span /><span />');
+  fixture(`
+    <span></span>
+    <span></span>
+  `);
 
-  let property = buildProperty(count('span'));
+  let page = create({
+    foo: count('span')
+  });
 
-  assert.equal(property.invoke(), 2);
+  assert.equal(page.foo, 2);
 });
 
-test('returns 0 when the selector doesn\'t match elements', function(assert) {
-  let property = buildProperty(count('.nothing'));
+test('returns 0 when the no element is matched', function(assert) {
+  let page = create({
+    foo: count('span')
+  });
 
-  assert.equal(property.invoke(), 0);
+  assert.equal(page.foo, 0);
 });
 
-test('uses scope', function(assert) {
-  fixture('<div class="scope"><span /></div><span />');
+test('looks for elements inside the scope', function(assert) {
+  fixture(`
+    <div><span></span></div>
+    <div class="scope"><span></span><span></span></div>
+  `);
 
-  let property = buildProperty(count('span', { scope: '.scope' }));
+  let page = create({
+    foo: count('span', { scope: '.scope' })
+  });
 
-  assert.equal(property.invoke(), 1);
+  assert.equal(page.foo, 2);
 });
 
-test('uses page scope', function(assert) {
-  fixture('<div class="scope"><span /></div><span />');
+test("looks for elements inside page's scope", function(assert) {
+  fixture(`
+    <div><span></span></div>
+    <div class="scope"><span></span><span></span></div>
+  `);
 
-  let property = buildProperty(count('span'), { scope: '.scope' });
+  let page = create({
+    scope: '.scope',
 
-  assert.equal(property.invoke(), 1);
+    foo: count('span')
+  });
+
+  assert.equal(page.foo, 2);
+});
+
+test('resets scope', function(assert) {
+  fixture(`
+    <div class="scope"></div>
+    <div><span></span></div>
+  `);
+
+  let page = create({
+    scope: '.scope',
+
+    foo: count('span', { resetScope: true })
+  });
+
+  assert.equal(page.foo, 1);
 });
