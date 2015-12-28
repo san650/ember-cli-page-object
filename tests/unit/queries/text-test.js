@@ -140,3 +140,19 @@ test('finds element without using a selector', function(assert) {
   assert.equal(page.foo, 'Hello world!');
   assert.equal(page.bar.baz, 'world!');
 });
+
+test('returns multiple values', function(assert) {
+  fixture(`
+    <ul>
+      <li>lorem</li>
+      <li> ipsum </li>
+      <li>dolor</li>
+    </ul>
+  `);
+
+  var page = create({
+    foo: text('li', { multiple: true })
+  });
+
+  assert.deepEqual(page.foo, ['lorem', 'ipsum', 'dolor']);
+});

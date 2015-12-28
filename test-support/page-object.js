@@ -4,7 +4,6 @@ import clickable from './page-object/properties/clickable';
 import component from './page-object/properties/component';
 import count from './page-object/properties/count';
 import fillable from './page-object/properties/fillable';
-import textList from './page-object/properties/text-list';
 import value from './page-object/properties/value';
 import visitable from './page-object/properties/visitable';
 
@@ -33,7 +32,6 @@ export default {
   notHasClass,
   selectable: fillable,
   text,
-  textList,
   value,
   visitable
 };
