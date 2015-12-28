@@ -38,7 +38,7 @@ function query(tree, selector, options, fn) {
     scope = undefined;
   }
 
-  if (options.at) {
+  if (typeof options.at === 'number') {
     selector = `${selector}:eq(${options.at})`;
   }
 
