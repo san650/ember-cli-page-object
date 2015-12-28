@@ -5,51 +5,88 @@ import { create, isVisible } from '../../page-object';
 moduleFor('.isVisible');
 
 test('returns true when the element is visible', function(assert) {
-  fixture('<div class="element" />');
+  fixture('Lorem <span>ipsum</span>');
 
   let page = create({
-    elementIsVisible: isVisible('.element')
+    foo: isVisible('span')
   });
 
-  assert.ok(page.elementIsVisible);
+  assert.ok(page.foo);
 });
 
 test('returns false when the element is hidden', function(assert) {
-  fixture('<div class="element" style="display:none" />');
+  fixture('Lorem <span style="display:none">ipsum</span>');
 
   let page = create({
-    elementIsVisible: isVisible('.element')
+    foo: isVisible('span')
   });
 
-  assert.ok(!page.elementIsVisible);
+  assert.ok(!page.foo);
 });
 
 test('throws an error when the element doesn\'t exist in the DOM', function(assert) {
   let page = create({
-    elementIsVisible: isVisible('.element')
+    foo: isVisible('span')
   });
 
-  assert.throws(() => page.elementIsVisible);
+  assert.throws(() => page.foo);
 });
 
-test('uses scope', function(assert) {
-  fixture('<div class="element" style="display:none" /><div class="scope"><div class="element" /></div>');
+test('looks for elements inside the scope', function(assert) {
+  fixture(`
+    <div><span style="display:none">lorem</span></div>
+    <div class="scope"><span>ipsum</span></div>
+  `);
 
   let page = create({
-    firstElementIsVisible: isVisible('.element:first', { scope: '.scope' })
+    foo: isVisible('span', { scope: '.scope', at: 0 })
   });
 
-  assert.ok(page.firstElementIsVisible);
+  assert.ok(page.foo);
 });
 
-test('uses parent scope', function(assert) {
-  fixture('<div class="element" style="display:none" /><div class="scope"><div class="element" /></div>');
+test("looks for elements inside page's scope", function(assert) {
+  fixture(`
+    <div><span style="display:none">lorem</span></div>
+    <div class="scope"><span>ipsum</span></div>
+  `);
 
   let page = create({
     scope: '.scope',
 
-    firstElementIsVisible: isVisible('.element:first')
+    foo: isVisible('span', { at: 0 })
   });
 
-  assert.ok(page.firstElementIsVisible);
+  assert.ok(page.foo);
+});
+
+test('resets scope', function(assert) {
+  fixture(`
+    <div><span>lorem</span></div>
+    <div class="scope"><span style="display:none">ipsum</span></div>
+  `);
+
+  let page = create({
+    scope: '.scope',
+
+    foo: isVisible('span', { resetScope: true, at: 0 })
+  });
+
+  assert.ok(page.foo);
+});
+
+test('finds element by index', function(assert) {
+  fixture(`
+    <em style="display:none">lorem</em>
+    <em style="display:none">ipsum</em>
+    <em>dolor</em>
+  `);
+
+  let page = create({
+    foo: isVisible('em', { at: 0 }),
+    bar: isVisible('em', { at: 2 })
+  });
+
+  assert.ok(!page.foo);
+  assert.ok(page.bar);
 });
