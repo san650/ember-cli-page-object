@@ -1,6 +1,6 @@
 /* global click */
 
-import { calculateScope, normalizeText } from '../helpers';
+import { buildSelector } from '../helpers';
 
 /**
  * Creates an action to click an element
@@ -23,9 +23,7 @@ export function clickable(selector, options = {}) {
     isDescriptor: true,
 
     get() {
-      let clickableSelector = normalizeText(`${calculateScope(this, options.scope)} ${selector}`);
-
-      click(clickableSelector);
+      click(buildSelector(this, selector, options));
 
       return this;
     }

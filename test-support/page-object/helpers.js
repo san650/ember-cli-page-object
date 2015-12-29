@@ -36,13 +36,17 @@ function query(tree, selector, options, fn) {
   return fn(selector, scope);
 }
 
-export function calculateScope(target, propertyScope) {
+function calculateScope(target, propertyScope) {
   var scopes = getScopes(target);
 
   scopes.reverse();
   scopes.push(propertyScope);
 
   return $.trim(scopes.join(' '));
+}
+
+export function buildSelector(target, selector, options) {
+  return normalizeText(`${calculateScope(target, options.scope)} ${selector}`);
 }
 
 export function findElementWithAssert(tree, selector, options) {

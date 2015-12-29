@@ -1,6 +1,6 @@
 /* global click */
 
-import { calculateScope, normalizeText } from '../helpers';
+import { buildSelector } from '../helpers';
 
 /**
  * Creates an action to click an element
@@ -27,9 +27,7 @@ export function clickOnText(selector, options = {}) {
       // In this case <form> and <button> elements contains "Submit" text, so, we'll
       // want to __always__ click on the __last__ element that contains the text.
 
-      let clickableSelector = normalizeText(
-        `${calculateScope(this, options.scope)} ${selector} :contains("${textToClick}"):last`
-      );
+      let clickableSelector = `${buildSelector(this, selector, options)} :contains("${textToClick}"):last`;
 
       click(clickableSelector);
 
