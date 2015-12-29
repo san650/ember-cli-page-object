@@ -9,7 +9,7 @@ Retrieve values from elements
 * [.attribute](#attribute)
 * [.count](#count)
 * [.text](#text)
-* [.textList](#text-list)
+* [.textList](#textlist)
 * [.value](#value)
 
 
