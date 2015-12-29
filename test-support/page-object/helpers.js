@@ -15,15 +15,6 @@ function getScopes(target) {
   return scopes;
 }
 
-function calculateScope(target, propertyScope) {
-  var scopes = getScopes(target);
-
-  scopes.reverse();
-  scopes.push(propertyScope);
-
-  return $.trim(scopes.join(' '));
-}
-
 function query(tree, selector, options, fn) {
   var scope;
 
@@ -43,6 +34,15 @@ function query(tree, selector, options, fn) {
   }
 
   return fn(selector, scope);
+}
+
+export function calculateScope(target, propertyScope) {
+  var scopes = getScopes(target);
+
+  scopes.reverse();
+  scopes.push(propertyScope);
+
+  return $.trim(scopes.join(' '));
 }
 
 export function findElementWithAssert(tree, selector, options) {

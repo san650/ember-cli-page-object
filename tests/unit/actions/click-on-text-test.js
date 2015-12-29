@@ -1,62 +1,72 @@
 import { test } from 'qunit';
-import { buildProperty, moduleFor } from '../test-helper';
-import clickOnText from '../../page-object/properties/click-on-text';
+import { moduleFor } from '../test-helper';
+import { create, clickOnText } from '../../page-object';
 
-moduleFor('Actions', 'clickOnText');
+moduleFor('.clickOnText');
 
 test('calls Ember\'s click helper', function(assert) {
   assert.expect(1);
 
-  let expectedSelector = 'button :contains("dummy text"):last',
-      property;
+  let expectedSelector = 'span :contains("dummy text"):last',
+      page;
 
   window.click = function(actualSelector) {
     assert.equal(actualSelector, expectedSelector);
   };
 
-  property = buildProperty(clickOnText('button'));
+  page = create({
+    foo: clickOnText('span')
+  });
 
-  property.invoke('dummy text');
+  page.foo('dummy text');
 });
 
 test('uses scope', function(assert) {
   assert.expect(1);
 
-  let property;
+  let page;
 
   window.click = function(actualSelector) {
-    assert.equal(actualSelector, '.scope .element :contains("dummy text"):last');
+    assert.equal(actualSelector, '.scope span :contains("dummy text"):last');
   };
 
-  property = buildProperty(clickOnText('.element', { scope: '.scope' }));
+  page = create({
+    foo: clickOnText('span', { scope: '.scope' })
+  });
 
-  property.invoke('dummy text');
+  page.foo('dummy text');
 });
 
 test('uses parent scope', function(assert) {
   assert.expect(1);
 
-  let property;
+  let page;
 
   window.click = function(actualSelector) {
-    assert.equal(actualSelector, '.parent-scope .element :contains("dummy text"):last');
+    assert.equal(actualSelector, '.scope span :contains("dummy text"):last');
   };
 
-  property = buildProperty(clickOnText('.element'), { scope: '.parent-scope' });
+  page = create({
+    scope: '.scope',
+    foo: clickOnText('span')
+  });
 
-  property.invoke('dummy text');
+  page.foo('dummy text');
 });
 
 test('returns target object', function(assert) {
   assert.expect(1);
 
-  let target = { dummy: "value" },
-      property;
+  let page;
 
   window.click = function() {
   };
 
-  property = buildProperty(clickOnText(), target);
+  page = create({
+    dummy: 'value',
 
-  assert.equal(property.invoke('dummy text'), target);
+    foo: clickOnText()
+  });
+
+  assert.equal(page.foo('dummy text'), page);
 });

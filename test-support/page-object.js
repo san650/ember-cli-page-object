@@ -1,5 +1,4 @@
 import { collection } from './page-object/collection';
-import clickOnText from './page-object/properties/click-on-text';
 import clickable from './page-object/properties/clickable';
 import component from './page-object/properties/component';
 import fillable from './page-object/properties/fillable';
@@ -15,10 +14,10 @@ export { hasClass } from './page-object/properties/has-class';
 export { notHasClass } from './page-object/properties/not-has-class';
 export { count } from './page-object/properties/count';
 export { value } from './page-object/properties/value';
+export { clickOnText } from './page-object/properties/click-on-text';
 
 export default {
   attribute,
-  clickOnText,
   clickable,
   collection,
   component,
