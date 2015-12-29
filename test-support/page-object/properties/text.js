@@ -45,4 +45,4 @@ export function text(selector, options = {}) {
       return result;
     }
   };
-};
+}
