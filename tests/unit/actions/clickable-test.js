@@ -1,62 +1,70 @@
 import { test } from 'qunit';
 import { moduleFor, buildProperty } from '../test-helper';
-import clickable from '../../page-object/properties/clickable';
+import { create, clickable } from '../../page-object';
 
-moduleFor('Actions', 'clickable');
+moduleFor('.clickable');
 
 test('calls Ember\'s click helper', function(assert) {
   assert.expect(1);
 
-  let expectedSelector = 'button',
-      property;
+  let page;
 
   window.click = function(actualSelector) {
-    assert.equal(actualSelector, expectedSelector);
+    assert.equal(actualSelector, 'span');
   };
 
-  property = buildProperty(clickable(expectedSelector));
+  page = create({
+    foo: clickable('span')
+  });
 
-  property.invoke();
+  page.foo;
 });
 
 test('uses scope', function(assert) {
   assert.expect(1);
 
-  let property;
+  let page;
 
   window.click = function(actualSelector) {
-    assert.equal(actualSelector, '.scope .element');
+    assert.equal(actualSelector, '.scope span');
   };
 
-  property = buildProperty(clickable('.element', { scope: '.scope' }));
+  page = create({
+    foo: clickable('span', { scope: '.scope' })
+  });
 
-  property.invoke();
+  page.foo;
 });
 
 test('uses parent scope', function(assert) {
   assert.expect(1);
 
-  let property;
+  let page;
 
   window.click = function(actualSelector) {
-    assert.equal(actualSelector, '.parent-scope .element');
+    assert.equal(actualSelector, '.scope span');
   };
 
-  property = buildProperty(clickable('.element'), { scope: '.parent-scope' });
+  page = create({
+    scope: '.scope',
 
-  property.invoke();
+    foo: clickable('span')
+  });
+
+  page.foo;
 });
 
 test('returns target object', function(assert) {
   assert.expect(1);
 
-  let target = { dummy: "value" },
-      property;
+  let page;
 
   window.click = function() {
   };
 
-  property = buildProperty(clickable(), target);
+  page = create({
+    foo: clickable()
+  });
 
-  assert.equal(property.invoke(), target);
+  assert.equal(page.foo, page);
 });
