@@ -21,7 +21,7 @@ test('calls Ember\'s click helper', function(assert) {
   page.foo('dummy text');
 });
 
-test('uses scope', function(assert) {
+test('looks for elements inside the scope', function(assert) {
   assert.expect(1);
 
   let page;
@@ -37,7 +37,7 @@ test('uses scope', function(assert) {
   page.foo('dummy text');
 });
 
-test('uses parent scope', function(assert) {
+test('looks for elements inside page\'s scope', function(assert) {
   assert.expect(1);
 
   let page;

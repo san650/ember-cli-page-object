@@ -18,6 +18,8 @@ export { clickable } from './page-object/properties/clickable';
 
 export default {
   attribute,
+  clickable,
+  clickOnText,
   collection,
   component,
   contains,

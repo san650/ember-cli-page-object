@@ -46,7 +46,7 @@ function calculateScope(target, propertyScope) {
 }
 
 export function buildSelector(target, selector, options) {
-  return normalizeText(`${calculateScope(target, options.scope)} ${selector}`);
+  return Ember.$.trim(`${calculateScope(target, options.scope)} ${selector}`);
 }
 
 export function findElementWithAssert(tree, selector, options) {
