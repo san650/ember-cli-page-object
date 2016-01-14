@@ -1,60 +1,121 @@
 import Ember from 'ember';
 import Ceibo from './ceibo';
 
-function getScopes(target) {
-  var scopes = [];
+var { trim } = Ember.$;
 
-  if (target.scope) {
-    scopes.push(target.scope);
+class Selector {
+  constructor(node, scope, selector, filters) {
+    this.targetNode = node;
+    this.targetScope = scope || '';
+    this.targetSelector = selector || '';
+    this.targetFilters = filters;
   }
 
-  if (Ceibo.parent(target)) {
-    scopes = scopes.concat(calculateScope(Ceibo.parent(target)));
+  toString() {
+    var scope,
+        filters;
+
+    if (this.targetFilters.resetScope) {
+      scope = this.targetScope;
+    } else {
+      scope = this.calculateScope(this.targetNode, this.targetScope);
+    }
+
+    filters = this.calculateFilters(this.targetFilters);
+
+    return trim(`${scope} ${this.targetSelector}${filters}`);
   }
 
-  return scopes;
-}
+  calculateFilters() {
+    var filters = [];
 
-function query(tree, selector, options, fn) {
-  var scope;
+    if (this.targetFilters.contains) {
+      filters.push(`:contains("${this.targetFilters.contains}")`);
+    }
 
-  if (options.resetScope) {
-    scope = options.scope;
-  } else {
-    scope = calculateScope(tree, options.scope);
+    if (typeof this.targetFilters.at === 'number') {
+      filters.push(`:eq(${this.targetFilters.at})`);
+    } else if (this.targetFilters.last) {
+      filters.push(':last');
+    }
+
+    return filters.join('');
   }
 
-  if (!selector) {
-    selector = scope;
-    scope = undefined;
+  calculateScope(node, targetScope) {
+    var scopes = this.getScopes(node);
+
+    scopes.reverse();
+    scopes.push(targetScope);
+
+    return $.trim(scopes.join(' '));
   }
 
-  if (typeof options.at === 'number') {
-    selector = `${selector}:eq(${options.at})`;
+  getScopes(node) {
+    var scopes = [];
+
+    if (node.scope) {
+      scopes.push(node.scope);
+    }
+
+    if (Ceibo.parent(node)) {
+      scopes = scopes.concat(this.calculateScope(Ceibo.parent(node)));
+    }
+
+    return scopes;
   }
-
-  return fn(selector, scope);
 }
 
-function calculateScope(target, propertyScope) {
-  var scopes = getScopes(target);
-
-  scopes.reverse();
-  scopes.push(propertyScope);
-
-  return $.trim(scopes.join(' '));
+/**
+ * Creates a fully qualified selector
+ *
+ * @param {Ceibo} node - Node of the tree
+ * @param {string} targetSelector - Specific CSS selector
+ * @param {Object} options - Additional options
+ * @param {boolean} options.resetScope - Do not use inherited scope
+ * @param {string} options.contains - Filter by using :contains('foo') pseudo-class
+ * @param {number} options.at - Filter by index using :eq(x) pseudo-class
+ * @param {boolean} options.last - Filter by using :last pseudo-class
+ * @return {string} Full qualified selector
+ */
+export function buildSelector(node, targetSelector, options) {
+  return (new Selector(node, options.scope, targetSelector, options)).toString();
 }
 
-export function buildSelector(target, selector, options) {
-  return Ember.$.trim(`${calculateScope(target, options.scope)} ${selector}`);
+/**
+ * Return a jQuery element or raise an exception if the element doesn't exist
+ *
+ * @param {Ceibo} node - Node of the tree
+ * @param {string} targetSelector - Specific CSS selector
+ * @param {Object} options - Additional options
+ * @param {boolean} options.resetScope - Do not use inherited scope
+ * @param {string} options.contains - Filter by using :contains('foo') pseudo-class
+ * @param {number} options.at - Filter by index using :eq(x) pseudo-class
+ * @param {boolean} options.last - Filter by using :last pseudo-class
+ * @return {string} Full qualified selector
+ */
+export function findElementWithAssert(node, targetSelector, options) {
+  var selector = buildSelector(node, targetSelector, options);
+
+  return findWithAssert(selector);
 }
 
-export function findElementWithAssert(tree, selector, options) {
-  return query(tree, selector, options, findWithAssert);
-}
+/**
+ * Return a jQuery element (can be an empty jQuery result)
+ *
+ * @param {Ceibo} node - Node of the tree
+ * @param {string} targetSelector - Specific CSS selector
+ * @param {Object} options - Additional options
+ * @param {boolean} options.resetScope - Do not use inherited scope
+ * @param {string} options.contains - Filter by using :contains('foo') pseudo-class
+ * @param {number} options.at - Filter by index using :eq(x) pseudo-class
+ * @param {boolean} options.last - Filter by using :last pseudo-class
+ * @return {string} Full qualified selector
+ */
+export function findElement(node, targetSelector, options) {
+  var selector = buildSelector(node, targetSelector, options);
 
-export function findElement(tree, selector, options, target) {
-  return query(tree, selector, options, find);
+  return find(selector);
 }
 
 /**

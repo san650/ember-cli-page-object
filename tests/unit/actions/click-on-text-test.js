@@ -54,6 +54,23 @@ test('looks for elements inside page\'s scope', function(assert) {
   page.foo('dummy text');
 });
 
+test('resets scope', function(assert) {
+  assert.expect(1);
+
+  let page;
+
+  window.click = function(actualSelector) {
+    assert.equal(actualSelector, 'span :contains("dummy text"):last');
+  };
+
+  page = create({
+    scope: '.scope',
+    foo: clickOnText('span', { resetScope: true })
+  });
+
+  page.foo('dummy text');
+});
+
 test('returns target object', function(assert) {
   assert.expect(1);
 
@@ -69,4 +86,21 @@ test('returns target object', function(assert) {
   });
 
   assert.equal(page.foo('dummy text'), page);
+});
+
+test('finds element by index', function(assert) {
+  assert.expect(1);
+
+  let expectedSelector = 'span :contains("dummy text"):eq(3)',
+      page;
+
+  window.click = function(actualSelector) {
+    assert.equal(actualSelector, expectedSelector);
+  };
+
+  page = create({
+    foo: clickOnText('span', { at: 3 })
+  });
+
+  page.foo('dummy text');
 });
