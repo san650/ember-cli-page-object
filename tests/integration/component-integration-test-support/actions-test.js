@@ -61,9 +61,7 @@ test('Actions defined inside collections work', function(assert) {
     .numbers(1)
     .click();
 
-  andThen(function() {
-    assert.equal(page.screen().text(), '1');
-  });
+  assert.equal(page.screen().text(), '1');
 });
 
 test('Chaining of actions inside a collection work', function(assert) {
@@ -77,9 +75,7 @@ test('Chaining of actions inside a collection work', function(assert) {
     .clickOn('2')
     .clickOn('3');
 
-  andThen(function() {
-    assert.equal(page.screen().text(), '123');
-  });
+  assert.equal(page.screen().text(), '123');
 });
 
 test('Chaining of actions on a component work', function(assert) {
@@ -97,7 +93,5 @@ test('Chaining of actions on a component work', function(assert) {
     .equals()
     .click();
 
-  andThen(function() {
-    assert.equal(page.screen().text(), '3');
-  });
+  assert.equal(page.screen().text(), '3');
 });
