@@ -196,7 +196,7 @@ There are three different types of custom helpers and are differentiated by the 
 
 1. [A _basic type_ value](#basic-type-value)
 2. [A _plain object_ value](#plain-object)
-3. [A _function_ value](#function)
+3. [A _function_ value](#functions)
 
 Given this HTML snippet, the following is an example of each type of custom helpers
 
