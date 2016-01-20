@@ -1,4 +1,4 @@
-import PageObject from '<%= testFolderRoot %>/page-object';
+import PageObject from '<%= pageObjectsRoot %>';
 
 let {
   visitable
