@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import PageObject from '../../page-object';
+import PageObject from '<%= pageObjectsRoot %>';
 
 function <%= camelizedModuleName %>(selector /*, options */) {
   return Ember.$(selector).prop('checked');
