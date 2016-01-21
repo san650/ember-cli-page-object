@@ -1,6 +1,6 @@
 {
   "name": "ember-cli-page-object",
-  "version": "0.10.0",
+  "version": "0.11.0",
   "description": "This ember-cli addon eases the construction of page objects on your acceptance tests",
   "homepage": "http://ember-cli-page-object.js.org",
   "bugs": "https://github.com/san650/ember-cli-page-object/issues",
@@ -24,7 +24,7 @@
   "license": "MIT",
   "devDependencies": {
     "broccoli-asset-rev": "^2.2.0",
-    "ember-cli": "1.13.13",
+    "ember-cli": "1.13.15",
     "ember-cli-app-version": "^1.0.0",
     "ember-cli-content-security-policy": "0.4.0",
     "ember-cli-dependency-checker": "^1.1.0",

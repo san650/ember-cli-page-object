@@ -25,4 +25,4 @@ export default function customHelper(userDefinedFunction) {
 
     return new Descriptor(action, options);
   }
-};
+}

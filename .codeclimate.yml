@@ -1,0 +1,18 @@
+---
+engines:
+  csslint:
+    enabled: true
+  eslint:
+    enabled: true
+    exclude_fingerprints:
+    - ee43c86616196a752dd184ba23599dcf
+  fixme:
+    enabled: true
+ratings:
+  paths:
+  - "**.css"
+  - "**.js"
+  - "**.jsx"
+exclude_paths:
+- config/**/*
+- vendor/**/*

@@ -1,4 +1,4 @@
-import PageObject from '../../page-object';
+import PageObject from '<%= pageObjectsRoot %>';
 
 let {
   text
