@@ -15,6 +15,7 @@ import { buildSelector } from '../helpers';
  * @param {Object} options - Additional options
  * @param {string} options.scope - Overrides parent scope
  * @param {number} options.at - Reduce the set of matched elements to the one at the specified index
+ * @param {boolean} options.resetScope - Ignore parent scope
  * @return {Descriptor}
  */
 export function clickable(selector, options = {}) {

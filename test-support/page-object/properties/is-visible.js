@@ -14,7 +14,7 @@ import { findElementWithAssert } from '../helpers';
  * @param {string} selector - CSS selector of the element to check
  * @param {Object} options - Additional options
  * @param {string} options.scope - Overrides parent scope
- * @param {number} options.index - Reduce the set of matched elements to the one at the specified index
+ * @param {number} options.at - Reduce the set of matched elements to the one at the specified index
  * @return {Descriptor}
  */
 export function isVisible(selector, options = {}) {
