@@ -1,5 +1,4 @@
 //import { collection } from './page-object/collection';
-//import component from './page-object/properties/component';
 import { create } from './page-object/create';
 import { text } from './page-object/properties/text';
 import { attribute } from './page-object/properties/attribute';
@@ -34,7 +33,6 @@ export default {
   clickable,
   clickOnText,
   //collection,
-  //component,
   contains,
   count,
   create,
