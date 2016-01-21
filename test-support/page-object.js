@@ -25,7 +25,7 @@ export { notHasClass } from './page-object/properties/not-has-class';
 export { count } from './page-object/properties/count';
 export { value } from './page-object/properties/value';
 export { clickOnText } from './page-object/properties/click-on-text';
-//export { clickable } from './page-object/properties/clickable';
+export { clickable } from './page-object/properties/clickable';
 
 export default {
   attribute,
