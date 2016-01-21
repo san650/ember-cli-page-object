@@ -1,6 +1,6 @@
 import { test } from 'qunit';
 import { moduleFor } from '../test-helper';
-import { create, fillable } from '../../page-object';
+import { create, fillable, selectable } from '../../page-object';
 
 moduleFor('fillable');
 
@@ -104,4 +104,24 @@ test('finds element by index', function(assert) {
   });
 
   page.foo();
+});
+
+test('is aliased to selectable', function(assert) {
+  assert.expect(2);
+
+  let expectedSelector = 'span',
+      expectedText = 'dummy text',
+      page;
+
+
+  window.fillIn = function(actualSelector, actualText) {
+    assert.equal(actualSelector, expectedSelector);
+    assert.equal(actualText, expectedText);
+  };
+
+  page = create({
+    foo: selectable(expectedSelector)
+  });
+
+  page.foo(expectedText);
 });

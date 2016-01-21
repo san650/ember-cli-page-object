@@ -27,7 +27,7 @@ export { count } from './page-object/properties/count';
 export { value } from './page-object/properties/value';
 export { clickOnText } from './page-object/properties/click-on-text';
 export { clickable } from './page-object/properties/clickable';
-export { fillable } from './page-object/properties/fillable';
+export { fillable, fillable as selectable } from './page-object/properties/fillable';
 
 export default {
   attribute,
@@ -43,7 +43,7 @@ export default {
   isHidden,
   isVisible,
   notHasClass,
-  //selectable: fillable,
+  selectable: fillable,
   text,
   value,
   visitable
