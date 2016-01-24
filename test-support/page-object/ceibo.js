@@ -56,23 +56,29 @@ function buildDefault(treeBuilder, target, key, attr) {
   defineProperty(target, key, attr);
 }
 
-function TreeBuilder(definition, builders) {
-  this.definition = definition;
-  this.builders = builders;
-}
+function setParent(target, parentTree) {
+  // We want to delete the parent node if we set null or undefine. Also, this
+  // workarounds an issue in phantomjs where we cannot use defineProperty to
+  // redefine a property.
+  // See. https://github.com/ariya/phantomjs/issues/11856
+  delete target['__parentTreeNode'];
 
-function setParent(target, parent) {
-  if (parent) {
-    Object.defineProperty(target, '__parentTreeNode', { value: parent, configurable: true });
-  } else {
-    delete target['__parentTreeNode'];
+  if (parentTree) {
+    Object.defineProperty(target, '__parentTreeNode', { value: parentTree, configurable: true, enumerable: false });
   }
 }
 
 function parent(object) {
-  if (typeof object === 'object') {
+  // Be carefull: typeof(null) === 'object'
+
+  if (typeof object === 'object' && object !== null) {
     return object['__parentTreeNode'];
   }
+}
+
+function TreeBuilder(definition, builders) {
+  this.definition = definition;
+  this.builders = builders;
 }
 
 TreeBuilder.prototype = {
