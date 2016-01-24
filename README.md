@@ -66,8 +66,8 @@ test('Invalid log in', function(assert) {
 The addon includes the following blueprints
 
 * `page-object` Creates a new page object
-* `page-object-component` Creates a new a component to be used in a page object
-* `page-object-helper` Creates a new a helper to be used in a page object
+* `page-object-component` Creates a new component to be used in a page object
+* `page-object-helper` Creates a new helper to be used in a page object
 
 You can create a new page object called `users` using the `generate` command
 
