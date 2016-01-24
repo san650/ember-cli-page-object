@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import Ceibo from './ceibo';
+import Ceibo from 'ceibo';
 
 var { trim } = Ember.$;
 
