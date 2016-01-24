@@ -58,7 +58,7 @@ class Selector {
       scopes.push(node.scope);
     }
 
-    if (Ceibo.parent(node)) {
+    if (!node.resetScope && Ceibo.parent(node)) {
       scopes = scopes.concat(this.calculateScope(Ceibo.parent(node)));
     }
 

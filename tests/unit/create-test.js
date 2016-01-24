@@ -1,7 +1,8 @@
-import { test, module } from 'qunit';
-import { create } from '../page-object';
+import { test } from 'qunit';
+import { fixture, moduleFor } from './test-helper';
+import { create, text } from '../page-object';
 
-module('.create');
+moduleFor('.create');
 
 test('creates new page object', function(assert) {
   var page = create({
@@ -13,4 +14,23 @@ test('creates new page object', function(assert) {
 
   assert.equal(page.foo, 'a value');
   assert.equal(page.bar.baz, 'another value');
+});
+
+test('resets scope', function(assert) {
+  fixture(`
+    <div>
+      <span class="scope">Lorem</span>
+    </div>
+  `);
+  var page = create({
+    scope: '.invalid-scope',
+
+    foo: {
+      scope: '.scope',
+      resetScope: true,
+      bar: text()
+    }
+  });
+
+  assert.equal(page.foo.bar, 'Lorem');
 });
