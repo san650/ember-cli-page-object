@@ -1,4 +1,3 @@
-import Descriptor from '../descriptor';
 import { findElementWithAssert, trim } from '../helpers';
 
 /**

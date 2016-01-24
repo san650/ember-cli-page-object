@@ -1,298 +1,265 @@
-// import { test } from 'qunit';
-// import {
-//   fixture,
-//   moduleFor,
-//   buildProperty
-// } from '../test-helper';
-// import { collection } from '../../page-object/collection';
-// import text from '../../page-object/properties/text';
-// 
-// moduleFor('Components', 'collection');
-// 
-// test('generates a count attribute', function(assert) {
-//   fixture('<span>First</span><span>Second</span>');
-// 
-//   let attribute = buildProperty(
-//     collection({itemScope: 'span'})
-//   ).toFunction();
-// 
-//   assert.equal(attribute().count(), 2);
-// });
-// 
-// test('doesn\'t generate a count attribute when it\'s defined', function(assert) {
-//   fixture('<span>First</span><span>Second</span>');
-// 
-//   let attribute = buildProperty(
-//     collection({
-//       itemScope: 'span',
-//       count: 'myCount'
-//     })
-//   ).toFunction();
-// 
-//   assert.equal(attribute().count, 'myCount');
-// });
-// 
-// test('generates component for item', function(assert) {
-//   fixture('<span>First</span><span>Second</span>');
-// 
-//   let attribute = buildProperty(
-//     collection({
-//       itemScope: 'span',
-//       item: {
-//         text: text()
-//       }
-//     })
-//   ).toFunction();
-// 
-//   assert.equal(attribute(1).text(), 'First');
-//   assert.equal(attribute(2).text(), 'Second');
-// });
-// 
-// test('generates component for scoped items', function(assert) {
-//   fixture("<span class='cero'>Cero</span><span>First</span><span>Second</span>");
-// 
-//   let attribute = buildProperty(
-//     collection({
-//       itemScope: 'span:not(.cero)',
-//       item: {
-//         text: text()
-//       }
-//     })
-//   ).toFunction();
-// 
-//   assert.equal(attribute(1).text(), 'First');
-//   assert.equal(attribute(2).text(), 'Second');
-// });
-// 
-// test('generates component for collection object', function(assert) {
-//   fixture('<span>First</span><span>Second</span><button>Submit</button>');
-// 
-//   let attribute = buildProperty(
-//     collection({
-//       itemScope: 'span',
-//       text: text('button')
-//     })
-//   ).toFunction();
-// 
-//   assert.equal(attribute().text(), 'Submit');
-// });
-// 
-// test('sets scope to components under item object', function(assert) {
-//   fixture('<button>Wrong</button><span><button>Wrong</button></span><span><button>Right</button></span>');
-// 
-//   let attribute = buildProperty(
-//     collection({
-//       itemScope: 'span',
-//       item: {
-//         button: {
-//            text: text('button')
-//         }
-//       }
-//     })
-//   ).toFunction();
-// 
-//   assert.equal(attribute(2).button().text(), 'Right');
-// });
-// 
-// test('inherits parent scope by default', function(assert) {
-//   fixture('<span>Wrong</span><span class="scope"><span>First</span><span>Second</span></span>');
-// 
-//   let attribute = buildProperty(
-//     collection({
-//       itemScope: 'span',
-// 
-//       item: {
-//         text: text()
-//       }
-//     }),
-//     { scope: ".scope" }
-//   ).toFunction();
-// 
-//   assert.equal(attribute(1).text(), 'First');
-// });
-// 
-// test('inherits parent scope for generated count attribute', function(assert) {
-//   fixture('<span>Wrong</span><span class="scope"><span>First</span><span>Second</span></span>');
-// 
-//   let attribute = buildProperty(
-//     collection({
-//       itemScope: 'span'
-//     }),
-//     { scope: ".scope" }
-//   ).toFunction();
-// 
-//   assert.equal(attribute().count(), 2);
-// });
-// 
-// test('resets parent scope for generated count attribute', function(assert) {
-//   fixture('<span>Wrong</span><span class="scope"><span>First</span><span>Second</span></span>');
-// 
-//   let attribute = buildProperty(
-//     collection({
-//       scope: '',
-//       itemScope: 'span'
-//     }),
-//     { scope: ".scope" }
-//   ).toFunction();
-// 
-//   assert.equal(attribute().count(), 4);
-// });
-// 
-// test('resets parent scope', function(assert) {
-//   fixture('<span>Dummy</span><p class="scope"></p>');
-// 
-//   let attribute = buildProperty(
-//     collection({
-//       scope: '',
-//       itemScope: 'span',
-// 
-//       item: {
-//         text: text()
-//       }
-//     }),
-//     { scope: ".scope" }
-//   ).toFunction();
-// 
-//   assert.equal(attribute(1).text(), 'Dummy');
-// });
-// 
-// test('does not mutate collection definition after been used', function(assert) {
-//   fixture('<span>Dummy</span><p class="scope"></p>');
-// 
-//   let def = {
-//     scope: '',
-//     itemScope: 'span',
-// 
-//     item: {
-//       text: text()
-//     }
-//   };
-// 
-//   buildProperty(collection(def)).toFunction();
-// 
-//   let attribute = buildProperty(collection(def)).toFunction();
-// 
-//   assert.equal(attribute(1).text(), 'Dummy');
-// });
-// 
-// test('throws an error when trying to access to element 0', function(assert) {
-//   let attribute = buildProperty(
-//     collection({
-//       itemScope: 'span',
-// 
-//       item: {
-//         text: text()
-//       }
-//     }),
-//     { scope: ".scope" }
-//   ).toFunction();
-// 
-//   assert.throws(function() { attribute(0); }, /collections are 1-based arrays/, 'throws error');
-// });
-// 
-// test('assigns the correct scope to item sub components', function(assert) {
-//   fixture('<span><p>Lorem</p></span><span><p>Ipsum</p></span>');
-// 
-//   let attribute = buildProperty(
-//     collection({
-//       itemScope: 'span',
-//       item: {
-//         anotherComponent: {
-//           scope: 'p',
-//           text: text()
-//         }
-//       }
-//     })
-//   ).toFunction();
-// 
-//   assert.equal(attribute(1).anotherComponent().text(), 'Lorem');
-// });
-// 
-// test('assigns the correct scope to item sub components when component doesn\'t defines a scope', function(assert) {
-//   fixture('<span><p>Lorem</p></span><span><p>Ipsum</p></span>');
-// 
-//   let attribute = buildProperty(
-//     collection({
-//       itemScope: 'span',
-//       item: {
-//         anotherComponent: {
-//           text: text()
-//         }
-//       }
-//     })
-//   ).toFunction();
-// 
-//   assert.equal(attribute(1).anotherComponent().text(), 'Lorem');
-// });
-// 
-// test('assigns the correct scope to sub collection component', function(assert) {
-//   fixture('<div><span></span><span></span></div><div><span></span></div>');
-// 
-//   let attribute = buildProperty(
-//     collection({
-//       itemScope: 'div',
-//       item: {
-//         spans: collection({
-//           itemScope: 'span'
-//         })
-//       }
-//     })
-//   ).toFunction();
-// 
-//   assert.equal(attribute(1).spans().count(), 2);
-// });
-// 
-// test('assigns the correct scope to sub collection items', function(assert) {
-//   fixture('<div><span>Lorem</span><span>Ipsum</span></div><div><span>Dolor</span></div>');
-// 
-//   let attribute = buildProperty(
-//     collection({
-//       itemScope: 'div',
-//       item: {
-//         spans: collection({
-//           itemScope: 'span',
-//           item: {
-//             text: text()
-//           }
-//         })
-//       }
-//     })
-//   ).toFunction();
-// 
-//   assert.equal(attribute(2).spans(1).text(), 'Dolor');
-// });
-// 
-// import { create } from '../../page-object/create';
-// 
-// test('doesn\'t mutate collection definition', function(assert) {
-//   fixture('<div>Lorem <p> Ipsum <span>Dolor</span> <span> Ergo</span></p></div>');
-// 
-//   let component = {
-//     scope: 'p',
-// 
-//     four: collection({
-//       itemScope: 'span',
-//       item: {
-//         text: text(),
-//       }
-//     })
-//   };
-// 
-//   create({
-//     one: {
-//       scope: 'div',
-// 
-//       two: component
-//     }
-//   });
-// 
-//   let pageObject = create({
-//     one: {
-//       scope: 'div',
-// 
-//       two: component
-//     }
-//   });
-// 
-//   assert.equal(pageObject.one().two().four(1).text(), 'Dolor');
-// });
+import { test } from 'qunit';
+import { fixture, moduleFor } from '../test-helper';
+import { create, collection, text } from '../../page-object';
+
+moduleFor('.collection');
+
+test('generates a count property', function(assert) {
+  fixture(`
+    <span>Lorem</span>
+    <span>Ipsum</span>
+  `);
+
+  let page = create({
+    foo: collection({
+      itemScope: 'span'
+    })
+  });
+
+  assert.equal(page.foo().count, 2);
+});
+
+test('does not override custom count property', function(assert) {
+  fixture(`
+    <span>Lorem</span>
+    <span>Ipsum</span>
+  `);
+
+  let page = create({
+    foo: collection({
+      itemScope: 'span',
+
+      count: 'custom count'
+    })
+  });
+
+  assert.equal(page.foo().count, 'custom count');
+});
+
+test('returns an item', function(assert) {
+  fixture(`
+    <span>Lorem</span>
+    <span>Ipsum</span>
+  `);
+
+  let page = create({
+    foo: collection({
+      itemScope: 'span',
+
+      item: {
+        text: text()
+      }
+    })
+  });
+
+  assert.equal(page.foo(0).text, 'Lorem');
+  assert.equal(page.foo(1).text, 'Ipsum');
+});
+
+test('wip looks for elements inside the scope', function(assert) {
+  fixture(`
+    <div>
+      <span>Lorem</span>
+    </div>
+    <div class="scope">
+      <span>Ipsum</span>
+    </div>
+  `);
+
+  let page = create({
+    scope: '.scope',
+
+    foo: collection({
+      itemScope: 'span',
+      hola: 'mundo',
+
+      item: {
+        text: text()
+      }
+    })
+  });
+
+  assert.equal(page.foo(0).text, 'Ipsum');
+});
+
+test('looks for elements inside multiple scopes', function(assert) {
+  fixture(`
+    <ul>
+      <li>Blah</li>
+      <li>
+        <ul class="another-scope">
+          <li>Lorem<li>
+        </ul>
+      </li>
+    </ul>
+    <ul class="scope">
+      <li>Ipsum</li>
+      <li>
+        <ul>
+          <li>Dolor</li>
+        </ul>
+        <ul class="another-scope">
+          <li>Sit</li>
+          <li>Amet</li>
+        </ul>
+      </li>
+    </ul>
+  `);
+
+  let page = create({
+    scope: '.scope',
+
+    foo: collection({
+      itemScope: 'li',
+
+      item: {
+        bar: {
+          scope: '.another-scope',
+
+          text: text('li', { at: 0 })
+        }
+      }
+    })
+  });
+
+  assert.equal(page.foo(1).bar.text, 'Sit');
+});
+
+test('looks for elements inside collection\'s scope', function(assert) {
+  fixture(`
+    <ul>
+      <li>Lorem</li>
+    </ul>
+    <ul class="scope">
+      <li>Ipsum</li>
+    </ul>
+  `);
+
+  let page = create({
+    foo: collection({
+      scope: '.scope',
+      itemScope: 'li',
+
+      item: {
+        text: text()
+      }
+    })
+  });
+
+  assert.equal(page.foo(0).text, 'Ipsum');
+});
+
+test('returns collection\'s component', function(assert) {
+  fixture(`
+    <span>Lorem</span>
+    <span>Second</span>
+    <button>Submit</button>
+  `);
+
+  let page = create({
+    foo: collection({
+      itemScope: 'span',
+
+      text: text('button')
+    })
+  });
+
+  assert.equal(page.foo().text, 'Submit');
+});
+
+test('looks for elements inside collection\'s scope (collection component)', function(assert) {
+  fixture(`
+    <div>
+      <span>Lorem</span>
+    </div>
+    <div class="scope">
+      <span>Ipsum</span>
+    </div>
+  `);
+
+  let page = create({
+    foo: collection({
+      scope: '.scope',
+      itemScope: 'li',
+
+      text: text('span')
+    })
+  });
+
+  assert.equal(page.foo().text, 'Ipsum');
+});
+
+test('resets scope for items', function(assert) {
+  fixture(`
+    <div>
+      <span>Lorem</span>
+    </div>
+    <div class="scope">
+      <span>Ipsum</span>
+    </div>
+  `);
+
+  let page = create({
+    scope: 'div',
+
+    foo: collection({
+      resetScope: true,
+      scope: '.scope',
+      itemScope: 'span',
+
+      item: {
+        text: text()
+      }
+    })
+  });
+
+  assert.equal(page.foo(0).text, 'Ipsum');
+});
+
+test('resets scope for collection\'s component', function(assert) {
+  fixture(`
+    <div>
+      <span>Lorem</span>
+    </div>
+    <div class="scope">
+      <span>Ipsum</span>
+    </div>
+  `);
+
+  let page = create({
+    scope: 'div',
+
+    foo: collection({
+      resetScope: true,
+      scope: '.scope',
+      text: text('span')
+    })
+  });
+
+  assert.equal(page.foo().text, 'Ipsum');
+});
+
+test('sets correct scope to child collections', function(assert) {
+  fixture(`
+    <div><span><em>Lorem</em></span></div>
+    <div class="scope"><span><em>Ipsum</em></span></div>
+  `);
+
+  let page = create({
+    foo: collection({
+      scope: '.scope',
+      itemScope: 'span',
+
+      item: {
+        bar: collection({
+          itemScope: 'em',
+          item: {
+            text: text()
+          }
+        })
+      }
+    })
+  });
+
+  assert.equal(page.foo(0).bar(0).text, 'Ipsum');
+});

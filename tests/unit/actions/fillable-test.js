@@ -2,7 +2,7 @@ import { test } from 'qunit';
 import { moduleFor } from '../test-helper';
 import { create, fillable, selectable } from '../../page-object';
 
-moduleFor('fillable');
+moduleFor('.fillable');
 
 test('calls Ember\'s fillIn helper', function(assert) {
   assert.expect(2);
