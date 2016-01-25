@@ -12,7 +12,7 @@ import { isVisible } from './page-object/properties/is-visible';
 import { notHasClass } from './page-object/properties/not-has-class';
 import { text } from './page-object/properties/text';
 import { value } from './page-object/properties/value';
-//import visitable from './page-object/properties/visitable';
+import { visitable } from './page-object/properties/visitable';
 
 export { attribute } from './page-object/properties/attribute';
 export { clickOnText } from './page-object/properties/click-on-text';
@@ -28,6 +28,7 @@ export { isVisible } from './page-object/properties/is-visible';
 export { notHasClass } from './page-object/properties/not-has-class';
 export { text } from './page-object/properties/text';
 export { value } from './page-object/properties/value';
+export { visitable } from './page-object/properties/visitable';
 
 export default {
   attribute,
@@ -44,6 +45,6 @@ export default {
   notHasClass,
   selectable: fillable,
   text,
-  value//,
-  //visitable
+  value,
+  visitable
 };
