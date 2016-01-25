@@ -28,5 +28,5 @@ export function clickable(selector, options = {}) {
 
       return this;
     }
-  }
+  };
 }

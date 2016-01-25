@@ -27,5 +27,5 @@ export function attribute(attributeName, selector, options = {}) {
 
       return element.attr(attributeName);
     }
-  }
+  };
 }
