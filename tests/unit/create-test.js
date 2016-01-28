@@ -62,6 +62,16 @@ test('generates .isHidden property', function(assert) {
   assert.ok(page.foo.isHidden, 'component is hidden');
 });
 
+['isVisible', 'isHidden', 'clickOn', 'click', 'contains', 'text'].forEach(prop => {
+  test(`does not override .${prop} property`, function(assert) {
+    var page = create({
+      [prop]: 'foo bar'
+    });
+
+    assert.equal(page[prop], 'foo bar');
+  });
+});
+
 test('generates .clickOn property', function(assert) {
   assert.expect(1);
 
