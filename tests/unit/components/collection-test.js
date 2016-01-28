@@ -56,7 +56,7 @@ test('returns an item', function(assert) {
   assert.equal(page.foo(1).text, 'Ipsum');
 });
 
-test('wip looks for elements inside the scope', function(assert) {
+test('looks for elements inside the scope', function(assert) {
   fixture(`
     <div>
       <span>Lorem</span>

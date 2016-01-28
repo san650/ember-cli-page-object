@@ -1,94 +1,49 @@
-// import { test } from 'qunit';
-// import moduleForAcceptance from '../helpers/module-for-acceptance';
-// import PageObject from '../page-object';
-// 
-// moduleForAcceptance('Acceptance | actions');
-// 
-// var {
-//   clickOnText,
-//   clickable,
-//   collection,
-//   customHelper,
-//   text,
-//   visitable
-// } = PageObject;
-// 
-// var button = customHelper(function(scope) {
-//   return {
-//     scope,
-// 
-//     click: clickable(),
-//     text: text()
-//   };
-// });
-// 
-// var page = PageObject.create({
-//   visit: visitable('/calculator'),
-// 
-//   numbers: collection({
-//     scope: '.numbers',
-//     itemScope: 'button',
-// 
-//     item: {
-//       click: clickable(),
-//       text: text()
-//     },
-// 
-//     clickOn: clickOnText()
-//   }),
-// 
-//   operators: {
-//     scope: '.operators',
-// 
-//     plus: button('button:nth-of-type(1)'),
-//     minus: button('button:nth-of-type(2)'),
-//     equals: button('button:nth-of-type(3)')
-//   },
-// 
-//   screen: {
-//     text: text('.screen')
-//   },
-// 
-//   clickOn: clickOnText('.calculator')
-// });
-// 
-// test('Actions defined inside collections work', function(assert) {
-//   page
-//     .visit()
-//     .numbers(1)
-//     .click();
-// 
-//   andThen(function() {
-//     assert.equal(page.screen().text(), '1');
-//   });
-// });
-// 
-// test('Chaining of actions inside a collection work', function(assert) {
-//   page
-//     .visit()
-//     .numbers()
-//     .clickOn('1')
-//     .clickOn('2')
-//     .clickOn('3');
-// 
-//   andThen(function() {
-//     assert.equal(page.screen().text(), '123');
-//   });
-// });
-// 
-// test('Chaining of actions on a component work', function(assert) {
-//   page
-//     .visit()
-//     .clickOn('1')
-//     .clickOn('+')
-//     .clickOn('4')
-//     .clickOn('-')
-//     .clickOn('2')
-//     .operators()
-//     .equals()
-//     .click();
-// 
-//   andThen(function() {
-//     assert.equal(page.screen().text(), '3');
-//   });
-// });
+import { test } from 'qunit';
+import moduleForAcceptance from '../helpers/module-for-acceptance';
+import PageObject from '../page-object';
+
+moduleForAcceptance('Acceptance | actions');
+
+var {
+  clickOnText,
+  clickable,
+  fillable,
+  value,
+  visitable
+} = PageObject;
+
+var page = PageObject.create({
+  visit: visitable('/calculator'),
+  keys: {
+    clickOn: clickOnText('.numbers'),
+    sum: clickable('button', { scope: '.operators', at: 0 }),
+    equal: clickable('button', { scope: '.operators', at: 2 })
+  },
+
+  screen: value('.screen input'),
+  fillValue: fillable('.screen input')
+});
+
+test('allows to chain actions', function(assert) {
+  page
+    .visit()
+    .keys
+    .clickOn('1')
+    .clickOn('2')
+    .sum()
+    .clickOn('3')
+    .equal();
+
+  andThen(function() {
+    assert.equal(page.screen, '15');
+  });
+
+  page
+    .fillValue('45')
+    .keys
+    .clickOn('6');
+
+  andThen(function() {
+    assert.equal(page.screen, '456');
+  });
+});
