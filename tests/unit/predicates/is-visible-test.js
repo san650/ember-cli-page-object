@@ -24,12 +24,12 @@ test('returns false when the element is hidden', function(assert) {
   assert.ok(!page.foo);
 });
 
-test('throws an error when the element doesn\'t exist in the DOM', function(assert) {
+test('returns false when the element doesn\'t exist', function(assert) {
   let page = create({
     foo: isVisible('span')
   });
 
-  assert.throws(() => page.foo);
+  assert.ok(!page.foo);
 });
 
 test('looks for elements inside the scope', function(assert) {
