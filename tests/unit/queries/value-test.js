@@ -1,49 +1,89 @@
 import { test } from 'qunit';
-import { buildProperty, fixture, moduleFor } from '../test-helper';
-import value from '../../page-object/properties/value';
+import { fixture, moduleFor } from '../test-helper';
+import { create, value } from '../../page-object';
 
-moduleFor('Queries', 'value');
+moduleFor('.value');
 
 test('returns the text of the input', function(assert) {
-  fixture('<input value="Hello world" />');
+  fixture('<input value="Lorem ipsum">');
 
-  let property = buildProperty(value('input'));
+  let page = create({
+    foo: value('input')
+  });
 
-  assert.equal(property.invoke(), 'Hello world');
-});
-
-test('raises an error when the element doesn\'t exist', function(assert) {
-  assert.expect(1);
-
-  let property = buildProperty(value('span'));
-
-  try {
-    property.invoke();
-  } catch(e) {
-    assert.ok(true, 'Element not found');
-  }
+  assert.equal(page.foo, 'Lorem ipsum');
 });
 
 test('returns empty when the element doesn\'t have value attribute', function(assert) {
-  fixture('<span />');
+  fixture('<input>');
 
-  let property = buildProperty(value('span'));
+  let page = create({
+    foo: value('input')
+  });
 
-  assert.equal(property.invoke(), '');
+  assert.equal(page.foo, '');
 });
 
-test('uses scope', function(assert) {
-  fixture('<div class="scope"><input value="Hello" /></div><input value="world!" />');
+test("raises an error when the element doesn't exist", function(assert) {
+  let page = create({
+    foo: value('input')
+  });
 
-  var property = buildProperty(value('input', { scope: '.scope' }));
-
-  assert.equal(property.invoke(), 'Hello');
+  assert.throws(() => page.foo, 'Throws element not found error');
 });
 
-test('uses page scope', function(assert) {
-  fixture('<div class="scope"><input value="Hello" /></div><input value="world!" />');
+test('looks for elements inside the scope', function(assert) {
+  fixture(`
+    <div><input value="lorem"></div>
+    <div class="scope"><input value="ipsum"></div>
+  `);
 
-  var property = buildProperty(value('input'), { scope: '.scope' });
+  let page = create({
+    foo: value('input', { scope: '.scope' })
+  });
 
-  assert.equal(property.invoke(), 'Hello');
+  assert.equal(page.foo, 'ipsum');
+});
+
+test("looks for elements inside page's scope", function(assert) {
+  fixture(`
+    <div><input value="lorem"></div>
+    <div class="scope"><input value="ipsum"></div>
+  `);
+
+  let page = create({
+    scope: '.scope',
+
+    foo: value('input')
+  });
+
+  assert.equal(page.foo, 'ipsum');
+});
+
+test('resets scope', function(assert) {
+  fixture(`
+    <div><input value="lorem"></div>
+    <div class="scope"><input value="ipsum"></div>
+  `);
+
+  let page = create({
+    scope: '.scope',
+
+    foo: value('input', { resetScope: true })
+  });
+
+  assert.equal(page.foo, 'lorem');
+});
+
+test('finds element by index', function(assert) {
+  fixture(`
+    <input value="lorem">
+    <input value="ipsum">
+  `);
+
+  let page = create({
+    foo: value('input', { at: 1 })
+  });
+
+  assert.equal(page.foo, 'ipsum');
 });

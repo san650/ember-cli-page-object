@@ -1,25 +1,4 @@
-/* global click */
-
-import Descriptor from '../descriptor';
-import { qualifySelector } from '../helpers';
-
-/**
- * Clicks an element
- *
- * @param {Object} target - Component that owns the property
- * @param {string} key - Name of the key associated to this property
- * @param {Object} options - Additional options
- * @param {string} options.selector - CSS selector of the element to click
- * @param {string} options.scope - Overrides parent scope
- * @return {Object} target component (this allows chaining)
- */
-function doClick(target, key, options) {
-  let selector = qualifySelector(options.scope || target.scope, options.selector);
-
-  click(selector);
-
-  return target;
-}
+import { buildSelector } from '../helpers';
 
 /**
  * Creates an action to click an element
@@ -35,10 +14,19 @@ function doClick(target, key, options) {
  * @param {string} selector - CSS selector of the element to click
  * @param {Object} options - Additional options
  * @param {string} options.scope - Overrides parent scope
+ * @param {number} options.at - Reduce the set of matched elements to the one at the specified index
+ * @param {boolean} options.resetScope - Ignore parent scope
  * @return {Descriptor}
  */
-export default function clickable(selector, options = {}) {
-  options.selector = selector;
+export function clickable(selector, options = {}) {
+  return {
+    isDescriptor: true,
 
-  return new Descriptor(doClick, options);
+    value() {
+      /* global click */
+      click(buildSelector(this, selector, options));
+
+      return this;
+    }
+  };
 }

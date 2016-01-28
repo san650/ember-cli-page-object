@@ -1,44 +1,52 @@
 import { test } from 'qunit';
-import { moduleFor, buildProperty } from '../test-helper';
-import visitable from '../../page-object/properties/visitable';
+import { moduleFor } from '../test-helper';
+import { create, visitable } from '../../page-object';
 
-moduleFor('Actions', 'visitable');
+moduleFor('.visitable');
 
 test('calls Ember\'s visit helper', function(assert) {
   assert.expect(1);
 
-  let expectedRoute = '/dummy-page',
-      property;
+  let expectedRoute = '/dummy-page';
 
   window.visit = function(actualRoute) {
     assert.equal(actualRoute, expectedRoute);
   };
 
-  property = buildProperty(visitable(expectedRoute));
-  property.invoke();
+  let page = create({
+    foo: visitable(expectedRoute)
+  });
+
+  page.foo();
 });
 
 test('fills in dynamic segments', function(assert) {
   assert.expect(1);
 
-  let property;
+  let page;
 
   window.visit = function(actualRoute) {
     assert.equal(actualRoute, '/users/5/comments/1');
   };
 
-  property = buildProperty(visitable('/users/:user_id/comments/:comment_id'));
-  property.invoke({ user_id: 5, comment_id: 1 });
+  page = create({
+    foo: visitable('/users/:user_id/comments/:comment_id')
+  });
+
+  page.foo({ user_id: 5, comment_id: 1 });
 });
 
 test("raises an exception if params aren't given for all dynamic segments", function(assert) {
   assert.expect(1);
 
-  let property;
+  let page;
 
   try {
-    property = buildProperty(visitable('/users/:user_id'));
-    property.invoke();
+    page = create({
+      foo: visitable('/users/:user_id')
+    });
+
+    page.foo();
   } catch(e) {
     assert.equal(e.message, "Missing parameter for 'user_id'");
   }
@@ -47,12 +55,15 @@ test("raises an exception if params aren't given for all dynamic segments", func
 test('appends queryParams to the path', function(assert) {
   assert.expect(1);
 
-  let property;
+  let page;
 
   window.visit = function(actualRoute) {
     assert.equal(actualRoute, '/dummy-page?hello=world&lorem=ipsum');
   };
 
-  property = buildProperty(visitable('/dummy-page'));
-  property.invoke({}, { hello: "world", lorem: "ipsum" });
+  page = create({
+    foo: visitable('/dummy-page')
+  });
+
+  page.foo({}, { hello: "world", lorem: "ipsum" });
 });
