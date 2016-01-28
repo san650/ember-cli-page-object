@@ -1,4 +1,4 @@
-import { findElementWithAssert } from '../helpers';
+import { findElement } from '../helpers';
 
 /**
  * Creates a predicate to validate if an element is visible
@@ -22,7 +22,7 @@ export function isVisible(selector, options = {}) {
     isDescriptor: true,
 
     get() {
-      let element = findElementWithAssert(this, selector, options);
+      let element = findElement(this, selector, options);
 
       return element.is(':visible');
     }
