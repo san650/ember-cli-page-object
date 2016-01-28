@@ -1,49 +1,101 @@
 import { test } from 'qunit';
-import { buildProperty, fixture, moduleFor } from '../test-helper';
-import hasClass from '../../page-object/properties/has-class';
+import { fixture, moduleFor } from '../test-helper';
+import { create, hasClass } from '../../page-object';
 
-moduleFor('Actions', 'hasClass');
+moduleFor('.hasClass');
 
 test('returns true when the element has the class', function(assert) {
-  fixture('<div class="element has-error" />');
+  fixture('<em class="lorem"></em><span class="ipsum"></span>');
 
-  let property = buildProperty(hasClass('has-error', '.element'));
+  let page = create({
+    foo: hasClass('ipsum', 'span')
+  });
 
-  assert.ok(property.invoke());
+  assert.ok(page.foo);
 });
 
 test('returns false when the element doesn\'t have the class', function(assert) {
-  fixture('<div class="element" />');
+  fixture('<em class="lorem"></em><span class="ipsum"></span>');
 
-  let property = buildProperty(hasClass('has-error', '.element'));
+  let page = create({
+    foo: hasClass('lorem', 'span')
+  });
 
-  assert.ok(!property.invoke());
+  assert.ok(!page.foo);
 });
 
-test('raises an error when the element doesn\'t exist', function(assert) {
-  assert.expect(1);
+test("raises an error when the element doesn't exist", function(assert) {
+  let page = create({
+    foo: hasClass('lorem', 'span')
+  });
 
-  let property = buildProperty(hasClass('has-error', '.element'));
-
-  try {
-    property.invoke();
-  } catch(e) {
-    assert.ok(true, 'Element not found');
-  }
+  assert.throws(() => page.foo);
 });
 
-test('uses scope', function(assert) {
-  fixture('<div class="element scope"><div class="element has-error" /></div>');
+test('looks for elements inside the scope', function(assert) {
+  fixture(`
+    <div>
+      <span class="lorem"></span>
+    </div>
+    <div class="scope">
+      <span class="ipsum"></span>
+    </div>
+  `);
 
-  let property = buildProperty(hasClass('has-error', '.element:first', { scope: '.scope' }));
+  let page = create({
+    foo: hasClass('ipsum', 'span', { scope: '.scope' })
+  });
 
-  assert.ok(property.invoke());
+  assert.ok(page.foo);
 });
 
-test('uses parent scope', function(assert) {
-  fixture('<div class="element scope"><div class="element has-error" /></div>');
+test("looks for elements inside page's scope", function(assert) {
+  fixture(`
+    <div>
+      <span class="lorem"></span>
+    </div>
+    <div class="scope">
+      <span class="ipsum"></span>
+    </div>
+  `);
 
-  var property = buildProperty(hasClass('has-error', '.element:first'), { scope: '.scope' });
+  let page = create({
+    scope: '.scope',
 
-  assert.ok(property.invoke());
+    foo: hasClass('ipsum', 'span')
+  });
+
+  assert.ok(page.foo);
+});
+
+test('resets scope', function(assert) {
+  fixture(`
+    <div>
+      <span class="lorem"></span>
+    </div>
+    <div class="scope">
+      <span class="ipsum"></span>
+    </div>
+  `);
+
+  let page = create({
+    scope: '.scope',
+
+    foo: hasClass('lorem', 'div:first span', { resetScope: true })
+  });
+
+  assert.ok(page.foo);
+});
+
+test('finds element by index', function(assert) {
+  fixture(`
+    <span class="lorem"></span>
+    <span class="ipsum"></span>
+  `);
+
+  let page = create({
+    foo: hasClass('ipsum', 'span', { at: 1 })
+  });
+
+  assert.ok(page.foo);
 });

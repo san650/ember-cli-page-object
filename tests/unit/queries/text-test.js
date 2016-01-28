@@ -1,73 +1,158 @@
 import { test } from 'qunit';
-import { buildProperty, fixture, moduleFor } from '../test-helper';
-import text from '../../page-object/properties/text';
+import { fixture, moduleFor } from '../test-helper';
+import { create, text } from '../../page-object';
 
-moduleFor('Queries', 'text');
+moduleFor('.text');
 
 test('returns the inner text of the element', function(assert) {
   fixture('Hello <span>world!</span>');
 
-  let property = buildProperty(text('span'));
+  let page = create({
+    foo: text('span')
+  });
 
-  assert.equal(property.invoke(), 'world!');
+  assert.equal(page.foo, 'world!');
 });
 
 test('removes white spaces from the beginning and end of the text', function(assert) {
   fixture('<span>  awesome!  </span>');
 
-  let property = buildProperty(text('span'));
+  let page = create({
+    foo: text('span')
+  });
 
-  assert.equal(property.invoke(), 'awesome!');
+  assert.equal(page.foo, 'awesome!');
 });
 
 test('normalizes inner text of the element containing newlines', function(assert) {
   fixture(['<span>', 'Hello', 'multi-line', 'world!', '</span>'].join("\n"));
 
-  let property = buildProperty(text('span'));
+  let page = create({
+    foo: text('span')
+  });
 
-  assert.equal(property.invoke(), 'Hello multi-line world!');
+  assert.equal(page.foo, 'Hello multi-line world!');
 });
 
 test('converts &nbsp; characters into standard whitespace characters', function(assert) {
   fixture('<span>This&nbsp;is&nbsp;awesome.</span>');
 
-  let property = buildProperty(text('span'));
+  let page = create({
+    foo: text('span')
+  });
 
-  assert.equal(property.invoke(), 'This is awesome.');
+  assert.equal(page.foo, 'This is awesome.');
 });
 
-test('raises an error when the element doesn\'t exist', function(assert) {
-  assert.expect(1);
-
-  let property = buildProperty(text('span'));
-
-  try {
-    property.invoke();
-  } catch(e) {
-    assert.ok(true, 'Element not found');
-  }
-});
-
-test('returns empty when the element doesn\'t have text', function(assert) {
+test('returns empty text when the element doesn\'t have text', function(assert) {
   fixture('<span />');
 
-  let property = buildProperty(text('span'));
+  let page = create({
+    foo: text('span')
+  });
 
-  assert.equal(property.invoke(), '');
+  assert.equal(page.foo, '');
 });
 
-test('uses scope', function(assert) {
-  fixture('<div class="scope"><span>Hello</span></div><span> world!</span>');
+test("raises an error when the element doesn't exist", function(assert) {
+  let page = create({
+    foo: text('span')
+  });
 
-  var property = buildProperty(text('span', { scope: '.scope' }));
-
-  assert.equal(property.invoke(), 'Hello');
+  assert.throws(() => page.foo, 'Throws element not found error');
 });
 
-test('uses page scope', function(assert) {
-  fixture('<div class="scope"><span>Hello</span></div><span> world!</span>');
+test('looks for elements inside the scope', function(assert) {
+  fixture(`
+    <div><span>lorem</span></div>
+    <div class="scope"><span>ipsum</span></div>
+    <div><span>dolor</span></div>
+  `);
 
-  var property = buildProperty(text('span'), { scope: '.scope' });
+  let page = create({
+    foo: text('span', { scope: '.scope' })
+  });
 
-  assert.equal(property.invoke(), 'Hello');
+  assert.equal(page.foo, 'ipsum');
+});
+
+test("looks for elements inside page's scope", function(assert) {
+  fixture(`
+    <div><span>lorem</span></div>
+    <div class="scope"><span>ipsum</span></div>
+    <div><span>dolor</span></div>
+  `);
+
+  let page = create({
+    scope: '.scope',
+
+    foo: text('span')
+  });
+
+  assert.equal(page.foo, 'ipsum');
+});
+
+test('resets scope', function(assert) {
+  fixture(`
+    <div><span>lorem</span></div>
+    <div class="scope"><span> ipsum </span></div>
+    <div><span>dolor</span></div>
+  `);
+
+  let page = create({
+    scope: '.scope',
+
+    foo: text('span', { resetScope: true })
+  });
+
+  assert.equal(page.foo, 'lorem ipsum dolor');
+});
+
+test('finds element by index', function(assert) {
+  fixture(`
+    <span>lorem</span>
+    <span>ipsum</span>
+    <span>dolor</span>
+  `);
+
+  let page = create({
+    foo: text('span', { at: 1 })
+  });
+
+  assert.equal(page.foo, 'ipsum');
+});
+
+test('finds element without using a selector', function(assert) {
+  fixture('<div>Hello <span>world!</span></div>');
+
+  let page = create({
+    scope: 'div',
+
+    foo: text(),
+
+    bar: {
+      scope: 'span',
+
+      baz: text()
+    }
+  });
+
+  assert.equal(page.foo, 'Hello world!');
+  assert.equal(page.bar.baz, 'world!');
+});
+
+test('returns multiple values', function(assert) {
+  fixture(`
+    <ul>
+      <li>lorem</li>
+      <li> ipsum </li>
+      <li>dolor</li>
+    </ul>
+  `);
+
+  var page = create({
+    foo: text('li', { multiple: true })
+  });
+
+  assert.deepEqual(page.foo, ['lorem', 'ipsum', 'dolor']);
 });
