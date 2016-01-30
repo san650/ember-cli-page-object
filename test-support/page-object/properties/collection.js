@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import Ceibo from 'ceibo';
 import { buildSelector } from '../helpers';
 import { create } from '../create';
 import { count } from './count';
@@ -26,7 +27,7 @@ function generateEnumerable(definition) {
     enumerable.count = count(definition.itemScope)
   }
 
-  return create(enumerable);
+  return create(enumerable, { parent: this });
 }
 
 function generateItem(index, definition) {

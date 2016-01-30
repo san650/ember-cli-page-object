@@ -4,36 +4,42 @@ import hbs from 'htmlbars-inline-precompile';
 import PageObject from '../../page-object';
 
 const {
-  customHelper,
+  attribute,
   selectable,
   text,
-  collection
+  collection,
+  isVisible,
+  hasClass
 } = PageObject;
 
 moduleForComponent('user-list', 'Integration | component integration test support/user list', {
   integration: true
 });
 
-const isDisabled = customHelper(function(selector) {
-  return $(selector).prop('disabled');
-});
+// FIXME: this doesn't work. It's a prop, not an attr.
+// function isDisabled(selector) {
+//   return attribute('disabled', selector);
+// }
 
-const selectBox = customHelper(function() {
+// FIXME: This used to be a `customHelper`. Make sure this still
+// works and is bound to the single item in which it is called.
+function selectBox(selector) {
   return {
-    select: selectable(),
+    select: selectable(selector),
     selected: text(`option:selected`),
-    isDisabled: isDisabled()
+    //isDisabled: isDisabled(selector)
+    disabled: attribute('disabled', selector)
   };
-});
+}
 
-const isAdmin = customHelper(function(selector) {
-  return function() {
-    return $(selector).hasClass('admin');
-  };
-});
+// FIXME: This used to be a `customHelper`. Make sure this still
+// works and is bound to the single item in which it is called.
+function isAdmin(selector) {
+  return hasClass('admin', selector);
+}
 
 test('Component contents', function(assert) {
-  assert.expect(8);
+  assert.expect(11);
 
   const page = PageObject.create({
     context: this,
@@ -42,30 +48,38 @@ test('Component contents', function(assert) {
 
     users: collection({
       itemScope: 'tbody tr',
+
       item: {
-        userName: text('td', { index: 1 }),
-        role: text('td', { index: 2 }),
+        userName: text('td', { at: 0 }),
+        role: text('td', { at: 1 }),
         animalPreference: selectBox('select'),
-        isAdmin: isAdmin()
+        isAdmin: isAdmin(),
+        isVisible: isVisible()
       }
     })
   });
 
   this.set('users', [
     { userName: 'jane', role: 'admin', disabledAnimalPreference: false, admin: true },
+    { userName: 'jolanta', role: 'guest', disabledAnimalPreference: false, admin: false },
     { userName: 'john', role: 'guest', disabledAnimalPreference: true, admin: false }
   ]);
 
   this.render(hbs`{{user-list users=users}}`);
 
-  page.users(1).animalPreference().select('Tomsters');
+  page.users(0).animalPreference.select('Tomsters');
 
-  assert.equal(page.title(), 'Users');
-  assert.equal(page.users().count(), 2);
-  assert.ok(page.users(1).isVisible());
-  assert.equal(page.users(1).userName(), 'jane');
-  assert.equal(page.users(1).role(), 'admin');
-  assert.equal(page.users(1).animalPreference().selected(), 'Tomsters');
-  assert.ok(page.users(1).isAdmin(), 'is not admin');
-  assert.equal(page.users(2).animalPreference().isDisabled(), true);
+  assert.equal(page.title, 'Users');
+  assert.equal(page.users().count, 3);
+  assert.ok(page.users(0).isVisible);
+  assert.equal(page.users(0).userName, 'jane');
+  assert.equal(page.users(0).role, 'admin');
+  assert.equal(page.users(0).animalPreference.selected, 'Tomsters');
+  assert.equal(page.users(1).animalPreference.selected, 'Cats');
+  assert.ok(page.users(0).isAdmin, 'is not admin');
+  assert.notOk(page.users(1).isAdmin, 'is admin');
+  // FIXME: Change this back to the prop version when it works
+  // assert.equal(page.users(1).animalPreference.isDisabled, true);
+  assert.notEqual(page.users(1).animalPreference.disabled, 'disabled');
+  assert.equal(page.users(2).animalPreference.disabled, 'disabled');
 });

@@ -1,4 +1,5 @@
 import { moduleForComponent, test } from 'ember-qunit';
+import { skip } from 'qunit';
 import hbs from 'htmlbars-inline-precompile';
 
 import PageObject from '../../page-object';
@@ -11,61 +12,129 @@ const {
   clickOnText,
   clickable,
   collection,
-  customHelper,
   text
 } = PageObject;
 
-const button = customHelper(function(scope) {
+const button = function(scope) {
   return {
     scope,
 
     click: clickable(),
     text: text()
   };
-});
+};
 
-const Page = PageObject.extend({
-  numbers: collection({
-    scope: '.numbers',
-    itemScope: 'button',
+// TODO: Re-add this `Page` subclass using `extend` when `extend`
+// support has been added
+//
+// const Page = PageObject.extend({
+//   numbers: collection({
+//     scope: '.numbers',
+//     itemScope: 'button',
+//
+//     item: {
+//       click: clickable(),
+//       text: text()
+//     },
+// 
+//     clickOn: clickOnText()
+//   }),
+// 
+//   operators: {
+//     scope: '.operators',
+// 
+//     plus: button('button:nth-of-type(1)'),
+//     minus: button('button:nth-of-type(2)'),
+//     equals: button('button:nth-of-type(3)')
+//   },
+// 
+//   screen: {
+//     text: text('.screen')
+//   },
+// 
+//   clickOn: clickOnText('.calculator')
+// });
 
-    item: {
-      click: clickable(),
-      text: text()
+test('Actions work when defined inside collections', function(assert) {
+  // TODO: replace the non-DRY `create` with the short version
+  // after `extend` support has been added
+  //
+  // let page = Page.create({context: this});
+  //
+  const page = PageObject.create({
+    context: this,
+
+    numbers: collection({
+      scope: '.numbers',
+      itemScope: 'button',
+
+      item: {
+        click: clickable(),
+        text: text()
+      },
+
+      clickOn: clickOnText()
+    }),
+
+    operators: {
+      scope: '.operators',
+
+      plus: button('button:nth-of-type(1)'),
+      minus: button('button:nth-of-type(2)'),
+      equals: button('button:nth-of-type(3)')
     },
 
-    clickOn: clickOnText()
-  }),
+    screen: {
+      text: text('.screen')
+    },
 
-  operators: {
-    scope: '.operators',
-
-    plus: button('button:nth-of-type(1)'),
-    minus: button('button:nth-of-type(2)'),
-    equals: button('button:nth-of-type(3)')
-  },
-
-  screen: {
-    text: text('.screen')
-  },
-
-  clickOn: clickOnText('.calculator')
-});
-
-test('Actions defined inside collections work', function(assert) {
-  let page = Page.create({context: this});
+    clickOn: clickOnText('.calculator')
+  });
 
   this.render(hbs`{{calculating-device}}`);
 
   page
-    .numbers(1)
+    .numbers(0)
     .click();
 
-  assert.equal(page.screen().text(), '1');
+  assert.equal(page.screen.text, '1');
 });
 
-test('Chaining of actions inside a collection work', function(assert) {
-  let page = Page.create({context: this});
+test('Chaining of actions inside a collection works', function(assert) {
+  // TODO: replace the non-DRY `create` with the short version
+  // after `extend` support has been added
+  //
+  // let page = Page.create({context: this});
+  //
+  const page = PageObject.create({
+    context: this,
+
+    numbers: collection({
+      scope: '.numbers',
+      itemScope: 'button',
+
+      item: {
+        click: clickable(),
+        text: text()
+      },
+
+      clickOn: clickOnText()
+    }),
+
+    operators: {
+      scope: '.operators',
+
+      plus: button('button:nth-of-type(1)'),
+      minus: button('button:nth-of-type(2)'),
+      equals: button('button:nth-of-type(3)')
+    },
+
+    screen: {
+      text: text('.screen')
+    },
+
+    clickOn: clickOnText('.calculator')
+  });
 
   this.render(hbs`{{calculating-device}}`);
 
@@ -75,11 +144,44 @@ test('Chaining of actions inside a collection work', function(assert) {
     .clickOn('2')
     .clickOn('3');
 
-  assert.equal(page.screen().text(), '123');
+  assert.equal(page.screen.text, '123');
 });
 
 test('Chaining of actions on a component work', function(assert) {
-  let page = Page.create({context: this});
+  // TODO: replace the non-DRY `create` with the short version
+  // after `extend` support has been added
+  //
+  // let page = Page.create({context: this});
+  //
+  const page = PageObject.create({
+    context: this,
+
+    numbers: collection({
+      scope: '.numbers',
+      itemScope: 'button',
+
+      item: {
+        click: clickable(),
+        text: text()
+      },
+
+      clickOn: clickOnText()
+    }),
+
+    operators: {
+      scope: '.operators',
+
+      plus: button('button:nth-of-type(1)'),
+      minus: button('button:nth-of-type(2)'),
+      equals: button('button:nth-of-type(3)')
+    },
+
+    screen: {
+      text: text('.screen')
+    },
+
+    clickOn: clickOnText('.calculator')
+  });
 
   this.render(hbs`{{calculating-device}}`);
 
@@ -89,9 +191,11 @@ test('Chaining of actions on a component work', function(assert) {
     .clickOn('4')
     .clickOn('-')
     .clickOn('2')
-    .operators()
-    .equals()
+    .operators
+    .equals
     .click();
 
-  assert.equal(page.screen().text(), '3');
+  assert.equal(page.screen.text, '3');
 });
+
+skip('When a query is called on an element that doesn\'t exist in the DOM, an equivalent to `findWithAssert() is used`');

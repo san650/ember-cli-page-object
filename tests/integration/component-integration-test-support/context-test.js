@@ -7,21 +7,22 @@ moduleForComponent('calculating-device', 'Integration | component integration te
   integration: true
 });
 
-test('Test\'s `this` context can be passed to the page object', function(assert) {
-  let page = PageObject.create({
+test('Test\'s `this` context\'s methods are accessible to the page object', function(assert) {
+  assert.expect(2);
+
+  const page = PageObject.create({
     context: this
   });
 
   assert.ok(page.context);
 
-  // The test's `this` context shouldn't be
-  // altered or decorated during `create()`.
-  // Should just be a reference to the test's `this`
-  assert.equal(page.context, this);
+  assert.deepEqual(this, page.context);
 });
 
 test('Test\'s `this.$()` is accessible by the page object', function(assert) {
-  let page = PageObject.create({
+  assert.expect(2);
+
+  const page = PageObject.create({
     context: this
   });
 

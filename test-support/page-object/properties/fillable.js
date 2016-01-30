@@ -1,4 +1,5 @@
-import { buildSelector } from '../helpers';
+import Ember from 'ember';
+import { buildSelector, getContext } from '../helpers';
 
 /**
  * Creates an action to fill in an input
@@ -22,9 +23,22 @@ export function fillable(selector, options = {}) {
   return {
     isDescriptor: true,
 
-    value(textToUse) {
-      /* global fillIn */
-      fillIn(buildSelector(this, selector, options), textToUse);
+    value(text) {
+      const fullSelector = buildSelector(this, selector, options);
+      const context = getContext(this);
+
+      if (context) {
+        const $el = context.$(fullSelector);
+
+        Ember.run(() => {
+          $el.val(text);
+          $el.trigger('input');
+          $el.change();
+        });
+      } else {
+        /* global fillIn */
+        fillIn(fullSelector, text);
+      }
 
       return this;
     }

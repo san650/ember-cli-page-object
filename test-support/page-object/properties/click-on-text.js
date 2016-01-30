@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import { buildSelector } from '../helpers';
+import { buildSelector, getContext } from '../helpers';
 
 var { merge } = Ember;
 
@@ -28,14 +28,21 @@ export function clickOnText(selector, options = {}) {
       // Suppose that we have something like `<form><button>Submit</button></form>`
       // In this case <form> and <button> elements contains "Submit" text, so, we'll
       // want to __always__ click on the __last__ element that contains the text.
-      var selctorWithSpace = (selector || '') + ' ';
+      var selectorWithSpace = (selector || '') + ' ';
       var fullSelector = buildSelector(
         this,
-        selctorWithSpace,
+        selectorWithSpace,
         merge({ contains: textToClick, last: true }, options));
+      var context = getContext(this);
 
-      /* global click */
-      click(fullSelector);
+      if (context) {
+        Ember.run(() => {
+          context.$(fullSelector).click();
+        });
+      } else {
+        /* global click */
+        click(fullSelector);
+      }
 
       return this;
     }

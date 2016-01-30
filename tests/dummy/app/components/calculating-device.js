@@ -3,12 +3,8 @@ import Ember from 'ember';
 var c = Ember.computed;
 
 export default Ember.Component.extend({
-  init() {
-    this.setProperties({
-      result: '',
-      op: ''
-    });
-  },
+  result: '',
+  op: '',
 
   stack: c({
     get() {

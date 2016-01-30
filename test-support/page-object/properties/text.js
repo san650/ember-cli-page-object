@@ -33,8 +33,9 @@ export function text(selector, options = {}) {
     isDescriptor: true,
 
     get() {
-      var element = findElementWithAssert(this, selector, options),
-          result;
+      let element;
+
+      element = findElementWithAssert(this, selector, options);
 
       if (options.multiple) {
         result = $.map(element, e => normalizeText($(e).text()));
