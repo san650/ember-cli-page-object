@@ -1,3 +1,4 @@
+import Ember from 'ember';
 import { findElement } from '../helpers';
 
 /**
@@ -22,9 +23,22 @@ export function isVisible(selector, options = {}) {
     isDescriptor: true,
 
     get() {
-      let element = findElement(this, selector, options);
+      let element = findElement(this, selector, options),
+        result;
 
-      return element.is(':visible');
+      if (element.length > 0) {
+        if (options.multiple) {
+          result = !(Ember.A(element).any(function(e) {
+            return $(e).is(':hidden')
+          }));
+        } else {
+          result = element.is(':visible')
+        }
+      } else {
+        result = false
+      }
+
+      return result;
     }
   };
 }

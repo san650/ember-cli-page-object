@@ -92,10 +92,23 @@ test('throws error if selector matches more than one element', function(assert) 
   );
 });
 
-test('matches multiple elements with multiple: true option', function(assert) {
+test('matches multiple elements with multiple: true option, return false if not all elements are visible', function(assert) {
   fixture(`
     <span>lorem</span>
     <span style="display:none"> ipsum </span>
+    <span>dolor</span>
+  `);
+
+  let page = create({
+    foo: isVisible('span', { multiple: true })
+  });
+
+  assert.ok(!page.foo);
+});
+
+test('matches multiple elements with multiple: true option, return true if all elements are visible', function(assert) {
+  fixture(`
+    <span>lorem</span>
     <span>dolor</span>
   `);
 
