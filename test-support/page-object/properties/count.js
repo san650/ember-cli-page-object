@@ -22,6 +22,7 @@ export function count(selector, options = {}) {
     isDescriptor: true,
 
     get() {
+      options.multiple = true;
       return findElement(this, selector, options).length;
     }
   };

@@ -77,6 +77,35 @@ test('resets scope', function(assert) {
   assert.equal(page.foo, 'a value');
 });
 
+test('throws error if selector matches more than one element', function(assert) {
+  fixture(`
+    <input placeholder="a value">
+    <input placeholder="other value">
+  `);
+
+  let page = create({
+    foo: attribute('placeholder', ':input')
+  });
+
+  assert.throws(
+    () => page.foo,
+    /input matched more than one element. If this is not an error use { multiple: true }/
+  );
+});
+
+test('matches multiple elements with multiple: true option', function(assert) {
+  fixture(`
+    <input placeholder="a value">
+    <input placeholder="other value">
+  `);
+
+  let page = create({
+    foo: attribute('placeholder', ':input', { multiple: true })
+  });
+
+  assert.equal(page.foo, "a value");
+});
+
 test('finds element by index', function(assert) {
   fixture(`
     <input>

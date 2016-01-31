@@ -65,11 +65,41 @@ test('resets scope', function(assert) {
   let page = create({
     scope: '.scope',
 
-    foo: contains('span', { resetScope: true })
+    foo: contains('span', { at: 0, resetScope: true })
   });
 
   assert.ok(page.foo('lorem'));
-  assert.ok(page.foo('ipsum'));
+});
+
+test('throws error if selector matches more than one element', function(assert) {
+  fixture(`
+    <span>lorem</span>
+    <span> ipsum </span>
+    <span>dolor</span>
+  `);
+
+  let page = create({
+    foo: contains('span')
+  });
+
+  assert.throws(
+    () => page.foo('lorem'),
+    /span matched more than one element. If this is not an error use { multiple: true }/
+  );
+});
+
+test('matches multiple elements with multiple: true option', function(assert) {
+  fixture(`
+    <span>lorem</span>
+    <span>ipsum</span>
+    <span>dolor</span>
+  `);
+
+  let page = create({
+    foo: contains('span', { multiple: true })
+  });
+
+  assert.ok(page.foo('lorem'));
 });
 
 test('finds element by index', function(assert) {

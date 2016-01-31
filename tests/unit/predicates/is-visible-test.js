@@ -75,6 +75,37 @@ test('resets scope', function(assert) {
   assert.ok(page.foo);
 });
 
+test('throws error if selector matches more than one element', function(assert) {
+  fixture(`
+    <span>lorem</span>
+    <span> ipsum </span>
+    <span>dolor</span>
+  `);
+
+  let page = create({
+    foo: isVisible('span')
+  });
+
+  assert.throws(
+    () => page.foo,
+    /span matched more than one element. If this is not an error use { multiple: true }/
+  );
+});
+
+test('matches multiple elements with multiple: true option', function(assert) {
+  fixture(`
+    <span>lorem</span>
+    <span style="display:none"> ipsum </span>
+    <span>dolor</span>
+  `);
+
+  let page = create({
+    foo: isVisible('span', { multiple: true })
+  });
+
+  assert.ok(page.foo);
+});
+
 test('finds element by index', function(assert) {
   fixture(`
     <em style="display:none">lorem</em>

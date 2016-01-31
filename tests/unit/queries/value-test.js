@@ -69,10 +69,39 @@ test('resets scope', function(assert) {
   let page = create({
     scope: '.scope',
 
-    foo: value('input', { resetScope: true })
+    foo: value('input', { at: 0, resetScope: true })
   });
 
   assert.equal(page.foo, 'lorem');
+});
+
+test('throws error if selector matches more than one element', function(assert) {
+  fixture(`
+    <input value="lorem">
+    <input value="ipsum">
+  `);
+
+  let page = create({
+    foo: value('input')
+  });
+
+  assert.throws(
+    () => page.foo,
+    /input matched more than one element. If this is not an error use { multiple: true }/
+  );
+});
+
+test('matches multiple elements with multiple: true option', function(assert) {
+  fixture(`
+    <input value="lorem">
+    <input value="ipsum">
+  `);
+
+  let page = create({
+    foo: value('input', { multiple: true })
+  });
+
+  assert.equal(page.foo, "lorem");
 });
 
 test('finds element by index', function(assert) {

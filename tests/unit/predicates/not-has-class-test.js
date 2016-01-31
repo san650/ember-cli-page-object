@@ -87,6 +87,35 @@ test('resets scope', function(assert) {
   assert.ok(page.foo);
 });
 
+test('throws error if selector matches more than one element', function(assert) {
+  fixture(`
+    <span class="lorem"></span>
+    <span class="ipsum"></span>
+  `);
+
+  let page = create({
+    foo: notHasClass('lorem', 'span')
+  });
+
+  assert.throws(
+    () => page.foo,
+    /span matched more than one element. If this is not an error use { multiple: true }/
+  );
+});
+
+test('matches multiple elements with multiple: true option', function(assert) {
+  fixture(`
+    <span class="lorem"></span>
+    <span class="ipsum"></span>
+  `);
+
+  let page = create({
+    foo: notHasClass('other-class', 'span', { multiple: true })
+  });
+
+  assert.ok(page.foo);
+});
+
 test('finds element by index', function(assert) {
   fixture(`
     <span class="lorem"></span>

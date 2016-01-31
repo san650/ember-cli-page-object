@@ -102,10 +102,10 @@ test('resets scope', function(assert) {
   let page = create({
     scope: '.scope',
 
-    foo: text('span', { resetScope: true })
+    foo: text('span', { at: 0, resetScope: true })
   });
 
-  assert.equal(page.foo, 'lorem ipsum dolor');
+  assert.equal(page.foo, 'lorem');
 });
 
 test('finds element by index', function(assert) {
@@ -139,6 +139,25 @@ test('finds element without using a selector', function(assert) {
 
   assert.equal(page.foo, 'Hello world!');
   assert.equal(page.bar.baz, 'world!');
+});
+
+test('throws error if selector matches more than one element', function(assert) {
+  fixture(`
+    <span>lorem</span>
+    <span> ipsum </span>
+    <span>dolor</span>
+  `);
+
+  let page = create({
+    scope: '.scope',
+
+    foo: text('span', { resetScope: true })
+  });
+
+  assert.throws(
+    () => page.foo,
+    /span matched more than one element. If this is not an error use { multiple: true }/
+  );
 });
 
 test('returns multiple values', function(assert) {

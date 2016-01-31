@@ -67,3 +67,18 @@ test('resets scope', function(assert) {
 
   assert.equal(page.foo, 1);
 });
+
+test('resets multiple value', function(assert) {
+  fixture(`
+    <div><span></span></div>
+    <div class="scope"><span></span><span></span></div>
+  `);
+
+  let page = create({
+    scope: '.scope',
+
+    foo: count('span', { multiple: false })
+  });
+
+  assert.equal(page.foo, 2);
+});
