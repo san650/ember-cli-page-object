@@ -78,6 +78,32 @@ test('resets scope', function(assert) {
   assert.ok(page.foo);
 });
 
+test('matches multiple elements with multiple: true option, returns true if all elements are hidden', function(assert) {
+  fixture(`
+    <em style="display:none">ipsum</em>
+    <em style="display:none">dolor</em>
+  `);
+
+  let page = create({
+    foo: isHidden('em', { multiple: true })
+  });
+
+  assert.ok(page.foo);
+});
+
+test('matches multiple elements with multiple: true option, returns false if some elements are visible', function(assert) {
+  fixture(`
+    <em>ipsum</em>
+    <em style="display:none">dolor</em>
+  `);
+
+  let page = create({
+    foo: isHidden('em', { multiple: true })
+  });
+
+  assert.ok(!page.foo);
+});
+
 test('finds element by index', function(assert) {
   fixture(`
     <em>lorem</em>
