@@ -1,5 +1,7 @@
 import { findElementWithAssert, trim } from '../helpers';
 
+var $ = Ember.$;
+
 /**
  * Gets the value of the matched element
  *
@@ -25,7 +27,13 @@ export function value(selector, options = {}) {
     get() {
       var element = findElementWithAssert(this, selector, options);
 
-      return element.val();
+      if (options.multiple) {
+        result = $.map(element, e => $(e).val());
+      } else {
+        result = element.val();
+      }
+
+      return result;
     }
   };
 }

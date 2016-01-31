@@ -101,7 +101,7 @@ test('matches multiple elements with multiple: true option', function(assert) {
     foo: value('input', { multiple: true })
   });
 
-  assert.equal(page.foo, "lorem");
+  assert.deepEqual(page.foo, ["lorem", "ipsum"]);
 });
 
 test('finds element by index', function(assert) {
