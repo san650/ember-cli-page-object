@@ -78,6 +78,22 @@ test('resets scope', function(assert) {
   assert.ok(page.foo);
 });
 
+test('throws error if selector matches more than one element', function(assert) {
+  fixture(`
+    <em style="display:none">ipsum</em>
+    <em style="display:none">dolor</em>
+  `);
+
+  let page = create({
+    foo: isHidden('em')
+  });
+
+  assert.throws(
+    () => page.foo,
+    /em matched more than one element. If this is not an error use { multiple: true }/
+  );
+});
+
 test('matches multiple elements with multiple: true option, returns true if all elements are hidden', function(assert) {
   fixture(`
     <em style="display:none">ipsum</em>
