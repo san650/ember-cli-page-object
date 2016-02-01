@@ -92,10 +92,10 @@ export function create(definition, options = {}) {
   };
   const page = Ceibo.create(definition, merge({ builder }, options));
 
-  page.setContext = setContext.bind(page);
-  page.removeContext = removeContext.bind(page);
+  if (page) {
+    page.setContext = setContext.bind(page);
+    page.removeContext = removeContext.bind(page);
 
-  if (context) {
     page.setContext(context);
   }
 
