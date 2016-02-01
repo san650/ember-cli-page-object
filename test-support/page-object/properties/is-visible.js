@@ -27,13 +27,9 @@ export function isVisible(selector, options = {}) {
         result;
 
       if (element.length > 0) {
-        if (options.multiple) {
-          result = !(Ember.A(element).any(function(e) {
-            return $(e).is(':hidden')
-          }));
-        } else {
-          result = element.is(':visible')
-        }
+        result = !(Ember.A(element).any(function(e) {
+          return $(e).is(':hidden')
+        }));
       } else {
         result = false
       }

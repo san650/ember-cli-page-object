@@ -28,17 +28,9 @@ export function isHidden(selector, options = {}) {
       let element = findElement(this, selector, options),
         result;
 
-      if (element.length > 0) {
-        if (options.multiple) {
-          result = !(Ember.A(element).any(function(e) {
-            return $(e).is(':visible')
-          }));
-        } else {
-          result = element.is(':hidden')
-        }
-      } else {
-        result = true
-      }
+      result = !(Ember.A(element).any(function(e) {
+        return $(e).is(':visible')
+      }));
 
       return result;
     }
