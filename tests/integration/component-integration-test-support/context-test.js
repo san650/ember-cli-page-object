@@ -38,3 +38,19 @@ test('Test\'s `this.$()` is accessible by the page object', function(assert) {
   assert.ok(page.context.$());
   assert.deepEqual(page.context.$(), this.$());
 });
+
+test('`setContext(this)` and `removeContext()` set and remove the test context from the page', function(assert) {
+  assert.expect(3);
+
+  const page = PageObject.create({});
+
+  assert.notOk(page.context);
+
+  page.setContext(this);
+
+  assert.deepEqual(page.context, this);
+
+  page.removeContext();
+
+  assert.notOk(page.context);
+});

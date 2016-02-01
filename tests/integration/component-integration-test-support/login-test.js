@@ -6,10 +6,6 @@ import { isOldEmber } from 'dummy/tests/helpers/is-old-ember';
 
 import PageObject from '../../page-object';
 
-moduleForComponent('user-list', 'Integration | component integration test support/login', {
-  integration: true
-});
-
 const {
   clickable,
   fillable,
@@ -18,44 +14,33 @@ const {
   text
 } = PageObject;
 
-// TODO: Re-add this `Page` subclass using `extend` when `extend`
-// support has been added
-//
-// const Page = PageObject.extend({
-//   form: {
-//     userName: fillable('#userName'),
-//     password: fillable('#password'),
-//     click: clickable('.login button'),
-//   },
-// 
-//   title: text('.title'),
-//   message: text('.message'),
-//   hasError: hasClass('is-error', '.login'),
-//   notHasError: notHasClass('is-error', '.login')
-// });
+const page = PageObject.create({
+  form: {
+    userName: fillable('#userName'),
+    password: fillable('#password'),
+    click: clickable('.login button'),
+  },
+
+  title: text('.title'),
+  message: text('.message'),
+  hasError: hasClass('is-error', '.login'),
+  notHasError: notHasClass('is-error', '.login')
+});
+
+moduleForComponent('user-list', 'Integration | component integration test support/login', {
+  integration: true,
+
+  beforeEach() {
+    page.setContext(this);
+  },
+
+  afterEach() {
+    page.removeContext();
+  }
+});
 
 test('Retries login', function(assert) {
   assert.expect(6);
-
-  // TODO: replace the non-DRY `create` with the short version
-  // after `extend` support has been added
-  //
-  // let page = Page.create({context: this});
-  //
-  const page = PageObject.create({
-    context: this,
-
-    form: {
-      userName: fillable('#userName'),
-      password: fillable('#password'),
-      click: clickable('.login button'),
-    },
-
-    title: text('.title'),
-    message: text('.message'),
-    hasError: hasClass('is-error', '.login'),
-    notHasError: notHasClass('is-error', '.login')
-  });
 
   if (isOldEmber) {
     this.render(Ember.HTMLBars.compile('{{login-form}}'));
@@ -91,26 +76,6 @@ test('Retries login', function(assert) {
 
 test('Action chains act like a promise', function(assert) {
   assert.expect(1);
-
-  // TODO: replace the non-DRY `create` with the short version
-  // after `extend` support has been added
-  //
-  // let page = Page.create({context: this});
-  //
-  const page = PageObject.create({
-    context: this,
-
-    form: {
-      userName: fillable('#userName'),
-      password: fillable('#password'),
-      click: clickable('.login button'),
-    },
-
-    title: text('.title'),
-    message: text('.message'),
-    hasError: hasClass('is-error', '.login'),
-    notHasError: notHasClass('is-error', '.login')
-  });
 
   if (isOldEmber) {
     this.render(Ember.HTMLBars.compile('{{login-form}}'));

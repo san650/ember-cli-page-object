@@ -15,10 +15,6 @@ const {
   hasClass
 } = PageObject;
 
-moduleForComponent('user-list', 'Integration | component integration test support/user list', {
-  integration: true
-});
-
 // FIXME: this doesn't work. It's a prop, not an attr.
 // function isDisabled(selector) {
 //   return attribute('disabled', selector);
@@ -41,26 +37,36 @@ function isAdmin(selector) {
   return hasClass('admin', selector);
 }
 
+const page = PageObject.create({
+  title: text('h1'),
+
+  users: collection({
+    itemScope: 'tbody tr',
+
+    item: {
+      userName: text('td', { at: 0 }),
+      role: text('td', { at: 1 }),
+      animalPreference: selectBox('select'),
+      isAdmin: isAdmin(),
+      isVisible: isVisible()
+    }
+  })
+});
+
+moduleForComponent('user-list', 'Integration | component integration test support/user list', {
+  integration: true,
+
+  beforeEach() {
+    page.setContext(this);
+  },
+
+  afterEach() {
+    page.removeContext();
+  }
+});
+
 test('Component contents', function(assert) {
   assert.expect(11);
-
-  const page = PageObject.create({
-    context: this,
-
-    title: text('h1'),
-
-    users: collection({
-      itemScope: 'tbody tr',
-
-      item: {
-        userName: text('td', { at: 0 }),
-        role: text('td', { at: 1 }),
-        animalPreference: selectBox('select'),
-        isAdmin: isAdmin(),
-        isVisible: isVisible()
-      }
-    })
-  });
 
   this.set('users', Ember.A([
     { userName: 'jane', role: 'admin', disabledAnimalPreference: false, admin: true },

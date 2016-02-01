@@ -35,28 +35,28 @@ function plugDefaultProperties(definition) {
   }
 }
 
-/**
- * Returns a Ceibo builder curried with an (optional) test context
- *
- * See https://github.com/san650/ceibo#examples for more info on how Ceibo
- * builders work.
- */
-function buildObjectWithContext(context) {
-  return function buildObject(builder, target, key, definition) {
-    // Don't process the test's `this` context with
-    // Ceibo. Because some values in the test's `this` are
-    // circular references, it gets stuck in an infinite loop.
-    if (key !== 'context') {
-      plugDefaultProperties(definition);
+function setContext(context) {
+  // If there's a context, set it.
+  if (context) {
+    this.context = context;
+  }
+}
 
-      // Call the default object builder
-      Ceibo.defaults.builder.object(builder, target, key, definition);
-    }
+function removeContext() {
+  if (this.context) {
+    delete this.context;
+  }
+}
 
-    // If there's a context, set it on the root object.
-    if ((key === 'root') && context && target.root) {
-      target.root.context = context;
-    }
+function buildObject(builder, target, key, definition) {
+  // Don't process the test's `this` context with
+  // Ceibo. Because some values in the test's `this` are
+  // circular references, it gets stuck in an infinite loop.
+  if (key !== 'context') {
+    plugDefaultProperties(definition);
+
+    // Call the default object builder
+    Ceibo.defaults.builder.object(builder, target, key, definition);
   }
 }
 
@@ -88,8 +88,16 @@ function buildObjectWithContext(context) {
 export function create(definition, options = {}) {
   const context = typeof definition === 'object' ? definition.context : null;
   const builder = {
-    object: buildObjectWithContext(context)
+    object: buildObject
   };
+  const page = Ceibo.create(definition, merge({ builder }, options));
 
-  return Ceibo.create(definition, merge({ builder }, options));
+  page.setContext = setContext.bind(page);
+  page.removeContext = removeContext.bind(page);
+
+  if (context) {
+    page.setContext(context);
+  }
+
+  return page;
 }
