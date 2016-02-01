@@ -34,4 +34,4 @@ install:
   - bower install
 
 script:
-  - ember try $EMBER_TRY_SCENARIO test
+  - node ./node_modules/ember-cli/bin/ember try $EMBER_TRY_SCENARIO test
