@@ -1,5 +1,8 @@
 import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
+import Ember from 'ember';
+
+import { isOldEmber } from 'dummy/tests/helpers/is-old-ember';
 
 import PageObject from '../../page-object';
 
@@ -59,15 +62,21 @@ test('Component contents', function(assert) {
     })
   });
 
-  this.set('users', [
+  this.set('users', Ember.A([
     { userName: 'jane', role: 'admin', disabledAnimalPreference: false, admin: true },
     { userName: 'jolanta', role: 'guest', disabledAnimalPreference: false, admin: false },
     { userName: 'john', role: 'guest', disabledAnimalPreference: true, admin: false }
-  ]);
+  ]));
 
-  this.render(hbs`{{user-list users=users}}`);
+  if (isOldEmber) {
+    this.render(Ember.HTMLBars.compile('{{user-list users=users}}'));
+  } else {
+    this.render(hbs`{{user-list users=users}}`);
+  }
 
-  page.users(0).animalPreference.select('Tomsters');
+  Ember.run(() => {
+    page.users(0).animalPreference.select('Tomsters');
+  });
 
   assert.equal(page.title, 'Users');
   assert.equal(page.users().count, 3);

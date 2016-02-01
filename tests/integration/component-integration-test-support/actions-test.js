@@ -1,6 +1,9 @@
 import { moduleForComponent, test } from 'ember-qunit';
 import { skip } from 'qunit';
 import hbs from 'htmlbars-inline-precompile';
+import Ember from 'ember';
+
+import { isOldEmber } from 'dummy/tests/helpers/is-old-ember';
 
 import PageObject from '../../page-object';
 
@@ -91,11 +94,17 @@ test('Actions work when defined inside collections', function(assert) {
     clickOn: clickOnText('.calculator')
   });
 
-  this.render(hbs`{{calculating-device}}`);
+  if (isOldEmber) {
+    this.render(Ember.HTMLBars.compile('{{calculating-device}}'));
+  } else {
+    this.render(hbs`{{calculating-device}}`);
+  }
 
-  page
-    .numbers(0)
-    .click();
+  Ember.run(() => {
+    page
+      .numbers(0)
+      .click();
+  });
 
   assert.equal(page.screen.text, '1');
 });
@@ -136,18 +145,24 @@ test('Chaining of actions inside a collection works', function(assert) {
     clickOn: clickOnText('.calculator')
   });
 
-  this.render(hbs`{{calculating-device}}`);
+  if (isOldEmber) {
+    this.render(Ember.HTMLBars.compile('{{calculating-device}}'));
+  } else {
+    this.render(hbs`{{calculating-device}}`);
+  }
 
-  page
-    .numbers()
-    .clickOn('1')
-    .clickOn('2')
-    .clickOn('3');
+  Ember.run(() => {
+    page
+      .numbers()
+      .clickOn('1')
+      .clickOn('2')
+      .clickOn('3');
+  });
 
   assert.equal(page.screen.text, '123');
 });
 
-test('Chaining of actions on a component work', function(assert) {
+test('Chaining of actions on a component works', function(assert) {
   // TODO: replace the non-DRY `create` with the short version
   // after `extend` support has been added
   //
@@ -183,17 +198,23 @@ test('Chaining of actions on a component work', function(assert) {
     clickOn: clickOnText('.calculator')
   });
 
-  this.render(hbs`{{calculating-device}}`);
+  if (isOldEmber) {
+    this.render(Ember.HTMLBars.compile('{{calculating-device}}'));
+  } else {
+    this.render(hbs`{{calculating-device}}`);
+  }
 
-  page
-    .clickOn('1')
-    .clickOn('+')
-    .clickOn('4')
-    .clickOn('-')
-    .clickOn('2')
-    .operators
-    .equals
-    .click();
+  Ember.run(() => {
+    page
+      .clickOn('1')
+      .clickOn('+')
+      .clickOn('4')
+      .clickOn('-')
+      .clickOn('2')
+      .operators
+      .equals
+      .click();
+  });
 
   assert.equal(page.screen.text, '3');
 });

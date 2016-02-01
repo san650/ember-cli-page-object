@@ -1,5 +1,8 @@
 import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
+import Ember from 'ember';
+
+import { isOldEmber } from 'dummy/tests/helpers/is-old-ember';
 
 import PageObject from '../../page-object';
 
@@ -54,25 +57,33 @@ test('Retries login', function(assert) {
     notHasError: notHasClass('is-error', '.login')
   });
 
-  this.render(hbs`{{login-form}}`);
+  if (isOldEmber) {
+    this.render(Ember.HTMLBars.compile('{{login-form}}'));
+  } else {
+    this.render(hbs`{{login-form}}`);
+  }
 
   assert.ok(page.notHasError, 'Page doesn\'t have error');
   assert.equal(page.title, 'Login page');
 
-  page
-    .form
-    .userName('invalid')
-    .password('invalid')
-    .click();
+  Ember.run(() => {
+    page
+      .form
+      .userName('invalid')
+      .password('invalid')
+      .click();
+  });
 
   assert.ok(page.hasError, 'Page has error');
   assert.equal(page.message, 'Invalid user!');
 
-  page
-    .form
-    .userName('user@example.com')
-    .password('secret')
-    .click();
+  Ember.run(() => {
+    page
+      .form
+      .userName('user@example.com')
+      .password('secret')
+      .click();
+  });
 
   assert.ok(page.notHasError, 'Page doesn\'t have error');
   assert.equal(page.message, 'Valid user!');
@@ -101,13 +112,19 @@ test('Action chains act like a promise', function(assert) {
     notHasError: notHasClass('is-error', '.login')
   });
 
-  this.render(hbs`{{login-form}}`);
+  if (isOldEmber) {
+    this.render(Ember.HTMLBars.compile('{{login-form}}'));
+  } else {
+    this.render(hbs`{{login-form}}`);
+  }
 
-  page
-    .form
-    .userName('invalid')
-    .password('invalid')
-    .click();
+  Ember.run(() => {
+    page
+      .form
+      .userName('invalid')
+      .password('invalid')
+      .click();
+  });
 
   assert.ok(page.hasError, 'Page has error');
 });

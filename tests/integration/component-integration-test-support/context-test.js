@@ -1,5 +1,8 @@
 import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
+import Ember from 'ember';
+
+import { isOldEmber } from 'dummy/tests/helpers/is-old-ember';
 
 import PageObject from '../../page-object';
 
@@ -26,7 +29,11 @@ test('Test\'s `this.$()` is accessible by the page object', function(assert) {
     context: this
   });
 
-  this.render(hbs`{{calculating-device}}`);
+  if (isOldEmber) {
+    this.render(Ember.HTMLBars.compile('{{calculating-device}}'));
+  } else {
+    this.render(hbs`{{calculating-device}}`);
+  }
 
   assert.ok(page.context.$());
   assert.deepEqual(page.context.$(), this.$());
