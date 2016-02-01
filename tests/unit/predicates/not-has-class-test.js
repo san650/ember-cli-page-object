@@ -103,7 +103,7 @@ test('throws error if selector matches more than one element', function(assert) 
   );
 });
 
-test('matches multiple elements with multiple: true option', function(assert) {
+test('matches multiple elements with multiple: true option, returns true if no elements have class', function(assert) {
   fixture(`
     <span class="lorem"></span>
     <span class="ipsum"></span>
@@ -114,6 +114,19 @@ test('matches multiple elements with multiple: true option', function(assert) {
   });
 
   assert.ok(page.foo);
+});
+
+test('matches multiple elements with multiple: true option, returns false if some elements have class', function(assert) {
+  fixture(`
+    <span class="lorem"></span>
+    <span class="ipsum"></span>
+  `);
+
+  let page = create({
+    foo: notHasClass('lorem', 'span', { multiple: true })
+  });
+
+  assert.ok(!page.foo);
 });
 
 test('finds element by index', function(assert) {
