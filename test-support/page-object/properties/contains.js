@@ -1,3 +1,4 @@
+import Ember from 'ember';
 import { findElementWithAssert } from '../helpers';
 
 /**
@@ -25,7 +26,9 @@ export function contains(selector, options = {}) {
     value(textToSearch) {
       let element = findElementWithAssert(this, selector, options);
 
-      return element.text().indexOf(textToSearch) >= 0;
+      return !(Ember.A(element).any(function(e) {
+        return $(e).text().indexOf(textToSearch) < 0;
+      }));
     }
   };
 }

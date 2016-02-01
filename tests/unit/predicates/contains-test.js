@@ -88,11 +88,24 @@ test('throws error if selector matches more than one element', function(assert) 
   );
 });
 
-test('matches multiple elements with multiple: true option', function(assert) {
+test('matches multiple elements with multiple: true option, returns false if not all elements contain text', function(assert) {
   fixture(`
     <span>lorem</span>
     <span>ipsum</span>
     <span>dolor</span>
+  `);
+
+  let page = create({
+    foo: contains('span', { multiple: true })
+  });
+
+  assert.ok(!page.foo('lorem'));
+});
+
+test('matches multiple elements with multiple: true option, returns true if all elements contain text', function(assert) {
+  fixture(`
+    <span>lorem</span>
+    <span>lorem</span>
   `);
 
   let page = create({
