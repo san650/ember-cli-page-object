@@ -1,42 +1,39 @@
-import Descriptor from '../descriptor';
 import { findElementWithAssert, trim } from '../helpers';
+
+var $ = Ember.$;
 
 /**
  * Gets the value of the matched element
  *
- * @param {Object} target - Component that owns the property
- * @param {string} key - Name of the key associated to this property
- * @param {Object} options - Additional options
- * @param {string} selector - CSS selector of the element to check
- * @param {string} options.scope - Overrides parent scope
- * @param {number} options.index - Reduce the set of matched elements to the one at the specified index
- * @return {string} value of the element
- */
-function getValue(target, key, options) {
-  let element = findElementWithAssert(options, target);
-
-  return trim(element.val());
-}
-
-/**
- * Creates a predicate to get the value of the matched element
- *
  * @example
  *
  *   var page = PageObject.create({
- *     name: value('#name')
+ *     search: value('input')
  *   });
  *
- *   assert.equal(page.name(), 'John Doe');
+ *   assert.equal(page.search, 'search term');
  *
  * @param {string} selector - CSS selector of the element to check
  * @param {Object} options - Additional options
  * @param {string} options.scope - Overrides parent scope
- * @param {number} options.index - Reduce the set of matched elements to the one at the specified index
+ * @param {number} options.at - Reduce the set of matched elements to the one at the specified index
+ * @param {boolean} options.resetScope - Ignore parent scope
  * @return {Descriptor}
  */
-export default function value(selector, options = {}) {
-  options.selector = selector;
+export function value(selector, options = {}) {
+  return {
+    isDescriptor: true,
 
-  return new Descriptor(getValue, options);
+    get() {
+      var element = findElementWithAssert(this, selector, options);
+
+      if (options.multiple) {
+        result = $.map(element, e => $(e).val());
+      } else {
+        result = element.val();
+      }
+
+      return result;
+    }
+  };
 }

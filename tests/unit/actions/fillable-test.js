@@ -1,15 +1,15 @@
 import { test } from 'qunit';
-import { moduleFor, buildProperty } from '../test-helper';
-import fillable from '../../page-object/properties/fillable';
+import { moduleFor } from '../test-helper';
+import { create, fillable, selectable } from '../../page-object';
 
-moduleFor('Actions', 'fillable');
+moduleFor('Unit | Property | .fillable');
 
 test('calls Ember\'s fillIn helper', function(assert) {
   assert.expect(2);
 
-  let expectedSelector = '.element',
+  let expectedSelector = 'span',
       expectedText = 'dummy text',
-      property;
+      page;
 
 
   window.fillIn = function(actualSelector, actualText) {
@@ -17,49 +17,111 @@ test('calls Ember\'s fillIn helper', function(assert) {
     assert.equal(actualText, expectedText);
   };
 
-  property = buildProperty(fillable(expectedSelector));
+  page = create({
+    foo: fillable(expectedSelector)
+  });
 
-  property.invoke(expectedText);
+  page.foo(expectedText);
 });
 
-test('uses scope', function(assert) {
+test('looks for elements inside the scope', function(assert) {
   assert.expect(1);
 
-  let property;
+  let page;
 
   window.fillIn = function(actualSelector) {
-    assert.equal(actualSelector, '.scope .element');
+    assert.equal(actualSelector, '.scope span');
   };
 
-  property = buildProperty(fillable('.element', { scope: '.scope' }));
+  page = create({
+    foo: fillable('span', { scope: '.scope' })
+  });
 
-  property.invoke('dummy text');
+  page.foo('dummy text');
 });
 
-test('uses parent scope', function(assert) {
+test('looks for elements inside page\'s scope', function(assert) {
   assert.expect(1);
 
-  let property;
+  let page;
 
   window.fillIn = function(actualSelector) {
-    assert.equal(actualSelector, '.parent-scope .element');
+    assert.equal(actualSelector, '.scope span');
   };
 
-  property = buildProperty(fillable('.element'), { scope: '.parent-scope' });
+  page = create({
+    scope: '.scope',
 
-  property.invoke('dummy text');
+    foo: fillable('span')
+  });
+
+  page.foo('dummy text');
+});
+
+test('resets scope', function(assert) {
+  assert.expect(1);
+
+  let page;
+
+  window.fillIn = function(actualSelector) {
+    assert.equal(actualSelector, 'span');
+  };
+
+  page = create({
+    scope: '.scope',
+    foo: fillable('span', { resetScope: true })
+  });
+
+  page.foo('dummy text');
 });
 
 test('returns target object', function(assert) {
   assert.expect(1);
 
-  let target = { dummy: "value" },
-      property;
+  let page;
 
-  window.fillIn = function() {
+  window.fillIn = function() { };
+
+  page = create({
+    foo: fillable()
+  });
+
+  assert.equal(page.foo(), page);
+});
+
+test('finds element by index', function(assert) {
+  assert.expect(1);
+
+  let expectedSelector = 'span:eq(3)',
+      page;
+
+  window.fillIn = function(actualSelector) {
+    assert.equal(actualSelector, expectedSelector);
   };
 
-  property = buildProperty(fillable(), target);
+  page = create({
+    foo: fillable('span', { at: 3 })
+  });
 
-  assert.equal(property.invoke('dummy text'), target);
+  page.foo();
+});
+
+test('is aliased to selectable', function(assert) {
+  assert.expect(2);
+
+  let expectedSelector = 'span',
+      expectedText = 'dummy text',
+      page;
+
+
+  window.fillIn = function(actualSelector, actualText) {
+    assert.equal(actualSelector, expectedSelector);
+    assert.equal(actualText, expectedText);
+  };
+
+  page = create({
+    foo: selectable(expectedSelector)
+  });
+
+  page.foo(expectedText);
 });

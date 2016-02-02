@@ -1,49 +1,136 @@
 import { test } from 'qunit';
-import { buildProperty, fixture, moduleFor } from '../test-helper';
-import isVisible from '../../page-object/properties/is-visible';
+import { fixture, moduleFor } from '../test-helper';
+import { create, isVisible } from '../../page-object';
+import {
+  test_throws_if_not_multiple
+} from '../shared';
 
-moduleFor('propertys', 'isVisible');
+moduleFor('Unit | Property | .isVisible');
 
 test('returns true when the element is visible', function(assert) {
-  fixture('<div class="element" />');
+  fixture('Lorem <span>ipsum</span>');
 
-  var property = buildProperty(isVisible('.element'));
+  let page = create({
+    foo: isVisible('span')
+  });
 
-  assert.ok(property.invoke());
+  assert.ok(page.foo);
 });
 
 test('returns false when the element is hidden', function(assert) {
-  fixture('<div class="element" style="display:none" />');
+  fixture('Lorem <span style="display:none">ipsum</span>');
 
-  var property = buildProperty(isVisible('.element'));
+  let page = create({
+    foo: isVisible('span')
+  });
 
-  assert.ok(!property.invoke());
+  assert.ok(!page.foo);
 });
 
-test('throws an error when the element doesn\'t exist in the DOM', function(assert) {
-  assert.expect(1);
+test('returns false when the element doesn\'t exist', function(assert) {
+  let page = create({
+    foo: isVisible('span')
+  });
 
-  var property = buildProperty(isVisible('.element'));
-
-  try {
-    property.invoke();
-  } catch(e) {
-    assert.ok(true, 'Element not found');
-  }
+  assert.ok(!page.foo);
 });
 
-test('uses scope', function(assert) {
-  fixture('<div class="element" style="display:none" /><div class="scope"><div class="element" /></div>');
+test('looks for elements inside the scope', function(assert) {
+  fixture(`
+    <div><span style="display:none">lorem</span></div>
+    <div class="scope"><span>ipsum</span></div>
+  `);
 
-  var property = buildProperty(isVisible('.element:first', { scope: '.scope' }));
+  let page = create({
+    foo: isVisible('span', { scope: '.scope', at: 0 })
+  });
 
-  assert.ok(property.invoke());
+  assert.ok(page.foo);
 });
 
-test('uses parent scope', function(assert) {
-  fixture('<div class="element" style="display:none" /><div class="scope"><div class="element" /></div>');
+test("looks for elements inside page's scope", function(assert) {
+  fixture(`
+    <div><span style="display:none">lorem</span></div>
+    <div class="scope"><span>ipsum</span></div>
+  `);
 
-  var property = buildProperty(isVisible('.element:first'), { scope: '.scope' });
+  let page = create({
+    scope: '.scope',
 
-  assert.ok(property.invoke());
+    foo: isVisible('span', { at: 0 })
+  });
+
+  assert.ok(page.foo);
+});
+
+test('resets scope', function(assert) {
+  fixture(`
+    <div><span>lorem</span></div>
+    <div class="scope"><span style="display:none">ipsum</span></div>
+  `);
+
+  let page = create({
+    scope: '.scope',
+
+    foo: isVisible('span', { resetScope: true, at: 0 })
+  });
+
+  assert.ok(page.foo);
+});
+
+test_throws_if_not_multiple(function() {
+  fixture(`
+    <span>lorem</span>
+    <span> ipsum </span>
+    <span>dolor</span>
+  `);
+
+  let page = create({
+    foo: isVisible('span')
+  });
+
+  return page.foo;
+});
+
+test('matches multiple elements with multiple: true option, return false if not all elements are visible', function(assert) {
+  fixture(`
+    <span>lorem</span>
+    <span style="display:none"> ipsum </span>
+    <span>dolor</span>
+  `);
+
+  let page = create({
+    foo: isVisible('span', { multiple: true })
+  });
+
+  assert.ok(!page.foo);
+});
+
+test('matches multiple elements with multiple: true option, return true if all elements are visible', function(assert) {
+  fixture(`
+    <span>lorem</span>
+    <span>dolor</span>
+  `);
+
+  let page = create({
+    foo: isVisible('span', { multiple: true })
+  });
+
+  assert.ok(page.foo);
+});
+
+test('finds element by index', function(assert) {
+  fixture(`
+    <em style="display:none">lorem</em>
+    <em style="display:none">ipsum</em>
+    <em>dolor</em>
+  `);
+
+  let page = create({
+    foo: isVisible('em', { at: 0 }),
+    bar: isVisible('em', { at: 2 })
+  });
+
+  assert.ok(!page.foo);
+  assert.ok(page.bar);
 });

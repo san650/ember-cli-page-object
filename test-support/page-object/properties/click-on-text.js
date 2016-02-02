@@ -1,33 +1,7 @@
-/* global click */
+import Ember from 'ember';
+import { buildSelector } from '../helpers';
 
-import Descriptor from '../descriptor';
-import { qualifySelector } from '../helpers';
-
-/**
- * Clicks an element by text
- *
- * @param {Object} target - Component that owns the property
- * @param {string} key - Name of the key associated to this property
- * @param {Object} options - Additional options
- * @param {string} options.selector - CSS selector of the container of the element to click
- * @param {string} options.scope - Overrides parent scope
- * @param {string} textToClick - Text to find the element to click
- * @return {Object} target component (this allows chaining)
- */
-function doClick(target, key, options, textToClick) {
-  // Suppose that we have something like `<form><button>Submit</button></form>`
-  // In this case <form> and <button> elements contains "Submit" text, so, we'll
-  // want to __always__ click on the __last__ element that contains the text.
-  let selector = qualifySelector(
-    options.scope || target.scope,
-    options.selector,
-    `:contains("${textToClick}"):last`
-  );
-
-  click(selector);
-
-  return target;
-}
+var { merge } = Ember;
 
 /**
  * Creates an action to click an element
@@ -35,18 +9,35 @@ function doClick(target, key, options, textToClick) {
  * @example
  *
  *   var page = PageObject.create({
- *     click: clickOnText('button[type=submit]')
+ *     clickOn: clickOnText('body')
  *   });
  *
- *   page.click('Save');
+ *   page.clickOn('Save');
  *
  * @param {string} selector - CSS selector of the element to click
  * @param {Object} options - Additional options
  * @param {string} options.scope - Overrides parent scope
+ * @param {number} options.at - Reduce the set of matched elements to the one at the specified index
  * @return {Descriptor}
  */
-export default function clickOnText(selector, options = {}) {
-  options.selector = selector;
+export function clickOnText(selector, options = {}) {
+  return {
+    isDescriptor: true,
 
-  return new Descriptor(doClick, options);
+    value(textToClick) {
+      // Suppose that we have something like `<form><button>Submit</button></form>`
+      // In this case <form> and <button> elements contains "Submit" text, so, we'll
+      // want to __always__ click on the __last__ element that contains the text.
+      var selctorWithSpace = (selector || '') + ' ';
+      var fullSelector = buildSelector(
+        this,
+        selctorWithSpace,
+        merge({ contains: textToClick, last: true }, options));
+
+      /* global click */
+      click(fullSelector);
+
+      return this;
+    }
+  };
 }

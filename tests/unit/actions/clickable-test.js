@@ -1,62 +1,104 @@
 import { test } from 'qunit';
-import { moduleFor, buildProperty } from '../test-helper';
-import clickable from '../../page-object/properties/clickable';
+import { moduleFor } from '../test-helper';
+import { create, clickable } from '../../page-object';
 
-moduleFor('Actions', 'clickable');
+moduleFor('Unit | Property | .clickable');
 
 test('calls Ember\'s click helper', function(assert) {
   assert.expect(1);
 
-  let expectedSelector = 'button',
-      property;
+  let expectedSelector = 'span',
+      page;
 
   window.click = function(actualSelector) {
     assert.equal(actualSelector, expectedSelector);
   };
 
-  property = buildProperty(clickable(expectedSelector));
+  page = create({
+    foo: clickable(expectedSelector)
+  });
 
-  property.invoke();
+  page.foo();
 });
 
-test('uses scope', function(assert) {
+test('looks for elements inside the scope', function(assert) {
   assert.expect(1);
 
-  let property;
+  let page;
 
   window.click = function(actualSelector) {
-    assert.equal(actualSelector, '.scope .element');
+    assert.equal(actualSelector, '.scope span');
   };
 
-  property = buildProperty(clickable('.element', { scope: '.scope' }));
+  page = create({
+    foo: clickable('span', { scope: '.scope' })
+  });
 
-  property.invoke();
+  page.foo();
 });
 
-test('uses parent scope', function(assert) {
+test('looks for elements inside page\'s scope', function(assert) {
   assert.expect(1);
 
-  let property;
+  let page;
 
   window.click = function(actualSelector) {
-    assert.equal(actualSelector, '.parent-scope .element');
+    assert.equal(actualSelector, '.scope span');
   };
 
-  property = buildProperty(clickable('.element'), { scope: '.parent-scope' });
+  page = create({
+    scope: '.scope',
 
-  property.invoke();
+    foo: clickable('span')
+  });
+
+  page.foo();
+});
+
+test('resets scope', function(assert) {
+  assert.expect(1);
+
+  let page;
+
+  window.click = function(actualSelector) {
+    assert.equal(actualSelector, 'span');
+  };
+
+  page = create({
+    scope: '.scope',
+    foo: clickable('span', { resetScope: true })
+  });
+
+  page.foo();
 });
 
 test('returns target object', function(assert) {
   assert.expect(1);
 
-  let target = { dummy: "value" },
-      property;
+  let page;
 
-  window.click = function() {
+  window.click = function() {};
+
+  page = create({
+    foo: clickable()
+  });
+
+  assert.equal(page.foo(), page);
+});
+
+test('finds element by index', function(assert) {
+  assert.expect(1);
+
+  let expectedSelector = 'span:eq(3)',
+      page;
+
+  window.click = function(actualSelector) {
+    assert.equal(actualSelector, expectedSelector);
   };
 
-  property = buildProperty(clickable(), target);
+  page = create({
+    foo: clickable('span', { at: 3 })
+  });
 
-  assert.equal(property.invoke(), target);
+  page.foo();
 });
