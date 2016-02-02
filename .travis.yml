@@ -5,9 +5,9 @@ node_js:
 
 sudo: false
 
-cache:
-  directories:
-    - node_modules
+# cache:
+#   directories:
+#     - node_modules
 
 env:
   - EMBER_TRY_SCENARIO=ember-1.12
