@@ -130,3 +130,50 @@ test('generates .text property', function(assert) {
   assert.equal(page.text, 'Ipsum Dolor');
   assert.equal(page.foo.text, 'Dolor');
 });
+
+test('.extend deep merges attributes', function(assert) {
+  var page = create({
+    foo: 'foo value',
+    bar: {
+      baz: 'baz value'
+    }
+  });
+
+  var extended = page.extend({
+    qux: 'qux value',
+    bar: {
+      norf: 'norf value'
+    }
+  });
+
+  assert.equal(extended.foo, 'foo value');
+  assert.equal(extended.bar.baz, 'baz value');
+  assert.equal(extended.qux, 'qux value');
+  assert.equal(extended.bar.norf, 'norf value');
+});
+
+test('.extend accepts descriptors', function(assert) {
+  fixture('Lorem <span>ipsum</span>');
+
+  var page = create({});
+  var extended = page.extend({
+    foo: text('span')
+  });
+
+  assert.equal(extended.foo, 'ipsum');
+});
+
+test('.extend doesn\'t modify the original page', function(assert) {
+  var page = create({
+    foo: 'bar'
+  });
+
+  var extended = page.extend({
+    foo: 'baz',
+    qux: 'norf'
+  });
+
+  assert.equal(page.foo, 'bar');
+  assert.ok(!page.qux);
+  assert.equal(extended.foo, 'baz');
+});

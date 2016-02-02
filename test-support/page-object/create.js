@@ -7,7 +7,7 @@ import { clickOnText } from './properties/click-on-text';
 import { clickable } from './properties/clickable';
 import { contains } from './properties/contains';
 
-var { merge } = Ember;
+var { merge, $ } = Ember;
 
 function plugDefaultProperties(definition) {
   if (typeof(definition.isVisible) === 'undefined') {
@@ -52,6 +52,31 @@ function buildObject(builder, target, key, definition) {
 }
 
 /**
+ * Creates a new page object by extending an existing one
+ *
+ * @example
+ *
+ *   var page = create({
+ *     foo: 'bar'
+ *   });
+ *
+ *   var extended = page.extend({
+ *     baz: 'qux'
+ *   });
+ *
+ *   assert.equal(extended.foo, 'bar');
+ *   assert.equal(extended.baz, 'qux');
+ *
+ * @param {Object} definition - new properties
+ * @return {PageObject}
+ */
+function extend(definition) {
+  var def = $.extend(true, {}, this['__meta'].definition, definition);
+
+  return create(def);
+}
+
+/**
  * Creates a new PageObject
  *
  * @example
@@ -71,5 +96,13 @@ export function create(definition, options = {}) {
     object: buildObject
   };
 
-  return Ceibo.create(definition, merge({ builder }, options ));
+  var tree = Ceibo.create(definition, merge({ builder }, options ));
+
+  tree['__meta'] = {
+    definition: $.extend(true, {}, definition)
+  };
+
+  tree.extend = extend;
+
+  return tree;
 }
