@@ -40,6 +40,7 @@ function getTextList(target, key, options) {
  */
 export default function textList(selector, options = {}) {
   options.selector = selector;
+  options.multiple = true;
 
   return new Descriptor(getTextList, options);
 }

@@ -24,6 +24,27 @@ test('raises an error when the element doesn\'t exist', function(assert) {
   }
 });
 
+test('throws an error when more than one element in the DOM match', function(assert) {
+  assert.expect(1);
+  fixture('<input value="Hello" /><input value="world!"/>');
+
+  let property = buildProperty(value('input'));
+
+  try {
+    property.invoke();
+  } catch(e) {
+    assert.ok(true, 'More than one element found');
+  }
+});
+
+test("doesn't throw error if matches more than one element but multiple: true option was used", function(assert) {
+  fixture('<input value="Hello" /><input value="world!"/>');
+
+  let property = buildProperty(value('input', { multiple: true }));
+
+  assert.equal(property.invoke(), 'Hello');
+});
+
 test('returns empty when the element doesn\'t have value attribute', function(assert) {
   fixture('<span />');
 
