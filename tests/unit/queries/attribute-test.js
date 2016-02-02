@@ -1,6 +1,9 @@
 import { test } from 'qunit';
 import { fixture, moduleFor } from '../test-helper';
 import { create, attribute } from '../../page-object';
+import {
+  test_throws_if_not_multiple
+} from '../shared';
 
 moduleFor('.attribute');
 
@@ -77,7 +80,7 @@ test('resets scope', function(assert) {
   assert.equal(page.foo, 'a value');
 });
 
-test('throws error if selector matches more than one element', function(assert) {
+test_throws_if_not_multiple(function() {
   fixture(`
     <input placeholder="a value">
     <input placeholder="other value">
@@ -87,13 +90,10 @@ test('throws error if selector matches more than one element', function(assert) 
     foo: attribute('placeholder', ':input')
   });
 
-  assert.throws(
-    () => page.foo,
-    /input matched more than one element. If this is not an error use { multiple: true }/
-  );
+  return page.foo;
 });
 
-test('matches multiple elements with multiple: true option', function(assert) {
+test('matches multiple elements', function(assert) {
   fixture(`
     <input placeholder="a value">
     <input placeholder="other value">
@@ -103,7 +103,7 @@ test('matches multiple elements with multiple: true option', function(assert) {
     foo: attribute('placeholder', ':input', { multiple: true })
   });
 
-  assert.equal(page.foo, "a value");
+  assert.deepEqual(page.foo, ['a value', 'other value']);
 });
 
 test('finds element by index', function(assert) {
