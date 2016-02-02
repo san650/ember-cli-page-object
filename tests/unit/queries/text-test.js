@@ -1,8 +1,11 @@
 import { test } from 'qunit';
 import { fixture, moduleFor } from '../test-helper';
 import { create, text } from '../../page-object';
+import {
+  test_throws_if_not_multiple
+} from '../shared';
 
-moduleFor('.text');
+moduleFor('Unit | Property | .text');
 
 test('returns the inner text of the element', function(assert) {
   fixture('Hello <span>world!</span>');
@@ -141,7 +144,7 @@ test('finds element without using a selector', function(assert) {
   assert.equal(page.bar.baz, 'world!');
 });
 
-test('throws error if selector matches more than one element', function(assert) {
+test_throws_if_not_multiple(function() {
   fixture(`
     <span>lorem</span>
     <span> ipsum </span>
@@ -154,10 +157,7 @@ test('throws error if selector matches more than one element', function(assert) 
     foo: text('span', { resetScope: true })
   });
 
-  assert.throws(
-    () => page.foo,
-    /span matched more than one element. If this is not an error use { multiple: true }/
-  );
+  return page.foo;
 });
 
 test('returns multiple values', function(assert) {

@@ -1,8 +1,11 @@
 import { test } from 'qunit';
 import { fixture, moduleFor } from '../test-helper';
 import { create, hasClass } from '../../page-object';
+import {
+  test_throws_if_not_multiple
+} from '../shared';
 
-moduleFor('.hasClass');
+moduleFor('Unit | Property | .hasClass');
 
 test('returns true when the element has the class', function(assert) {
   fixture('<em class="lorem"></em><span class="ipsum"></span>');
@@ -87,8 +90,7 @@ test('resets scope', function(assert) {
   assert.ok(page.foo);
 });
 
-
-test('throws error if selector matches more than one element', function(assert) {
+test_throws_if_not_multiple(function() {
   fixture(`
     <span class="lorem"></span>
     <span class="ipsum"></span>
@@ -98,10 +100,7 @@ test('throws error if selector matches more than one element', function(assert) 
     foo: hasClass('lorem', 'span')
   });
 
-  assert.throws(
-    () => page.foo,
-    /span matched more than one element. If this is not an error use { multiple: true }/
-  );
+  return page.foo;
 });
 
 test('matches multiple elements with multiple: true option returns false if not all elements have class', function(assert) {

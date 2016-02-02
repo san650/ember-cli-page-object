@@ -1,8 +1,11 @@
 import { test } from 'qunit';
 import { fixture, moduleFor } from '../test-helper';
 import { create, isHidden } from '../../page-object';
+import {
+  test_throws_if_not_multiple
+} from '../shared';
 
-moduleFor('.isHidden');
+moduleFor('Unit | Property | .isHidden');
 
 test('returns true when the element is hidden', function(assert) {
   fixture('Lorem <span style="display:none">ipsum</span>');
@@ -78,7 +81,7 @@ test('resets scope', function(assert) {
   assert.ok(page.foo);
 });
 
-test('throws error if selector matches more than one element', function(assert) {
+test_throws_if_not_multiple(function() {
   fixture(`
     <em style="display:none">ipsum</em>
     <em style="display:none">dolor</em>
@@ -88,10 +91,7 @@ test('throws error if selector matches more than one element', function(assert) 
     foo: isHidden('em')
   });
 
-  assert.throws(
-    () => page.foo,
-    /em matched more than one element. If this is not an error use { multiple: true }/
-  );
+  return page.foo;
 });
 
 test('matches multiple elements with multiple: true option, returns true if all elements are hidden', function(assert) {

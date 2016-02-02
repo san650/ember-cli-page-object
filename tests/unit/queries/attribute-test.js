@@ -5,7 +5,7 @@ import {
   test_throws_if_not_multiple
 } from '../shared';
 
-moduleFor('.attribute');
+moduleFor('Unit | Property | .attribute');
 
 test('returns attribute value', function(assert) {
   fixture('<input placeholder="a value">');

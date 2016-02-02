@@ -2,7 +2,7 @@ import { test } from 'qunit';
 import { moduleFor } from '../test-helper';
 import { create, clickable } from '../../page-object';
 
-moduleFor('.clickable');
+moduleFor('Unit | Property | .clickable');
 
 test('calls Ember\'s click helper', function(assert) {
   assert.expect(1);

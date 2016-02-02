@@ -1,8 +1,11 @@
 import { test } from 'qunit';
 import { fixture, moduleFor } from '../test-helper';
 import { create, contains } from '../../page-object';
+import {
+  test_throws_if_not_multiple
+} from '../shared';
 
-moduleFor('.contains');
+moduleFor('Unit | Property | .contains');
 
 test('returns true when the element contains the text', function(assert) {
   fixture('Lorem <span>ipsum</span>');
@@ -71,7 +74,7 @@ test('resets scope', function(assert) {
   assert.ok(page.foo('lorem'));
 });
 
-test('throws error if selector matches more than one element', function(assert) {
+test_throws_if_not_multiple(function() {
   fixture(`
     <span>lorem</span>
     <span> ipsum </span>
@@ -82,10 +85,7 @@ test('throws error if selector matches more than one element', function(assert) 
     foo: contains('span')
   });
 
-  assert.throws(
-    () => page.foo('lorem'),
-    /span matched more than one element. If this is not an error use { multiple: true }/
-  );
+  page.foo('lorem');
 });
 
 test('matches multiple elements with multiple: true option, returns false if not all elements contain text', function(assert) {

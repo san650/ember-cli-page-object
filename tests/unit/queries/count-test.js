@@ -2,7 +2,7 @@ import { test } from 'qunit';
 import { fixture, moduleFor } from '../test-helper';
 import { create, count } from '../../page-object';
 
-moduleFor('.count');
+moduleFor('Unit | Property | .count');
 
 test('returns the number of elements that match the selector', function(assert) {
   fixture(`

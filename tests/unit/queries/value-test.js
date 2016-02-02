@@ -1,8 +1,11 @@
 import { test } from 'qunit';
 import { fixture, moduleFor } from '../test-helper';
 import { create, value } from '../../page-object';
+import {
+  test_throws_if_not_multiple
+} from '../shared';
 
-moduleFor('.value');
+moduleFor('Unit | Property | .value');
 
 test('returns the text of the input', function(assert) {
   fixture('<input value="Lorem ipsum">');
@@ -75,7 +78,7 @@ test('resets scope', function(assert) {
   assert.equal(page.foo, 'lorem');
 });
 
-test('throws error if selector matches more than one element', function(assert) {
+test_throws_if_not_multiple(function() {
   fixture(`
     <input value="lorem">
     <input value="ipsum">
@@ -85,10 +88,7 @@ test('throws error if selector matches more than one element', function(assert) 
     foo: value('input')
   });
 
-  assert.throws(
-    () => page.foo,
-    /input matched more than one element. If this is not an error use { multiple: true }/
-  );
+  return page.foo;
 });
 
 test('matches multiple elements with multiple: true option', function(assert) {
