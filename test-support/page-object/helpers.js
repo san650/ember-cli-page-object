@@ -1,7 +1,8 @@
 import Ember from 'ember';
 import Ceibo from 'ceibo';
 
-var { trim } = Ember.$;
+var { trim } = Ember.$,
+  assert = Ember.assert;
 
 class Selector {
   constructor(node, scope, selector, filters) {
@@ -94,10 +95,19 @@ export function buildSelector(node, targetSelector, options) {
  * @param {boolean} options.last - Filter by using :last pseudo-class
  * @return {string} Full qualified selector
  */
-export function findElementWithAssert(node, targetSelector, options) {
-  var selector = buildSelector(node, targetSelector, options);
+export function findElementWithAssert(node, targetSelector, options = {}) {
+  var selector = buildSelector(node, targetSelector, options),
+    allowMultiple = options['multiple'],
+    result;
 
-  return findWithAssert(selector);
+  result = findWithAssert(selector);
+
+  assert(
+    `${selector} matched more than one element. If this is not an error use { multiple: true }`,
+    allowMultiple || result.length <= 1
+  )
+
+  return result;
 }
 
 /**
@@ -112,10 +122,19 @@ export function findElementWithAssert(node, targetSelector, options) {
  * @param {boolean} options.last - Filter by using :last pseudo-class
  * @return {string} Full qualified selector
  */
-export function findElement(node, targetSelector, options) {
-  var selector = buildSelector(node, targetSelector, options);
+export function findElement(node, targetSelector, options = {}) {
+  var selector = buildSelector(node, targetSelector, options),
+    allowMultiple = options['multiple'],
+    result;
 
-  return find(selector);
+  result = find(selector);
+
+  assert(
+    `${selector} matched more than one element. If this is not an error use { multiple: true }`,
+    allowMultiple || result.length <= 1
+  )
+
+  return result;
 }
 
 /**

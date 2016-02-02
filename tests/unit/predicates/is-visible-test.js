@@ -1,8 +1,11 @@
 import { test } from 'qunit';
 import { fixture, moduleFor } from '../test-helper';
 import { create, isVisible } from '../../page-object';
+import {
+  test_throws_if_not_multiple
+} from '../shared';
 
-moduleFor('.isVisible');
+moduleFor('Unit | Property | .isVisible');
 
 test('returns true when the element is visible', function(assert) {
   fixture('Lorem <span>ipsum</span>');
@@ -70,6 +73,47 @@ test('resets scope', function(assert) {
     scope: '.scope',
 
     foo: isVisible('span', { resetScope: true, at: 0 })
+  });
+
+  assert.ok(page.foo);
+});
+
+test_throws_if_not_multiple(function() {
+  fixture(`
+    <span>lorem</span>
+    <span> ipsum </span>
+    <span>dolor</span>
+  `);
+
+  let page = create({
+    foo: isVisible('span')
+  });
+
+  return page.foo;
+});
+
+test('matches multiple elements with multiple: true option, return false if not all elements are visible', function(assert) {
+  fixture(`
+    <span>lorem</span>
+    <span style="display:none"> ipsum </span>
+    <span>dolor</span>
+  `);
+
+  let page = create({
+    foo: isVisible('span', { multiple: true })
+  });
+
+  assert.ok(!page.foo);
+});
+
+test('matches multiple elements with multiple: true option, return true if all elements are visible', function(assert) {
+  fixture(`
+    <span>lorem</span>
+    <span>dolor</span>
+  `);
+
+  let page = create({
+    foo: isVisible('span', { multiple: true })
   });
 
   assert.ok(page.foo);

@@ -1,3 +1,4 @@
+import Ember from 'ember';
 import { findElementWithAssert } from '../helpers';
 
 /**
@@ -25,7 +26,9 @@ export function notHasClass(cssClass, selector, options = {}) {
     get() {
       let element = findElementWithAssert(this, selector, options);
 
-      return !element.hasClass(cssClass);
+      return !(Ember.A(element).any(function(e) {
+        return $(e).hasClass(cssClass);
+      }));
     }
   };
 }

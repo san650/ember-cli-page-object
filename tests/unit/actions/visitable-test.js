@@ -2,7 +2,7 @@ import { test } from 'qunit';
 import { moduleFor } from '../test-helper';
 import { create, visitable } from '../../page-object';
 
-moduleFor('.visitable');
+moduleFor('Unit | Property | .visitable');
 
 test('calls Ember\'s visit helper', function(assert) {
   assert.expect(1);

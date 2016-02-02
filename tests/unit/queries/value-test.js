@@ -1,8 +1,11 @@
 import { test } from 'qunit';
 import { fixture, moduleFor } from '../test-helper';
 import { create, value } from '../../page-object';
+import {
+  test_throws_if_not_multiple
+} from '../shared';
 
-moduleFor('.value');
+moduleFor('Unit | Property | .value');
 
 test('returns the text of the input', function(assert) {
   fixture('<input value="Lorem ipsum">');
@@ -69,10 +72,36 @@ test('resets scope', function(assert) {
   let page = create({
     scope: '.scope',
 
-    foo: value('input', { resetScope: true })
+    foo: value('input', { at: 0, resetScope: true })
   });
 
   assert.equal(page.foo, 'lorem');
+});
+
+test_throws_if_not_multiple(function() {
+  fixture(`
+    <input value="lorem">
+    <input value="ipsum">
+  `);
+
+  let page = create({
+    foo: value('input')
+  });
+
+  return page.foo;
+});
+
+test('matches multiple elements with multiple: true option', function(assert) {
+  fixture(`
+    <input value="lorem">
+    <input value="ipsum">
+  `);
+
+  let page = create({
+    foo: value('input', { multiple: true })
+  });
+
+  assert.deepEqual(page.foo, ["lorem", "ipsum"]);
 });
 
 test('finds element by index', function(assert) {

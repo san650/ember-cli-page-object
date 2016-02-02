@@ -2,7 +2,7 @@ import { test } from 'qunit';
 import { fixture, moduleFor } from '../test-helper';
 import { create, count } from '../../page-object';
 
-moduleFor('.count');
+moduleFor('Unit | Property | .count');
 
 test('returns the number of elements that match the selector', function(assert) {
   fixture(`
@@ -66,4 +66,19 @@ test('resets scope', function(assert) {
   });
 
   assert.equal(page.foo, 1);
+});
+
+test('resets multiple value', function(assert) {
+  fixture(`
+    <div><span></span></div>
+    <div class="scope"><span></span><span></span></div>
+  `);
+
+  let page = create({
+    scope: '.scope',
+
+    foo: count('span', { multiple: false })
+  });
+
+  assert.equal(page.foo, 2);
 });

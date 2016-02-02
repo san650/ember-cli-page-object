@@ -1,4 +1,7 @@
+import Ember from 'ember';
 import { findElement } from '../helpers';
+
+var $ = Ember.$;
 
 /**
  * Gets the count of matched elements
@@ -22,7 +25,11 @@ export function count(selector, options = {}) {
     isDescriptor: true,
 
     get() {
-      return findElement(this, selector, options).length;
+      let countOptions = {};
+
+      $.extend(true, countOptions, options, { multiple: true });
+
+      return findElement(this, selector, countOptions).length;
     }
   };
 }
