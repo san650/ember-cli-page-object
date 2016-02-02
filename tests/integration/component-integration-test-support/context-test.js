@@ -54,3 +54,28 @@ test('`setContext(this)` and `removeContext()` set and remove the test context f
 
   assert.notOk(page.context);
 });
+
+test('`render()` throws an error when no context has been set', function(assert) {
+  assert.expect(2);
+
+  let template;
+  let errorMessage;
+
+  if (isOldEmber) {
+    template = Ember.HTMLBars.compile('{{calculating-device}}');
+  } else {
+    template = hbs`{{calculating-device}}`;
+  }
+
+  const page = PageObject.create({});
+
+  assert.notOk(page.context);
+
+  assert.throws(function() {
+    page.render(template);
+  }, function(err) {
+    errorMessage = err.message;
+
+    return errorMessage === 'You must set a context on the page object before calling calling `render()`';
+  }, `render did not throw an error when no context was set. Actual message: ${errorMessage}`);
+});

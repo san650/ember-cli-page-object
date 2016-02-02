@@ -54,67 +54,66 @@ const page = PageObject.create({
 moduleForComponent('calculating-device', 'Integration | component integration test support/actions', {
   integration: true,
 
-  beforeEach() {
-    page.setContext(this);
-  },
-
   afterEach() {
     page.removeContext();
   }
 });
 
 test('Actions work when defined inside collections', function(assert) {
+  let template;
+
   if (isOldEmber) {
-    this.render(Ember.HTMLBars.compile('{{calculating-device}}'));
+    template = Ember.HTMLBars.compile('{{calculating-device}}');
   } else {
-    this.render(hbs`{{calculating-device}}`);
+    template = hbs`{{calculating-device}}`;
   }
 
-  Ember.run(() => {
-    page
-      .numbers(0)
-      .click();
-  });
+  page.setContext(this)
+    .render(template)
+    .numbers(0)
+    .click();
 
   assert.equal(page.screen.text, '1');
 });
 
 test('Chaining of actions inside a collection works', function(assert) {
+  let template;
+
   if (isOldEmber) {
-    this.render(Ember.HTMLBars.compile('{{calculating-device}}'));
+    template = Ember.HTMLBars.compile('{{calculating-device}}');
   } else {
-    this.render(hbs`{{calculating-device}}`);
+    template = hbs`{{calculating-device}}`;
   }
 
-  Ember.run(() => {
-    page
-      .numbers()
-      .clickOn('1')
-      .clickOn('2')
-      .clickOn('3');
-  });
+  page.setContext(this)
+    .render(template)
+    .numbers()
+    .clickOn('1')
+    .clickOn('2')
+    .clickOn('3');
 
   assert.equal(page.screen.text, '123');
 });
 
 test('Chaining of actions on a component works', function(assert) {
+  let template;
+
   if (isOldEmber) {
-    this.render(Ember.HTMLBars.compile('{{calculating-device}}'));
+    template = Ember.HTMLBars.compile('{{calculating-device}}');
   } else {
-    this.render(hbs`{{calculating-device}}`);
+    template = hbs`{{calculating-device}}`;
   }
 
-  Ember.run(() => {
-    page
-      .clickOn('1')
-      .clickOn('+')
-      .clickOn('4')
-      .clickOn('-')
-      .clickOn('2')
-      .operators
-      .equals
-      .click();
-  });
+  page.setContext(this)
+    .render(template)
+    .clickOn('1')
+    .clickOn('+')
+    .clickOn('4')
+    .clickOn('-')
+    .clickOn('2')
+    .operators
+    .equals
+    .click();
 
   assert.equal(page.screen.text, '3');
 });

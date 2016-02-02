@@ -56,17 +56,21 @@ const page = PageObject.create({
 moduleForComponent('user-list', 'Integration | component integration test support/user list', {
   integration: true,
 
-  beforeEach() {
-    page.setContext(this);
-  },
-
   afterEach() {
     page.removeContext();
   }
 });
 
 test('Component contents', function(assert) {
-  assert.expect(11);
+  assert.expect(13);
+
+  let template;
+
+  if (isOldEmber) {
+    template = Ember.HTMLBars.compile('{{user-list users=users}}');
+  } else {
+    template = hbs`{{user-list users=users}}`;
+  }
 
   this.set('users', Ember.A([
     { userName: 'jane', role: 'admin', disabledAnimalPreference: false, admin: true },
@@ -74,27 +78,27 @@ test('Component contents', function(assert) {
     { userName: 'john', role: 'guest', disabledAnimalPreference: true, admin: false }
   ]));
 
-  if (isOldEmber) {
-    this.render(Ember.HTMLBars.compile('{{user-list users=users}}'));
-  } else {
-    this.render(hbs`{{user-list users=users}}`);
-  }
-
-  Ember.run(() => {
-    page.users(0).animalPreference.select('Tomsters');
-  });
+  page.setContext(this)
+    .render(template);
 
   assert.equal(page.title, 'Users');
   assert.equal(page.users().count, 3);
   assert.ok(page.users(0).isVisible);
   assert.equal(page.users(0).userName, 'jane');
   assert.equal(page.users(0).role, 'admin');
-  assert.equal(page.users(0).animalPreference.selected, 'Tomsters');
-  assert.equal(page.users(1).animalPreference.selected, 'Cats');
   assert.ok(page.users(0).isAdmin, 'is not admin');
+  assert.equal(page.users(0).animalPreference.selected, 'Cats');
   assert.notOk(page.users(1).isAdmin, 'is admin');
+  assert.equal(page.users(1).animalPreference.selected, 'Cats');
   // FIXME: Change this back to the prop version when it works
   // assert.equal(page.users(1).animalPreference.isDisabled, true);
   assert.notEqual(page.users(1).animalPreference.disabled, 'disabled');
   assert.equal(page.users(2).animalPreference.disabled, 'disabled');
+
+  page.users(0)
+    .animalPreference
+    .select('Tomsters');
+
+  assert.equal(page.users(0).animalPreference.selected, 'Tomsters');
+  assert.equal(page.users(1).animalPreference.selected, 'Cats');
 });

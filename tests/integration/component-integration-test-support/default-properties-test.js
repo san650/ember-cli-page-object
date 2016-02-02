@@ -21,9 +21,7 @@ skip('Adds default properties', function(assert) {
     }
   });
 
-  this.render(hbs`{{calculating-device}}`);
-
-  page
+  page.render(hbs`{{calculating-device}}`)
     .clickOn('9')
     .one()
     .click();

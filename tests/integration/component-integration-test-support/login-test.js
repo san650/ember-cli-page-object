@@ -30,10 +30,6 @@ const page = PageObject.create({
 moduleForComponent('user-list', 'Integration | component integration test support/login', {
   integration: true,
 
-  beforeEach() {
-    page.setContext(this);
-  },
-
   afterEach() {
     page.removeContext();
   }
@@ -42,33 +38,32 @@ moduleForComponent('user-list', 'Integration | component integration test suppor
 test('Retries login', function(assert) {
   assert.expect(6);
 
+  let template;
+
   if (isOldEmber) {
-    this.render(Ember.HTMLBars.compile('{{login-form}}'));
+    template = Ember.HTMLBars.compile('{{login-form}}');
   } else {
-    this.render(hbs`{{login-form}}`);
+    template = hbs`{{login-form}}`;
   }
+
+  page.setContext(this)
+    .render(template);
 
   assert.ok(page.notHasError, 'Page doesn\'t have error');
   assert.equal(page.title, 'Login page');
 
-  Ember.run(() => {
-    page
-      .form
-      .userName('invalid')
-      .password('invalid')
-      .click();
-  });
+  page.form
+    .userName('invalid')
+    .password('invalid')
+    .click();
 
   assert.ok(page.hasError, 'Page has error');
   assert.equal(page.message, 'Invalid user!');
 
-  Ember.run(() => {
-    page
-      .form
-      .userName('user@example.com')
-      .password('secret')
-      .click();
-  });
+  page.form
+    .userName('user@example.com')
+    .password('secret')
+    .click();
 
   assert.ok(page.notHasError, 'Page doesn\'t have error');
   assert.equal(page.message, 'Valid user!');
@@ -77,19 +72,20 @@ test('Retries login', function(assert) {
 test('Action chains act like a promise', function(assert) {
   assert.expect(1);
 
+  let template;
+
   if (isOldEmber) {
-    this.render(Ember.HTMLBars.compile('{{login-form}}'));
+    template = Ember.HTMLBars.compile('{{login-form}}');
   } else {
-    this.render(hbs`{{login-form}}`);
+    template = hbs`{{login-form}}`;
   }
 
-  Ember.run(() => {
-    page
-      .form
-      .userName('invalid')
-      .password('invalid')
-      .click();
-  });
+  page.setContext(this)
+    .render(template)
+    .form
+    .userName('invalid')
+    .password('invalid')
+    .click();
 
   assert.ok(page.hasError, 'Page has error');
 });
