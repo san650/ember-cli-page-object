@@ -1,6 +1,4 @@
-import { findElementWithAssert } from '../helpers';
-
-var $ = Ember.$;
+import { findElementWithAssert, map } from '../helpers';
 
 /**
  * Gets the value of an attribute from an element
@@ -26,13 +24,14 @@ export function attribute(attributeName, selector, options = {}) {
     isDescriptor: true,
 
     get() {
-      var element = findElementWithAssert(this, selector, options);
+      var elements = findElementWithAssert(this, selector, options);
+      var result;
 
-      if (options.multiple) {
-        return $.map(element, e => $(e).attr(attributeName));
-      }
+      result = map(elements, function(element) {
+        return element.attr(attributeName);
+      });
 
-      return element.attr(attributeName);
+      return options.multiple ? result : result[0];
     }
   };
 }

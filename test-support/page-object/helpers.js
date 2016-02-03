@@ -1,8 +1,7 @@
 import Ember from 'ember';
 import Ceibo from 'ceibo';
 
-var { trim } = Ember.$,
-  assert = Ember.assert;
+var { $, assert } = Ember;
 
 class Selector {
   constructor(node, scope, selector, filters) {
@@ -24,7 +23,7 @@ class Selector {
 
     filters = this.calculateFilters(this.targetFilters);
 
-    return trim(`${scope} ${this.targetSelector}${filters}`);
+    return $.trim(`${scope} ${this.targetSelector}${filters}`);
   }
 
   calculateFilters() {
@@ -67,6 +66,13 @@ class Selector {
   }
 }
 
+function guardMultiple(items, selector, supportMultiple) {
+  assert(
+    `"${selector}" matched more than one element. If this is not an error use { multiple: true }`,
+    supportMultiple || items.length <= 1
+  )
+}
+
 /**
  * Creates a fully qualified selector
  *
@@ -93,19 +99,13 @@ export function buildSelector(node, targetSelector, options) {
  * @param {string} options.contains - Filter by using :contains('foo') pseudo-class
  * @param {number} options.at - Filter by index using :eq(x) pseudo-class
  * @param {boolean} options.last - Filter by using :last pseudo-class
- * @return {string} Full qualified selector
+ * @return {Object} jQuery object
  */
 export function findElementWithAssert(node, targetSelector, options = {}) {
-  var selector = buildSelector(node, targetSelector, options),
-    allowMultiple = options['multiple'],
-    result;
+  var selector = buildSelector(node, targetSelector, options);
+  var result = findWithAssert(selector);
 
-  result = findWithAssert(selector);
-
-  assert(
-    `${selector} matched more than one element. If this is not an error use { multiple: true }`,
-    allowMultiple || result.length <= 1
-  )
+  guardMultiple(result, selector, options.multiple);
 
   return result;
 }
@@ -120,19 +120,13 @@ export function findElementWithAssert(node, targetSelector, options = {}) {
  * @param {string} options.contains - Filter by using :contains('foo') pseudo-class
  * @param {number} options.at - Filter by index using :eq(x) pseudo-class
  * @param {boolean} options.last - Filter by using :last pseudo-class
- * @return {string} Full qualified selector
+ * @return {Object} jQuery object
  */
 export function findElement(node, targetSelector, options = {}) {
-  var selector = buildSelector(node, targetSelector, options),
-    allowMultiple = options['multiple'],
-    result;
+  var selector = buildSelector(node, targetSelector, options);
+  var result = find(selector);
 
-  result = find(selector);
-
-  assert(
-    `${selector} matched more than one element. If this is not an error use { multiple: true }`,
-    allowMultiple || result.length <= 1
-  )
+  guardMultiple(result, selector, options.multiple);
 
   return result;
 }
@@ -146,5 +140,21 @@ export function findElement(node, targetSelector, options = {}) {
  * @see http://api.jquery.com/text/
  */
 export function normalizeText(text) {
-  return Ember.$.trim(text).replace(/\n/g, ' ').replace(/\s\s*/g, ' ');
+  return $.trim(text).replace(/\n/g, ' ').replace(/\s\s*/g, ' ');
+}
+
+export function every(jqArray, cb) {
+  var arr = jqArray.get();
+
+  return Ember.A(arr).every(function(element) {
+    return cb($(element));
+  });
+}
+
+export function map(jqArray, cb) {
+  var arr = jqArray.get();
+
+  return Ember.A(arr).map(function(element) {
+    return cb($(element));
+  });
 }

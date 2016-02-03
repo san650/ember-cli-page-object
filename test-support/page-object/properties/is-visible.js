@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import { findElement } from '../helpers';
+import { findElement, every } from '../helpers';
 
 /**
  * Creates a predicate to validate if an element is visible
@@ -23,18 +23,15 @@ export function isVisible(selector, options = {}) {
     isDescriptor: true,
 
     get() {
-      let element = findElement(this, selector, options),
-        result;
+      let elements = findElement(this, selector, options);
 
-      if (element.length > 0) {
-        result = !(Ember.A(element).any(function(e) {
-          return $(e).is(':hidden')
-        }));
-      } else {
-        result = false
+      if (elements.length === 0) {
+        return false;
       }
 
-      return result;
+      return every(elements, function(element) {
+        return element.is(':visible');
+      });
     }
   };
 }

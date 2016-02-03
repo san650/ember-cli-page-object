@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import { findElement } from '../helpers';
+import { findElement, every } from '../helpers';
 
 var $ = Ember.$;
 
@@ -25,14 +25,11 @@ export function isHidden(selector, options = {}) {
     isDescriptor: true,
 
     get() {
-      let element = findElement(this, selector, options),
-        result;
+      let elements = findElement(this, selector, options);
 
-      result = !(Ember.A(element).any(function(e) {
-        return $(e).is(':visible')
-      }));
-
-      return result;
+      return every(elements, function(element) {
+        return element.is(':hidden');
+      });
     }
   };
 }
