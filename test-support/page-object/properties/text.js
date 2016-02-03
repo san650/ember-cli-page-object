@@ -1,7 +1,5 @@
 import Ember from 'ember';
-import { findElementWithAssert, normalizeText } from '../helpers';
-
-var $ = Ember.$;
+import { findElementWithAssert, map, normalizeText } from '../helpers';
 
 /**
  * Gets the text of the matched element
@@ -33,16 +31,14 @@ export function text(selector, options = {}) {
     isDescriptor: true,
 
     get() {
-      var element = findElementWithAssert(this, selector, options),
-          result;
+      var elements = findElementWithAssert(this, selector, options);
+      var result;
 
-      if (options.multiple) {
-        result = $.map(element, e => normalizeText($(e).text()));
-      } else {
-        result = normalizeText(element.text());
-      }
+      result = map(elements, function(element) {
+        return normalizeText(element.text());
+      });
 
-      return result;
+      return options.multiple ? result : result[0];
     }
   };
 }

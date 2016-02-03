@@ -1,6 +1,4 @@
-import { findElementWithAssert, trim } from '../helpers';
-
-var $ = Ember.$;
+import { findElementWithAssert, map } from '../helpers';
 
 /**
  * Gets the value of the matched element
@@ -25,15 +23,14 @@ export function value(selector, options = {}) {
     isDescriptor: true,
 
     get() {
-      var element = findElementWithAssert(this, selector, options);
+      var elements = findElementWithAssert(this, selector, options);
+      var result;
 
-      if (options.multiple) {
-        result = $.map(element, e => $(e).val());
-      } else {
-        result = element.val();
-      }
+      result = map(elements, function(element) {
+        return element.val();
+      });
 
-      return result;
+      return options.multiple ? result : result[0];
     }
   };
 }
