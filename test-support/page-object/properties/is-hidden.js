@@ -1,4 +1,7 @@
-import { findElement } from '../helpers';
+import Ember from 'ember';
+import { findElement, every } from '../helpers';
+
+var $ = Ember.$;
 
 /**
  * Creates a predicate to validate if an element is hidden
@@ -22,9 +25,11 @@ export function isHidden(selector, options = {}) {
     isDescriptor: true,
 
     get() {
-      let element = findElement(this, selector, options);
+      let elements = findElement(this, selector, options);
 
-      return (element.length > 0) ? element.is(':hidden') : true;
+      return every(elements, function(element) {
+        return element.is(':hidden');
+      });
     }
   };
 }

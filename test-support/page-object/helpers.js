@@ -1,7 +1,7 @@
 import Ember from 'ember';
 import Ceibo from 'ceibo';
 
-var { trim } = Ember.$;
+var { $, assert } = Ember;
 
 class Selector {
   constructor(node, scope, selector, filters) {
@@ -23,7 +23,7 @@ class Selector {
 
     filters = this.calculateFilters(this.targetFilters);
 
-    return trim(`${scope} ${this.targetSelector}${filters}`);
+    return $.trim(`${scope} ${this.targetSelector}${filters}`);
   }
 
   calculateFilters() {
@@ -66,6 +66,13 @@ class Selector {
   }
 }
 
+function guardMultiple(items, selector, supportMultiple) {
+  assert(
+    `"${selector}" matched more than one element. If this is not an error use { multiple: true }`,
+    supportMultiple || items.length <= 1
+  )
+}
+
 /**
  * Creates a fully qualified selector
  *
@@ -92,21 +99,27 @@ export function buildSelector(node, targetSelector, options) {
  * @param {string} options.contains - Filter by using :contains('foo') pseudo-class
  * @param {number} options.at - Filter by index using :eq(x) pseudo-class
  * @param {boolean} options.last - Filter by using :last pseudo-class
- * @return {string} Full qualified selector
+ * @return {Object} jQuery object
  */
-export function findElementWithAssert(node, targetSelector, options) {
+export function findElementWithAssert(node, targetSelector, options = {}) {
   const selector = buildSelector(node, targetSelector, options);
   const context = getContext(node);
+
+  let result;
 
   if (context) {
     // TODO: When a context is provided, throw an exception
     // or give a falsy assertion when there are no matches
     // for the selector. This will provide consistent behaviour
     // between acceptance and integration tests.
-    return context.$(selector);
+    result = context.$(selector);
   } else {
-    return findWithAssert(selector);
+    result = findWithAssert(selector);
   }
+
+  guardMultiple(result, selector, options.multiple);
+
+  return result;
 }
 
 /**
@@ -119,18 +132,24 @@ export function findElementWithAssert(node, targetSelector, options) {
  * @param {string} options.contains - Filter by using :contains('foo') pseudo-class
  * @param {number} options.at - Filter by index using :eq(x) pseudo-class
  * @param {boolean} options.last - Filter by using :last pseudo-class
- * @return {string} Full qualified selector
+ * @return {Object} jQuery object
  */
-export function findElement(node, targetSelector, options) {
+export function findElement(node, targetSelector, options = {}) {
   const selector = buildSelector(node, targetSelector, options);
   const context = getContext(node);
 
+  let result;
+
   if (context) {
-    return context.$(selector);
+    result = context.$(selector);
   } else {
     /* global find */
-    return find(selector);
+    result = find(selector);
   }
+
+  guardMultiple(result, selector, options.multiple);
+
+  return result;
 }
 
 /**
@@ -142,7 +161,23 @@ export function findElement(node, targetSelector, options) {
  * @see http://api.jquery.com/text/
  */
 export function normalizeText(text) {
-  return Ember.$.trim(text).replace(/\n/g, ' ').replace(/\s\s*/g, ' ');
+  return $.trim(text).replace(/\n/g, ' ').replace(/\s\s*/g, ' ');
+}
+
+export function every(jqArray, cb) {
+  var arr = jqArray.get();
+
+  return Ember.A(arr).every(function(element) {
+    return cb($(element));
+  });
+}
+
+export function map(jqArray, cb) {
+  var arr = jqArray.get();
+
+  return Ember.A(arr).map(function(element) {
+    return cb($(element));
+  });
 }
 
 /**

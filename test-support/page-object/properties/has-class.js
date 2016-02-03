@@ -1,4 +1,5 @@
-import { findElementWithAssert } from '../helpers';
+import Ember from 'ember';
+import { findElementWithAssert, every } from '../helpers';
 
 /**
  * Creates a predicate to validate if an element has a given CSS class
@@ -23,10 +24,11 @@ export function hasClass(cssClass, selector, options = {}) {
     isDescriptor: true,
 
     get() {
-      let element = findElementWithAssert(this, selector, options);
+      let elements = findElementWithAssert(this, selector, options);
 
-
-      return element.hasClass(cssClass);
+      return every(elements, function(element) {
+        return element.hasClass(cssClass);
+      });
     }
   };
 }

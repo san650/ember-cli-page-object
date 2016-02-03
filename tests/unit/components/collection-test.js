@@ -2,7 +2,7 @@ import { test } from 'qunit';
 import { fixture, moduleFor } from '../test-helper';
 import { create, collection, text } from '../../page-object';
 
-moduleFor('.collection');
+moduleFor('Unit | Property | .collection');
 
 test('generates a count property', function(assert) {
   fixture(`

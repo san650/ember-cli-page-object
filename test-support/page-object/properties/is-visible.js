@@ -1,4 +1,5 @@
-import { findElement } from '../helpers';
+import Ember from 'ember';
+import { findElement, every } from '../helpers';
 
 /**
  * Creates a predicate to validate if an element is visible
@@ -22,9 +23,15 @@ export function isVisible(selector, options = {}) {
     isDescriptor: true,
 
     get() {
-      let element = findElement(this, selector, options);
+      let elements = findElement(this, selector, options);
 
-      return element.is(':visible');
+      if (elements.length === 0) {
+        return false;
+      }
+
+      return every(elements, function(element) {
+        return element.is(':visible');
+      });
     }
   };
 }

@@ -1,4 +1,5 @@
-import { findElementWithAssert } from '../helpers';
+import Ember from 'ember';
+import { findElementWithAssert, every } from '../helpers';
 
 /**
  * Creates a predicate to validate if an element contains a subtext
@@ -23,9 +24,11 @@ export function contains(selector, options = {}) {
     isDescriptor: true,
 
     value(textToSearch) {
-      let element = findElementWithAssert(this, selector, options);
+      let elements = findElementWithAssert(this, selector, options);
 
-      return element.text().indexOf(textToSearch) >= 0;
+      return every(elements, function(element) {
+        return element.text().indexOf(textToSearch) >= 0
+      });
     }
   };
 }

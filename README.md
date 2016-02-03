@@ -26,39 +26,10 @@ You can find more information about this design pattern here:
 
 Check the [site](http://ember-cli-page-object.js.org/) for full documentation.
 
-## Usage
-
-Install the npm package on your ember-cli project
+## Installation
 
 ```sh
-npm install --save-dev ember-cli-page-object
-```
-
-then you can use it from your acceptance tests
-
-```js
-import PageObject from '../page-object';
-
-const { fillable, text, visitable } = PageObject;
-
-const login = PageObject.create({
-  visit: visitable('/login'),
-  userName: fillable('#username'),
-  password: fillable('#password'),
-  errorMessage: text('.message')
-});
-
-test('Invalid log in', function(assert) {
-  login
-    .visit()
-    .userName('user@example.com')
-    .password('secret')
-    .clickOn('Log in');
-
-  andThen(function() {
-    assert.equal(login.errorMessage(), 'Invalid credentials!');
-  });
-});
+ember install ember-cli-page-object
 ```
 
 ## Blueprints
@@ -78,44 +49,22 @@ installing
   create tests/pages/users.js
 ```
 
-```js
-import { test } from 'qunit';
-import moduleForAcceptance from '../helpers/module-for-acceptance';
-import page from '../pages/users';
-
-moduleForAcceptance();
-
-test('visiting /users', function(assert) {
-  page.visit();
-
-  andThen(function() {
-    assert.equal(currentPath(), 'users');
-  });
-});
-```
-
 ## Development
 
 ### Installation
 
-* `git clone` this repository
-* `npm install`
-* `bower install`
-
-### Running
-
-* `ember server`
-* Visit your app at http://localhost:4200.
+```sh
+$ git clone https://github.com/san650/ember-cli-page-object.git
+$ cd $_
+$ npm install
+$ bower install
+```
 
 ### Running Tests
 
 * `npm test` (Runs `ember try:testall` to test your addon against multiple Ember versions)
 * `ember test`
 * `ember test --server`
-
-### Building
-
-* `ember build`
 
 ### Project's health
 

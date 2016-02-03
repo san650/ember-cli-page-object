@@ -1,8 +1,11 @@
 import { test } from 'qunit';
 import { fixture, moduleFor } from '../test-helper';
 import { create, attribute } from '../../page-object';
+import {
+  test_throws_if_not_multiple
+} from '../shared';
 
-moduleFor('.attribute');
+moduleFor('Unit | Property | .attribute');
 
 test('returns attribute value', function(assert) {
   fixture('<input placeholder="a value">');
@@ -75,6 +78,32 @@ test('resets scope', function(assert) {
   });
 
   assert.equal(page.foo, 'a value');
+});
+
+test_throws_if_not_multiple(function() {
+  fixture(`
+    <input placeholder="a value">
+    <input placeholder="other value">
+  `);
+
+  let page = create({
+    foo: attribute('placeholder', ':input')
+  });
+
+  return page.foo;
+});
+
+test('matches multiple elements', function(assert) {
+  fixture(`
+    <input placeholder="a value">
+    <input placeholder="other value">
+  `);
+
+  let page = create({
+    foo: attribute('placeholder', ':input', { multiple: true })
+  });
+
+  assert.deepEqual(page.foo, ['a value', 'other value']);
 });
 
 test('finds element by index', function(assert) {

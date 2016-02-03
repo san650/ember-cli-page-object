@@ -10,14 +10,6 @@ function merge(target, ...objects) {
   return target;
 }
 
-function select(target, ...keys) {
-  var object = {};
-
-  keys.forEach(key => object[key] = target[key]);
-
-  return object;
-}
-
 function generateEnumerable(definition) {
   var enumerable = merge({}, definition);
 

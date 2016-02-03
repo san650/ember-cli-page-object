@@ -1,8 +1,11 @@
 import { test } from 'qunit';
 import { fixture, moduleFor } from '../test-helper';
 import { create, notHasClass } from '../../page-object';
+import {
+  test_throws_if_not_multiple
+} from '../shared';
 
-moduleFor('.notHasClass');
+moduleFor('Unit | Property | .notHasClass');
 
 test('returns false when the element has the class', function(assert) {
   fixture('<span class="lorem ipsum"></span>');
@@ -85,6 +88,45 @@ test('resets scope', function(assert) {
   });
 
   assert.ok(page.foo);
+});
+
+test_throws_if_not_multiple(function() {
+  fixture(`
+    <span class="lorem"></span>
+    <span class="ipsum"></span>
+  `);
+
+  let page = create({
+    foo: notHasClass('lorem', 'span')
+  });
+
+  return page.foo;
+});
+
+test('matches multiple elements with multiple: true option, returns true if no elements have class', function(assert) {
+  fixture(`
+    <span class="lorem"></span>
+    <span class="ipsum"></span>
+  `);
+
+  let page = create({
+    foo: notHasClass('other-class', 'span', { multiple: true })
+  });
+
+  assert.ok(page.foo);
+});
+
+test('matches multiple elements with multiple: true option, returns false if some elements have class', function(assert) {
+  fixture(`
+    <span class="lorem"></span>
+    <span class="ipsum"></span>
+  `);
+
+  let page = create({
+    foo: notHasClass('lorem', 'span', { multiple: true })
+  });
+
+  assert.ok(!page.foo);
 });
 
 test('finds element by index', function(assert) {

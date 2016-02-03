@@ -1,8 +1,11 @@
 import { test } from 'qunit';
 import { fixture, moduleFor } from '../test-helper';
 import { create, text } from '../../page-object';
+import {
+  test_throws_if_not_multiple
+} from '../shared';
 
-moduleFor('.text');
+moduleFor('Unit | Property | .text');
 
 test('returns the inner text of the element', function(assert) {
   fixture('Hello <span>world!</span>');
@@ -102,10 +105,10 @@ test('resets scope', function(assert) {
   let page = create({
     scope: '.scope',
 
-    foo: text('span', { resetScope: true })
+    foo: text('span', { at: 0, resetScope: true })
   });
 
-  assert.equal(page.foo, 'lorem ipsum dolor');
+  assert.equal(page.foo, 'lorem');
 });
 
 test('finds element by index', function(assert) {
@@ -139,6 +142,22 @@ test('finds element without using a selector', function(assert) {
 
   assert.equal(page.foo, 'Hello world!');
   assert.equal(page.bar.baz, 'world!');
+});
+
+test_throws_if_not_multiple(function() {
+  fixture(`
+    <span>lorem</span>
+    <span> ipsum </span>
+    <span>dolor</span>
+  `);
+
+  let page = create({
+    scope: '.scope',
+
+    foo: text('span', { resetScope: true })
+  });
+
+  return page.foo;
 });
 
 test('returns multiple values', function(assert) {
