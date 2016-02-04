@@ -1,3 +1,7 @@
+# master
+
+- [Change] Change `.visitable` signature
+
 # v1.0.0-alpha.1
 
 - [Feature] Can import properties directly `import { create } from 'path/to/page-object';`
