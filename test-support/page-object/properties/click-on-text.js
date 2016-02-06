@@ -1,7 +1,27 @@
 import Ember from 'ember';
 import { buildSelector } from '../helpers';
 
+/* global wait, find, click */
+
 var { merge } = Ember;
+
+function findChildElement(tree, selector, textToClick, options) {
+  // Suppose that we have something like `<form><button>Submit</button></form>`
+  // In this case <form> and <button> elements contains "Submit" text, so, we'll
+  // want to __always__ click on the __last__ element that contains the text.
+  var selctorWithSpace = (selector || '') + ' ';
+  var fullSelector = buildSelector(tree, selctorWithSpace, merge({ contains: textToClick, last: true }, options));
+
+  if (find(fullSelector).length) {
+    return fullSelector;
+  }
+}
+
+function findElement(tree, selector, textToClick, options) {
+  var fullSelector = buildSelector(tree, selector, merge({ contains: textToClick }, options));
+
+  return fullSelector;
+}
 
 /**
  * Creates an action to click an element
@@ -25,17 +45,11 @@ export function clickOnText(selector, options = {}) {
     isDescriptor: true,
 
     value(textToClick) {
-      // Suppose that we have something like `<form><button>Submit</button></form>`
-      // In this case <form> and <button> elements contains "Submit" text, so, we'll
-      // want to __always__ click on the __last__ element that contains the text.
-      var selctorWithSpace = (selector || '') + ' ';
-      var fullSelector = buildSelector(
-        this,
-        selctorWithSpace,
-        merge({ contains: textToClick, last: true }, options));
+      wait().then(() => {
+        var actualSelector = findChildElement(this, selector, textToClick, options) || findElement(this, selector, textToClick, options);
 
-      /* global click */
-      click(fullSelector);
+        click(actualSelector);
+      });
 
       return this;
     }
