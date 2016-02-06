@@ -1,5 +1,6 @@
 # master
 
+- [Change] Change `.visitable` signature
 - [Change] `.clickOnText` now matches current element as well
 
 # v1.0.0-alpha.1

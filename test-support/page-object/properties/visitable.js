@@ -1,17 +1,23 @@
 import Ember from 'ember';
 
+var { merge, $ } = Ember;
+
 function fillInDynamicSegments(path, params) {
   return path.split('/').map(function(segment) {
     let match = segment.match(/^:(.+)$/);
 
     if (match) {
-      let key = match[1];
+      let key = match[1],
+          value = params[key];
 
-      if (!params[key]) {
+      if (typeof value === 'undefined') {
         throw new Error(`Missing parameter for '${key}'`);
       }
 
-      return params[key];
+      // Remove dynamic segment key from params
+      delete params[key];
+
+      return value;
     }
 
     return segment;
@@ -20,7 +26,7 @@ function fillInDynamicSegments(path, params) {
 
 function appendQueryParams(path, queryParams) {
   if (Object.keys(queryParams).length) {
-    path += "?" + Ember.$.param(queryParams);
+    path += "?" + $.param(queryParams);
   }
 
   return path;
@@ -46,10 +52,11 @@ export function visitable(path) {
   return {
     isDescriptor: true,
 
-    value(dynamicSegments = {}, queryParams = {}) {
-      var fullPath = fillInDynamicSegments(path, dynamicSegments);
+    value(dynamicSegmentsAndQueryParams = {}) {
+      var params = merge({}, dynamicSegmentsAndQueryParams);
+      var fullPath = fillInDynamicSegments(path, params);
 
-      fullPath = appendQueryParams(fullPath, queryParams);
+      fullPath = appendQueryParams(fullPath, params);
 
       /* global visit */
       visit(fullPath);
