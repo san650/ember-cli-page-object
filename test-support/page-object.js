@@ -7,6 +7,7 @@ import attribute from './page-object/properties/attribute';
 import clickOnText from './page-object/properties/click-on-text';
 import clickable from './page-object/properties/clickable';
 import component from './page-object/properties/component';
+import contains from './page-object/properties/contains';
 import count from './page-object/properties/count';
 import customHelper from './page-object/properties/custom-helper';
 import fillable from './page-object/properties/fillable';
@@ -26,6 +27,7 @@ export default {
   clickable,
   collection,
   component,
+  contains,
   count,
   create,
   customHelper,
