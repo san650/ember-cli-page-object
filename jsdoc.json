@@ -1,0 +1,36 @@
+{
+  "tags": {
+    "allowUnknownTags": true,
+    "dictionaries": [
+      "jsdoc"
+    ]
+  },
+  "source": {
+    "include": [
+      "app",
+      "blueprints",
+      "test-support"
+    ],
+    "includePattern": ".+\\.js(doc)?$",
+    "exclude": [],
+    "excludePattern": "(^|\\/|\\\\)_"
+  },
+  "plugins": [
+    "plugins/markdown",
+    "node_modules/ember-cli-jsdoc/node_modules/jsdoc-plugins/plugins/defaultTag",
+    "node_modules/ember-cli-jsdoc/node_modules/jsdoc-plugins/plugins/emberListensTag",
+    "node_modules/ember-cli-jsdoc/node_modules/jsdoc-plugins/plugins/emberObservesTag"
+  ],
+  "templates": {
+    "cleverLinks": false,
+    "monospaceLinks": false
+  },
+  "opts": {
+    "encoding": "utf8",
+    "template": "node_modules/ember-cli-jsdoc/jsdocTemplates/default",
+    "destination": "docs",
+    "recurse": true,
+    "access": "all",
+    "readme": "README.md"
+  }
+}
