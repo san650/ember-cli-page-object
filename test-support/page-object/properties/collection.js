@@ -4,7 +4,9 @@ import { create } from '../create';
 import { count } from './count';
 
 function merge(target, ...objects) {
-  objects.forEach(o => Ember.merge(target, o));
+  objects.forEach(function(o) {
+    Ember.merge(target, o);
+  });
 
   return target;
 }

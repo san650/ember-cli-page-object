@@ -45,8 +45,10 @@ export function clickOnText(selector, options = {}) {
     isDescriptor: true,
 
     value(textToClick) {
-      wait().then(() => {
-        var actualSelector = findChildElement(this, selector, textToClick, options) || findElement(this, selector, textToClick, options);
+      var that = this;
+
+      wait().then(function() {
+        var actualSelector = findChildElement(that, selector, textToClick, options) || findElement(that, selector, textToClick, options);
 
         click(actualSelector);
       });
