@@ -48,7 +48,13 @@ const page = PageObject.create({
     text: text('.screen')
   },
 
-  clickOn: clickOnText('.calculator')
+  clickOn: clickOnText('', { scope: '.calculator' }),
+
+  calculator: {
+    scope: '.calculator',
+
+    clickOn: clickOnText()
+  }
 });
 
 moduleForComponent('calculating-device', 'Integration | component integration test support/actions', {
@@ -97,7 +103,7 @@ test('Chaining of actions inside a collection works', function(assert) {
   assert.equal(page.screen.text, '123');
 });
 
-test('Chaining of actions on a component works', function(assert) {
+test('Chaining of actions on the root works', function(assert) {
   let template;
 
   if (isOldEmber) {
@@ -117,6 +123,27 @@ test('Chaining of actions on a component works', function(assert) {
     .click();
 
   assert.equal(page.screen.text, '3');
+});
+
+test('Chaining of actions on a component works', function(assert) {
+  let template;
+
+  if (isOldEmber) {
+    template = Ember.HTMLBars.compile('{{calculating-device}}');
+  } else {
+    template = hbs`{{calculating-device}}`;
+  }
+
+  page.render(template)
+    .calculator
+    .clickOn('1')
+    .clickOn('+')
+    .clickOn('5')
+    .clickOn('-')
+    .clickOn('4')
+    .clickOn('=');
+
+  assert.equal(page.screen.text, '2');
 });
 
 skip('When a query is called on an element that doesn\'t exist in the DOM, an equivalent to `findWithAssert() is used`');

@@ -9,8 +9,8 @@ function findChildElement(tree, selector, textToClick, options) {
   // Suppose that we have something like `<form><button>Submit</button></form>`
   // In this case <form> and <button> elements contains "Submit" text, so, we'll
   // want to __always__ click on the __last__ element that contains the text.
-  var selctorWithSpace = (selector || '') + ' ';
-  var fullSelector = buildSelector(tree, selctorWithSpace, merge({ contains: textToClick, last: true }, options));
+  var selectorWithSpace = (selector || '') + ' ';
+  var fullSelector = buildSelector(tree, selectorWithSpace, merge({ contains: textToClick, last: true }, options));
 
   if (find(fullSelector).length) {
     return fullSelector;
