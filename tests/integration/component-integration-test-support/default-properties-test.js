@@ -2,7 +2,7 @@ import { moduleForComponent, test } from 'ember-qunit';
 import { skip } from 'qunit';
 import hbs from 'htmlbars-inline-precompile';
 
-import PageObject from '../../page-object';
+import PageObject from 'dummy/tests/page-object';
 
 moduleForComponent('calculating-device', 'Integration | component integration test support/default properties', {
   integration: true

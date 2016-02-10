@@ -4,7 +4,7 @@ import Ember from 'ember';
 
 import { isOldEmber } from 'dummy/tests/helpers/is-old-ember';
 
-import PageObject from '../../page-object';
+import PageObject from 'dummy/tests/page-object';
 
 const {
   attribute,
@@ -56,6 +56,10 @@ const page = PageObject.create({
 moduleForComponent('user-list', 'Integration | component integration test support/user list', {
   integration: true,
 
+  beforeEach() {
+    page.setContext(this);
+  },
+
   afterEach() {
     page.removeContext();
   }
@@ -78,8 +82,7 @@ test('Component contents', function(assert) {
     { userName: 'john', role: 'guest', disabledAnimalPreference: true, admin: false }
   ]));
 
-  page.setContext(this)
-    .render(template);
+  page.render(template);
 
   assert.equal(page.title, 'Users');
   assert.equal(page.users().count, 3);

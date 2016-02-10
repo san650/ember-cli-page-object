@@ -5,7 +5,7 @@ import Ember from 'ember';
 
 import { isOldEmber } from 'dummy/tests/helpers/is-old-ember';
 
-import PageObject from '../../page-object';
+import PageObject from 'dummy/tests/page-object';
 
 const {
   clickOnText,
@@ -54,6 +54,10 @@ const page = PageObject.create({
 moduleForComponent('calculating-device', 'Integration | component integration test support/actions', {
   integration: true,
 
+  beforeEach() {
+    page.setContext(this);
+  },
+
   afterEach() {
     page.removeContext();
   }
@@ -68,8 +72,7 @@ test('Actions work when defined inside collections', function(assert) {
     template = hbs`{{calculating-device}}`;
   }
 
-  page.setContext(this)
-    .render(template)
+  page.render(template)
     .numbers(0)
     .click();
 
@@ -85,8 +88,7 @@ test('Chaining of actions inside a collection works', function(assert) {
     template = hbs`{{calculating-device}}`;
   }
 
-  page.setContext(this)
-    .render(template)
+  page.render(template)
     .numbers()
     .clickOn('1')
     .clickOn('2')
@@ -104,8 +106,7 @@ test('Chaining of actions on a component works', function(assert) {
     template = hbs`{{calculating-device}}`;
   }
 
-  page.setContext(this)
-    .render(template)
+  page.render(template)
     .clickOn('1')
     .clickOn('+')
     .clickOn('4')

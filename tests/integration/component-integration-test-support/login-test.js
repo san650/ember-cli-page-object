@@ -4,7 +4,7 @@ import Ember from 'ember';
 
 import { isOldEmber } from 'dummy/tests/helpers/is-old-ember';
 
-import PageObject from '../../page-object';
+import PageObject from 'dummy/tests/page-object';
 
 const {
   clickable,
@@ -30,6 +30,10 @@ const page = PageObject.create({
 moduleForComponent('user-list', 'Integration | component integration test support/login', {
   integration: true,
 
+  beforeEach() {
+    page.setContext(this);
+  },
+
   afterEach() {
     page.removeContext();
   }
@@ -46,8 +50,7 @@ test('Retries login', function(assert) {
     template = hbs`{{login-form}}`;
   }
 
-  page.setContext(this)
-    .render(template);
+  page.render(template);
 
   assert.ok(page.notHasError, 'Page doesn\'t have error');
   assert.equal(page.title, 'Login page');
@@ -80,8 +83,7 @@ test('Action chains act like a promise', function(assert) {
     template = hbs`{{login-form}}`;
   }
 
-  page.setContext(this)
-    .render(template)
+  page.render(template)
     .form
     .userName('invalid')
     .password('invalid')

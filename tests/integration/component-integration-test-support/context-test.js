@@ -4,7 +4,7 @@ import Ember from 'ember';
 
 import { isOldEmber } from 'dummy/tests/helpers/is-old-ember';
 
-import PageObject from '../../page-object';
+import PageObject from 'dummy/tests/page-object';
 
 moduleForComponent('calculating-device', 'Integration | component integration test support/context', {
   integration: true
