@@ -1,7 +1,4 @@
-import Ember from 'ember';
 import { findElement, every } from '../helpers';
-
-var $ = Ember.$;
 
 /**
  * Creates a predicate to validate if an element is hidden

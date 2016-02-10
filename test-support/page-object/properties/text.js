@@ -1,4 +1,3 @@
-import Ember from 'ember';
 import { findElementWithAssert, map, normalizeText } from '../helpers';
 
 /**
