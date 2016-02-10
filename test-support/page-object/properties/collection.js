@@ -1,5 +1,4 @@
 import Ember from 'ember';
-import Ceibo from 'ceibo';
 import { buildSelector } from '../helpers';
 import { create } from '../create';
 import { count } from './count';

@@ -69,16 +69,14 @@ function removeContext() {
   return this;
 }
 
-const methods = {
-  setContext,
-  removeContext,
-  render
-};
+function bindMethod(obj, func) {
+  return function() {
+    return func.apply(obj, arguments);
+  };
+}
 
 export function bindContextMethods(pageObject) {
-  for (let methodName in methods) {
-    pageObject[methodName] = function() {
-      return methods[methodName].apply(pageObject, arguments);
-    }
-  }
+  pageObject.setContext     = bindMethod(pageObject, setContext);
+  pageObject.removeContext  = bindMethod(pageObject, removeContext);
+  pageObject.render         = bindMethod(pageObject, render);
 }
