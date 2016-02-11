@@ -60,7 +60,6 @@ export function clickOnText(selector, options = {}) {
           context.$(fullSelector).click();
         });
       } else {
-        /* global `wait` and `click` */
         wait().then(() => {
           var fullSelector = actualSelector(this, selector, textToClick, options);
 
