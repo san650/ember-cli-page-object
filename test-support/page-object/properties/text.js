@@ -1,7 +1,7 @@
 import { findElementWithAssert, map, normalizeText } from '../helpers';
 
 /**
- * Gets text of the matched element or elements
+ * Gets text of the element or Array of texts of all matched elements by selector
  *
  * @example
  *
@@ -11,61 +11,7 @@ import { findElementWithAssert, map, normalizeText } from '../helpers';
  *   text: PageObject.text('span')
  * });
  *
- * // returns 'world!'
- * page.text
- *
- * @example
- *
- * // <div><span>lorem</span></div>
- * // <div class="scope"><span>ipsum</span></div>
- * // <div><span>dolor</span></div>
- *
- * let page = PageObject.create({
- *   text: PageObject.text('span', { scope: '.scope' })
- * });
- *
- * // returns 'ipsum'
- * page.text
- *
- * @example
- *
- * // <div><span>lorem</span></div>
- * // <div class="scope"><span>ipsum</span></div>
- * // <div><span>dolor</span></div>
- *
- * let page = PageObject.create({
- *   scope: '.scope',
- *   text: PageObject.text('span')
- * });
- *
- * // returns 'ipsum'
- * page.text
- *
- * @example
- *
- * // <div class="other"><span>lorem</span></div>
- * // <div class="scope"><span> ipsum </span></div>
- *
- * let page = create({
- *   scope: '.scope',
- *   text: text('span', { scope: '.other', resetScope: true })
- * });
- *
- * // returns 'lorem'
- * page.text
- *
- * @example
- *
- * // <span>lorem</span>
- * // <span> ipsum </span>
- * // <span>dolor</span>
- *
- * var page = PageObject.create({
- *   text: PageObject.text('span', { at: 1 })
- * });
- *
- * // returns 'ipsum'
- * page.text
+ * assert.equal(page.text, 'world!');
  *
  * @example
  *
@@ -77,8 +23,35 @@ import { findElementWithAssert, map, normalizeText } from '../helpers';
  *   texts: PageObject.text('span', { multiple: true })
  * });
  *
- * // returns ['lorem', 'ipsum', 'dolor']
- * page.texts
+ * assert.equal(page.texts, ['lorem', 'ipsum', 'dolor']);
+ *
+ * @example
+ *
+ * // <div><span>lorem</span></div>
+ * // <div class="scope"><span>ipsum</span></div>
+ * // <div><span>dolor</span></div>
+ *
+ * let page = PageObject.create({
+ *   text: PageObject.text('span', { scope: '.scope' })
+ * });
+ *
+ * assert.equal(page.text, 'ipsum');
+ *
+ * @example
+ *
+ * // <div><span>lorem</span></div>
+ * // <div class="scope"><span>ipsum</span></div>
+ * // <div><span>dolor</span></div>
+ *
+ * let page = PageObject.create({
+ *   scope: '.scope',
+ *   text: PageObject.text('span')
+ * });
+ *
+ * // returns 'ipsum'
+ * assert.equal(page.text, 'ipsum');
+ *
+ * @public
  *
  * @param {string} selector - CSS selector of the element to check
  * @param {Object} options - Additional options
@@ -86,7 +59,7 @@ import { findElementWithAssert, map, normalizeText } from '../helpers';
  * @param {number} options.at - Reduce the set of matched elements to the one at the specified index
  * @param {boolean} options.resetScope - Override parent's scope
  * @param {boolean} options.multiple - Return an array of values
- * @return {Descriptor} - Descriptor which returns text of matched element or array of texts of matched elements.
+ * @return {Descriptor}
  *
  * @throws Will throw an error if no element matches selector
  * @throws Will throw an error if multiple elements are matched by selector and multiple options is not set

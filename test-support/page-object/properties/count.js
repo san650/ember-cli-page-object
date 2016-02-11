@@ -4,7 +4,7 @@ import { findElement } from '../helpers';
 var $ = Ember.$;
 
 /**
- * Gets the count of matched elements
+ * Gets the count of elements matched by selector
  *
  * @example
  *
@@ -15,8 +15,7 @@ var $ = Ember.$;
  *   spanCount: PageObject.count('span')
  * });
  *
- * // returns 2
- * page.spanCount
+ * assert.equal(page.spanCount, 2);
  *
  * @example
  *
@@ -24,10 +23,9 @@ var $ = Ember.$;
  *
  * var page = PageObject.create({
  *   spanCount: PageObject.count('span')
- * })
+ * });
  *
- * // returns 0
- * page.spanCount
+ * assert.equal(page.spanCount, 0);
  *
  * @example
  *
@@ -36,10 +34,9 @@ var $ = Ember.$;
  *
  * var page = PageObject.create({
  *   spanCount: PageObject.count('span', { scope: '.scope' })
- * })
+ * });
  *
- * // returns 2
- * page.spanCount
+ * assert.equal(page.spanCount, 2)
  *
  * @example
  *
@@ -49,10 +46,9 @@ var $ = Ember.$;
  * var page = PageObject.create({
  *   scope: '.scope',
  *   spanCount: PageObject.count('span')
- * })
+ * });
  *
- * // returns 2
- * page.spanCount
+ * assert.equal(page.spanCount, 2)
  *
  * @example
  *
@@ -62,16 +58,17 @@ var $ = Ember.$;
  * var page = PageObject.create({
  *   scope: '.scope',
  *   spanCount: PageObject.count('span', { resetScope: true })
- * })
+ * });
  *
- * // returns 1
- * page.spanCount
+ * assert.equal(page.spanCount, 1);
+ *
+ * @public
  *
  * @param {string} selector - CSS selector of the element or elements to check
  * @param {Object} options - Additional options
  * @param {string} options.scope - Add scope
  * @param {boolean} options.resetScope - Ignore parent scope
- * @return {Descriptor} - Descriptor that returns amount of elements matched by selector
+ * @return {Descriptor}
  */
 export function count(selector, options = {}) {
   return {
