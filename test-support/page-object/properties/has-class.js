@@ -1,22 +1,84 @@
 import { findElementWithAssert, every } from '../helpers';
 
 /**
- * Creates a predicate to validate if an element has a given CSS class
+ * Creates a predicate to validate if an element or a set of elements have a given CSS class
  *
  * @example
  *
- *   var page = PageObject.create({
- *     isImageActive: hasClass('is-active', '.img')
- *   });
+ * // <em class="lorem"></em><span class="success">Message!</span>
  *
- *   assert.ok(page.isImageActive(), 'Image is active');
+ * let page = PageObject.create({
+ *   messageIsSuccess: PageObject.hasClass('success', 'span')
+ * });
  *
- * @param {string} cssClass - Name of the CSS class to look for
+ * assert.ok(page.message);
+ *
+ * @example
+ *
+ * // <span class="success"></span>
+ * // <span class="error"></span>
+ *
+ * let page = PageObject.create({
+ *   messagesAreSuccessful: PageObject.hasClass('success', 'span', { multiple: true })
+ * });
+ *
+ * assert.ok(!page.messagesAreSuccessful);
+ *
+ * @example
+ *
+ * // <span class="success"></span>
+ * // <span class="success"></span>
+ *
+ * let page = PageObject.create({
+ *   messagesAreSuccessful: PageObject.hasClass('success', 'span', { multiple: true })
+ * });
+ *
+ * assert.ok(page.messagesAreSuccessful);
+ *
+ * @example
+ *
+ * // <div>
+ * //   <span class="lorem"></span>
+ * // </div>
+ * // <div class="scope">
+ * //   <span class="ipsum"></span>
+ * // </div>
+ *
+ * let page = PageObject.create({
+ *   messageIsSuccess: PageObject.hasClass('ipsum', 'span', { scope: '.scope' })
+ * });
+ *
+ * assert.ok(page.foo);
+ *
+ * @example
+ *
+ * // <div>
+ * //   <span class="lorem"></span>
+ * // </div>
+ * // <div class="scope">
+ * //   <span class="ipsum"></span>
+ * // </div>
+ *
+ * let page = PageObject.create({
+ *   scope: '.scope',
+ *   messageIsSuccess: PageObject.hasClass('ipsum', 'span')
+ * });
+ *
+ * assert.ok(page.foo);
+ *
+ * @public
+ *
+ * @param {string} cssClass - CSS class to be validated
  * @param {string} selector - CSS selector of the element to check
  * @param {Object} options - Additional options
- * @param {string} options.scope - Overrides parent scope
- * @param {number} options.index - Reduce the set of matched elements to the one at the specified index
+ * @param {string} options.scope - Nests provided scope with parent's scope
+ * @param {number} options.at - Reduce the set of matched elements to the one at the specified index
+ * @param {boolean} options.resetScope - Override parent's scope
+ * @param {boolean} options.multiple - Check if all elements matched by selector have the CSS class
  * @return {Descriptor}
+ *
+ * @throws Will throw an error if no element matches selector
+ * @throws Will throw an error if multiple elements are matched by selector and multiple options is not set
  */
 export function hasClass(cssClass, selector, options = {}) {
   return {
