@@ -31,25 +31,106 @@ function generateItem(index, definition) {
 }
 
 /**
- * Creates a component that represents a collection of items
+ * Creates a component that represents a collection of items, the collection is zero-indexed
+ *
+ * The collection component behaves as a regular PageObject when called without index (parens needed)
  *
  * @example
  *
- *   var page = PageObject.create({
- *     users: collection({
- *       itemScope: 'table tr',
+ * // <table>
+ * //   <tbody>
+ * //     <tr>
+ * //       <td>Mary<td>
+ * //       <td>Watson</td>
+ * //     </tr>
+ * //     <tr>
+ * //       <td>John<td>
+ * //       <td>Doe</td>
+ * //     </tr>
+ * //   </tbody>
+ * // </table>
  *
- *       item: {
- *         firstName: text('td', { at: 0 })
- *         lastName: text('td', { at: 1 })
- *       }
- *   });
+ * var page = PageObject.create({
+ *   users: collection({
+ *     itemScope: 'table tr',
  *
- *   assert.equal(page.users().count(), 2);
- *   assert.equal(page.users(1).firstName, 'John');
- *   assert.equal(page.users(1).lastName, 'Doe');
+ *     item: {
+ *       firstName: text('td', { at: 0 })
+ *       lastName: text('td', { at: 1 })
+ *     }
+ *   })
+ * });
+ *
+ * assert.equal(page.users().count, 2);
+ * assert.equal(page.users(1).firstName, 'John');
+ * assert.equal(page.users(1).lastName, 'Doe');
+ *
+ * @example
+ *
+ * // <div class="admins">
+ * //   <table>
+ * //     <tbody>
+ * //       <tr>
+ * //         <td>Mary<td>
+ * //         <td>Watson</td>
+ * //       </tr>
+ * //       <tr>
+ * //         <td>John<td>
+ * //         <td>Doe</td>
+ * //       </tr>
+ * //     </tbody>
+ * //   </table>
+ * // </div>
+ *
+ * // <div class="normal">
+ * //   <table>
+ * //   </table>
+ * // </div>
+ *
+ * var page = PageObject.create({
+ *   users: collection({
+ *     scope: '.admins',
+ *
+ *     itemScope: 'table tr',
+ *
+ *     item: {
+ *       firstName: text('td', { at: 0 })
+ *       lastName: text('td', { at: 1 })
+ *     }
+ *   })
+ * });
+ *
+ * assert.equal(page.users().count, 2);
+ *
+ * @example
+ *
+ * // <table>
+ * //   <caption>User Index</caption>
+ * //   <tbody>
+ * //     <tr>
+ * //       <td>Doe</td>
+ * //     </tr>
+ * //   </tbody>
+ * // </table>
+ *
+ * var page = PageObject.create({
+ *   users: PageObject.collection({
+ *     scope: 'table',
+ *     itemScope: 'tr',
+ *
+ *     item: {
+ *       firstName: text('td', { at: 0 })
+ *     },
+ *
+ *     caption: PageObject.text('caption')
+ *   })
+ * });
+ *
+ * assert.equal(page.users().caption, "User Index");
  *
  * @param {Object} definition - Collection definition
+ * @param {string} definition.scope - Nests provided scope with parent's scope
+ * @param {boolean} definition.resetScope - Override parent's scope
  * @param {String} definition.itemScope - CSS selector
  * @param {Object} definition.item - Item definition
  * @return {Descriptor}
