@@ -1,7 +1,7 @@
 import { findElementWithAssert, every } from '../helpers';
 
 /**
- * Creates a predicate to validate if an element or a set of elements have a given CSS class
+ * Validates if an element or a set of elements have a given CSS class
  *
  * @example
  *
@@ -11,7 +11,7 @@ import { findElementWithAssert, every } from '../helpers';
  *   messageIsSuccess: PageObject.hasClass('success', 'span')
  * });
  *
- * assert.ok(page.message);
+ * assert.ok(page.messageIsSuccess);
  *
  * @example
  *
@@ -45,10 +45,10 @@ import { findElementWithAssert, every } from '../helpers';
  * // </div>
  *
  * let page = PageObject.create({
- *   messageIsSuccess: PageObject.hasClass('ipsum', 'span', { scope: '.scope' })
+ *   spanHasClass: PageObject.hasClass('ipsum', 'span', { scope: '.scope' })
  * });
  *
- * assert.ok(page.foo);
+ * assert.ok(page.spanHasClass);
  *
  * @example
  *
@@ -61,10 +61,10 @@ import { findElementWithAssert, every } from '../helpers';
  *
  * let page = PageObject.create({
  *   scope: '.scope',
- *   messageIsSuccess: PageObject.hasClass('ipsum', 'span')
+ *   spanHasClass: PageObject.hasClass('ipsum', 'span')
  * });
  *
- * assert.ok(page.foo);
+ * assert.ok(page.spanHasClass);
  *
  * @public
  *
