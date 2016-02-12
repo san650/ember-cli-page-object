@@ -113,6 +113,10 @@ export function findElementWithAssert(node, targetSelector, options = {}) {
     // for the selector. This will provide consistent behaviour
     // between acceptance and integration tests.
     result = context.$(selector);
+
+    if (result.length === 0) {
+      throw new Ember.Error('Element ' + selector + ' not found.');
+    }
   } else {
     result = findWithAssert(selector);
   }

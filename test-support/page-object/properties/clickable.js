@@ -1,4 +1,4 @@
-import { buildSelector, getContext } from '../helpers';
+import { findElementWithAssert, buildSelector, getContext } from '../helpers';
 
 /**
  * Creates an action to click an element
@@ -26,7 +26,7 @@ export function clickable(selector, options = {}) {
       const fullSelector = buildSelector(this, selector, options);
       const context = getContext(this);
 
-      if (context) {
+      if (context && findElementWithAssert(this, selector)) {
         Ember.run(() => {
           context.$(fullSelector).click();
         });

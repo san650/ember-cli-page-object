@@ -1,18 +1,24 @@
 import { moduleForComponent, test } from 'ember-qunit';
-import { skip } from 'qunit';
 import hbs from 'htmlbars-inline-precompile';
 import Ember from 'ember';
 
 import { isOldEmber } from 'dummy/tests/helpers/is-old-ember';
 
-import PageObject from 'dummy/tests/page-object';
-
-const {
+import PageObject, {
+  collection,
+  attribute,
   clickOnText,
   clickable,
-  collection,
-  text
-} = PageObject;
+  contains,
+  fillable,
+  hasClass,
+  notHasClass,
+  text,
+  value,
+  count,
+  isHidden,
+  isVisible
+} from 'dummy/tests/page-object';
 
 const button = function(scope) {
   return {
@@ -54,6 +60,26 @@ const page = PageObject.create({
     scope: '.calculator',
 
     clickOn: clickOnText()
+  },
+
+  nonExistant: {
+    scope: '#non-existant',
+
+    // should throw an error
+    attribute: attribute('an-attribute'),
+    clickOnText: clickOnText(),
+    clickable: clickable(),
+    contains: contains(),
+    fillable: fillable(),
+    hasClass: hasClass('foo'),
+    notHasClass: notHasClass('bar'),
+    text: text(),
+    value: value(),
+
+    // should not throw an error
+    count: count(),
+    isHidden: isHidden(),
+    isVisible: isVisible()
   }
 });
 
@@ -146,4 +172,31 @@ test('Chaining of actions on a component works', function(assert) {
   assert.equal(page.screen.text, '2');
 });
 
-skip('When a query is called on an element that doesn\'t exist in the DOM, an equivalent to `findWithAssert() is used`');
+test('Queries and actions handle non-existant elements correctly', function(assert) {
+  assert.expect(12);
+
+  const message = /Element #non-existant not found./;
+  let template;
+
+  if (isOldEmber) {
+    template = Ember.HTMLBars.compile('{{calculating-device}}');
+  } else {
+    template = hbs`{{calculating-device}}`;
+  }
+
+  page.render(template);
+
+  assert.throws(() => page.nonExistant.attribute(), message, 'attribute query did not throw an error');
+  assert.throws(() => page.nonExistant.clickOnText('qux'), message, 'clickOnText action did not throw an error');
+  assert.throws(() => page.nonExistant.clickable(), message, 'clickable action did not throw an error');
+  assert.throws(() => page.nonExistant.contains('something'), message, 'contains action did not throw an error');
+  assert.throws(() => page.nonExistant.fillable('baz'), message, 'fillable action did not throw an error');
+  assert.throws(() => page.nonExistant.hasClass, message, 'hasClass query did not throw an error');
+  assert.throws(() => page.nonExistant.notHasClass, message, 'notHasClass query did not throw an error');
+  assert.throws(() => page.nonExistant.text, message, 'text query did not throw an error');
+  assert.throws(() => page.nonExistant.value, message, 'value query did not throw an error');
+
+  assert.equal(page.nonExistant.count, 0);
+  assert.equal(page.nonExistant.isHidden, true);
+  assert.equal(page.nonExistant.isVisible, false);
+});

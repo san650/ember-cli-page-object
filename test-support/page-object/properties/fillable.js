@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import { buildSelector, getContext } from '../helpers';
+import { findElementWithAssert, buildSelector, getContext } from '../helpers';
 
 /**
  * Creates an action to fill in an input
@@ -27,7 +27,7 @@ export function fillable(selector, options = {}) {
       const fullSelector = buildSelector(this, selector, options);
       const context = getContext(this);
 
-      if (context) {
+      if (context && findElementWithAssert(this, selector)) {
         const $el = context.$(fullSelector);
 
         Ember.run(() => {

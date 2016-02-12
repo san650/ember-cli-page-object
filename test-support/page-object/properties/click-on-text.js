@@ -1,32 +1,31 @@
 import Ember from 'ember';
-import { buildSelector, getContext } from '../helpers';
+import { findElement, findElementWithAssert, buildSelector, getContext } from '../helpers';
 
 /* global wait, find, click */
 
 var { merge } = Ember;
 
-function findChildElement(tree, selector, textToClick, options) {
+function childSelector(tree, selector, textToClick, options) {
   // Suppose that we have something like `<form><button>Submit</button></form>`
   // In this case <form> and <button> elements contains "Submit" text, so, we'll
   // want to __always__ click on the __last__ element that contains the text.
   var selectorWithSpace = (selector || '') + ' ';
-  var fullSelector = buildSelector(tree, selectorWithSpace, merge({ contains: textToClick, last: true }, options));
+  var opts = merge({ contains: textToClick, last: true, multiple: true }, options);
+  var fullSelector = buildSelector(tree, selectorWithSpace, opts);
 
-  if (find(fullSelector).length) {
+  if (findElement(tree, selectorWithSpace, opts).length) {
     return fullSelector;
   }
 }
 
-function findElement(tree, selector, textToClick, options) {
-  var fullSelector = buildSelector(tree, selector, merge({ contains: textToClick }, options));
-
-  return fullSelector;
-}
-
 function actualSelector(tree, selector, textToClick, options) {
-  var childElement = findChildElement(tree, selector, textToClick, options);
+  var childSel = childSelector(tree, selector, textToClick, options);
 
-  return childElement || findElement(tree, selector, textToClick, options);
+  if (childSel) {
+    return childSel;
+  } else {
+    return buildSelector(tree, selector, merge({ contains: textToClick }, options));
+  }
 }
 
 /**
@@ -53,7 +52,7 @@ export function clickOnText(selector, options = {}) {
     value(textToClick) {
       var context = getContext(this);
 
-      if (context) {
+      if (context && findElementWithAssert(this, selector)) {
         Ember.run(() => {
           var fullSelector = actualSelector(this, selector, textToClick, options);
 
