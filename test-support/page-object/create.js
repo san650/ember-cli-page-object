@@ -54,13 +54,42 @@ function buildObject(builder, target, key, definition) {
 /**
  * Creates a new PageObject
  *
+ * By default, the result PageObject will respond to a default set of options: click, clickOn,
+ * contains, isHidden, isVisible and text.
+ *
  * @example
  *
- *   var page = PageObject.create({
- *     title: text('.title')
- *   });
+ * // <div class="title">My title</div>
  *
- *   assert.equal(page.title, 'Dummy title');
+ * var page = PageObject.create({
+ *   title: PageObject.text('.title')
+ * });
+ *
+ * assert.equal(page.title, 'My title');
+ *
+ * @example
+ *
+ * // <div id="my-page">
+ * //  My super text
+ * //  <button> Press Me</button>
+ * // </div>
+ *
+ * var page = PageObject.create({
+ *   scope: '#my-page',
+ * });
+ *
+ * assert.equal(page.text, 'My super text');
+ * assert.ok(page.isVisible);
+ * assert.ok(!page.isHidden);
+ * assert.ok(page.contains('super'));
+ *
+ * // clicks div#my-page
+ * page.click
+ *
+ * // clicks button
+ * page.clickOn('Press Me');
+ *
+ * @public
  *
  * @param {Object} definition - PageObject definition
  * @param {Object} options - [private] Ceibo options. Do not use!
