@@ -1,21 +1,67 @@
 import { buildSelector } from '../helpers';
 
 /**
- * Creates an action to fill in an input
+ * Fills an input matched by selector
  *
  * @example
  *
- *   var page = PageObject.create({
- *     name: fillable('#name')
- *   });
+ * // <input value="">
  *
- *   page.name('John Doe');
+ * var page = PageObject.create({
+ *   fillIn: PageObject.fillable('input')
+ * });
  *
- * @param {string} selector - CSS selector of the element to fill
+ * // result: <input value="John Doe">
+ * page.fillIn('John Doe');
+ *
+ * @example
+ *
+ * // <div class="name">
+ * //   <input value="">
+ * // </div>
+ * // <div class="last-name">
+ * //   <input value= "">
+ * // </div>
+ *
+ * var page = PageObject.create({
+ *   fillInName: PageObject.fillable('input', { scope: '.name' })
+ * });
+ *
+ * page.fillInName('John Doe');
+ *
+ * // result
+ * // <div class="name">
+ * //   <input value="John Doe">
+ * // </div>
+ *
+ * @example
+ *
+ * // <div class="name">
+ * //   <input value="">
+ * // </div>
+ * // <div class="last-name">
+ * //   <input value= "">
+ * // </div>
+ *
+ * var page = PageObject.create({
+ *   scope: 'name',
+ *   fillInName: PageObject.fillable('input')
+ * });
+ *
+ * page.fillInName('John Doe');
+ *
+ * // result
+ * // <div class="name">
+ * //   <input value="John Doe">
+ * // </div>
+ *
+ * @public
+ *
+ * @param {string} selector - CSS selector of the element to look for text
  * @param {Object} options - Additional options
- * @param {string} options.scope - Overrides parent scope
+ * @param {string} options.scope - Nests provided scope with parent's scope
  * @param {number} options.at - Reduce the set of matched elements to the one at the specified index
- * @param {boolean} options.resetScope - Ignore parent scope
+ * @param {boolean} options.resetScope - Override parent's scope
  * @return {Descriptor}
  */
 export function fillable(selector, options = {}) {

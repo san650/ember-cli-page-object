@@ -87,9 +87,11 @@ function findElement(tree, selector, textToClick, options) {
  * // queries the DOM with selector '.scope button:contains("Lorem")'
  * page.clickOnButton('Ipsum');
  *
+ * @public
+ *
  * @param {string} selector - CSS selector of the element to look for text
  * @param {Object} options - Additional options
- * @param {string} options.scope - Overrides parent scope
+ * @param {string} options.scope - Nests provided scope with parent's scope
  * @param {number} options.at - Reduce the set of matched elements to the one at the specified index
  * @param {boolean} options.resetScope - Override parent's scope
  * @return {Descriptor}

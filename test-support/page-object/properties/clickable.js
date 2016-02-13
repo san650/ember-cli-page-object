@@ -48,7 +48,7 @@ import { buildSelector } from '../helpers';
  *
  * @param {string} selector - CSS selector of the element to click
  * @param {Object} options - Additional options
- * @param {string} options.scope - Overrides parent scope
+ * @param {string} options.scope - Nests provided scope with parent's scope
  * @param {number} options.at - Reduce the set of matched elements to the one at the specified index
  * @param {boolean} options.resetScope - Ignore parent scope
  * @return {Descriptor}
