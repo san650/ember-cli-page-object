@@ -1,15 +1,50 @@
 import { buildSelector } from '../helpers';
 
 /**
- * Creates an action to click an element
+ * Clicks element matched by selector
  *
  * @example
  *
- *   var page = PageObject.create({
- *     submit: clickable('button[type=submit]')
- *   });
+ * // <button class="continue">Continue<button>
+ * // <button>Cancel</button>
  *
- *   page.submit();
+ * var page = PageObject.create({
+ *   continue: clickable('button.continue')
+ * });
+ *
+ * // clicks on element with selector 'button.continue'
+ * page.continue();
+ *
+ * @example
+ *
+ * // <div class="scope">
+ * //   <button>Continue<button>
+ * // </div>
+ * // <button>Cancel</button>
+ *
+ * var page = PageObject.create({
+ *   continue: clickable('button.continue', { scope: '.scope' })
+ * });
+ *
+ * // clicks on element with selector '.scope button.continue'
+ * page.continue();
+ *
+ * @example
+ *
+ * // <div class="scope">
+ * //   <button>Continue<button>
+ * // </div>
+ * // <button>Cancel</button>
+ *
+ * var page = PageObject.create({
+ *   scope: '.scope',
+ *   continue: clickable('button.continue')
+ * });
+ *
+ * // clicks on element with selector '.scope button.continue'
+ * page.continue();
+ *
+ * @public
  *
  * @param {string} selector - CSS selector of the element to click
  * @param {Object} options - Additional options
@@ -18,6 +53,8 @@ import { buildSelector } from '../helpers';
  * @param {boolean} options.resetScope - Ignore parent scope
  * @return {Descriptor}
  */
+
+
 export function clickable(selector, options = {}) {
   return {
     isDescriptor: true,
