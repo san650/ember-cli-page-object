@@ -24,20 +24,74 @@ function findElement(tree, selector, textToClick, options) {
 }
 
 /**
- * Creates an action to click an element
+ * Clicks on element that contains text within the element specified by selector
+ *
+ * The element to be clicked can be the same as specified by selector
  *
  * @example
  *
- *   var page = PageObject.create({
- *     clickOn: clickOnText('body')
- *   });
+ * // <fieldset>
+ * //  <button>Lorem</button>
+ * //  <button>Ipsum</button>
+ * // </fieldset>
  *
- *   page.clickOn('Save');
+ * var page = PageObject.create({
+ *   clickOnFieldset: PageObject.clickOnText('fieldset'),
+ *   clickOnButton: PageObject.clickOnText('button')
+ * });
  *
- * @param {string} selector - CSS selector of the element to click
+ * // queries the DOM with selector 'fieldset :contains("Lorem"):last'
+ * page.clickOnFieldset('Lorem');
+ *
+ * // queries the DOM with selector 'button:contains("Lorem")'
+ * page.clickOnButton('Ipsum');
+ *
+ * @example
+ *
+ * // <div class="scope">
+ * //   <fieldset>
+ * //    <button>Lorem</button>
+ * //    <button>Ipsum</button>
+ * //   </fieldset>
+ * // </div>
+ *
+ * var page = PageObject.create({
+ *   clickOnFieldset: PageObject.clickOnText('fieldset', { scope: '.scope' }),
+ *   clickOnButton: PageObject.clickOnText('button', { scope: '.scope' })
+ * });
+ *
+ * // queries the DOM with selector '.scope fieldset :contains("Lorem"):last'
+ * page.clickOnFieldset('Lorem');
+ *
+ * // queries the DOM with selector '.scope button:contains("Lorem")'
+ * page.clickOnButton('Ipsum');
+ *
+ * @example
+ *
+ * // <div class="scope">
+ * //   <fieldset>
+ * //    <button>Lorem</button>
+ * //    <button>Ipsum</button>
+ * //   </fieldset>
+ * // </div>
+ *
+ * var page = PageObject.create({
+ *   scope: '.scope',
+ *   clickOnFieldset: PageObject.clickOnText('fieldset'),
+ *   clickOnButton: PageObject.clickOnText('button')
+ * });
+ *
+ * // queries the DOM with selector '.scope fieldset :contains("Lorem"):last'
+ * page.clickOnFieldset('Lorem');
+ *
+ * // queries the DOM with selector '.scope button:contains("Lorem")'
+ * page.clickOnButton('Ipsum');
+ *
+ * @param {string} selector - CSS selector of the element to look for text
  * @param {Object} options - Additional options
  * @param {string} options.scope - Overrides parent scope
  * @param {number} options.at - Reduce the set of matched elements to the one at the specified index
+ * @param {boolean} options.resetScope - Override parent's scope
  * @return {Descriptor}
  */
 export function clickOnText(selector, options = {}) {
