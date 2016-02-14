@@ -1,11 +1,11 @@
 import Ember from 'ember';
 import Ceibo from 'ceibo';
-import { text } from './properties/text';
-import { isVisible } from './properties/is-visible';
-import { isHidden } from './properties/is-hidden';
-import { clickOnText } from './properties/click-on-text';
-import { clickable } from './properties/clickable';
-import { contains } from './properties/contains';
+import { text } from './queries/text';
+import { isVisible } from './predicates/is-visible';
+import { isHidden } from './predicates/is-hidden';
+import { contains } from './predicates/contains';
+import { clickOnText } from './actions/click-on-text';
+import { clickable } from './actions/clickable';
 
 var { merge } = Ember;
 
