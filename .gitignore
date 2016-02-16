@@ -3,6 +3,7 @@
 # compiled output
 /dist
 /tmp
+/tmp_docs
 
 # dependencies
 /node_modules
@@ -16,3 +17,4 @@
 npm-debug.log
 testem.log
 LICENSE.md
+/docs

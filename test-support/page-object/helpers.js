@@ -74,7 +74,37 @@ function guardMultiple(items, selector, supportMultiple) {
 }
 
 /**
- * Creates a fully qualified selector
+ * Returns selector that includes all options specified as parameters
+ *
+ * @example
+ *
+ * let component = pageobject.create({ scope: '.component'} );
+ *
+ * buildselector(component, '.my-element');
+ * // returns '.component .my-element'
+ *
+ * @example
+ *
+ * let component = pageobject.create({});
+ *
+ * buildselector(component, '.my-element', { at: 0 });
+ * // returns '.my-element:eq(0)'
+ *
+ * @example
+ *
+ * let component = pageobject.create({});
+ *
+ * buildselector(component, '.my-element', { contains: "Example" });
+ * // returns ".my-element :contains('Example')"
+ *
+ * @example
+ *
+ * let component = pageobject.create({});
+ *
+ * buildselector(component, '.my-element', { last: true });
+ * // returns ".my-element:last"
+ *
+ * @public
  *
  * @param {Ceibo} node - Node of the tree
  * @param {string} targetSelector - Specific CSS selector
@@ -90,7 +120,9 @@ export function buildSelector(node, targetSelector, options) {
 }
 
 /**
- * Return a jQuery element or raise an exception if the element doesn't exist
+ * Return a jQuery element matched by selector built from parameters
+ *
+ * @public
  *
  * @param {Ceibo} node - Node of the tree
  * @param {string} targetSelector - Specific CSS selector
@@ -99,7 +131,11 @@ export function buildSelector(node, targetSelector, options) {
  * @param {string} options.contains - Filter by using :contains('foo') pseudo-class
  * @param {number} options.at - Filter by index using :eq(x) pseudo-class
  * @param {boolean} options.last - Filter by using :last pseudo-class
+ * @param {boolean} options.multiple - Specify if built selector can match multiple elements.
  * @return {Object} jQuery object
+ *
+ * @throws Will throw an error if no element matches selector
+ * @throws Will throw an error if multiple elements are matched by selector and multiple options is not set
  */
 export function findElementWithAssert(node, targetSelector, options = {}) {
   var selector = buildSelector(node, targetSelector, options);
@@ -113,6 +149,8 @@ export function findElementWithAssert(node, targetSelector, options = {}) {
 /**
  * Return a jQuery element (can be an empty jQuery result)
  *
+ * @public
+ *
  * @param {Ceibo} node - Node of the tree
  * @param {string} targetSelector - Specific CSS selector
  * @param {Object} options - Additional options
@@ -120,7 +158,10 @@ export function findElementWithAssert(node, targetSelector, options = {}) {
  * @param {string} options.contains - Filter by using :contains('foo') pseudo-class
  * @param {number} options.at - Filter by index using :eq(x) pseudo-class
  * @param {boolean} options.last - Filter by using :last pseudo-class
+ * @param {boolean} options.multiple - Specify if built selector can match multiple elements.
  * @return {Object} jQuery object
+ *
+ * @throws Will throw an error if multiple elements are matched by selector and multiple options is not set
  */
 export function findElement(node, targetSelector, options = {}) {
   var selector = buildSelector(node, targetSelector, options);
