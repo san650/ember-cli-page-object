@@ -18,7 +18,7 @@
         {% if link.external %}
           <a class="page-link" target="_blank" href="{{link.path}}">{{link.name}}</a>
         {% else %}
-          <a class="page-link" href="/docs/{{currentVersion}}{{link.path}}">{{link.name}}</a>
+          <a class="page-link" href="{{site.baseurl}}/docs/{{currentVersion}}{{link.path}}">{{link.name}}</a>
       {% endif %}
       </li>
     {% endfor %}
