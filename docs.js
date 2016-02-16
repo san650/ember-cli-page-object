@@ -14,6 +14,7 @@ var ncp = require('ncp');
 var mkdirp = require('mkdirp');
 var rimraf = require('rimraf');
 var RSVP = require('rsvp');
+var packageJSON = require('./package.json');
 
 /* Runs an arbitrary shell command.
  *
@@ -63,7 +64,6 @@ function massageMarkdown(markdown, options) {
     '---',
     'layout: page',
     'title: ' + options.title,
-    'permalink: ' + '/api/methods/' + options.slug + '/',
     '---'
   ];
   var processedMarkdown;
@@ -105,7 +105,7 @@ function massageMarkdown(markdown, options) {
  * @param {string} srcPath - The full path of the source file or directory.
  * @param {string} destDir - The directory in which to write the Markdown file.
  * @param {Object} options
- * @param {string} options.slug - The slug of the documentation. Used to construct the filename and permalink.
+ * @param {string} options.slug - The slug of the documentation. Used to construct the filename.
  * @param {string} options.title - The page title of the documentation.
  * @returns {Promise}
  */
@@ -270,9 +270,13 @@ function removeDir(dir) {
 }
 
 (function() {
-  var srcDir = path.join(__dirname, 'test-support', 'page-object');
-  var tmpDir    = path.join(__dirname, 'tmp_docs');
-  var destDir   = path.join(__dirname, 'api', 'methods');
+  var versionArray = packageJSON.version.split('.');
+  // ex., '1.0.3' -> 'v1.0.x'
+  var version = 'v' + versionArray[0] + '.' + versionArray[1] + '.x';
+
+  var srcDir  = path.join(__dirname, 'test-support', 'page-object');
+  var tmpDir  = path.join(__dirname, 'tmp_docs');
+  var destDir = path.join(__dirname, 'docs', version, 'api');
 
   // Create the temporary directory for the docs
   createDir(tmpDir)
