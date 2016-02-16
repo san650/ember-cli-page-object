@@ -5,7 +5,7 @@
     var switcher = document.getElementById('version-switcher');
 
     switcher.onchange = function() {
-      window.location = this.value;
+      window.location = '{{site.baseurl}}' + this.value;
     };
   })();
 </script>
