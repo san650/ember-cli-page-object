@@ -1,7 +1,6 @@
 ---
 layout: page
 title: Quickstart
-permalink: /quickstart/
 ---
 
 Suppose we have a couple of acceptance tests to test the login page of our site.

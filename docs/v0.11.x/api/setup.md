@@ -1,7 +1,6 @@
 ---
 layout: page
 title: Setup
-permalink: /api/setup/
 ---
 
 - [Importing the PageObject object](#importing-the-pageobject-object)

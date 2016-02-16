@@ -1,7 +1,6 @@
 ---
 layout: page
 title: Actions
-permalink: /api/actions/
 ---
 
 Encapsulates and extend `ember-testing` async helpers, supporting chaining and

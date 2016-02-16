@@ -1,7 +1,6 @@
 ---
 layout: page
 title: Predicates
-permalink: /api/predicates/
 ---
 
 Test conditions on elements

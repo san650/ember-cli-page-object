@@ -1,66 +1,26 @@
-<header>
-  <h2>Getting started</h2>
-</header>
-<ul class="nav nav-stacked left-nav">
-  <li>
-    <a class="page-link" href="/">Overview</a>
-  </li>
-  <li>
-    <a class="page-link" href="/installation/">Installation</a>
-  </li>
-  <li>
-    <a class="page-link" href="/quickstart/">Quickstart</a>
-  </li>
-</ul>
+{% assign url = page.url | split: "/" %}
+{% assign currentVersion = url[2] %}
 
-<header>
-  <h2>API reference</h2>
-</header>
-<ul class="nav nav-stacked left-nav">
-  <li>
-    <a class="page-link" href="/api/setup/">Setup</a>
-  </li>
-  <li>
-    <a class="page-link" href="/api/predicates/">Predicates</a>
-  </li>
-  <li>
-    <a class="page-link" href="/api/queries/">Queries</a>
-  </li>
-  <li>
-    <a class="page-link" href="/api/actions/">Actions</a>
-  </li>
-  <li>
-    <a class="page-link" href="/api/components/">Components</a>
-  </li>
-  <li>
-    <a class="page-link" href="/api/options/">Options</a>
-  </li>
-</ul>
+<select id="version-switcher">
+  {% for version in site.data.navs %}
+    <option value="/docs/{{version[0]}}" {% if currentVersion == version[0] %}selected{% endif %}>{{version[0]}}</option>
+  {% endfor %}
+</select>
 
-<header>
-  <h2>Contribute</h2>
-</header>
-<ul class="nav nav-stacked left-nav">
-  <li>
-    <a class="page-link" href="https://github.com/san650/ember-cli-page-object" target="_blank">Github</a>
-  </li>
-  <li>
-    <a class="page-link" href="https://github.com/san650/ember-cli-page-object/issues" target="_blank">Bugs</a>
-  </li>
-  <li>
-    <a class="page-link" href="https://github.com/san650/ember-cli-page-object/issues" target="_blank">Feature requests</a>
-  </li>
-  <li>
-    <a class="page-link" href="https://github.com/san650/ember-cli-page-object/releases" target="_blank">Release notes</a>
-  </li>
-  <li>
-    <a class="page-link" href="http://emberobserver.com/addons/ember-cli-page-object" target="_blank">Ember Observer</a>
-  </li>
-  <li>
-    <a class="page-link" href="https://www.npmjs.com/package/ember-cli-page-object" target="_blank">NPM</a>
-  </li>
-</ul>
+{% for section in site.data.navs[currentVersion].sections %}
+  <header>
+    <h2>{{section.title}}</h2>
+  </header>
 
-<div style="margin: 30px 20px">
-  <img src="https://img.shields.io/npm/v/ember-cli-page-object.svg" alt="Latest version">
-</div>
+  <ul class="nav nav-stacked left-nav">
+    {% for link in section.links %}
+      <li>
+        {% if link.external %}
+          <a class="page-link" target="_blank" href="{{link.path}}">{{link.name}}</a>
+        {% else %}
+          <a class="page-link" href="/docs/{{currentVersion}}{{link.path}}">{{link.name}}</a>
+      {% endif %}
+      </li>
+    {% endfor %}
+  </ul>
+{% endfor %}

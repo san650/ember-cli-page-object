@@ -1,7 +1,6 @@
 ---
 layout: page
 title: Installation
-permalink: /installation/
 ---
 
 {% highlight bash %}

@@ -1,7 +1,6 @@
 ---
 layout: page
 title: Options
-permalink: /api/options/
 ---
 
 A set of options can be passed as parameters when defining attributes.
