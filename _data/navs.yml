@@ -11,18 +11,22 @@ v1.0.x:
 
     - title: API reference
       links:
-      - path: /api/setup
+      - path: /setup
         name: Setup
-      - path: /api/options
+      - path: /options
         name: Options
-      - path: /api/methods/predicates
-        name: Predicates
-      - path: /api/methods/queries
-        name: Queries
-      - path: /api/methods/actions
-        name: Actions
-      - path: /api/methods/components
+      - path: /components
         name: Components
+      - path: /api/create
+        name: Create
+      - path: /api/helpers
+        name: Helpers
+      - path: /api/predicates
+        name: Predicates
+      - path: /api/queries
+        name: Queries
+      - path: /api/actions
+        name: Actions
 
     - title: Contribute
       links:
