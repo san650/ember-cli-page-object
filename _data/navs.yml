@@ -17,6 +17,8 @@ v1.0.x:
         name: Options
       - path: /components
         name: Components
+      - path: /collection
+        name: Collection
       - path: /api/create
         name: Create
       - path: /api/helpers
