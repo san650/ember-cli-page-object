@@ -95,10 +95,10 @@ var page = PageObject.create({
 page.visit();
 
 andThen(function() {
-  assert.ok(page.modal().contains('Are you sure you want to exit the page?'));
+  assert.ok(page.modal.contains('Are you sure you want to exit the page?'));
 });
 
-page.modal().clickOn("I'm sure");
+page.modal.clickOn("I'm sure");
 {% endhighlight %}
 
 ## .collection
@@ -153,8 +153,8 @@ var page = PageObject.create({
     itemScope: '#users tr',
 
     item: {
-      firstName: text('td:nth-of-type(1)'),
-      lastName: text('td:nth-of-type(2)')
+      firstName: text('td', { at: 0 }),
+      lastName: text('td', { at: 1})
     },
 
     caption: text('#users caption')
@@ -165,140 +165,63 @@ test('show all users', function(assert) {
   page.visit();
 
   andThen(function() {
-    assert.equal(login.users().caption(), 'The list of users');
-    assert.equal(login.users().count(), 2); // count attribute is added for free
-    assert.equal(login.users(1).firstName(), 'Jane');
-    assert.equal(login.users(1).lastName(), 'Doe');
-    assert.equal(login.users(2).firstName(), 'John');
-    assert.equal(login.users(2).lastName(), 'Doe');
+    assert.equal(login.users.caption, 'The list of users');
+    assert.equal(login.users.count(), 2); // count attribute is added for free
+    assert.equal(login.users(0).firstName, 'Jane');
+    assert.equal(login.users(0).lastName, 'Doe');
+    assert.equal(login.users(1).firstName, 'John');
+    assert.equal(login.users(1).lastName, 'Doe');
   });
 });
 {% endhighlight %}
 
 <div class="alert alert-warning" role="alert">
-  <strong>Note</strong> that ember-cli-page-object collections are 1-based arrays
+  <strong>Note</strong> that ember-cli-page-object collections are now 0-based arrays!
 </div>
 
 ## .customHelper
 
-Define reusable helpers using information of the surrounding context.
+Custom helpers are no longer supported, but you can migrate away from
+them by creating `Ceibo` descriptors (wonder what `Ceibo` is? you can
+check it over [here](http://github.com/san650/ceibo)).
 
-{% highlight js %}
-PageObject.customHelper(function(selector, options) {
-  // user code goes here
-
-  return value;
-});
-{% endhighlight %}
-
-There are three different types of custom helpers and are differentiated by the return value. You can define custom helpers that return:
-
-1. [A _basic type_ value](#basic-type-value)
-2. [A _plain object_ value](#plain-object)
-3. [A _function_ value](#functions)
-
-Given this HTML snippet, the following is an example of each type of custom helpers
-
-{% highlight html %}
-<form>
-  <label class="has-error">
-    User name
-    <input id="userName" />
-  </label>
-</form>
-{% endhighlight %}
-
-### 1. Basic type value
-
-This type of custom helper is useful to return the result of a calculation, for example the result of a jQuery expression.
+Example `v0.x`:
 
 {% highlight js %}
 var disabled = customHelper(function(selector, options) {
   return $(selector).prop('disabled');
 });
-
-var page = PageObject.create({
-  userName: {
-    disabled: disabled('#userName')
-  }
-});
-
-assert.ok(!page.userName().disabled(), 'user name input is not disabled');
 {% endhighlight %}
 
-As you can see the jQuery expression is returned.
-
-### 2. Plain Object
-
-This is very similar to a `component`. The difference with components is that we can do calculations or use custom options before returning the component.
+On version `1.x` this can be represented as:
 
 {% highlight js %}
-var input = customHelper(function(selector, options) {
+import { findElement } from './page-object/helpers';
+
+function disabled(selector, options = {}) {
   return {
-    value: value(selector),
-    hasError: function() {
-      return $(selector).parent().hasClass('has-error');
+    isDescriptor: true,
+    get() {
+      return findElement(this, selector, options).prop('disabled');
     }
-  };
-});
-
-var page = PageObject.create({
-  scope: 'form',
-  userName: input('#userName')
-});
-
-assert.ok(page.userName().hasError(), 'user name has errors');
-{% endhighlight %}
-
-As you can see the returned plain object is converted to a component.
-
-### 3. Functions
-
-The main difference with the previous custom helpers is that the returned functions receive invocation parameters. This is most useful when creating custom actions that receives options when invoked (like `fillIn` helper).
-
-{% highlight js %}
-/* global click */
-var clickManyTimes = customHelper(function(selector, options) {
-  return function(numberOfTimes) {
-    click(selector);
-
-    for(let i = 0; i < numberOfTimes - 1; i++) {
-      click(selector);
-    }
-  };
-});
-
-var page = PageObject.create({
-  clickAgeSelector: clickManyTimes('#ageSelector .spinner-button'),
-  ageValue: value('#ageSelector input')
-});
-
-page.visit().clickOnAgeSelector(18 /* times*/);
-
-andThen(function() {
-  assert.equal(page.ageValue(), 18, 'User is 18 years old');
-});
-{% endhighlight %}
-
-We can see that our `clickOnAgeSelector` takes one parameter that's used by the returned function.
-
-### Custom options
-
-Custom helpers can receive custom options, here's an example of this:
-
-{% highlight js %}
-var prop = customHelper(function(selector, options) {
-  return $(selector).prop(options.name);
-});
-
-var page = PageObject.create({
-  userName: {
-    disabled: prop('#userName', { name: 'disabled' })
   }
-});
+}
 
-assert.ok(!page.userName().disabled(), 'user name input is not disabled');
+export default disabled;
 {% endhighlight %}
+
+Example of usage:
+
+{% highlight js %}
+let page = PageObject.create({
+  scope: '.page',
+
+  isAdmin: disabled('#override-name')
+});
+{% endhighlight %}
+
+`page.isAdmin` will look for elements in the DOM that match ".page
+\#override-name" and check if they are disabled.
 
 ## Scopes
 
@@ -325,7 +248,7 @@ var page = PageObject.create({
 });
 
 andThen(function() {
-  assert.equal(page.textBody(), 'Lorem ipsum dolor.');
+  assert.equal(page.textBody, 'Lorem ipsum dolor.');
 });
 {% endhighlight %}
 
@@ -362,173 +285,9 @@ page
 page.submit();
 
 andThen(function() {
-  assert.ok(page.input().hasError(), 'Input has an error');
+  assert.ok(page.input.hasError, 'Input has an error');
 });
 {% endhighlight %}
-
-### `collection` inherits parent scope by default
-
-{% highlight html %}
-<div class="todo">
-  <input type="text" value="invalid value" class="error" placeholder="To do..." />
-  <input type="text" placeholder="To do..." />
-  <input type="text" placeholder="To do..." />
-  <input type="text" placeholder="To do..." />
-
-  <button>Create</button>
-</div>
-{% endhighlight %}
-
-{% highlight js %}
-var page = PageObject.create({
-  scope: '.todo',
-
-  todos: collection({
-    itemScope: 'input',
-
-    item: {
-      value: value(),
-      hasError: hasClass('error')
-    },
-
-    create: clickable('button')
-  });
-});
-{% endhighlight %}
-
-<table class="table">
-  <thead>
-    <tr>
-      <th>
-        call
-      </th>
-      <th>
-        translates to
-      </th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>
-        <code>page.todos().create()</code>
-      </td>
-      <td>
-        <code>click('.todo button')</code>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <code>page.todos(1).value()</code>
-      </td>
-      <td>
-        <code>find('.todo input:eq(0)').val()</code>
-      </td>
-    </tr>
-  </tbody>
-</table>
-
-You can reset parent scope by setting the `scope` attribute on the collection declaration.
-
-{% highlight js %}
-var page = PageObject.create({
-  scope: '.todo',
-
-  todos: collection({
-    scope: ' ',
-    itemScope: 'input',
-
-    item: {
-      value: value(),
-      hasError: hasClass('error')
-    },
-
-    create: clickable('button')
-  });
-});
-{% endhighlight %}
-
-<table class="table">
-  <thead>
-    <tr>
-      <th>
-        call
-      </th>
-      <th>
-        translates to
-      </th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>
-        <code>page.todos().create()</code>
-      </td>
-      <td>
-        <code>click('button')</code>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <code>page.todos(1).value()</code>
-      </td>
-      <td>
-        <code>find('input:eq(0)').val()</code>
-      </td>
-    </tr>
-  </tbody>
-</table>
-
-`itemScope` is inherited as default scope on components defined inside the item object.
-
-{% highlight html %}
-<ul class="todos">
-  <li>
-    <span>To do</span>
-    <input value="" />
-  </li>
-  ...
-</ul>
-{% endhighlight %}
-
-{% highlight js %}
-var page = PageObject.create({
-  scope: '.todos',
-
-  todos: collection({
-    itemScope: 'li',
-
-    item: {
-      label: text('span'),
-      input: {
-        value: value('input')
-      }
-    }
-  });
-});
-{% endhighlight %}
-
-<table class="table">
-  <thead>
-    <tr>
-      <th>
-        call
-      </th>
-      <th>
-        translates to
-      </th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>
-        <code>page.todos(1).input().value()</code>
-      </td>
-      <td>
-        <code>find('.todos li:nth-of-child(1) input').val()</code>
-      </td>
-    </tr>
-  </tbody>
-</table>
 
 ### `component` inherits parent scope by default
 
@@ -566,7 +325,7 @@ var page = PageObject.create({
   <tbody>
     <tr>
       <td>
-        <code>page.search().input().value()</code>
+        <code>page.search.input.value</code>
       </td>
       <td>
         <code>find('.search input').val()</code>
@@ -575,7 +334,7 @@ var page = PageObject.create({
   </tbody>
 </table>
 
-You can reset parent scope by setting the `scope` attribute on the component declaration.
+You can reset parent scope by setting the `scope` and `resetScope` attribute on the component declaration.
 
 {% highlight js %}
 var page = PageObject.create({
@@ -584,9 +343,9 @@ var page = PageObject.create({
 
     input: {
       scope: 'input',
+      resetScope: true,
 
-      fillIn: fillable(),
-      value: value()
+      fillIn: fillable()
     }
   }
 });
@@ -606,7 +365,7 @@ var page = PageObject.create({
   <tbody>
     <tr>
       <td>
-        <code>page.search().input().value()</code>
+        <code>page.search.input.value</code>
       </td>
       <td>
         <code>find('input').val()</code>

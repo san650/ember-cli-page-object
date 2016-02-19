@@ -40,7 +40,7 @@ test('my awesome test', function(assert) {
     .submit();
 
   andThen(() => {
-    assert.equal(page.error(), 'Invalid credentials');
+    assert.equal(page.error, 'Invalid credentials');
   });
 });
 
