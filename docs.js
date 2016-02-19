@@ -225,6 +225,7 @@ function copyDocs(srcDir, destDir) {
       if (err) {
         reject(err);
       } else {
+        console.log('Copied docs to ' + destDir);
         resolve();
       }
     });
@@ -262,7 +263,7 @@ function removeDir(dir) {
       if (err) {
         reject(err);
       } else {
-        console.log('Finished writing documentation files.');
+        console.log('Removed directory ' + dir);
         resolve();
       }
     });
@@ -303,6 +304,9 @@ function removeDir(dir) {
   .then(function() {
     // Delete the temporary directory
     return removeDir(tmpDir);
+  })
+  .then(function() {
+    console.log('Finished writing documentation files.');
   })
   .catch(function(reason) {
     console.log(reason.stack);
