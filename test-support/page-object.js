@@ -38,6 +38,8 @@ export { count } from './page-object/queries/count';
 export { text } from './page-object/queries/text';
 export { value } from './page-object/queries/value';
 
+export { buildSelector, findElementWithAssert, findElement } from './page-object/helpers';
+
 export default {
   attribute,
   clickOnText,
