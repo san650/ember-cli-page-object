@@ -196,7 +196,7 @@ var disabled = customHelper(function(selector, options) {
 On version `1.x` this can be represented as:
 
 {% highlight js %}
-import { findElement } from './page-object/helpers';
+import { findElement } from './page-object';
 
 function disabled(selector, options = {}) {
   return {
