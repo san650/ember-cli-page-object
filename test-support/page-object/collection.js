@@ -1,7 +1,7 @@
 import Ember from 'ember';
-import { buildSelector } from '../helpers';
-import { create } from '../create';
-import { count } from './count';
+import { buildSelector } from './helpers';
+import { create } from './create';
+import { count } from '../page-object';
 
 function merge(target, ...objects) {
   objects.forEach(function(o) {

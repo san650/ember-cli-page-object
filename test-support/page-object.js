@@ -1,5 +1,7 @@
 import { create } from './page-object/create';
 
+import { collection } from './page-object/collection';
+
 import { clickable } from './page-object/actions/clickable';
 import { clickOnText } from './page-object/actions/click-on-text';
 import { fillable, fillable as selectable } from './page-object/actions/fillable';
@@ -12,12 +14,13 @@ import { isVisible } from './page-object/predicates/is-visible';
 import { notHasClass } from './page-object/predicates/not-has-class';
 
 import { attribute } from './page-object/queries/attribute';
-import { collection } from './page-object/queries/collection';
 import { count } from './page-object/queries/count';
 import { text } from './page-object/queries/text';
 import { value } from './page-object/queries/value';
 
 export { create } from './page-object/create';
+
+export { collection } from './page-object/collection';
 
 export { clickable } from './page-object/actions/clickable';
 export { clickOnText } from './page-object/actions/click-on-text';
@@ -31,7 +34,6 @@ export { isVisible } from './page-object/predicates/is-visible';
 export { notHasClass } from './page-object/predicates/not-has-class';
 
 export { attribute } from './page-object/queries/attribute';
-export { collection } from './page-object/queries/collection';
 export { count } from './page-object/queries/count';
 export { text } from './page-object/queries/text';
 export { value } from './page-object/queries/value';
