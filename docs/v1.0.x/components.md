@@ -233,7 +233,7 @@ Given the following HTML
   <p>Lorem ipsum dolor</p>
 </div>
 <div class="footer">
-  <p>Copyright 2015 - Acme Inc.</p>
+  <p>Copyright Acme Inc.</p>
 </div>
 ```
 
