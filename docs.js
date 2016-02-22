@@ -58,7 +58,9 @@ function massageMarkdown(markdown, options) {
   var headerRegex = /^#{1,6} /;
   var h2Regex = /^## (.*)$/;
   var lines = markdown.split('\n');
-  var tableOfContents = [];
+  var tableOfContents = [
+    '### Methods\n'
+  ];
   // The jekyll yml frontmatter
   var frontmatter = [
     '---',
