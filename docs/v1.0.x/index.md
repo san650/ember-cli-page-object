@@ -3,27 +3,18 @@ layout: page
 title: Overview
 ---
 
-<div class="row" class="overview">
-  <div class="col-sm-5">
-    <p>
-      This addon makes creating Page Objects for your acceptance test really easy.
-    </p>
-    <p>
-      It's main characteristics are
-    </p>
+The ember-cli-page-object addon makes it easy to create page objects for your acceptance tests.
 
-    <ul>
-      <li>Mostly declarative</li>
-      <li>Proposes a convention</li>
-      <li>Extremely easy to extend</li>
-      <li>Unobtrusive</li>
-      <li>Agnostic to the testing framework (but really hooked on Ember!)</li>
-     </ul>
-  </div>
-  <div class="col-sm-7" class="overview-code">
-{% highlight javascript %}
+The addon is:
 
-var page = PageObject.create({
+- Mostly declarative
+- Quick to set up and uses convention over configuration
+- Extremely easy to extend
+- Unobtrusive
+- Agnostic to the testing framework (but really hooked on Ember!)
+
+```javascript
+const page = PageObject.create({
   visit: visitable('/'),
 
   username: fillable('#username'),
@@ -43,22 +34,19 @@ test('my awesome test', function(assert) {
     assert.equal(page.error, 'Invalid credentials');
   });
 });
+```
 
-{% endhighlight %}
-  </div>
-</div>
+## So, What Is a Page Object?
 
-## So, What is a Page Object?
-
-Ember, and more specifically `ember-testing` provides a DSL that simplifies creation and validation of conditions on our tests.
+Ember, and more specifically `ember-testing`, provides a DSL that simplifies the creation and validation of conditions on our tests.
 
 One of the problems with acceptance tests is that many of the CSS selectors used to look up elements are repeated across tests. In some cases, this repetition seems like a smell.
 
-In some cases the complexity of selectors use prevents us to easily identify what we were trying to test. This can become very confusing, concealing the original purpose for the test.
+In some cases the complexity of selectors makes it hard to remember what we were actually trying to test. This confusion can lead to difficulties updating tests and collaborating with others.
 
-A widely-used design pattern comes to the rescue: Page Objects. The main idea behind this pattern is to encapsulate the page structure being tested with an object, hiding the details of its HTML structure and therefore exposing the semantic structure of the page only.
+A widely-used design pattern comes to the rescue: page objects. The main idea behind this pattern is to encapsulate in an object the page structure being tested, hiding the details of its HTML structure and exposing only the semantic structure of the page.
 
-This addon allows you to define page objects in a declarative fashion making really simple to model complex pages.
+This addon allows you to define page objects in a declarative fashion, making it simple to model complex pages.
 
 ### Resources
 
