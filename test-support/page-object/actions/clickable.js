@@ -1,14 +1,14 @@
 import { buildSelector } from '../helpers';
 
 /**
- * Clicks element matched by selector
+ * Clicks elements matched by a selector.
  *
  * @example
  *
  * // <button class="continue">Continue<button>
  * // <button>Cancel</button>
  *
- * var page = PageObject.create({
+ * const page = PageObject.create({
  *   continue: clickable('button.continue')
  * });
  *
@@ -22,7 +22,7 @@ import { buildSelector } from '../helpers';
  * // </div>
  * // <button>Cancel</button>
  *
- * var page = PageObject.create({
+ * const page = PageObject.create({
  *   continue: clickable('button.continue', { scope: '.scope' })
  * });
  *
@@ -36,7 +36,7 @@ import { buildSelector } from '../helpers';
  * // </div>
  * // <button>Cancel</button>
  *
- * var page = PageObject.create({
+ * const page = PageObject.create({
  *   scope: '.scope',
  *   continue: clickable('button.continue')
  * });
@@ -48,12 +48,11 @@ import { buildSelector } from '../helpers';
  *
  * @param {string} selector - CSS selector of the element to click
  * @param {Object} options - Additional options
- * @param {string} options.scope - Nests provided scope with parent's scope
+ * @param {string} options.scope - Nests provided scope within parent's scope
  * @param {number} options.at - Reduce the set of matched elements to the one at the specified index
  * @param {boolean} options.resetScope - Ignore parent scope
  * @return {Descriptor}
  */
-
 
 export function clickable(selector, options = {}) {
   return {

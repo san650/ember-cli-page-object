@@ -4,14 +4,14 @@ import { findElement } from '../helpers';
 var $ = Ember.$;
 
 /**
- * Gets the count of elements matched by selector
+ * Returns the number of elements matched by a selector.
  *
  * @example
  *
  * // <span>1</span>
  * // <span>2</span>
  *
- * var page = PageObject.create({
+ * const page = PageObject.create({
  *   spanCount: PageObject.count('span')
  * });
  *
@@ -21,7 +21,7 @@ var $ = Ember.$;
  *
  * // <div>Text</div>
  *
- * var page = PageObject.create({
+ * const page = PageObject.create({
  *   spanCount: PageObject.count('span')
  * });
  *
@@ -32,7 +32,7 @@ var $ = Ember.$;
  * // <div><span></span></div>
  * // <div class="scope"><span></span><span></span></div>
  *
- * var page = PageObject.create({
+ * const page = PageObject.create({
  *   spanCount: PageObject.count('span', { scope: '.scope' })
  * });
  *
@@ -43,7 +43,7 @@ var $ = Ember.$;
  * // <div><span></span></div>
  * // <div class="scope"><span></span><span></span></div>
  *
- * var page = PageObject.create({
+ * const page = PageObject.create({
  *   scope: '.scope',
  *   spanCount: PageObject.count('span')
  * });
@@ -55,7 +55,7 @@ var $ = Ember.$;
  * // <div><span></span></div>
  * // <div class="scope"><span></span><span></span></div>
  *
- * var page = PageObject.create({
+ * const page = PageObject.create({
  *   scope: '.scope',
  *   spanCount: PageObject.count('span', { resetScope: true })
  * });

@@ -35,10 +35,8 @@ function plugDefaultProperties(definition) {
   }
 }
 
-/**
- * See https://github.com/san650/ceibo#examples for more info on how Ceibo
- * builders work.
- */
+// See https://github.com/san650/ceibo#examples for more info on how Ceibo
+// builders work.
 function buildObject(builder, target, key, definition) {
   var container = {};
 
@@ -52,17 +50,22 @@ function buildObject(builder, target, key, definition) {
 }
 
 /**
- * Creates a new PageObject
+ * Creates a new PageObject.
  *
- * By default, the result PageObject will respond to a default set of options: click, clickOn,
- * contains, isHidden, isVisible and text.
+ * By default, the resulting PageObject will respond to:
+ *
+ * - **Actions**: click, clickOn
+ * - **Predicates**: contains, isHidden, isVisible
+ * - **Queries**: text
  *
  * @example
  *
  * // <div class="title">My title</div>
  *
- * var page = PageObject.create({
- *   title: PageObject.text('.title')
+ * import PageObject, { text } from 'frontend/tests/page-object';
+ *
+ * const page = PageObject.create({
+ *   title: text('.title')
  * });
  *
  * assert.equal(page.title, 'My title');
@@ -70,21 +73,21 @@ function buildObject(builder, target, key, definition) {
  * @example
  *
  * // <div id="my-page">
- * //  My super text
- * //  <button> Press Me</button>
+ * //   My super text
+ * //   <button>Press Me</button>
  * // </div>
  *
- * var page = PageObject.create({
- *   scope: '#my-page',
+ * const page = PageObject.create({
+ *   scope: '#my-page'
  * });
  *
  * assert.equal(page.text, 'My super text');
- * assert.ok(page.isVisible);
- * assert.ok(!page.isHidden);
  * assert.ok(page.contains('super'));
+ * assert.ok(page.isVisible);
+ * assert.notOk(page.isHidden);
  *
  * // clicks div#my-page
- * page.click
+ * page.click();
  *
  * // clicks button
  * page.clickOn('Press Me');

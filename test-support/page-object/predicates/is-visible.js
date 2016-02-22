@@ -1,13 +1,13 @@
 import { findElement, every } from '../helpers';
 
 /**
- * Validates if an element or set of elements are visible
+ * Validates if an element or set of elements are visible.
  *
  * @example
  *
  * // Lorem <span>ipsum</span>
  *
- * let page = PageObject.create({
+ * const page = PageObject.create({
  *   spanIsVisible: PageObject.isVisible('span')
  * });
  *
@@ -18,19 +18,19 @@ import { findElement, every } from '../helpers';
  * // <span>ipsum</span>
  * // <span style="display:none">dolor</span>
  *
- * let page = PageObject.create({
+ * const page = PageObject.create({
  *   spansAreVisible: PageObject.isVisible('span', { multiple: true })
  * });
  *
  * // not all spans are visible
- * assert.ok(!page.spansAreVisible);
+ * assert.notOk(page.spansAreVisible);
  *
  * @example
  *
  * // <span>ipsum</span>
  * // <span>dolor</span>
  *
- * let page = PageObject.create({
+ * const page = PageObject.create({
  *   spansAreVisible: PageObject.isVisible('span', { multiple: true })
  * });
  *
@@ -39,22 +39,25 @@ import { findElement, every } from '../helpers';
  *
  * @example
  *
- * // Lorem <div>ipsum</div>
+ * // Lorem <strong>ipsum</strong>
  *
- * let page = PageObject.create({
+ * const page = PageObject.create({
  *   spanIsVisible: PageObject.isHidden('span')
  * });
  *
  * // returns false when element doesn't exist in DOM
- * assert.ok(!page.spanIsVisible);
+ * assert.notOk(page.spanIsVisible);
  *
  * @example
  *
- * // <div><span style="display:none">lorem</span></div>
+ * // <div>
+ * //   <span style="display:none">lorem</span>
+ * // </div>
+ * // <div class="scope">
+ * //   <span>ipsum</span>
+ * // </div>
  *
- * <div class="scope"><span>ipsum</span></div>
- *
- * let page = PageObject.create({
+ * const page = PageObject.create({
  *   spanIsVisible: PageObject.isHidden('span', { scope: '.scope' })
  * });
  *
@@ -62,10 +65,14 @@ import { findElement, every } from '../helpers';
  *
  * @example
  *
- * // <div><span style="display:none">lorem</span></div>
- * // <div class="scope"><span>ipsum</span></div>
+ * // <div>
+ * //   <span style="display:none">lorem</span>
+ * // </div>
+ * // <div class="scope">
+ * //   <span>ipsum</span>
+ * // </div>
  *
- * let page = PageObject.create({
+ * const page = PageObject.create({
  *   scope: '.scope',
  *   spanIsVisible: PageObject.isHidden('span')
  * });
@@ -76,13 +83,13 @@ import { findElement, every } from '../helpers';
  *
  * @param {string} selector - CSS selector of the element to check
  * @param {Object} options - Additional options
- * @param {string} options.scope - Nests provided scope with parent's scope
+ * @param {string} options.scope - Nests provided scope within parent's scope
  * @param {number} options.at - Reduce the set of matched elements to the one at the specified index
  * @param {boolean} options.resetScope - Override parent's scope
  * @param {boolean} options.multiple - Check if all elements matched by selector are visible
  * @return {Descriptor}
  *
- * @throws Will throw an error if multiple elements are matched by selector and multiple options is not set
+ * @throws Will throw an error if multiple elements are matched by selector and multiple option is not set
  */
 export function isVisible(selector, options = {}) {
   return {
