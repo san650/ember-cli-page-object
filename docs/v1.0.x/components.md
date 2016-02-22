@@ -183,7 +183,7 @@ test('show all users', function(assert) {
 
 Custom helpers are no longer supported, but you can migrate away from
 them by creating `Ceibo` descriptors. (`Ceibo` is a small library for
-parsing trees. You can check it out [here](http://github.com/san650/ceibo)).
+parsing trees. You can check it out [here](http://github.com/san650/ceibo).)
 
 With the old `v0.x` syntax, you would define a custom helper like:
 
