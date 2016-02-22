@@ -17,7 +17,7 @@ v1.0.x:
         name: Create
       - path: /components
         name: Components
-      - path: /collection
+      - path: /api/collection
         name: Collections
       - path: /api/predicates
         name: Predicates
