@@ -311,7 +311,7 @@ var page = PageObject.create({
 ```
 
 | call                      | translates to                 |
-|:--------------------------|------------------------------:|
+|:--------------------------|:------------------------------|
 | `page.search.input.value` | `find('.search input').val()` |
 {: .table}
 
@@ -333,6 +333,6 @@ var page = PageObject.create({
 ```
 
 | call                      | translates to         |
-|:--------------------------|----------------------:|
+|:--------------------------|:----------------------|
 | `page.search.input.value` | `find('input').val()` |
 {: .table}
