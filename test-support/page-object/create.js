@@ -1,11 +1,11 @@
 import Ember from 'ember';
 import Ceibo from 'ceibo';
-import { text } from './properties/text';
-import { isVisible } from './properties/is-visible';
-import { isHidden } from './properties/is-hidden';
-import { clickOnText } from './properties/click-on-text';
-import { clickable } from './properties/clickable';
-import { contains } from './properties/contains';
+import { text } from './queries/text';
+import { isVisible } from './predicates/is-visible';
+import { isHidden } from './predicates/is-hidden';
+import { contains } from './predicates/contains';
+import { clickOnText } from './actions/click-on-text';
+import { clickable } from './actions/clickable';
 
 var { merge } = Ember;
 
@@ -35,10 +35,8 @@ function plugDefaultProperties(definition) {
   }
 }
 
-/**
- * See https://github.com/san650/ceibo#examples for more info on how Ceibo
- * builders work.
- */
+// See https://github.com/san650/ceibo#examples for more info on how Ceibo
+// builders work.
 function buildObject(builder, target, key, definition) {
   var container = {};
 
@@ -52,15 +50,49 @@ function buildObject(builder, target, key, definition) {
 }
 
 /**
- * Creates a new PageObject
+ * Creates a new PageObject.
+ *
+ * By default, the resulting PageObject will respond to:
+ *
+ * - **Actions**: click, clickOn
+ * - **Predicates**: contains, isHidden, isVisible
+ * - **Queries**: text
  *
  * @example
  *
- *   var page = PageObject.create({
- *     title: text('.title')
- *   });
+ * // <div class="title">My title</div>
  *
- *   assert.equal(page.title, 'Dummy title');
+ * import PageObject, { text } from 'frontend/tests/page-object';
+ *
+ * const page = PageObject.create({
+ *   title: text('.title')
+ * });
+ *
+ * assert.equal(page.title, 'My title');
+ *
+ * @example
+ *
+ * // <div id="my-page">
+ * //   My super text
+ * //   <button>Press Me</button>
+ * // </div>
+ *
+ * const page = PageObject.create({
+ *   scope: '#my-page'
+ * });
+ *
+ * assert.equal(page.text, 'My super text');
+ * assert.ok(page.contains('super'));
+ * assert.ok(page.isVisible);
+ * assert.notOk(page.isHidden);
+ *
+ * // clicks div#my-page
+ * page.click();
+ *
+ * // clicks button
+ * page.clickOn('Press Me');
+ *
+ * @public
  *
  * @param {Object} definition - PageObject definition
  * @param {Object} options - [private] Ceibo options. Do not use!

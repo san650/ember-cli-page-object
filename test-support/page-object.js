@@ -1,34 +1,44 @@
-import { attribute } from './page-object/properties/attribute';
-import { clickOnText } from './page-object/properties/click-on-text';
-import { clickable } from './page-object/properties/clickable';
-import { collection } from './page-object/properties/collection';
-import { contains } from './page-object/properties/contains';
-import { count } from './page-object/properties/count';
 import { create } from './page-object/create';
-import { fillable } from './page-object/properties/fillable';
-import { hasClass } from './page-object/properties/has-class';
-import { isHidden } from './page-object/properties/is-hidden';
-import { isVisible } from './page-object/properties/is-visible';
-import { notHasClass } from './page-object/properties/not-has-class';
-import { text } from './page-object/properties/text';
-import { value } from './page-object/properties/value';
-import { visitable } from './page-object/properties/visitable';
 
-export { attribute } from './page-object/properties/attribute';
-export { clickOnText } from './page-object/properties/click-on-text';
-export { clickable } from './page-object/properties/clickable';
-export { collection } from './page-object/properties/collection';
-export { contains } from './page-object/properties/contains';
-export { count } from './page-object/properties/count';
+import { collection } from './page-object/collection';
+
+import { clickable } from './page-object/actions/clickable';
+import { clickOnText } from './page-object/actions/click-on-text';
+import { fillable, fillable as selectable } from './page-object/actions/fillable';
+import { visitable } from './page-object/actions/visitable';
+
+import { contains } from './page-object/predicates/contains';
+import { hasClass } from './page-object/predicates/has-class';
+import { isHidden } from './page-object/predicates/is-hidden';
+import { isVisible } from './page-object/predicates/is-visible';
+import { notHasClass } from './page-object/predicates/not-has-class';
+
+import { attribute } from './page-object/queries/attribute';
+import { count } from './page-object/queries/count';
+import { text } from './page-object/queries/text';
+import { value } from './page-object/queries/value';
+
 export { create } from './page-object/create';
-export { fillable, fillable as selectable } from './page-object/properties/fillable';
-export { hasClass } from './page-object/properties/has-class';
-export { isHidden } from './page-object/properties/is-hidden';
-export { isVisible } from './page-object/properties/is-visible';
-export { notHasClass } from './page-object/properties/not-has-class';
-export { text } from './page-object/properties/text';
-export { value } from './page-object/properties/value';
-export { visitable } from './page-object/properties/visitable';
+
+export { collection } from './page-object/collection';
+
+export { clickable } from './page-object/actions/clickable';
+export { clickOnText } from './page-object/actions/click-on-text';
+export { fillable, fillable as selectable } from './page-object/actions/fillable';
+export { visitable } from './page-object/actions/visitable';
+
+export { contains } from './page-object/predicates/contains';
+export { hasClass } from './page-object/predicates/has-class';
+export { isHidden } from './page-object/predicates/is-hidden';
+export { isVisible } from './page-object/predicates/is-visible';
+export { notHasClass } from './page-object/predicates/not-has-class';
+
+export { attribute } from './page-object/queries/attribute';
+export { count } from './page-object/queries/count';
+export { text } from './page-object/queries/text';
+export { value } from './page-object/queries/value';
+
+export { buildSelector, findElementWithAssert, findElement } from './page-object/helpers';
 
 export default {
   attribute,
@@ -43,7 +53,7 @@ export default {
   isHidden,
   isVisible,
   notHasClass,
-  selectable: fillable,
+  selectable,
   text,
   value,
   visitable
