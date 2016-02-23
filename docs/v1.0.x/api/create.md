@@ -3,31 +3,21 @@ layout: page
 title: Create
 ---
 
-- [buildObject](#buildobject)
+### Methods
+
 - [create](#create)
-
-## buildObject
-
-[test-support/page-object/create.js:42-52](https://github.com/jeradg/ember-cli-page-object/blob/7718fb7017aeedb848674a8b26202f2569e32c98/test-support/page-object/create.js#L42-L52 "Source code on GitHub")
-
-See <https://github.com/san650/ceibo#examples> for more info on how Ceibo
-builders work.
-
-**Parameters**
-
--   `builder`  
--   `target`  
--   `key`  
--   `definition`  
 
 ## create
 
-[test-support/page-object/create.js:98-104](https://github.com/jeradg/ember-cli-page-object/blob/7718fb7017aeedb848674a8b26202f2569e32c98/test-support/page-object/create.js#L98-L104 "Source code on GitHub")
+[test-support/page-object/create.js:101-107](https://github.com/san650/ember-cli-page-object/blob/b9a36f01a8b3d265c7a14aa6bac29e4260d08e8c/test-support/page-object/create.js#L101-L107 "Source code on GitHub")
 
-Creates a new PageObject
+Creates a new PageObject.
 
-By default, the result PageObject will respond to a default set of options: click, clickOn,
-contains, isHidden, isVisible and text.
+By default, the resulting PageObject will respond to:
+
+-   **Actions**: click, clickOn
+-   **Predicates**: contains, isHidden, isVisible
+-   **Queries**: text
 
 **Parameters**
 
@@ -39,8 +29,10 @@ contains, isHidden, isVisible and text.
 ```javascript
 // <div class="title">My title</div>
 
-var page = PageObject.create({
-  title: PageObject.text('.title')
+import PageObject, { text } from 'frontend/tests/page-object';
+
+const page = PageObject.create({
+  title: text('.title')
 });
 
 assert.equal(page.title, 'My title');
@@ -48,21 +40,21 @@ assert.equal(page.title, 'My title');
 
 ```javascript
 // <div id="my-page">
-//  My super text
-//  <button> Press Me</button>
+//   My super text
+//   <button>Press Me</button>
 // </div>
 
-var page = PageObject.create({
-  scope: '#my-page',
+const page = PageObject.create({
+  scope: '#my-page'
 });
 
 assert.equal(page.text, 'My super text');
-assert.ok(page.isVisible);
-assert.ok(!page.isHidden);
 assert.ok(page.contains('super'));
+assert.ok(page.isVisible);
+assert.notOk(page.isHidden);
 
 // clicks div#my-page
-page.click
+page.click();
 
 // clicks button
 page.clickOn('Press Me');
