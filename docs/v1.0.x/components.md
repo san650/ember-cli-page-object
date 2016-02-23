@@ -17,16 +17,16 @@ Components let you group attributes together, they are just plain objects with a
 
 __Example__
 
-{% highlight html %}
+```html
 <h1>New user</h1>
 <form class="awesome-form">
   <input id="firstName" placeholder="First name">
   <input id="lastName" placeholder="Last name">
   <button>Create</button>
 </form>
-{% endhighlight %}
+```
 
-{% highlight js %}
+```js
 const { visitable, text, fillable, clickable } = PageObject;
 
 var page = PageObject.create({
@@ -52,11 +52,11 @@ page
 andThen(function() {
   // assert something
 });
-{% endhighlight %}
+```
 
 ## Default attributes
 
-By default, all components define handy attributes to be used without been explicitely declared.
+By default, all components define some handy attributes and methods without being explicitely declared.
 
 * [isVisible](/api/predicates/#isvisible)
 * [isHidden](/api/predicates/#ishidden)
@@ -73,15 +73,15 @@ __Example__
 
 Suppose you have a modal dialog
 
-{% highlight html %}
+```html
 <div class="modal">
   Are you sure you want to exit the page?
   <button>I'm sure</button>
   <button>No</button>
 </form>
-{% endhighlight %}
+```
 
-{% highlight js %}
+```js
 const { visitable } = PageObject;
 
 var page = PageObject.create({
@@ -99,7 +99,7 @@ andThen(function() {
 });
 
 page.modal.clickOn("I'm sure");
-{% endhighlight %}
+```
 
 ## .collection
 
@@ -107,13 +107,13 @@ Easily model a table or a list of items.
 
 __Attribute signature__
 
-{% highlight js %}
+```js
 PageObject.collection(definition)
-{% endhighlight %}
+```
 
 The collection definition has the following structure
 
-{% highlight js %}
+```js
 {
   itemScope: '', // css selector
 
@@ -123,13 +123,13 @@ The collection definition has the following structure
 
   // collection attributes
 }
-{% endhighlight %}
+```
 
 The attributes defined in the `item` object are scoped using the `itemScope` selector. The attributes defined outside the `item` object are available at collection scope.
 
 __Example__
 
-{% highlight html %}
+```html
 <table id="users">
   <caption>The list of users</caption>
   <tr>
@@ -141,9 +141,9 @@ __Example__
     <td>Doe</td>
   </tr>
 </table>
-{% endhighlight %}
+```
 
-{% highlight js %}
+```js
 const { visitable, text, collection } = PageObject;
 
 var page = PageObject.create({
@@ -173,7 +173,7 @@ test('show all users', function(assert) {
     assert.equal(login.users(1).lastName, 'Doe');
   });
 });
-{% endhighlight %}
+```
 
 <div class="alert alert-warning" role="alert">
   <strong>Note</strong> that ember-cli-page-object collections are now 0-based arrays!
@@ -182,43 +182,42 @@ test('show all users', function(assert) {
 ## .customHelper
 
 Custom helpers are no longer supported, but you can migrate away from
-them by creating `Ceibo` descriptors (wonder what `Ceibo` is? you can
-check it over [here](http://github.com/san650/ceibo)).
+them by creating `Ceibo` descriptors. (`Ceibo` is a small library for
+parsing trees. You can check it out [here](http://github.com/san650/ceibo).)
 
-Example `v0.x`:
+With the old `v0.x` syntax, you would define a custom helper like:
 
-{% highlight js %}
+```js
 var disabled = customHelper(function(selector, options) {
   return $(selector).prop('disabled');
 });
-{% endhighlight %}
+```
 
 On version `1.x` this can be represented as:
 
-{% highlight js %}
+```js
 import { findElement } from './page-object';
 
-function disabled(selector, options = {}) {
+export default function disabled(selector, options = {}) {
   return {
     isDescriptor: true,
+
     get() {
-      return findElement(this, selector, options).prop('disabled');
+      return findElement(this, selector, options).is(':disabled');
     }
   }
 }
+```
 
-export default disabled;
-{% endhighlight %}
+Example usage:
 
-Example of usage:
-
-{% highlight js %}
+```js
 let page = PageObject.create({
   scope: '.page',
 
   isAdmin: disabled('#override-name')
 });
-{% endhighlight %}
+```
 
 `page.isAdmin` will look for elements in the DOM that match ".page
 \#override-name" and check if they are disabled.
@@ -229,18 +228,18 @@ The `scope` attribute can be used to reduce the set of matched elements to the o
 
 Given the following HTML
 
-{% highlight html %}
+```html
 <div class="article">
   <p>Lorem ipsum dolor</p>
 </div>
 <div class="footer">
-  <p>Copyright 2015 - Acme Inc.</p>
+  <p>Copyright Acme Inc.</p>
 </div>
-{% endhighlight %}
+```
 
 the following configuration will match the article paragraph element
 
-{% highlight js %}
+```js
 var page = PageObject.create({
   scope: '.article',
 
@@ -250,22 +249,22 @@ var page = PageObject.create({
 andThen(function() {
   assert.equal(page.textBody, 'Lorem ipsum dolor.');
 });
-{% endhighlight %}
+```
 
 The attribute's selector can be omited when the scope matches the element we want to use.
 
 Given the following HTML
 
-{% highlight html %}
+```html
 <form>
   <input id="userName" value="a value" />
   <button>Submit</button>
 </form>
-{% endhighlight %}
+```
 
 We can define several attributes on the same `input` element as follows
 
-{% highlight js %}
+```js
 var page = PageObject.create({
   input: {
     scope: '#userName',
@@ -287,18 +286,18 @@ page.submit();
 andThen(function() {
   assert.ok(page.input.hasError, 'Input has an error');
 });
-{% endhighlight %}
+```
 
-### `component` inherits parent scope by default
+### A `component` inherits parent scope by default
 
-{% highlight html %}
+```html
 <div class="search">
-  <input placeholder="Search..." />
+  <input placeholder="Search...">
   <button>Search</button>
 </div>
-{% endhighlight %}
+```
 
-{% highlight js %}
+```js
 var page = PageObject.create({
   search: {
     scope: '.search',
@@ -309,34 +308,16 @@ var page = PageObject.create({
     }
   }
 });
-{% endhighlight %}
+```
 
-<table class="table">
-  <thead>
-    <tr>
-      <th>
-        call
-      </th>
-      <th>
-        translates to
-      </th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>
-        <code>page.search.input.value</code>
-      </td>
-      <td>
-        <code>find('.search input').val()</code>
-      </td>
-    </tr>
-  </tbody>
-</table>
+| call                      | translates to                 |
+|:--------------------------|:------------------------------|
+| `page.search.input.value` | `find('.search input').val()` |
+{: .table}
 
 You can reset parent scope by setting the `scope` and `resetScope` attribute on the component declaration.
 
-{% highlight js %}
+```js
 var page = PageObject.create({
   search: {
     scope: '.search',
@@ -349,27 +330,9 @@ var page = PageObject.create({
     }
   }
 });
-{% endhighlight %}
+```
 
-<table class="table">
-  <thead>
-    <tr>
-      <th>
-        call
-      </th>
-      <th>
-        translates to
-      </th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>
-        <code>page.search.input.value</code>
-      </td>
-      <td>
-        <code>find('input').val()</code>
-      </td>
-    </tr>
-  </tbody>
-</table>
+| call                      | translates to         |
+|:--------------------------|:----------------------|
+| `page.search.input.value` | `find('input').val()` |
+{: .table}
