@@ -1,13 +1,13 @@
 import { findElementWithAssert, every } from '../helpers';
 
 /**
- * Validates if an element or a set of elements have a given CSS class
+ * Validates if an element or a set of elements have a given CSS class.
  *
  * @example
  *
  * // <em class="lorem"></em><span class="success">Message!</span>
  *
- * let page = PageObject.create({
+ * const page = PageObject.create({
  *   messageIsSuccess: PageObject.hasClass('success', 'span')
  * });
  *
@@ -18,18 +18,18 @@ import { findElementWithAssert, every } from '../helpers';
  * // <span class="success"></span>
  * // <span class="error"></span>
  *
- * let page = PageObject.create({
+ * const page = PageObject.create({
  *   messagesAreSuccessful: PageObject.hasClass('success', 'span', { multiple: true })
  * });
  *
- * assert.ok(!page.messagesAreSuccessful);
+ * assert.notOk(page.messagesAreSuccessful);
  *
  * @example
  *
  * // <span class="success"></span>
  * // <span class="success"></span>
  *
- * let page = PageObject.create({
+ * const page = PageObject.create({
  *   messagesAreSuccessful: PageObject.hasClass('success', 'span', { multiple: true })
  * });
  *
@@ -44,7 +44,7 @@ import { findElementWithAssert, every } from '../helpers';
  * //   <span class="ipsum"></span>
  * // </div>
  *
- * let page = PageObject.create({
+ * const page = PageObject.create({
  *   spanHasClass: PageObject.hasClass('ipsum', 'span', { scope: '.scope' })
  * });
  *
@@ -59,7 +59,7 @@ import { findElementWithAssert, every } from '../helpers';
  * //   <span class="ipsum"></span>
  * // </div>
  *
- * let page = PageObject.create({
+ * const page = PageObject.create({
  *   scope: '.scope',
  *   spanHasClass: PageObject.hasClass('ipsum', 'span')
  * });
@@ -71,14 +71,14 @@ import { findElementWithAssert, every } from '../helpers';
  * @param {string} cssClass - CSS class to be validated
  * @param {string} selector - CSS selector of the element to check
  * @param {Object} options - Additional options
- * @param {string} options.scope - Nests provided scope with parent's scope
+ * @param {string} options.scope - Nests provided scope within parent's scope
  * @param {number} options.at - Reduce the set of matched elements to the one at the specified index
  * @param {boolean} options.resetScope - Override parent's scope
  * @param {boolean} options.multiple - Check if all elements matched by selector have the CSS class
  * @return {Descriptor}
  *
  * @throws Will throw an error if no element matches selector
- * @throws Will throw an error if multiple elements are matched by selector and multiple options is not set
+ * @throws Will throw an error if multiple elements are matched by selector and multiple option is not set
  */
 export function hasClass(cssClass, selector, options = {}) {
   return {

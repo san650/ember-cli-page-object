@@ -1,28 +1,28 @@
 import { findElementWithAssert, map } from '../helpers';
 
 /**
- * Gets the value of an attribute from matched element or Array of value of
- * attributes of multiple matched elements
+ * Returns the value of an attribute from the matched element,
+ * or an array of values from multiple matched elements.
  *
  * @example
  * // <input placeholder="a value">
  *
- * var page = PageObject.create({
- *   inputPlaceHolder: PageObject.attribute('placeholder', 'input')
+ * const page = PageObject.create({
+ *   inputPlaceholder: PageObject.attribute('placeholder', 'input')
  * });
  *
- * assert.equal(page.inputPlaceHolder, 'a value');
+ * assert.equal(page.inputPlaceholder, 'a value');
  *
  * @example
  *
  * // <input placeholder="a value">
  * // <input placeholder="other value">
  *
- * let page = PageObject.create({
- *   inputPlaceHolder: PageObject.attribute('placeholder', ':input', { multiple: true })
+ * const page = PageObject.create({
+ *   inputPlaceholders: PageObject.attribute('placeholder', ':input', { multiple: true })
  * });
  *
- * assert.equal(page.inputPlaceHolder, ['a value', 'other value']);
+ * assert.deepEqual(page.inputPlaceholders, ['a value', 'other value']);
  *
  * @example
  *
@@ -30,11 +30,11 @@ import { findElementWithAssert, map } from '../helpers';
  * // <div class="scope"><input placeholder="a value"></div>
  * // <div><input></div>
  *
- * let page = PageObject.create({
- *   inputPlaceHolder: PageObject.attribute('placeholder', ':input', { scope: '.scope' })
+ * const page = PageObject.create({
+ *   inputPlaceholder: PageObject.attribute('placeholder', ':input', { scope: '.scope' })
  * });
  *
- * assert.equal(page.inputPlaceHolder, 'a value');
+ * assert.equal(page.inputPlaceholder, 'a value');
  *
  * @example
  *
@@ -42,19 +42,19 @@ import { findElementWithAssert, map } from '../helpers';
  * // <div class="scope"><input placeholder="a value"></div>
  * // <div><input></div>
  *
- * let page = PageObject.create({
+ * const page = PageObject.create({
  *   scope: 'scope',
- *   inputPlaceHolder: PageObject.attribute('placeholder', ':input')
+ *   inputPlaceholder: PageObject.attribute('placeholder', ':input')
  * });
  *
- * assert.equal(page.inputPlaceHolder, 'a value');
+ * assert.equal(page.inputPlaceholder, 'a value');
  *
  * @public
  *
  * @param {string} attributeName - Name of the attribute to get
  * @param {string} selector - CSS selector of the element to check
  * @param {Object} options - Additional options
- * @param {string} options.scope - Nests provided scope with parent's scope
+ * @param {string} options.scope - Nests provided scope within parent's scope
  * @param {boolean} options.resetScope - Override parent's scope
  * @param {number} options.at - Reduce the set of matched elements to the one at the specified index
  * @param {boolean} options.multiple - If set, the function will return an array of values

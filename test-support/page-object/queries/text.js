@@ -1,13 +1,13 @@
 import { findElementWithAssert, map, normalizeText } from '../helpers';
 
 /**
- * Gets text of the element or Array of texts of all matched elements by selector
+ * Returns text of the element or Array of texts of all matched elements by selector.
  *
  * @example
  *
  * // Hello <span>world!</span>
  *
- * let page = PageObject.create({
+ * const page = PageObject.create({
  *   text: PageObject.text('span')
  * });
  *
@@ -19,11 +19,11 @@ import { findElementWithAssert, map, normalizeText } from '../helpers';
  * // <span> ipsum </span>
  * // <span>dolor</span>
  *
- * var page = PageObject.create({
+ * const page = PageObject.create({
  *   texts: PageObject.text('span', { multiple: true })
  * });
  *
- * assert.equal(page.texts, ['lorem', 'ipsum', 'dolor']);
+ * assert.deepEqual(page.texts, ['lorem', 'ipsum', 'dolor']);
  *
  * @example
  *
@@ -31,7 +31,7 @@ import { findElementWithAssert, map, normalizeText } from '../helpers';
  * // <div class="scope"><span>ipsum</span></div>
  * // <div><span>dolor</span></div>
  *
- * let page = PageObject.create({
+ * const page = PageObject.create({
  *   text: PageObject.text('span', { scope: '.scope' })
  * });
  *
@@ -43,7 +43,7 @@ import { findElementWithAssert, map, normalizeText } from '../helpers';
  * // <div class="scope"><span>ipsum</span></div>
  * // <div><span>dolor</span></div>
  *
- * let page = PageObject.create({
+ * const page = PageObject.create({
  *   scope: '.scope',
  *   text: PageObject.text('span')
  * });
@@ -55,14 +55,14 @@ import { findElementWithAssert, map, normalizeText } from '../helpers';
  *
  * @param {string} selector - CSS selector of the element to check
  * @param {Object} options - Additional options
- * @param {string} options.scope - Nests provided scope with parent's scope
+ * @param {string} options.scope - Nests provided scope within parent's scope
  * @param {number} options.at - Reduce the set of matched elements to the one at the specified index
  * @param {boolean} options.resetScope - Override parent's scope
  * @param {boolean} options.multiple - Return an array of values
  * @return {Descriptor}
  *
  * @throws Will throw an error if no element matches selector
- * @throws Will throw an error if multiple elements are matched by selector and multiple options is not set
+ * @throws Will throw an error if multiple elements are matched by selector and multiple option is not set
  */
 export function text(selector, options = {}) {
   return {

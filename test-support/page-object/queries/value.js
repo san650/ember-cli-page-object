@@ -1,13 +1,14 @@
 import { findElementWithAssert, map } from '../helpers';
 
 /**
- * Gets the value of matched element or get Array of values of all matched elements
+ * Returns the value of a matched element,
+ * or an array of values of all matched elements.
  *
  * @example
  *
  * // <input value="Lorem ipsum">
  *
- * var page = PageObject.create({
+ * const page = PageObject.create({
  *   value: PageObject.value('input')
  * });
  *
@@ -18,18 +19,18 @@ import { findElementWithAssert, map } from '../helpers';
  * // <input value="lorem">
  * // <input value="ipsum">
  *
- * let page = PageObject.create({
+ * const page = PageObject.create({
  *   value: PageObject.value('input', { multiple: true })
  * });
  *
- * assert.equal(page.value, ['lorem', 'ipsum']);
+ * assert.deepEqual(page.value, ['lorem', 'ipsum']);
  *
  * @example
  *
  * // <div><input value="lorem"></div>
  * // <div class="scope"><input value="ipsum"></div>
  *
- * let page = PageObject.create({
+ * const page = PageObject.create({
  *   value: PageObject.value('input', { scope: '.scope' })
  * });
  *
@@ -40,7 +41,7 @@ import { findElementWithAssert, map } from '../helpers';
  * // <div><input value="lorem"></div>
  * // <div class="scope"><input value="ipsum"></div>
  *
- * let page = PageObject.create({
+ * const page = PageObject.create({
  *   scope: '.scope',
  *   value: PageObject.value('input')
  * });
@@ -51,7 +52,7 @@ import { findElementWithAssert, map } from '../helpers';
  *
  * @param {string} selector - CSS selector of the element to check
  * @param {Object} options - Additional options
- * @param {string} options.scope - Nests provided scope with parent's scope
+ * @param {string} options.scope - Nests provided scope within parent's scope
  * @param {boolean} options.resetScope - Override parent's scope
  * @param {number} options.at - Reduce the set of matched elements to the one at the specified index
  * @param {boolean} options.multiple - If set, the function will return an array of values

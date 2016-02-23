@@ -1,13 +1,13 @@
 import { buildSelector } from '../helpers';
 
 /**
- * Fills an input matched by selector
+ * Fills in an input matched by a selector.
  *
  * @example
  *
  * // <input value="">
  *
- * var page = PageObject.create({
+ * const page = PageObject.create({
  *   fillIn: PageObject.fillable('input')
  * });
  *
@@ -23,7 +23,7 @@ import { buildSelector } from '../helpers';
  * //   <input value= "">
  * // </div>
  *
- * var page = PageObject.create({
+ * const page = PageObject.create({
  *   fillInName: PageObject.fillable('input', { scope: '.name' })
  * });
  *
@@ -43,7 +43,7 @@ import { buildSelector } from '../helpers';
  * //   <input value= "">
  * // </div>
  *
- * var page = PageObject.create({
+ * const page = PageObject.create({
  *   scope: 'name',
  *   fillInName: PageObject.fillable('input')
  * });
@@ -59,7 +59,7 @@ import { buildSelector } from '../helpers';
  *
  * @param {string} selector - CSS selector of the element to look for text
  * @param {Object} options - Additional options
- * @param {string} options.scope - Nests provided scope with parent's scope
+ * @param {string} options.scope - Nests provided scope within parent's scope
  * @param {number} options.at - Reduce the set of matched elements to the one at the specified index
  * @param {boolean} options.resetScope - Override parent's scope
  * @return {Descriptor}

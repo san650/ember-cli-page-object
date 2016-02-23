@@ -33,11 +33,13 @@ function appendQueryParams(path, queryParams) {
 }
 
 /**
- * Loads a given route, result descriptor can be called with dynamic segments and parameters.
+ * Loads a given route.
+ *
+ * The resulting descriptor can be called with dynamic segments and parameters.
  *
  * @example
  *
- * var page = PageObject.create({
+ * const page = PageObject.create({
  *   visit: PageObject.visitable('/users')
  * });
  *
@@ -46,7 +48,7 @@ function appendQueryParams(path, queryParams) {
  *
  * @example
  *
- * var page = PageObject.create({
+ * const page = PageObject.create({
  *   visit: PageObject.visitable('/users/:user_id')
  * });
  *
@@ -55,7 +57,7 @@ function appendQueryParams(path, queryParams) {
  *
  * @example
  *
- * var page = PageObject.create({
+ * const page = PageObject.create({
  *   visit: PageObject.visitable('/users')
  * });
  *
@@ -64,12 +66,12 @@ function appendQueryParams(path, queryParams) {
  *
  * @example
  *
- * var page = PageObject.create({
+ * const page = PageObject.create({
  *   visit: PageObject.visitable('/users/:user_id')
  * });
  *
  * // visits '/users/1?name=john'
- * page.visit({ id: 1 }, { name: 'john' });
+ * page.visit({ user_id: 1, name: 'john' });
  *
  * @param {string} path - Full path of the route to visit
  * @return {Descriptor}
