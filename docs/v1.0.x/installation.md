@@ -1,11 +1,10 @@
 ---
 layout: page
 title: Installation
-permalink: /installation/
 ---
 
-{% highlight bash %}
+```bash
 $ ember install ember-cli-page-object
-{% endhighlight %}
+```
 
 That's it!

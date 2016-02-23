@@ -1,7 +1,6 @@
 ---
 layout: page
 title: Components
-permalink: /api/components/
 ---
 
 Group attributes and create new ones

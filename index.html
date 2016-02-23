@@ -1,0 +1,16 @@
+---
+---
+
+{% for version in site.data.navs %}
+  {% if forloop.first %}
+    {% assign latestVersion = version[0] %}
+  {% endif %}
+{% endfor %}
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta http-equiv="refresh" content="0;url={{site.url}}{{site.baseurl}}/docs/{{latestVersion}}" />
+</head>
+</html>

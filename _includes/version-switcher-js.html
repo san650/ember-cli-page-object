@@ -1,0 +1,11 @@
+<script type="text/javascript">
+  // When the version switcher's value changes,
+  // navigate to the selected version's URL.
+  (function() {
+    var switcher = document.getElementById('version-switcher');
+
+    switcher.onchange = function() {
+      window.location = '{{site.baseurl}}' + this.value;
+    };
+  })();
+</script>

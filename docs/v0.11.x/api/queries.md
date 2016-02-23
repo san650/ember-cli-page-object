@@ -1,7 +1,6 @@
 ---
 layout: page
 title: Queries
-permalink: /api/queries/
 ---
 
 Retrieve values from elements
