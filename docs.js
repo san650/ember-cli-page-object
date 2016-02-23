@@ -97,7 +97,7 @@ function massageMarkdown(markdown, options) {
                       tableOfContents.join('\n') + '\n\n' +
                       lines.join('\n');
 
-  return new RSVP.Promise(function(resolve, reject) {
+  return new RSVP.Promise(function(resolve) {
     resolve(processedMarkdown);
   });
 }

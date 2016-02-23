@@ -53,7 +53,7 @@ export default {
   isHidden,
   isVisible,
   notHasClass,
-  selectable: fillable,
+  selectable,
   text,
   value,
   visitable
