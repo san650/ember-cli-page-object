@@ -60,7 +60,7 @@ const page = PageObject.create({
   clickOnButton: PageObject.clickOnText('button', { scope: '.scope' })
 });
 
-// queries the DOM with selector '.scope fieldset :contains("Lorem"):last'
+// queries the DOM with selector '.scope fieldset:contains("Lorem"):last'
 page.clickOnFieldset('Lorem');
 
 // queries the DOM with selector '.scope button:contains("Ipsum")'
