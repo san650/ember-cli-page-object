@@ -47,3 +47,16 @@ test('allows to chain actions', function(assert) {
     assert.equal(page.screen, '456');
   });
 });
+
+test('action chains act like a promise', function(assert) {
+  assert.expect(1);
+
+  page
+    .visit()
+    .keys
+    .clickOn('1')
+    .clickOn('2')
+    .then(function() {
+      assert.equal(page.screen, '12');
+    });
+});

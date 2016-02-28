@@ -9,6 +9,14 @@ import { clickable } from './actions/clickable';
 
 var { merge } = Ember;
 
+var thenDescriptor = {
+  isDescriptor: true,
+  value() {
+    /* global wait */
+    return wait().then(...arguments);
+  }
+};
+
 function plugDefaultProperties(definition) {
   if (typeof(definition.isVisible) === 'undefined') {
     definition.isVisible = isVisible();
@@ -32,6 +40,10 @@ function plugDefaultProperties(definition) {
 
   if (typeof(definition.text) === 'undefined') {
     definition.text = text();
+  }
+
+  if (typeof(definition.then) === 'undefined') {
+    definition.then = thenDescriptor;
   }
 }
 
