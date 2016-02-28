@@ -1,5 +1,14 @@
 # master
 
+- [Bugfix] ceibo should also be imported in development environment
+
+# v1.0.0
+
+- [Feature] Autogenerate API docs path from version number
+- [Feature] Update site documentation to include v1.0 API reference
+
+# v1.0.0-beta.1
+
 - [Change] Change `.visitable` signature
 - [Change] `.clickOnText` now matches current element as well
 
