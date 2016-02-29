@@ -17,34 +17,28 @@ var thenDescriptor = {
   }
 };
 
+var defaultProperties = {
+  isVisible: isVisible,
+  isHidden: isHidden,
+  clickOn: clickOnText,
+  click: clickable,
+  contains: contains,
+  text: text,
+  then: thenDescriptor
+};
+
 function plugDefaultProperties(definition) {
-  if (typeof(definition.isVisible) === 'undefined') {
-    definition.isVisible = isVisible();
-  }
+  Object.keys(defaultProperties).forEach(key => {
+    if (typeof(definition[key]) !== 'undefined') {
+      return;
+    }
 
-  if (typeof(definition.isHidden) === 'undefined') {
-    definition.isHidden = isHidden();
-  }
-
-  if (typeof(definition.clickOn) === 'undefined') {
-    definition.clickOn = clickOnText();
-  }
-
-  if (typeof(definition.click) === 'undefined') {
-    definition.click = clickable();
-  }
-
-  if (typeof(definition.contains) === 'undefined') {
-    definition.contains = contains();
-  }
-
-  if (typeof(definition.text) === 'undefined') {
-    definition.text = text();
-  }
-
-  if (typeof(definition.then) === 'undefined') {
-    definition.then = thenDescriptor;
-  }
+    if (typeof(defaultProperties[key]) === 'function') {
+      definition[key] = defaultProperties[key]();
+    } else {
+      definition[key] = defaultProperties[key];
+    }
+  });
 }
 
 // See https://github.com/san650/ceibo#examples for more info on how Ceibo
