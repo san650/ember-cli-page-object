@@ -130,3 +130,12 @@ test('generates .text property', function(assert) {
   assert.equal(page.text, 'Ipsum Dolor');
   assert.equal(page.foo.text, 'Dolor');
 });
+
+test('generates .then property', function(assert) {
+  var page = create({
+    foo: {}
+  });
+
+  assert.ok(typeof(page.then) === 'function');
+  assert.ok(typeof(page.foo.then) === 'function');
+});

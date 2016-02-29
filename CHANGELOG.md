@@ -1,5 +1,6 @@
 # master
 
+- [Bugfix] Page object component acts like a promise
 - [Bugfix] ceibo should also be imported in development environment
 
 # v1.0.0
