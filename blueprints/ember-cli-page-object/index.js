@@ -3,6 +3,6 @@ module.exports = {
   normalizeEntityName: function() {},
 
   afterInstall: function() {
-    return this.addBowerPackageToProject('ceibo', '1.0.0');
+    return this.addBowerPackageToProject('ceibo', '1.1.0');
   }
 };

@@ -1,4 +1,22 @@
-import { buildSelector } from '../helpers';
+import { buildSelector, getContext } from '../helpers';
+
+const { assert, run } = Ember;
+
+function clickForAcceptance(tree, selector, options) {
+  /* global click */
+  click(buildSelector(tree, selector, options));
+}
+
+function clickForIntegration(tree, selector, options) {
+  const context = getContext(tree);
+
+  // FIXME: improve message and test this case
+  assert('You need to set `context` in component integration tests', context);
+
+  run(function() {
+    context.$(buildSelector(tree, selector, options)).click();
+  });
+}
 
 /**
  * Clicks elements matched by a selector.
@@ -59,8 +77,11 @@ export function clickable(selector, options = {}) {
     isDescriptor: true,
 
     value() {
-      /* global click */
-      click(buildSelector(this, selector, options));
+      if (typeof(click) === 'function') {
+        clickForAcceptance(this, selector, options);
+      } else {
+        clickForIntegration(this, selector, options);
+      }
 
       return this;
     }
