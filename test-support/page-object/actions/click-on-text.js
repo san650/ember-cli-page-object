@@ -1,9 +1,9 @@
 import Ember from 'ember';
-import { buildSelector } from '../helpers';
+import { buildSelector, getContext } from '../helpers';
 
 /* global wait, find, click */
 
-var { merge } = Ember;
+const { assert, merge, run } = Ember;
 
 function findChildElement(tree, selector, textToClick, options) {
   // Suppose that we have something like `<form><button>Submit</button></form>`
@@ -21,6 +21,27 @@ function findElement(tree, selector, textToClick, options) {
   var fullSelector = buildSelector(tree, selector, merge({ contains: textToClick }, options));
 
   return fullSelector;
+}
+
+function clickForAcceptance(tree, selector, textToClick, options) {
+  wait().then(function() {
+    var actualSelector = findChildElement(tree, selector, textToClick, options) || findElement(tree, selector, textToClick, options);
+
+    click(actualSelector);
+  });
+}
+
+function clickForIntegration(tree, selector, textToClick, options) {
+  var context = getContext(tree);
+
+  // FIXME: improve message and test this case
+  assert('You need to set `context` in component integration tests', context);
+
+  run(function() {
+    var actualSelector = findChildElement(tree, selector, textToClick, options) || findElement(tree, selector, textToClick, options);
+
+    context.$(actualSelector).click();
+  });
 }
 
 /**
@@ -102,13 +123,11 @@ export function clickOnText(selector, options = {}) {
     isDescriptor: true,
 
     value(textToClick) {
-      var that = this;
-
-      wait().then(function() {
-        var actualSelector = findChildElement(that, selector, textToClick, options) || findElement(that, selector, textToClick, options);
-
-        click(actualSelector);
-      });
+      if (typeof(click) === 'function') {
+        clickForAcceptance(this, selector, textToClick, options);
+      } else {
+        clickForIntegration(this, selector, textToClick, options);
+      }
 
       return this;
     }

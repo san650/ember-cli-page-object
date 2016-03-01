@@ -1,4 +1,26 @@
-import { buildSelector } from '../helpers';
+import { buildSelector, getContext } from '../helpers';
+
+const { assert, run } = Ember;
+
+function fillForAcceptance(tree, selector, textToUse, options) {
+  /* global fillIn */
+  fillIn(buildSelector(tree, selector, options), textToUse);
+}
+
+function fillForIntegration(tree, selector, textToUse, options) {
+  const context = getContext(tree);
+
+  // FIXME: improve message and test this case
+  assert('You need to set `context` in component integration tests', context);
+
+  const $el = context.$(buildSelector(tree, selector, options));
+
+  run(function() {
+    $el.val(textToUse);
+    $el.trigger('input');
+    $el.change();
+  });
+}
 
 /**
  * Fills in an input matched by a selector.
@@ -69,8 +91,11 @@ export function fillable(selector, options = {}) {
     isDescriptor: true,
 
     value(textToUse) {
-      /* global fillIn */
-      fillIn(buildSelector(this, selector, options), textToUse);
+      if (typeof(fillIn) === 'function') {
+        fillForAcceptance(this, selector, textToUse, options);
+      } else {
+        fillForIntegration(this, selector, textToUse, options);
+      }
 
       return this;
     }
