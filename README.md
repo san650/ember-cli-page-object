@@ -22,15 +22,21 @@ You can find more information about this design pattern here:
 * [Page Objects - Selenium wiki](https://code.google.com/p/selenium/wiki/PageObjects)
 * [PageObject - Martin Fowler](http://martinfowler.com/bliki/PageObject.html)
 
-## Documentation
+## Community
 
-Check the [site](http://ember-cli-page-object.js.org/) for full documentation.
+Let's work together to improve this addon!
+
+You can find us on the [official Slack](https://ember-community-slackin.herokuapp.com/), join the `ember-cli-page-object` channel or [open an issue on Github](https://github.com/san650/ember-cli-page-object/issues) to request features, report bugs or just to ask any question.
 
 ## Installation
 
 ```sh
 ember install ember-cli-page-object
 ```
+
+## Documentation
+
+Check the [site](http://ember-cli-page-object.js.org/) for full documentation.
 
 ## Blueprints
 
@@ -74,6 +80,12 @@ $ bower install
 [![devDependency Status](https://david-dm.org/san650/ember-cli-page-object/dev-status.svg)](https://david-dm.org/san650/ember-cli-page-object#info=devDependencies)
 [![Codacy Badge](https://api.codacy.com/project/badge/35545e8e8ade48dfa999a3f5e1aa4b3b)](https://www.codacy.com/app/san650/ember-cli-page-object)
 [![Code Climate](https://codeclimate.com/github/san650/ember-cli-page-object/badges/gpa.svg)](https://codeclimate.com/github/san650/ember-cli-page-object)
+
+### Maintainers
+
+- Santiago Ferreira (@san650)
+- Juan Manuel Azambuja (@juanazam)
+- Jerad Gallinger (@jeradg)
 
 ## License
 
