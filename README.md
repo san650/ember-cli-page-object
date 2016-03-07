@@ -4,7 +4,8 @@
 ![Latest version](https://img.shields.io/npm/v/ember-cli-page-object.svg)
 
 Represent the screens of your web app as a series of objects. This ember-cli
-addon eases the construction of these objects on your acceptance tests.
+addon eases the construction of these objects for your acceptance and
+integration tests.
 
 http://ember-cli-page-object.js.org/
 
