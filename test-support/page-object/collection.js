@@ -4,9 +4,7 @@ import { create } from './create';
 import { count } from '../page-object';
 
 function merge(target, ...objects) {
-  objects.forEach(function(o) {
-    Ember.merge(target, o);
-  });
+  objects.forEach(o => Ember.merge(target, o));
 
   return target;
 }
@@ -20,7 +18,7 @@ function generateEnumerable(definition) {
     enumerable.count = count(definition.itemScope)
   }
 
-  return create(enumerable);
+  return create(enumerable, { parent: this });
 }
 
 function generateItem(index, definition) {
@@ -152,3 +150,4 @@ export function collection(definition) {
     }
   };
 }
+

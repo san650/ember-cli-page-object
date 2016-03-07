@@ -6,8 +6,9 @@ import { isHidden } from './predicates/is-hidden';
 import { contains } from './predicates/contains';
 import { clickOnText } from './actions/click-on-text';
 import { clickable } from './actions/clickable';
+import { bindContextMethods } from './context';
 
-var { merge } = Ember;
+const { merge } = Ember;
 
 var thenDescriptor = {
   isDescriptor: true,
@@ -44,15 +45,15 @@ function plugDefaultProperties(definition) {
 // See https://github.com/san650/ceibo#examples for more info on how Ceibo
 // builders work.
 function buildObject(builder, target, key, definition) {
-  var container = {};
+  // Don't process the test's `this` context with
+  // Ceibo. Because some values in the test's `this` are
+  // circular references, it gets stuck in an infinite loop.
+  if (key !== 'context') {
+    plugDefaultProperties(definition);
 
-  plugDefaultProperties(definition);
-
-  // Create child component
-  Ceibo.defineProperty(target, key, container);
-
-  // Recursion
-  builder.processNode(definition, container, target);
+    // Call the default object builder
+    Ceibo.defaults.builder.object(builder, target, key, definition);
+  }
 }
 
 /**
@@ -63,6 +64,15 @@ function buildObject(builder, target, key, definition) {
  * - **Actions**: click, clickOn
  * - **Predicates**: contains, isHidden, isVisible
  * - **Queries**: text
+ *
+ * `definition` can include a key `context`, which is an
+ * optional integration test `this` context.
+ *
+ * If a context is passed, it is used by actions, queries, etc.,
+ * as the `this` in `this.$()`.
+ *
+ * If no context is passed, the global Ember acceptence test
+ * helpers are used.
  *
  * @example
  *
@@ -101,13 +111,22 @@ function buildObject(builder, target, key, definition) {
  * @public
  *
  * @param {Object} definition - PageObject definition
+ * @param {Object} [definition.context] - A test's `this` context
  * @param {Object} options - [private] Ceibo options. Do not use!
  * @return {PageObject}
  */
 export function create(definition, options = {}) {
-  var builder = {
+  const context = typeof definition === 'object' ? definition.context : null;
+  const builder = {
     object: buildObject
   };
+  const page = Ceibo.create(definition, merge({ builder }, options));
 
-  return Ceibo.create(definition, merge({ builder }, options ));
+  if (page) {
+    bindContextMethods(page);
+
+    page.setContext(context);
+  }
+
+  return page;
 }

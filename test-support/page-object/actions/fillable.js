@@ -1,76 +1,44 @@
-import { buildSelector } from '../helpers';
+import Ember from 'ember';
+import { findElementWithAssert, buildSelector, getContext } from '../helpers';
 
 /**
- * Fills in an input matched by a selector.
+ * Creates an action to fill in an input
  *
  * @example
  *
- * // <input value="">
+ *   var page = PageObject.create({
+ *     name: fillable('#name')
+ *   });
  *
- * const page = PageObject.create({
- *   fillIn: PageObject.fillable('input')
- * });
+ *   page.name('John Doe');
  *
- * // result: <input value="John Doe">
- * page.fillIn('John Doe');
- *
- * @example
- *
- * // <div class="name">
- * //   <input value="">
- * // </div>
- * // <div class="last-name">
- * //   <input value= "">
- * // </div>
- *
- * const page = PageObject.create({
- *   fillInName: PageObject.fillable('input', { scope: '.name' })
- * });
- *
- * page.fillInName('John Doe');
- *
- * // result
- * // <div class="name">
- * //   <input value="John Doe">
- * // </div>
- *
- * @example
- *
- * // <div class="name">
- * //   <input value="">
- * // </div>
- * // <div class="last-name">
- * //   <input value= "">
- * // </div>
- *
- * const page = PageObject.create({
- *   scope: 'name',
- *   fillInName: PageObject.fillable('input')
- * });
- *
- * page.fillInName('John Doe');
- *
- * // result
- * // <div class="name">
- * //   <input value="John Doe">
- * // </div>
- *
- * @public
- *
- * @param {string} selector - CSS selector of the element to look for text
+ * @param {string} selector - CSS selector of the element to fill
  * @param {Object} options - Additional options
- * @param {string} options.scope - Nests provided scope within parent's scope
+ * @param {string} options.scope - Overrides parent scope
  * @param {number} options.at - Reduce the set of matched elements to the one at the specified index
- * @param {boolean} options.resetScope - Override parent's scope
+ * @param {boolean} options.resetScope - Ignore parent scope
  * @return {Descriptor}
  */
 export function fillable(selector, options = {}) {
   return {
     isDescriptor: true,
 
-    value(textToUse) {
-      /* global fillIn */
-      fillIn(buildSelector(this, selector, options), textToUse);
+    value(text) {
+      const fullSelector = buildSelector(this, selector, options);
+      const context = getContext(this);
+
+      if (context && findElementWithAssert(this, selector)) {
+        const $el = context.$(fullSelector);
+
+        Ember.run(() => {
+          $el.val(text);
+          $el.trigger('input');
+          $el.change();
+        });
+      } else {
+        /* global fillIn */
+        fillIn(fullSelector, text);
+      }
 
       return this;
     }

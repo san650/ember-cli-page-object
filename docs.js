@@ -93,9 +93,14 @@ function massageMarkdown(markdown, options) {
     }
   }
 
+  // Place the markdown inside a Liquid '{% raw %}{% endraw %}' block
+  // so that '{{component-name}}' hbs tags are rendered in code blocks.
+  // (Liquid will parse them as Liquid tags otherwise.)
   processedMarkdown = frontmatter.join('\n') + '\n\n' +
+                      '{% raw %}\n' +
                       tableOfContents.join('\n') + '\n\n' +
-                      lines.join('\n');
+                      lines.join('\n') +
+                      '{% endraw %}';
 
   return new RSVP.Promise(function(resolve) {
     resolve(processedMarkdown);
