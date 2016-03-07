@@ -1,8 +1,11 @@
 import { test } from 'qunit';
 import { fixture, moduleFor } from '../test-helper';
 import { create, isHidden } from '../../page-object';
+import {
+  test_throws_if_not_multiple
+} from '../shared';
 
-moduleFor('.isHidden');
+moduleFor('Unit | Property | .isHidden');
 
 test('returns true when the element is hidden', function(assert) {
   fixture('Lorem <span style="display:none">ipsum</span>');
@@ -76,6 +79,45 @@ test('resets scope', function(assert) {
   });
 
   assert.ok(page.foo);
+});
+
+test_throws_if_not_multiple(function() {
+  fixture(`
+    <em style="display:none">ipsum</em>
+    <em style="display:none">dolor</em>
+  `);
+
+  let page = create({
+    foo: isHidden('em')
+  });
+
+  return page.foo;
+});
+
+test('matches multiple elements with multiple: true option, returns true if all elements are hidden', function(assert) {
+  fixture(`
+    <em style="display:none">ipsum</em>
+    <em style="display:none">dolor</em>
+  `);
+
+  let page = create({
+    foo: isHidden('em', { multiple: true })
+  });
+
+  assert.ok(page.foo);
+});
+
+test('matches multiple elements with multiple: true option, returns false if some elements are visible', function(assert) {
+  fixture(`
+    <em>ipsum</em>
+    <em style="display:none">dolor</em>
+  `);
+
+  let page = create({
+    foo: isHidden('em', { multiple: true })
+  });
+
+  assert.ok(!page.foo);
 });
 
 test('finds element by index', function(assert) {

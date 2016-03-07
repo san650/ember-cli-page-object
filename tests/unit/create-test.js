@@ -2,7 +2,7 @@ import { test } from 'qunit';
 import { fixture, moduleFor } from './test-helper';
 import { create, text } from '../page-object';
 
-moduleFor('.create');
+moduleFor('Unit | Property | .create');
 
 test('creates new page object', function(assert) {
   var page = create({

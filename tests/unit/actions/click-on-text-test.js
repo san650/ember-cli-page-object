@@ -1,74 +1,141 @@
 import { test } from 'qunit';
-import { moduleFor } from '../test-helper';
+import { moduleFor, fixture } from '../test-helper';
 import { create, clickOnText } from '../../page-object';
 
-moduleFor('.clickOnText');
+moduleFor('Unit | Property | .clickOnText');
 
 test('calls Ember\'s click helper', function(assert) {
-  assert.expect(1);
+  assert.expect(2);
 
-  let expectedSelector = 'span :contains("dummy text"):last',
-      page;
+  fixture(`
+    <fieldset>
+      <button>Lorem</button>
+      <button>Ipsum</button>
+    </fieldset>
+  `);
+
+  let expectedSelector, page;
 
   window.click = function(actualSelector) {
     assert.equal(actualSelector, expectedSelector);
   };
 
   page = create({
-    foo: clickOnText('span')
+    foo: clickOnText('fieldset'),
+    bar: clickOnText('button')
   });
 
-  page.foo('dummy text');
+  andThen(() => {
+    expectedSelector = 'fieldset :contains("Lorem"):last';
+    page.foo('Lorem');
+  });
+
+  andThen(() => {
+    expectedSelector = 'button:contains("Lorem")';
+    page.bar('Lorem');
+  });
 });
 
 test('looks for elements inside the scope', function(assert) {
-  assert.expect(1);
+  assert.expect(2);
 
-  let page;
+  fixture(`
+    <div class="scope">
+      <fieldset>
+        <button>Lorem</button>
+        <button>Ipsum</button>
+      </fieldset>
+    </div>
+  `);
+
+  let expectedSelector, page;
 
   window.click = function(actualSelector) {
-    assert.equal(actualSelector, '.scope span :contains("dummy text"):last');
+    assert.equal(actualSelector, expectedSelector);
   };
 
   page = create({
-    foo: clickOnText('span', { scope: '.scope' })
+    foo: clickOnText('fieldset', { scope: '.scope' }),
+    bar: clickOnText('button', { scope: '.scope' })
   });
 
-  page.foo('dummy text');
+  andThen(() => {
+    expectedSelector = '.scope fieldset :contains("Lorem"):last';
+    page.foo('Lorem');
+  });
+
+  andThen(() => {
+    expectedSelector = '.scope button:contains("Lorem")';
+    page.bar('Lorem');
+  });
 });
 
 test('looks for elements inside page\'s scope', function(assert) {
-  assert.expect(1);
+  assert.expect(2);
 
-  let page;
+  fixture(`
+    <div class="scope">
+      <fieldset>
+        <button>Lorem</button>
+        <button>Ipsum</button>
+      </fieldset>
+    </div>
+  `);
+
+  let page, expectedSelector;
 
   window.click = function(actualSelector) {
-    assert.equal(actualSelector, '.scope span :contains("dummy text"):last');
+    assert.equal(actualSelector, expectedSelector);
   };
 
   page = create({
     scope: '.scope',
-    foo: clickOnText('span')
+    foo: clickOnText('fieldset'),
+    bar: clickOnText('button')
   });
 
-  page.foo('dummy text');
+  andThen(() => {
+    expectedSelector = '.scope fieldset :contains("Lorem"):last';
+    page.foo('Lorem');
+  });
+
+  andThen(() => {
+    expectedSelector = '.scope button:contains("Lorem")';
+    page.bar('Lorem');
+  });
 });
 
 test('resets scope', function(assert) {
-  assert.expect(1);
+  assert.expect(2);
 
-  let page;
+  fixture(`
+    <fieldset>
+      <button>Lorem</button>
+      <button>Ipsum</button>
+    </fieldset>
+  `);
+
+  let page, expectedSelector;
 
   window.click = function(actualSelector) {
-    assert.equal(actualSelector, 'span :contains("dummy text"):last');
+    assert.equal(actualSelector, expectedSelector);
   };
 
   page = create({
     scope: '.scope',
-    foo: clickOnText('span', { resetScope: true })
+    foo: clickOnText('fieldset', { resetScope: true }),
+    bar: clickOnText('button', { resetScope: true })
   });
 
-  page.foo('dummy text');
+  andThen(() => {
+    expectedSelector = 'fieldset :contains("Lorem"):last';
+    page.foo('Lorem');
+  });
+
+  andThen(() => {
+    expectedSelector = 'button:contains("Lorem")';
+    page.bar('Lorem');
+  });
 });
 
 test('returns target object', function(assert) {
@@ -89,18 +156,35 @@ test('returns target object', function(assert) {
 });
 
 test('finds element by index', function(assert) {
-  assert.expect(1);
+  assert.expect(2);
 
-  let expectedSelector = 'span :contains("dummy text"):eq(3)',
-      page;
+  fixture(`
+    <fieldset>
+      <button>Lorem</button>
+      <button>Lorem</button>
+      <button>Lorem</button>
+      <button>Ipsum</button>
+    </fieldset>
+  `);
+
+  let expectedSelector, page;
 
   window.click = function(actualSelector) {
     assert.equal(actualSelector, expectedSelector);
   };
 
   page = create({
-    foo: clickOnText('span', { at: 3 })
+    foo: clickOnText('fieldset', { at: 2 }),
+    bar: clickOnText('button', { at: 2 })
   });
 
-  page.foo('dummy text');
+  andThen(() => {
+    expectedSelector = 'fieldset :contains("Lorem"):eq(2)';
+    page.foo('Lorem');
+  });
+
+  andThen(() => {
+    expectedSelector = 'button:contains("Lorem"):eq(2)';
+    page.bar('Lorem');
+  });
 });

@@ -1,7 +1,7 @@
 import Ember from 'ember';
 import Ceibo from 'ceibo';
 
-var { trim } = Ember.$;
+var { $, assert } = Ember;
 
 class Selector {
   constructor(node, scope, selector, filters) {
@@ -23,7 +23,7 @@ class Selector {
 
     filters = this.calculateFilters(this.targetFilters);
 
-    return trim(`${scope} ${this.targetSelector}${filters}`);
+    return $.trim(`${scope} ${this.targetSelector}${filters}`);
   }
 
   calculateFilters() {
@@ -66,6 +66,13 @@ class Selector {
   }
 }
 
+function guardMultiple(items, selector, supportMultiple) {
+  assert(
+    `"${selector}" matched more than one element. If this is not an error use { multiple: true }`,
+    supportMultiple || items.length <= 1
+  )
+}
+
 /**
  * Creates a fully qualified selector
  *
@@ -92,12 +99,31 @@ export function buildSelector(node, targetSelector, options) {
  * @param {string} options.contains - Filter by using :contains('foo') pseudo-class
  * @param {number} options.at - Filter by index using :eq(x) pseudo-class
  * @param {boolean} options.last - Filter by using :last pseudo-class
- * @return {string} Full qualified selector
+ * @return {Object} jQuery object
  */
-export function findElementWithAssert(node, targetSelector, options) {
-  var selector = buildSelector(node, targetSelector, options);
+export function findElementWithAssert(node, targetSelector, options = {}) {
+  const selector = buildSelector(node, targetSelector, options);
+  const context = getContext(node);
 
-  return findWithAssert(selector);
+  let result;
+
+  if (context) {
+    // TODO: When a context is provided, throw an exception
+    // or give a falsy assertion when there are no matches
+    // for the selector. This will provide consistent behaviour
+    // between acceptance and integration tests.
+    result = context.$(selector);
+
+    if (result.length === 0) {
+      throw new Ember.Error('Element ' + selector + ' not found.');
+    }
+  } else {
+    result = findWithAssert(selector);
+  }
+
+  guardMultiple(result, selector, options.multiple);
+
+  return result;
 }
 
 /**
@@ -110,12 +136,24 @@ export function findElementWithAssert(node, targetSelector, options) {
  * @param {string} options.contains - Filter by using :contains('foo') pseudo-class
  * @param {number} options.at - Filter by index using :eq(x) pseudo-class
  * @param {boolean} options.last - Filter by using :last pseudo-class
- * @return {string} Full qualified selector
+ * @return {Object} jQuery object
  */
-export function findElement(node, targetSelector, options) {
-  var selector = buildSelector(node, targetSelector, options);
+export function findElement(node, targetSelector, options = {}) {
+  const selector = buildSelector(node, targetSelector, options);
+  const context = getContext(node);
 
-  return find(selector);
+  let result;
+
+  if (context) {
+    result = context.$(selector);
+  } else {
+    /* global find */
+    result = find(selector);
+  }
+
+  guardMultiple(result, selector, options.multiple);
+
+  return result;
 }
 
 /**
@@ -127,5 +165,56 @@ export function findElement(node, targetSelector, options) {
  * @see http://api.jquery.com/text/
  */
 export function normalizeText(text) {
-  return Ember.$.trim(text).replace(/\n/g, ' ').replace(/\s\s*/g, ' ');
+  return $.trim(text).replace(/\n/g, ' ').replace(/\s\s*/g, ' ');
+}
+
+export function every(jqArray, cb) {
+  var arr = jqArray.get();
+
+  return Ember.A(arr).every(function(element) {
+    return cb($(element));
+  });
+}
+
+export function map(jqArray, cb) {
+  var arr = jqArray.get();
+
+  return Ember.A(arr).map(function(element) {
+    return cb($(element));
+  });
+}
+
+/**
+ * Return the root of a node's tree
+ *
+ * @param {Ceibo} node - Node of the tree
+ * @return {Ceibo} node - Root node of the tree
+ */
+export function getRoot(node) {
+  var parent = Ceibo.parent(node),
+      root = node;
+
+  while (parent) {
+    root = parent;
+    parent = Ceibo.parent(parent);
+  }
+
+  return root;
+}
+
+/**
+ * Return a test context if one was provided during `create()`
+ *
+ * @param {Ceibo} node - Node of the tree
+ * @return {?Object} The test's `this` context, or null
+ */
+export function getContext(node) {
+  var root = getRoot(node);
+  var context = root.context;
+
+  if (typeof context === 'object' && typeof context.$ === 'function') {
+    return context;
+  } else {
+    return null;
+  }
 }

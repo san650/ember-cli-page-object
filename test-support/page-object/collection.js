@@ -9,14 +9,6 @@ function merge(target, ...objects) {
   return target;
 }
 
-function select(target, ...keys) {
-  var object = {};
-
-  keys.forEach(key => object[key] = target[key]);
-
-  return object;
-}
-
 function generateEnumerable(definition) {
   var enumerable = merge({}, definition);
 
@@ -26,7 +18,7 @@ function generateEnumerable(definition) {
     enumerable.count = count(definition.itemScope)
   }
 
-  return create(enumerable);
+  return create(enumerable, { parent: this });
 }
 
 function generateItem(index, definition) {

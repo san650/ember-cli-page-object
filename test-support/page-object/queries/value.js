@@ -1,4 +1,4 @@
-import { findElementWithAssert, trim } from '../helpers';
+import { findElementWithAssert, map } from '../helpers';
 
 /**
  * Gets the value of the matched element
@@ -23,9 +23,14 @@ export function value(selector, options = {}) {
     isDescriptor: true,
 
     get() {
-      var element = findElementWithAssert(this, selector, options);
+      var elements = findElementWithAssert(this, selector, options);
+      var result;
 
-      return element.val();
+      result = map(elements, function(element) {
+        return element.val();
+      });
+
+      return options.multiple ? result : result[0];
     }
   };
 }

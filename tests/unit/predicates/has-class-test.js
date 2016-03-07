@@ -1,8 +1,11 @@
 import { test } from 'qunit';
 import { fixture, moduleFor } from '../test-helper';
 import { create, hasClass } from '../../page-object';
+import {
+  test_throws_if_not_multiple
+} from '../shared';
 
-moduleFor('.hasClass');
+moduleFor('Unit | Property | .hasClass');
 
 test('returns true when the element has the class', function(assert) {
   fixture('<em class="lorem"></em><span class="ipsum"></span>');
@@ -82,6 +85,45 @@ test('resets scope', function(assert) {
     scope: '.scope',
 
     foo: hasClass('lorem', 'div:first span', { resetScope: true })
+  });
+
+  assert.ok(page.foo);
+});
+
+test_throws_if_not_multiple(function() {
+  fixture(`
+    <span class="lorem"></span>
+    <span class="ipsum"></span>
+  `);
+
+  let page = create({
+    foo: hasClass('lorem', 'span')
+  });
+
+  return page.foo;
+});
+
+test('matches multiple elements with multiple: true option returns false if not all elements have class', function(assert) {
+  fixture(`
+    <span class="lorem"></span>
+    <span class="ipsum"></span>
+  `);
+
+  let page = create({
+    foo: hasClass('lorem', 'span', { multiple: true })
+  });
+
+  assert.ok(!page.foo);
+});
+
+test('matches multiple elements with multiple: true option returns true if all elements have class', function(assert) {
+  fixture(`
+    <span class="lorem"></span>
+    <span class="lorem"></span>
+  `);
+
+  let page = create({
+    foo: hasClass('lorem', 'span', { multiple: true })
   });
 
   assert.ok(page.foo);

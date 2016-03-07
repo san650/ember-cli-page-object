@@ -1,7 +1,32 @@
 import Ember from 'ember';
-import { buildSelector } from '../helpers';
+import { findElement, findElementWithAssert, buildSelector, getContext } from '../helpers';
+
+/* global wait, find, click */
 
 var { merge } = Ember;
+
+function childSelector(tree, selector, textToClick, options) {
+  // Suppose that we have something like `<form><button>Submit</button></form>`
+  // In this case <form> and <button> elements contains "Submit" text, so, we'll
+  // want to __always__ click on the __last__ element that contains the text.
+  var selectorWithSpace = (selector || '') + ' ';
+  var opts = merge({ contains: textToClick, last: true, multiple: true }, options);
+  var fullSelector = buildSelector(tree, selectorWithSpace, opts);
+
+  if (findElement(tree, selectorWithSpace, opts).length) {
+    return fullSelector;
+  }
+}
+
+function actualSelector(tree, selector, textToClick, options) {
+  var childSel = childSelector(tree, selector, textToClick, options);
+
+  if (childSel) {
+    return childSel;
+  } else {
+    return buildSelector(tree, selector, merge({ contains: textToClick }, options));
+  }
+}
 
 /**
  * Creates an action to click an element
@@ -25,17 +50,21 @@ export function clickOnText(selector, options = {}) {
     isDescriptor: true,
 
     value(textToClick) {
-      // Suppose that we have something like `<form><button>Submit</button></form>`
-      // In this case <form> and <button> elements contains "Submit" text, so, we'll
-      // want to __always__ click on the __last__ element that contains the text.
-      var selctorWithSpace = (selector || '') + ' ';
-      var fullSelector = buildSelector(
-        this,
-        selctorWithSpace,
-        merge({ contains: textToClick, last: true }, options));
+      var context = getContext(this);
 
-      /* global click */
-      click(fullSelector);
+      if (context && findElementWithAssert(this, selector)) {
+        Ember.run(() => {
+          var fullSelector = actualSelector(this, selector, textToClick, options);
+
+          context.$(fullSelector).click();
+        });
+      } else {
+        wait().then(() => {
+          var fullSelector = actualSelector(this, selector, textToClick, options);
+
+          click(fullSelector);
+        });
+      }
 
       return this;
     }

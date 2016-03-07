@@ -1,4 +1,4 @@
-import { findElementWithAssert } from '../helpers';
+import { findElementWithAssert, map } from '../helpers';
 
 /**
  * Gets the value of an attribute from an element
@@ -16,6 +16,7 @@ import { findElementWithAssert } from '../helpers';
  * @param {Object} options - Additional options
  * @param {string} options.scope - Overrides parent scope
  * @param {number} options.at - Reduce the set of matched elements to the one at the specified index
+ * @param {boolean} options.multiple - Return an array of values
  * @return {Descriptor}
  */
 export function attribute(attributeName, selector, options = {}) {
@@ -23,9 +24,14 @@ export function attribute(attributeName, selector, options = {}) {
     isDescriptor: true,
 
     get() {
-      var element = findElementWithAssert(this, selector, options);
+      var elements = findElementWithAssert(this, selector, options);
+      var result;
 
-      return element.attr(attributeName);
+      result = map(elements, function(element) {
+        return element.attr(attributeName);
+      });
+
+      return options.multiple ? result : result[0];
     }
   };
 }

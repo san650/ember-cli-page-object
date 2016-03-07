@@ -2,7 +2,7 @@ import { test } from 'qunit';
 import { moduleFor } from '../test-helper';
 import { create, visitable } from '../../page-object';
 
-moduleFor('.visitable');
+moduleFor('Unit | Property | .visitable');
 
 test('calls Ember\'s visit helper', function(assert) {
   assert.expect(1);
@@ -52,7 +52,7 @@ test("raises an exception if params aren't given for all dynamic segments", func
   }
 });
 
-test('appends queryParams to the path', function(assert) {
+test('appends query params to the path', function(assert) {
   assert.expect(1);
 
   let page;
@@ -65,5 +65,21 @@ test('appends queryParams to the path', function(assert) {
     foo: visitable('/dummy-page')
   });
 
-  page.foo({}, { hello: "world", lorem: "ipsum" });
+  page.foo({ hello: "world", lorem: "ipsum" });
+});
+
+test('accepts both dynamic segments and query params', function(assert) {
+  assert.expect(1);
+
+  let page;
+
+  window.visit = function(actualRoute) {
+    assert.equal(actualRoute, '/users/1/0?hello=world&lorem=ipsum');
+  };
+
+  page = create({
+    foo: visitable('/users/:user_id/:another_id')
+  });
+
+  page.foo({ user_id: 1, another_id: 0, hello: "world", lorem: "ipsum" });
 });
