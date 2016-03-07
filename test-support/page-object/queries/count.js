@@ -4,17 +4,67 @@ import { findElement } from '../helpers';
 var $ = Ember.$;
 
 /**
- * Gets the count of matched elements
+ * Returns the number of elements matched by a selector.
  *
  * @example
  *
- *   var page = PageObject.create({
- *     imageCount: count('.img')
- *   });
+ * // <span>1</span>
+ * // <span>2</span>
  *
- *   assert.equal(page.imageCount(), 2);
+ * const page = PageObject.create({
+ *   spanCount: PageObject.count('span')
+ * });
  *
- * @param {string} selector - CSS selector of the element to check
+ * assert.equal(page.spanCount, 2);
+ *
+ * @example
+ *
+ * // <div>Text</div>
+ *
+ * const page = PageObject.create({
+ *   spanCount: PageObject.count('span')
+ * });
+ *
+ * assert.equal(page.spanCount, 0);
+ *
+ * @example
+ *
+ * // <div><span></span></div>
+ * // <div class="scope"><span></span><span></span></div>
+ *
+ * const page = PageObject.create({
+ *   spanCount: PageObject.count('span', { scope: '.scope' })
+ * });
+ *
+ * assert.equal(page.spanCount, 2)
+ *
+ * @example
+ *
+ * // <div><span></span></div>
+ * // <div class="scope"><span></span><span></span></div>
+ *
+ * const page = PageObject.create({
+ *   scope: '.scope',
+ *   spanCount: PageObject.count('span')
+ * });
+ *
+ * assert.equal(page.spanCount, 2)
+ *
+ * @example
+ *
+ * // <div><span></span></div>
+ * // <div class="scope"><span></span><span></span></div>
+ *
+ * const page = PageObject.create({
+ *   scope: '.scope',
+ *   spanCount: PageObject.count('span', { resetScope: true })
+ * });
+ *
+ * assert.equal(page.spanCount, 1);
+ *
+ * @public
+ *
+ * @param {string} selector - CSS selector of the element or elements to check
  * @param {Object} options - Additional options
  * @param {string} options.scope - Add scope
  * @param {boolean} options.resetScope - Ignore parent scope
