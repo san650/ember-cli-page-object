@@ -7,7 +7,7 @@ module.exports = {
   included: function(app) {
     this._super.included(app);
 
-    if (app.env === 'test') {
+    if (app.env === 'test' || app.env === 'development') {
       app.import(app.bowerDirectory + '/ceibo/index.js');
     }
   }
