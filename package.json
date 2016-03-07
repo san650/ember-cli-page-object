@@ -53,6 +53,8 @@
   },
   "keywords": [
     "acceptance",
+    "integration",
+    "components",
     "ember",
     "ember-addon",
     "ember-cli",
