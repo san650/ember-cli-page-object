@@ -12,7 +12,7 @@ title: Context
 
 ## removeContext
 
-[test-support/page-object/context.js:63-69](https://github.com/san650/ember-cli-page-object/blob/181292ce23a0de545c16405b904b40bacbb87153/test-support/page-object/context.js#L63-L69 "Source code on GitHub")
+[test-support/page-object/context.js:63-69](https://github.com/san650/ember-cli-page-object/blob/fbc76e9109d2f5ce0729fcda7f18959f3ef6fa0e/test-support/page-object/context.js#L63-L69 "Source code on GitHub")
 
 Unsets the page's test context.
 
@@ -28,7 +28,7 @@ Returns **PageObject** the page object
 
 ## render
 
-[test-support/page-object/context.js:17-28](https://github.com/san650/ember-cli-page-object/blob/181292ce23a0de545c16405b904b40bacbb87153/test-support/page-object/context.js#L17-L28 "Source code on GitHub")
+[test-support/page-object/context.js:17-28](https://github.com/san650/ember-cli-page-object/blob/fbc76e9109d2f5ce0729fcda7f18959f3ef6fa0e/test-support/page-object/context.js#L17-L28 "Source code on GitHub")
 
 Render a component's template in the context of a test.
 
@@ -52,7 +52,7 @@ Returns **PageObject** the page object
 
 ## setContext
 
-[test-support/page-object/context.js:44-50](https://github.com/san650/ember-cli-page-object/blob/181292ce23a0de545c16405b904b40bacbb87153/test-support/page-object/context.js#L44-L50 "Source code on GitHub")
+[test-support/page-object/context.js:44-50](https://github.com/san650/ember-cli-page-object/blob/fbc76e9109d2f5ce0729fcda7f18959f3ef6fa0e/test-support/page-object/context.js#L44-L50 "Source code on GitHub")
 
 Sets the page's test context.
 

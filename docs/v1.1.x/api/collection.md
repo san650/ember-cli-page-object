@@ -3,13 +3,14 @@ layout: page
 title: Collection
 ---
 
+{% raw %}
 ### Methods
 
 - [collection](#collection)
 
 ## collection
 
-[test-support/page-object/collection.js:142-154](https://github.com/san650/ember-cli-page-object/blob/b9a36f01a8b3d265c7a14aa6bac29e4260d08e8c/test-support/page-object/collection.js#L142-L154 "Source code on GitHub")
+[test-support/page-object/collection.js:140-152](https://github.com/san650/ember-cli-page-object/blob/fbc76e9109d2f5ce0729fcda7f18959f3ef6fa0e/test-support/page-object/collection.js#L140-L152 "Source code on GitHub")
 
 Creates a component that represents a collection of items. The collection is zero-indexed.
 
@@ -123,3 +124,4 @@ assert.equal(page.users().caption, 'User Index');
 ```
 
 Returns **Descriptor** 
+{% endraw %}

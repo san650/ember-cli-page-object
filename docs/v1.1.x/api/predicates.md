@@ -3,6 +3,7 @@ layout: page
 title: Predicates
 ---
 
+{% raw %}
 ### Methods
 
 - [contains](#contains)
@@ -13,7 +14,7 @@ title: Predicates
 
 ## contains
 
-[test-support/page-object/predicates/contains.js:82-94](https://github.com/san650/ember-cli-page-object/blob/b9a36f01a8b3d265c7a14aa6bac29e4260d08e8c/test-support/page-object/predicates/contains.js#L82-L94 "Source code on GitHub")
+[test-support/page-object/predicates/contains.js:82-94](https://github.com/san650/ember-cli-page-object/blob/fbc76e9109d2f5ce0729fcda7f18959f3ef6fa0e/test-support/page-object/predicates/contains.js#L82-L94 "Source code on GitHub")
 
 Returns a boolean representing whether an element or a set of elements contains the specified text.
 
@@ -95,7 +96,7 @@ Returns **Descriptor**
 
 ## hasClass
 
-[test-support/page-object/predicates/has-class.js:83-95](https://github.com/san650/ember-cli-page-object/blob/b9a36f01a8b3d265c7a14aa6bac29e4260d08e8c/test-support/page-object/predicates/has-class.js#L83-L95 "Source code on GitHub")
+[test-support/page-object/predicates/has-class.js:83-95](https://github.com/san650/ember-cli-page-object/blob/fbc76e9109d2f5ce0729fcda7f18959f3ef6fa0e/test-support/page-object/predicates/has-class.js#L83-L95 "Source code on GitHub")
 
 Validates if an element or a set of elements have a given CSS class.
 
@@ -178,7 +179,7 @@ Returns **Descriptor**
 
 ## isHidden
 
-[test-support/page-object/predicates/is-hidden.js:88-100](https://github.com/san650/ember-cli-page-object/blob/b9a36f01a8b3d265c7a14aa6bac29e4260d08e8c/test-support/page-object/predicates/is-hidden.js#L88-L100 "Source code on GitHub")
+[test-support/page-object/predicates/is-hidden.js:88-100](https://github.com/san650/ember-cli-page-object/blob/fbc76e9109d2f5ce0729fcda7f18959f3ef6fa0e/test-support/page-object/predicates/is-hidden.js#L88-L100 "Source code on GitHub")
 
 Validates if an element or set of elements are hidden.
 
@@ -267,7 +268,7 @@ Returns **Descriptor**
 
 ## isVisible
 
-[test-support/page-object/predicates/is-visible.js:94-110](https://github.com/san650/ember-cli-page-object/blob/b9a36f01a8b3d265c7a14aa6bac29e4260d08e8c/test-support/page-object/predicates/is-visible.js#L94-L110 "Source code on GitHub")
+[test-support/page-object/predicates/is-visible.js:94-110](https://github.com/san650/ember-cli-page-object/blob/fbc76e9109d2f5ce0729fcda7f18959f3ef6fa0e/test-support/page-object/predicates/is-visible.js#L94-L110 "Source code on GitHub")
 
 Validates if an element or set of elements are visible.
 
@@ -362,7 +363,7 @@ Returns **Descriptor**
 
 ## notHasClass
 
-[test-support/page-object/predicates/not-has-class.js:85-97](https://github.com/san650/ember-cli-page-object/blob/b9a36f01a8b3d265c7a14aa6bac29e4260d08e8c/test-support/page-object/predicates/not-has-class.js#L85-L97 "Source code on GitHub")
+[test-support/page-object/predicates/not-has-class.js:85-97](https://github.com/san650/ember-cli-page-object/blob/fbc76e9109d2f5ce0729fcda7f18959f3ef6fa0e/test-support/page-object/predicates/not-has-class.js#L85-L97 "Source code on GitHub")
 
 Validates if an element or a set of elements don't have a given CSS class.
 
@@ -444,3 +445,4 @@ assert.ok(page.spanNotHasClass);
 ```
 
 Returns **Descriptor** 
+{% endraw %}

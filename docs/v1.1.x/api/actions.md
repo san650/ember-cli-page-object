@@ -3,6 +3,7 @@ layout: page
 title: Actions
 ---
 
+{% raw %}
 ### Methods
 
 - [clickOnText](#clickontext)
@@ -12,7 +13,7 @@ title: Actions
 
 ## clickOnText
 
-[test-support/page-object/actions/click-on-text.js:100-116](https://github.com/san650/ember-cli-page-object/blob/b9a36f01a8b3d265c7a14aa6bac29e4260d08e8c/test-support/page-object/actions/click-on-text.js#L100-L116 "Source code on GitHub")
+[test-support/page-object/actions/click-on-text.js:105-129](https://github.com/san650/ember-cli-page-object/blob/fbc76e9109d2f5ce0729fcda7f18959f3ef6fa0e/test-support/page-object/actions/click-on-text.js#L105-L129 "Source code on GitHub")
 
 Clicks on an element containing specified text.
 
@@ -92,7 +93,7 @@ Returns **Descriptor**
 
 ## clickable
 
-[test-support/page-object/actions/clickable.js:57-68](https://github.com/san650/ember-cli-page-object/blob/b9a36f01a8b3d265c7a14aa6bac29e4260d08e8c/test-support/page-object/actions/clickable.js#L57-L68 "Source code on GitHub")
+[test-support/page-object/actions/clickable.js:56-76](https://github.com/san650/ember-cli-page-object/blob/fbc76e9109d2f5ce0729fcda7f18959f3ef6fa0e/test-support/page-object/actions/clickable.js#L56-L76 "Source code on GitHub")
 
 Clicks elements matched by a selector.
 
@@ -151,7 +152,7 @@ Returns **Descriptor**
 
 ## fillable
 
-[test-support/page-object/actions/fillable.js:67-78](https://github.com/san650/ember-cli-page-object/blob/b9a36f01a8b3d265c7a14aa6bac29e4260d08e8c/test-support/page-object/actions/fillable.js#L67-L78 "Source code on GitHub")
+[test-support/page-object/actions/fillable.js:68-92](https://github.com/san650/ember-cli-page-object/blob/fbc76e9109d2f5ce0729fcda7f18959f3ef6fa0e/test-support/page-object/actions/fillable.js#L68-L92 "Source code on GitHub")
 
 Fills in an input matched by a selector.
 
@@ -221,7 +222,7 @@ Returns **Descriptor**
 
 ## visitable
 
-[test-support/page-object/actions/visitable.js:81-97](https://github.com/san650/ember-cli-page-object/blob/b9a36f01a8b3d265c7a14aa6bac29e4260d08e8c/test-support/page-object/actions/visitable.js#L81-L97 "Source code on GitHub")
+[test-support/page-object/actions/visitable.js:81-97](https://github.com/san650/ember-cli-page-object/blob/fbc76e9109d2f5ce0729fcda7f18959f3ef6fa0e/test-support/page-object/actions/visitable.js#L81-L97 "Source code on GitHub")
 
 Loads a given route.
 
@@ -270,3 +271,4 @@ page.visit({ user_id: 1, name: 'john' });
 ```
 
 Returns **Descriptor** 
+{% endraw %}

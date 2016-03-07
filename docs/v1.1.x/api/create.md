@@ -3,13 +3,14 @@ layout: page
 title: Create
 ---
 
+{% raw %}
 ### Methods
 
 - [create](#create)
 
 ## create
 
-[test-support/page-object/create.js:101-107](https://github.com/san650/ember-cli-page-object/blob/b9a36f01a8b3d265c7a14aa6bac29e4260d08e8c/test-support/page-object/create.js#L101-L107 "Source code on GitHub")
+[test-support/page-object/create.js:118-132](https://github.com/san650/ember-cli-page-object/blob/fbc76e9109d2f5ce0729fcda7f18959f3ef6fa0e/test-support/page-object/create.js#L118-L132 "Source code on GitHub")
 
 Creates a new PageObject.
 
@@ -19,9 +20,19 @@ By default, the resulting PageObject will respond to:
 -   **Predicates**: contains, isHidden, isVisible
 -   **Queries**: text
 
+`definition` can include a key `context`, which is an
+optional integration test `this` context.
+
+If a context is passed, it is used by actions, queries, etc.,
+as the `this` in `this.$()`.
+
+If no context is passed, the global Ember acceptence test
+helpers are used.
+
 **Parameters**
 
 -   `definition` **Object** PageObject definition
+    -   `definition.context` **[Object]** A test's `this` context
 -   `options` **Object** [private] Ceibo options. Do not use!
 
 **Examples**
@@ -61,3 +72,4 @@ page.clickOn('Press Me');
 ```
 
 Returns **PageObject** 
+{% endraw %}
