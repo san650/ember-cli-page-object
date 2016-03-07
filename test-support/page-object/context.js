@@ -52,8 +52,7 @@ function setContext(context) {
 /**
  * Unsets the page's test context.
  *
- * Useful in a component test's `afterEach()` hook, to make sure the
- * context has been cleared after each test.
+ * Useful in a component test's `afterEach()` hook, to make sure the context has been cleared after each test.
  *
  * @example
  *
