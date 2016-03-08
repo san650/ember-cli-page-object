@@ -2,6 +2,24 @@ import Ember from 'ember';
 import { findElementWithAssert, buildSelector, getContext } from '../helpers';
 
 /**
+ * Alias for `fillable`, which works for inputs and HTML select menus.
+ *
+ * [See `fillable` for usage examples.](#fillable)
+ *
+ * @name selectable
+ * @function
+ *
+ * @public
+ *
+ * @param {string} selector - CSS selector of the element to look for text
+ * @param {Object} options - Additional options
+ * @param {string} options.scope - Nests provided scope within parent's scope
+ * @param {number} options.at - Reduce the set of matched elements to the one at the specified index
+ * @param {boolean} options.resetScope - Override parent's scope
+ * @return {Descriptor}
+ */
+
+/**
  * Fills in an input matched by a selector.
  *
  * @example
