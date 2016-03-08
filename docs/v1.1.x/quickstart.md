@@ -4,7 +4,7 @@ title: Quickstart
 ---
 
 {% raw %}
-### Methods
+This is a short guide to get you started writing page objects and using them in your acceptance and integration tests.
 
 - [Acceptance tests](#acceptance-tests)
 - [Integration tests](#integration-tests)
