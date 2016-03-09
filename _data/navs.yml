@@ -8,6 +8,8 @@ v1.1.x:
           name: Installation
         - path: /quickstart
           name: Quickstart
+        - path: /migrating
+          name: Migration Guide
 
     - title: API reference
       links:
@@ -61,6 +63,8 @@ v1.0.x:
           name: Installation
         - path: /quickstart
           name: Quickstart
+        - path: /migrating
+          name: Migration Guide
 
     - title: API reference
       links:
