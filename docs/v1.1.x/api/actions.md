@@ -9,11 +9,12 @@ title: Actions
 - [clickOnText](#clickontext)
 - [clickable](#clickable)
 - [fillable](#fillable)
+- [selectable](#selectable)
 - [visitable](#visitable)
 
 ## clickOnText
 
-[test-support/page-object/actions/click-on-text.js:105-129](https://github.com/san650/ember-cli-page-object/blob/fbc76e9109d2f5ce0729fcda7f18959f3ef6fa0e/test-support/page-object/actions/click-on-text.js#L105-L129 "Source code on GitHub")
+[test-support/page-object/actions/click-on-text.js:105-129](https://github.com/san650/ember-cli-page-object/blob/e8f93cee94d37f4721a27dae3f61f3a58cccb595/test-support/page-object/actions/click-on-text.js#L105-L129 "Source code on GitHub")
 
 Clicks on an element containing specified text.
 
@@ -93,7 +94,7 @@ Returns **Descriptor**
 
 ## clickable
 
-[test-support/page-object/actions/clickable.js:56-76](https://github.com/san650/ember-cli-page-object/blob/fbc76e9109d2f5ce0729fcda7f18959f3ef6fa0e/test-support/page-object/actions/clickable.js#L56-L76 "Source code on GitHub")
+[test-support/page-object/actions/clickable.js:56-76](https://github.com/san650/ember-cli-page-object/blob/e8f93cee94d37f4721a27dae3f61f3a58cccb595/test-support/page-object/actions/clickable.js#L56-L76 "Source code on GitHub")
 
 Clicks elements matched by a selector.
 
@@ -152,7 +153,7 @@ Returns **Descriptor**
 
 ## fillable
 
-[test-support/page-object/actions/fillable.js:68-92](https://github.com/san650/ember-cli-page-object/blob/fbc76e9109d2f5ce0729fcda7f18959f3ef6fa0e/test-support/page-object/actions/fillable.js#L68-L92 "Source code on GitHub")
+[test-support/page-object/actions/fillable.js:86-110](https://github.com/san650/ember-cli-page-object/blob/e8f93cee94d37f4721a27dae3f61f3a58cccb595/test-support/page-object/actions/fillable.js#L86-L110 "Source code on GitHub")
 
 Fills in an input matched by a selector.
 
@@ -220,9 +221,27 @@ page.fillInName('John Doe');
 
 Returns **Descriptor** 
 
+## selectable
+
+[test-support/page-object/actions/fillable.js:86-110](https://github.com/san650/ember-cli-page-object/blob/e8f93cee94d37f4721a27dae3f61f3a58cccb595/test-support/page-object/actions/fillable.js#L86-L110 "Source code on GitHub")
+
+Alias for `fillable`, which works for inputs and HTML select menus.
+
+[See `fillable` for usage examples.](#fillable)
+
+**Parameters**
+
+-   `selector` **string** CSS selector of the element to look for text
+-   `options` **Object** Additional options
+    -   `options.scope` **string** Nests provided scope within parent's scope
+    -   `options.at` **number** Reduce the set of matched elements to the one at the specified index
+    -   `options.resetScope` **boolean** Override parent's scope
+
+Returns **Descriptor** 
+
 ## visitable
 
-[test-support/page-object/actions/visitable.js:81-97](https://github.com/san650/ember-cli-page-object/blob/fbc76e9109d2f5ce0729fcda7f18959f3ef6fa0e/test-support/page-object/actions/visitable.js#L81-L97 "Source code on GitHub")
+[test-support/page-object/actions/visitable.js:81-97](https://github.com/san650/ember-cli-page-object/blob/e8f93cee94d37f4721a27dae3f61f3a58cccb595/test-support/page-object/actions/visitable.js#L81-L97 "Source code on GitHub")
 
 Loads a given route.
 
