@@ -44,7 +44,7 @@ var page = PageObject.create({
 
 page
   .visit()
-  .form()
+  .form
   .firstName('John')
   .lastName('Doe')
   .submit();
@@ -278,7 +278,7 @@ var page = PageObject.create({
 });
 
 page
-  .input()
+  .input
   .fillIn('an invalid value');
 
 page.submit();
