@@ -40,6 +40,7 @@ function generateItem(index, definition) {
  * @example
  *
  * // <table>
+ * //   <caption>List of users</caption>
  * //   <tbody>
  * //     <tr>
  * //       <td>Mary<td>
@@ -59,11 +60,14 @@ function generateItem(index, definition) {
  *     item: {
  *       firstName: text('td', { at: 0 }),
  *       lastName: text('td', { at: 1 })
- *     }
+ *     },
+ *
+ *     caption: text('caption')
  *   })
  * });
  *
  * assert.equal(page.users().count, 2);
+ * assert.equal(page.users().caption, 'List of users');
  * assert.equal(page.users(1).firstName, 'John');
  * assert.equal(page.users(1).lastName, 'Doe');
  *
