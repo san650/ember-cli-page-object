@@ -7,8 +7,7 @@ Group attributes and create new ones
 
 * [Components](#components)
 * [Default attributes](#default-attributes)
-* [.collection](#collection)
-* [.customHelper](#customhelper)
+* [Custom helper](#custom-helper)
 * [Scopes](#scopes)
 
 ## Components
@@ -101,99 +100,9 @@ andThen(function() {
 page.modal.clickOn("I'm sure");
 ```
 
-## .collection
+## Custom helper
 
-Easily model a table or a list of items.
-
-__Attribute signature__
-
-```js
-PageObject.collection(definition)
-```
-
-The collection definition has the following structure
-
-```js
-{
-  itemScope: '', // css selector
-
-  item: {
-    // item attributes
-  },
-
-  // collection attributes
-}
-```
-
-The attributes defined in the `item` object are scoped using the `itemScope` selector. The attributes defined outside the `item` object are available at collection scope.
-
-__Example__
-
-```html
-<table id="users">
-  <caption>The list of users</caption>
-  <tr>
-    <td>Jane</td>
-    <td>Doe</td>
-  </tr>
-  <tr>
-    <td>John</td>
-    <td>Doe</td>
-  </tr>
-</table>
-```
-
-```js
-const { visitable, text, collection } = PageObject;
-
-var page = PageObject.create({
-  visit: visitable('/users'),
-
-  users: collection({
-    itemScope: '#users tr',
-
-    item: {
-      firstName: text('td', { at: 0 }),
-      lastName: text('td', { at: 1})
-    },
-
-    caption: text('#users caption')
-  })
-});
-
-test('show all users', function(assert) {
-  page.visit();
-
-  andThen(function() {
-    assert.equal(login.users.caption, 'The list of users');
-    assert.equal(login.users.count(), 2); // count attribute is added for free
-    assert.equal(login.users(0).firstName, 'Jane');
-    assert.equal(login.users(0).lastName, 'Doe');
-    assert.equal(login.users(1).firstName, 'John');
-    assert.equal(login.users(1).lastName, 'Doe');
-  });
-});
-```
-
-<div class="alert alert-warning" role="alert">
-  <strong>Note</strong> that ember-cli-page-object collections are now 0-based arrays!
-</div>
-
-## .customHelper
-
-Custom helpers are no longer supported, but you can migrate away from
-them by creating `Ceibo` descriptors. (`Ceibo` is a small library for
-parsing trees. You can check it out [here](http://github.com/san650/ceibo).)
-
-With the old `v0.x` syntax, you would define a custom helper like:
-
-```js
-var disabled = customHelper(function(selector, options) {
-  return $(selector).prop('disabled');
-});
-```
-
-On version `1.x` this can be represented as:
+You can create custom helpers by creating `Ceibo` descriptors. (`Ceibo` is a small library for parsing trees. You can check it out [here](http://github.com/san650/ceibo).)
 
 ```js
 import { findElement } from './page-object';
