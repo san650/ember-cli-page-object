@@ -61,8 +61,7 @@
     "testing"
   ],
   "dependencies": {
-    "ember-cli-babel": "^5.1.5",
-    "ember-cli-string-utils": "^1.0.0"
+    "ember-cli-babel": "^5.1.5"
   },
   "ember-addon": {
     "configPath": "tests/dummy/config"

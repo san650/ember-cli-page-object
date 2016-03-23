@@ -87,7 +87,7 @@ export function contains(selector, options = {}) {
       let elements = findElementWithAssert(this, selector, options);
 
       return every(elements, function(element) {
-        return element.text().indexOf(textToSearch) >= 0
+        return element.text().indexOf(textToSearch) >= 0;
       });
     }
   };

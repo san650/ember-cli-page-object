@@ -106,5 +106,5 @@ export function fillable(selector, options = {}) {
 
       return this;
     }
-  }
+  };
 }

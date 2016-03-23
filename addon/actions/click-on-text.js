@@ -1,7 +1,7 @@
 import Ember from 'ember';
 import { findElement, findElementWithAssert, buildSelector, getContext } from '../helpers';
 
-/* global wait, find, click */
+/* global wait, click */
 
 var { merge } = Ember;
 

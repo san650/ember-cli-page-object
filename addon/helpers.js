@@ -1,3 +1,5 @@
+/* global findWithAssert */
+
 import Ember from 'ember';
 import Ceibo from 'ceibo';
 
@@ -70,7 +72,7 @@ function guardMultiple(items, selector, supportMultiple) {
   assert(
     `"${selector}" matched more than one element. If this is not an error use { multiple: true }`,
     supportMultiple || items.length <= 1
-  )
+  );
 }
 
 /**

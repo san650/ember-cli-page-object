@@ -1,3 +1,4 @@
+import Ember from 'ember';
 import { findElementWithAssert, buildSelector, getContext } from '../helpers';
 
 /**

@@ -19,3 +19,7 @@ testem.log
 LICENSE.md
 /docs
 /_site
+
+# IDE/editor files
+/.idea/
+/*.iml

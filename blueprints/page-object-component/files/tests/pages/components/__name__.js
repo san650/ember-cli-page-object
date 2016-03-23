@@ -1,8 +1,6 @@
-import PageObject from '<%= pageObjectsRoot %>';
-
-let {
+import {
   text
-} = PageObject;
+} from '<%= pageObjectsRoot %>';
 
 export default {
   title: text('h1')
