@@ -104,7 +104,9 @@ test('Actions work when defined inside collections', function(assert) {
     template = hbs`{{calculating-device}}`;
   }
 
-  page.render(template)
+  page.render(template);
+
+  page
     .numbers(0)
     .click();
 

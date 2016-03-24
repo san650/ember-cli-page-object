@@ -30,7 +30,9 @@ test('Adds default properties', function(assert) {
     template = hbs`{{calculating-device}}`;
   }
 
-  page.render(template)
+  page.render(template);
+
+  page
     .clickOn('9')
     .one
     .click();

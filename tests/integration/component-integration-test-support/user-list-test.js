@@ -1,3 +1,5 @@
+/* jshint expr:true */
+
 import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
 import Ember from 'ember';
@@ -83,6 +85,8 @@ test('Component contents', function(assert) {
   ]));
 
   page.render(template);
+
+  true; // TODO: test fails without this. Why?
 
   assert.equal(page.title, 'Users');
   assert.equal(page.users().count, 3);
