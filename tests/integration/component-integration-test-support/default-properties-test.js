@@ -1,14 +1,16 @@
+import Ember from 'ember';
 import { moduleForComponent, test } from 'ember-qunit';
-import { skip } from 'qunit';
 import hbs from 'htmlbars-inline-precompile';
 
 import PageObject from 'dummy/tests/page-object';
+
+import { isOldEmber } from 'dummy/tests/helpers/is-old-ember';
 
 moduleForComponent('calculating-device', 'Integration | component integration test support/default properties', {
   integration: true
 });
 
-skip('Adds default properties', function(assert) {
+test('Adds default properties', function(assert) {
   const page = PageObject.create({
     context: this,
 
@@ -20,17 +22,24 @@ skip('Adds default properties', function(assert) {
       scope: '.screen'
     }
   });
+  let template;
 
-  page.render(hbs`{{calculating-device}}`)
+  if (isOldEmber) {
+    template = Ember.HTMLBars.compile('{{calculating-device}}');
+  } else {
+    template = hbs`{{calculating-device}}`;
+  }
+
+  page.render(template)
     .clickOn('9')
-    .one()
+    .one
     .click();
 
-  assert.equal(page.screen().text(), '91', 'text');
-  assert.ok(page.screen().contains('91'), 'contains');
-  assert.notOk(page.screen().contains('99'), 'not contains');
-  assert.ok(page.screen().isVisible(), 'isVisible');
-  assert.notOk(page.screen().isHidden(), 'isHidden');
+  assert.equal(page.screen.text, '91', 'text');
+  assert.ok(page.screen.contains('91'), 'contains');
+  assert.notOk(page.screen.contains('99'), 'not contains');
+  assert.ok(page.screen.isVisible, 'isVisible');
+  assert.notOk(page.screen.isHidden, 'isHidden');
 });
 
 test('Overrides default properties', function(assert) {

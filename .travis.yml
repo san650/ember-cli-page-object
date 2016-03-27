@@ -5,17 +5,17 @@ node_js:
 
 sudo: false
 
-# cache:
-#   directories:
-#     - node_modules
+cache:
+  directories:
+    - node_modules
 
 env:
-  - EMBER_TRY_SCENARIO=ember-1.12
-  - EMBER_TRY_SCENARIO=ember-1.13
-  - EMBER_TRY_SCENARIO=ember-2.0
-  - EMBER_TRY_SCENARIO=ember-2.1
-  - EMBER_TRY_SCENARIO=ember-2.2
-  - EMBER_TRY_SCENARIO=ember-2.3
+  - EMBER_TRY_SCENARIO=ember-1-12
+  - EMBER_TRY_SCENARIO=ember-1-13
+  - EMBER_TRY_SCENARIO=ember-2-0
+  - EMBER_TRY_SCENARIO=ember-2-1
+  - EMBER_TRY_SCENARIO=ember-2-2
+  - EMBER_TRY_SCENARIO=ember-2-3
   - EMBER_TRY_SCENARIO=ember-release
   - EMBER_TRY_SCENARIO=ember-beta
   - EMBER_TRY_SCENARIO=ember-canary
@@ -36,4 +36,4 @@ install:
   - bower install
 
 script:
-  - node ./node_modules/ember-cli/bin/ember try $EMBER_TRY_SCENARIO test
+  - ember try $EMBER_TRY_SCENARIO test
