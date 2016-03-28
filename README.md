@@ -54,17 +54,7 @@ $ ember generate page-object users
 
 installing
   create tests/pages/users.js
-```
 
-## Including into production builds
-
-`ember-cli-page-object` is designed to be used only in tests and is excluded from production builds.
-
-If you want `ember-cli-page-object` be available in your app production, add this to your `config/environment.js` under `ENV`:
-
-    'ember-cli-page-object']: {
-      enabledInProd: true
-    },
 
 ## Development
 

@@ -25,12 +25,6 @@ module.exports = {
   },
 
   _shouldIncludeFiles: function() {
-    return (
-      this.app.env !== 'production'
-      || (
-        this.app.env === 'production'
-        && this.addonConfig.enabledInProd
-      )
-    );
+    return this.app.env !== 'production';
   }
 };
