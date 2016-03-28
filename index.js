@@ -1,6 +1,5 @@
 /* jshint node: true */
 'use strict';
-var path = require('path');
 
 module.exports = {
   name: 'ember-cli-page-object',
@@ -17,7 +16,7 @@ module.exports = {
     }
   },
 
-  treeFor: function(name) {
+  treeFor: function(/*name*/) {
     if (!this._shouldIncludeFiles()) {
       return;
     }
@@ -30,7 +29,7 @@ module.exports = {
       this.app.env !== 'production'
       || (
         this.app.env === 'production'
-        & this.addonConfig.enabledInProd
+        && this.addonConfig.enabledInProd
       )
     );
   }
