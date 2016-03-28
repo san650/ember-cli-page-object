@@ -1,6 +1,6 @@
 import {
   text
-} from '<%= pageObjectsRoot %>';
+} from 'page-object';
 
 export default {
   title: text('h1')

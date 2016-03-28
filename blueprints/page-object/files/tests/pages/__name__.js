@@ -1,7 +1,7 @@
 import {
   create,
   visitable
-} from '<%= pageObjectsRoot %>';
+} from 'page-object';
 
 export default create({
   visit: visitable('/')
