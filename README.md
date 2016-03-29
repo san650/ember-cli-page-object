@@ -32,7 +32,30 @@ You can find us on the [official Slack](https://ember-community-slackin.herokuap
 ## Installation
 
 ```sh
-ember install ember-cli-page-object
+$ ember install ember-cli-page-object
+```
+
+Or you can install the NPM package and run the installation script.
+
+```sh
+$ npm install --save-dev ember-cli-page-object@1.1.0
+$ ember generate ember-cli-page-object
+```
+
+When you execute the generator it can ask you for a suitable version of Ceibo library, if there's a conflict then choose `ceibo 1.1.0`.
+
+```
+$ ember g ember-cli-page-object
+version: 2.4.1
+installing ember-cli-page-object
+  install bower package ceibo
+Installing browser packages via Bower...
+  cached git://github.com/san650/ceibo.git#1.1.0
+  conflict Unable to find suitable version for ceibo
+    1) ceibo 1.0.0
+    2) ceibo 1.1.0
+[?] Answer: 2
+Installed browser packages via Bower.
 ```
 
 ## Documentation
