@@ -1,6 +1,6 @@
 import {
   text
-} from 'page-object';
+} from 'ember-cli-page-object';
 
 export default {
   title: text('h1')

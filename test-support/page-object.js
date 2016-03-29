@@ -1,44 +1,44 @@
-import { create } from 'page-object/create';
+import { create } from 'ember-cli-page-object/create';
 
-import { collection } from 'page-object/collection';
+import { collection } from 'ember-cli-page-object/collection';
 
-import { clickable } from 'page-object/actions/clickable';
-import { clickOnText } from 'page-object/actions/click-on-text';
-import { fillable, fillable as selectable } from 'page-object/actions/fillable';
-import { visitable } from 'page-object/actions/visitable';
+import { clickable } from 'ember-cli-page-object/actions/clickable';
+import { clickOnText } from 'ember-cli-page-object/actions/click-on-text';
+import { fillable, fillable as selectable } from 'ember-cli-page-object/actions/fillable';
+import { visitable } from 'ember-cli-page-object/actions/visitable';
 
-import { contains } from 'page-object/predicates/contains';
-import { hasClass } from 'page-object/predicates/has-class';
-import { isHidden } from 'page-object/predicates/is-hidden';
-import { isVisible } from 'page-object/predicates/is-visible';
-import { notHasClass } from 'page-object/predicates/not-has-class';
+import { contains } from 'ember-cli-page-object/predicates/contains';
+import { hasClass } from 'ember-cli-page-object/predicates/has-class';
+import { isHidden } from 'ember-cli-page-object/predicates/is-hidden';
+import { isVisible } from 'ember-cli-page-object/predicates/is-visible';
+import { notHasClass } from 'ember-cli-page-object/predicates/not-has-class';
 
-import { attribute } from 'page-object/queries/attribute';
-import { count } from 'page-object/queries/count';
-import { text } from 'page-object/queries/text';
-import { value } from 'page-object/queries/value';
+import { attribute } from 'ember-cli-page-object/queries/attribute';
+import { count } from 'ember-cli-page-object/queries/count';
+import { text } from 'ember-cli-page-object/queries/text';
+import { value } from 'ember-cli-page-object/queries/value';
 
-export { create } from 'page-object/create';
+export { create } from 'ember-cli-page-object/create';
 
-export { collection } from 'page-object/collection';
+export { collection } from 'ember-cli-page-object/collection';
 
-export { clickable } from 'page-object/actions/clickable';
-export { clickOnText } from 'page-object/actions/click-on-text';
-export { fillable, fillable as selectable } from 'page-object/actions/fillable';
-export { visitable } from 'page-object/actions/visitable';
+export { clickable } from 'ember-cli-page-object/actions/clickable';
+export { clickOnText } from 'ember-cli-page-object/actions/click-on-text';
+export { fillable, fillable as selectable } from 'ember-cli-page-object/actions/fillable';
+export { visitable } from 'ember-cli-page-object/actions/visitable';
 
-export { contains } from 'page-object/predicates/contains';
-export { hasClass } from 'page-object/predicates/has-class';
-export { isHidden } from 'page-object/predicates/is-hidden';
-export { isVisible } from 'page-object/predicates/is-visible';
-export { notHasClass } from 'page-object/predicates/not-has-class';
+export { contains } from 'ember-cli-page-object/predicates/contains';
+export { hasClass } from 'ember-cli-page-object/predicates/has-class';
+export { isHidden } from 'ember-cli-page-object/predicates/is-hidden';
+export { isVisible } from 'ember-cli-page-object/predicates/is-visible';
+export { notHasClass } from 'ember-cli-page-object/predicates/not-has-class';
 
-export { attribute } from 'page-object/queries/attribute';
-export { count } from 'page-object/queries/count';
-export { text } from 'page-object/queries/text';
-export { value } from 'page-object/queries/value';
+export { attribute } from 'ember-cli-page-object/queries/attribute';
+export { count } from 'ember-cli-page-object/queries/count';
+export { text } from 'ember-cli-page-object/queries/text';
+export { value } from 'ember-cli-page-object/queries/value';
 
-export { buildSelector, findElementWithAssert, findElement } from 'page-object/helpers';
+export { buildSelector, findElementWithAssert, findElement } from 'ember-cli-page-object/helpers';
 
 export default {
   attribute,
@@ -59,4 +59,4 @@ export default {
   visitable
 };
 
-console.warn("DEPRECATION: Importing page-object from your app's `tests/` folder has been deprecated. Instead, import from an absolute path like 'page-object', 'page-object/create', etc.");
+console.warn("DEPRECATION: Importing ember-cli-page-object from your app's `tests/` folder has been deprecated. Instead, import from an absolute path like 'ember-cli-page-object', 'ember-cli-page-object/create', etc.");

@@ -2,7 +2,7 @@
 'use strict';
 
 module.exports = {
-  name: 'page-object',
+  name: 'ember-cli-page-object',
 
   included: function(app) {
     this._super.included(app);
