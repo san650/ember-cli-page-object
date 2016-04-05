@@ -37,6 +37,17 @@ test('normalizes inner text of the element containing newlines', function(assert
   assert.equal(page.foo, 'Hello multi-line world!');
 });
 
+test('avoid text normalization if normalize:false', function(assert) {
+  const denormalizedText = [' \n ', 'Hello', 'multi-line', 'world! ', '\t', '\n'].join('\n');
+  fixture(`<span>${denormalizedText}</span>`);
+
+  let page = create({
+    foo: text('span', { normalize: false })
+  });
+
+  assert.equal(page.foo, denormalizedText);
+});
+
 test('converts &nbsp; characters into standard whitespace characters', function(assert) {
   fixture('<span>This&nbsp;is&nbsp;awesome.</span>');
 
