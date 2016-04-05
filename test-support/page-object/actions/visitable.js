@@ -1,6 +1,7 @@
 import Ember from 'ember';
 
-var { merge, $ } = Ember;
+var { $ } = Ember;
+const merge = Ember.assign || Ember.merge;
 
 function fillInDynamicSegments(path, params) {
   return path.split('/').map(function(segment) {
