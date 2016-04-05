@@ -2,8 +2,7 @@ import Ember from 'ember';
 import { findElement, findElementWithAssert, buildSelector, getContext } from '../helpers';
 
 /* global wait, find, click */
-
-var { merge } = Ember;
+const merge = Ember.assign || Ember.merge;
 
 function childSelector(tree, selector, textToClick, options) {
   // Suppose that we have something like `<form><button>Submit</button></form>`

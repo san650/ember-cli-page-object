@@ -3,8 +3,10 @@ import { buildSelector } from './helpers';
 import { create } from './create';
 import { count } from '../page-object';
 
+const mergeFunction = Ember.assign || Ember.merge;
+
 function merge(target, ...objects) {
-  objects.forEach(o => Ember.merge(target, o));
+  objects.forEach(o => mergeFunction(target, o));
 
   return target;
 }
