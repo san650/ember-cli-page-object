@@ -202,3 +202,4 @@ test('Queries and actions handle non-existant elements correctly', function(asse
   assert.equal(page.nonExistant.isHidden, true);
   assert.equal(page.nonExistant.isVisible, false);
 });
+

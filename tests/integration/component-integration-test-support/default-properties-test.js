@@ -77,3 +77,4 @@ test('Overrides default properties', function(assert) {
   assert.equal(page.dummy.contains(), 'contains');
   assert.equal(page.dummy.text(), 'text');
 });
+

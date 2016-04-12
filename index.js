@@ -8,8 +8,6 @@ module.exports = {
     this._super.included(app);
 
     this.app = app;
-    this.addonConfig = this.app.project.config(app.env)['ember-cli-page-object'] || {};
-    this.addonBuildConfig = this.app.options['ember-cli-page-object'] || {};
 
     if (this._shouldIncludeFiles()) {
       app.import(app.bowerDirectory + '/ceibo/index.js');

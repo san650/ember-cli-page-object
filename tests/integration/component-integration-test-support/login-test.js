@@ -93,3 +93,4 @@ test('Action chains act like a promise', function(assert) {
 
   assert.ok(page.form.hasError, 'Page has error');
 });
+

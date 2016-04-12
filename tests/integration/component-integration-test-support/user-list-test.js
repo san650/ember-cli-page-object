@@ -86,8 +86,6 @@ test('Component contents', function(assert) {
 
   page.render(template);
 
-  true; // TODO: test fails without this. Why?
-
   assert.equal(page.title, 'Users');
   assert.equal(page.users().count, 3);
   assert.ok(page.users(0).isVisible);
