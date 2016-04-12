@@ -58,5 +58,3 @@ export default {
   value,
   visitable
 };
-
-console.warn("DEPRECATION: Importing ember-cli-page-object from your app's `tests/` folder has been deprecated. Instead, import from an absolute path like 'ember-cli-page-object', 'ember-cli-page-object/create', etc.");
