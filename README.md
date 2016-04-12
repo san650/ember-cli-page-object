@@ -77,6 +77,7 @@ $ ember generate page-object users
 
 installing
   create tests/pages/users.js
+```
 
 
 ## Development
