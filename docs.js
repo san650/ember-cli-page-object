@@ -1,7 +1,7 @@
 'use strict';
 
 /*
- * Parses the JavaScript files in `test-support/page-object` and
+ * Parses the JavaScript files in `addon/` and
  * creates documentation Markdown files for use in GitHub Pages.
  * The docs files are written to the 'gh-pages' branch
  * in the directory 'api/methods'.
@@ -282,7 +282,7 @@ function removeDir(dir) {
   // ex., '1.0.3' -> 'v1.0.x'
   var version = 'v' + versionArray[0] + '.' + versionArray[1] + '.x';
 
-  var srcDir  = path.join(__dirname, 'test-support', 'page-object');
+  var srcDir  = path.join(__dirname, 'addon');
   var tmpDir  = path.join(__dirname, 'tmp_docs');
   var destDir = path.join(__dirname, 'docs', version, 'api');
 

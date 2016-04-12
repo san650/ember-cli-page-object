@@ -15,16 +15,18 @@ const {
 } = PageObject;
 
 const page = PageObject.create({
+  title: text('.title'),
+
   form: {
+    scope: '.login',
     userName: fillable('#userName'),
     password: fillable('#password'),
-    click: clickable('.login button'),
+    click: clickable('button'),
+    hasError: hasClass('is-error'),
+    notHasError: notHasClass('is-error')
   },
 
-  title: text('.title'),
-  message: text('.message'),
-  hasError: hasClass('is-error', '.login'),
-  notHasError: notHasClass('is-error', '.login')
+  message: text('.message')
 });
 
 moduleForComponent('user-list', 'Integration | component integration test support/login', {
@@ -52,7 +54,7 @@ test('Retries login', function(assert) {
 
   page.render(template);
 
-  assert.ok(page.notHasError, 'Page doesn\'t have error');
+  assert.ok(page.form.notHasError, 'Page doesn\'t have error');
   assert.equal(page.title, 'Login page');
 
   page.form
@@ -60,7 +62,7 @@ test('Retries login', function(assert) {
     .password('invalid')
     .click();
 
-  assert.ok(page.hasError, 'Page has error');
+  assert.ok(page.form.hasError, 'Page has error');
   assert.equal(page.message, 'Invalid user!');
 
   page.form
@@ -68,7 +70,7 @@ test('Retries login', function(assert) {
     .password('secret')
     .click();
 
-  assert.ok(page.notHasError, 'Page doesn\'t have error');
+  assert.ok(page.form.notHasError, 'Page doesn\'t have error');
   assert.equal(page.message, 'Valid user!');
 });
 
@@ -89,5 +91,6 @@ test('Action chains act like a promise', function(assert) {
     .password('invalid')
     .click();
 
-  assert.ok(page.hasError, 'Page has error');
+  assert.ok(page.form.hasError, 'Page has error');
 });
+

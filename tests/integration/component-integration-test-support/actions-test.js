@@ -104,7 +104,9 @@ test('Actions work when defined inside collections', function(assert) {
     template = hbs`{{calculating-device}}`;
   }
 
-  page.render(template)
+  page.render(template);
+
+  page
     .numbers(0)
     .click();
 
@@ -200,3 +202,4 @@ test('Queries and actions handle non-existant elements correctly', function(asse
   assert.equal(page.nonExistant.isHidden, true);
   assert.equal(page.nonExistant.isVisible, false);
 });
+

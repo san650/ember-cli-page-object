@@ -1,7 +1,7 @@
 import Ember from 'ember';
 import { buildSelector } from './helpers';
 import { create } from './create';
-import { count } from '../page-object';
+import { count } from './queries/count';
 
 const mergeFunction = Ember.assign || Ember.merge;
 
@@ -17,7 +17,7 @@ function generateEnumerable(definition) {
   delete enumerable.itemScope;
 
   if (typeof enumerable.count === 'undefined') {
-    enumerable.count = count(definition.itemScope)
+    enumerable.count = count(definition.itemScope);
   }
 
   return create(enumerable, { parent: this });

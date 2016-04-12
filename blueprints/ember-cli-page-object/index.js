@@ -4,5 +4,7 @@ module.exports = {
 
   afterInstall: function() {
     return this.addBowerPackageToProject('ceibo', '1.1.0');
-  }
+  },
+
+  description: "Includes ember-cli-page-object's Bower dependencies into your project."
 };

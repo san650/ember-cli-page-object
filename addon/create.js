@@ -78,7 +78,7 @@ function buildObject(builder, target, key, definition) {
  *
  * // <div class="title">My title</div>
  *
- * import PageObject, { text } from 'frontend/tests/page-object';
+ * import PageObject, { text } from 'ember-cli-page-object';
  *
  * const page = PageObject.create({
  *   title: text('.title')

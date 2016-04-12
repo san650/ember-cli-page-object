@@ -2,6 +2,7 @@
 
 - [Bugfix] Page object component acts like a promise
 - [Bugfix] ceibo should also be imported in development environment
+- [Change] Addon files moved from `test-support/` into `addon/`. Old location still works, with a deprecation warning.
 
 # v1.0.0
 

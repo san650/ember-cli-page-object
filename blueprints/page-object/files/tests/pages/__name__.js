@@ -1,9 +1,8 @@
-import PageObject from '<%= pageObjectsRoot %>';
-
-let {
+import {
+  create,
   visitable
-} = PageObject;
+} from 'ember-cli-page-object';
 
-export default PageObject.create({
+export default create({
   visit: visitable('/')
 });

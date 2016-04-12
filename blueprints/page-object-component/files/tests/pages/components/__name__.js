@@ -1,8 +1,6 @@
-import PageObject from '<%= pageObjectsRoot %>';
-
-let {
+import {
   text
-} = PageObject;
+} from 'ember-cli-page-object';
 
 export default {
   title: text('h1')

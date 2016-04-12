@@ -1,7 +1,8 @@
 import Ember from 'ember';
 import { findElement, findElementWithAssert, buildSelector, getContext } from '../helpers';
 
-/* global wait, find, click */
+/* global wait, click */
+
 const merge = Ember.assign || Ember.merge;
 
 function childSelector(tree, selector, textToClick, options) {

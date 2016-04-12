@@ -7,8 +7,22 @@ module.exports = {
   included: function(app) {
     this._super.included(app);
 
-    if (app.env === 'test' || app.env === 'development') {
+    this.app = app;
+
+    if (this._shouldIncludeFiles()) {
       app.import(app.bowerDirectory + '/ceibo/index.js');
     }
+  },
+
+  treeFor: function(/*name*/) {
+    if (!this._shouldIncludeFiles()) {
+      return;
+    }
+
+    return this._super.treeFor.apply(this, arguments);
+  },
+
+  _shouldIncludeFiles: function() {
+    return this.app.env !== 'production';
   }
 };
