@@ -8,7 +8,7 @@ import { clickOnText } from './actions/click-on-text';
 import { clickable } from './actions/clickable';
 import { bindContextMethods } from './context';
 
-const { merge } = Ember;
+const merge = Ember.assign || Ember.merge;
 
 var thenDescriptor = {
   isDescriptor: true,

@@ -51,6 +51,22 @@ import { findElementWithAssert, map, normalizeText } from '../helpers';
  * // returns 'ipsum'
  * assert.equal(page.text, 'ipsum');
  *
+ * @example
+ *
+ * // <div><span>lorem</span></div>
+ * // <div class="scope">
+ * //  ipsum
+ * // </div>
+ * // <div><span>dolor</span></div>
+ *
+ * const page = PageObject.create({
+ *   scope: '.scope',
+ *   text: PageObject.text('span', { normalize: false })
+ * });
+ *
+ * // returns 'ipsum'
+ * assert.equal(page.text, '\n ipsum\n');
+ *
  * @public
  *
  * @param {string} selector - CSS selector of the element to check
@@ -59,6 +75,7 @@ import { findElementWithAssert, map, normalizeText } from '../helpers';
  * @param {number} options.at - Reduce the set of matched elements to the one at the specified index
  * @param {boolean} options.resetScope - Override parent's scope
  * @param {boolean} options.multiple - Return an array of values
+ * @param {boolean} options.normalize - Set to `false` to avoid text normalization
  * @return {Descriptor}
  *
  * @throws Will throw an error if no element matches selector
@@ -70,9 +87,8 @@ export function text(selector, options = {}) {
 
     get() {
       const elements = findElementWithAssert(this, selector, options);
-      const result = map(elements, function(element) {
-        return normalizeText(element.text());
-      });
+      const avoidNormalization = options.normalize === false;
+      const result = map(elements, (element) => avoidNormalization ? element.text() : normalizeText(element.text()));
 
       return options.multiple ? result : result[0];
     }
