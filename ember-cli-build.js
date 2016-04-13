@@ -16,8 +16,6 @@ module.exports = function(defaults) {
     behave. You most likely want to be modifying `./index.js` or app's build file
   */
 
-  app.import(app.bowerDirectory + '/ceibo/index.js');
-
   if (app.env === 'test') {
     // Load ember-template-compiler for testing with Ember version <= 1.12;
     const compilerPath = app.bowerDirectory + '/ember/ember-template-compiler.js';
