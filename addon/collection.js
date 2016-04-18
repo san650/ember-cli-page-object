@@ -4,6 +4,7 @@ import { create } from './create';
 import { count } from './queries/count';
 
 const mergeFunction = Ember.assign || Ember.merge;
+const arrayDelegateMethods = ['map', 'filter', 'mapBy', 'filterBy'];
 
 function merge(target, ...objects) {
   objects.forEach(o => mergeFunction(target, o));
@@ -20,7 +21,18 @@ function generateEnumerable(definition) {
     enumerable.count = count(definition.itemScope);
   }
 
-  return create(enumerable, { parent: this });
+  if (typeof enumerable.toArray === 'undefined') {
+    enumerable.toArray = toArrayMethod(definition);
+    arrayDelegateMethods.forEach(method => delegateToArray(enumerable, method));
+  }
+
+  var collection = create(enumerable, { parent: this });
+
+  if (typeof Symbol !== 'undefined' && Symbol.iterator) {
+    collection[Symbol.iterator] = iteratorMethod;
+  }
+
+  return collection;
 }
 
 function generateItem(index, definition) {
@@ -30,14 +42,48 @@ function generateItem(index, definition) {
   return create(merge({}, definition.item, { scope, resetScope: definition.resetScope }), { parent: this });
 }
 
+function toArrayMethod(definition) {
+  return function() {
+    var array = Ember.A();
+    for (var index = 0, count = this.count; index < count; index++) {
+      array.push(generateItem.call(this, index, definition));
+    }
+    return array;
+  };
+}
+
+function delegateToArray(enumerable, method) {
+  if (typeof enumerable[method] === 'undefined') {
+    enumerable[method] = function(...args) {
+      return this.toArray()[method](...args);
+    };
+  }
+}
+
+function iteratorMethod() {
+  var i = 0;
+  var items = this.toArray();
+  var next = () => ({ done: i >= items.length, value: items[i++] });
+  return { next };
+}
+
 /**
  * Creates a component that represents a collection of items. The collection is zero-indexed.
  *
- * Collections have a `count` property that returns the number of elements in the collection.
- *
- * The collection returned by the collection method behaves as a regular PageObject when called without an index.
- *
  * When called with an index, the method returns the matching item.
+ *
+ * When called without an index, the the object returned behaves as a regular PageObject with a few additional properties and methods:
+ *
+ * - `count` - the number of items in the collection
+ * - `toArray()` - returns an array containing all the items in the collection
+ * - `[Symbol.iterator]()` - if supported by the environment, this allows the collection to be iterated with `for/of` and spread with `...` like a normal array
+ *
+ * Collection objects also delegate the following methods to `toArray()` for ease of consumption:
+ * - `map`
+ * - `mapBy`
+ * - `filter`
+ * - `filterBy`
+ *
  *
  * @example
  *
@@ -156,4 +202,3 @@ export function collection(definition) {
     }
   };
 }
-
