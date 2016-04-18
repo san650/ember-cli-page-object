@@ -1,8 +1,20 @@
 # master
 
+- [Feature] Add option to text property to avoid text normalization
+- [Feature] Add `toArray` method to collections
+- [Feature] Add `map` method to collections
+- [Feature] Add `mapBy` method to collections
+- [Feature] Add `filter` method to collections
+- [Feature] Add `filterBy` method to collections
+- [Change] Pull Ceibo from npm instead of Bower
+- [Change] Addon files moved from `test-support/` into `addon/`
+- [Change] Use Ember.assign if possible. Otherwise use Ember.merge
 - [Bugfix] Page object component acts like a promise
 - [Bugfix] ceibo should also be imported in development environment
-- [Change] Addon files moved from `test-support/` into `addon/`. Old location still works, with a deprecation warning.
+
+# v1.1.0
+
+- [Feature] Add support for component integration tests
 
 # v1.0.0
 
