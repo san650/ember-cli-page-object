@@ -6,6 +6,7 @@ export default Ember.Controller.extend({
   init() {
     this.setProperties({
       result: '',
+      expression: '',
       op: ''
     });
   },
@@ -18,7 +19,7 @@ export default Ember.Controller.extend({
 
   actions: {
     keyPress(key) {
-      var result = this.get('result'),
+      var result = this.get('expression'),
           stack = this.get('stack'),
           op = this.get('op');
 
@@ -27,10 +28,11 @@ export default Ember.Controller.extend({
         case '-':
         case '=':
           stack.push(parseInt(op + result));
-          this.set('result', '');
+          this.set('result', result);
+          this.set('expression', '');
           break;
         default:
-          this.set('result', result + key.toString());
+          this.set('expression', result + key.toString());
           break;
       }
 
@@ -40,7 +42,7 @@ export default Ember.Controller.extend({
           break;
         case '=':
           result = stack.reduce((result, value) => result + value , 0);
-          this.set('result', result.toString());
+          this.set('expression', result.toString());
           break;
       }
     }
