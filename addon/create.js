@@ -6,6 +6,7 @@ import { isHidden } from './predicates/is-hidden';
 import { contains } from './predicates/contains';
 import { clickOnText } from './actions/click-on-text';
 import { clickable } from './actions/clickable';
+import { focusable } from './actions/focusable';
 import { render, setContext, removeContext } from './context';
 
 const merge = Ember.assign || Ember.merge;
@@ -24,6 +25,7 @@ var defaultProperties = {
   clickOn: clickOnText,
   click: clickable,
   contains: contains,
+  focus: focusable,
   text: text,
   then: thenDescriptor
 };
