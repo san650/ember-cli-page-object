@@ -57,12 +57,12 @@ andThen(function() {
 
 By default, all components define some handy attributes and methods without being explicitely declared.
 
-* [isVisible](/api/predicates/#isvisible)
-* [isHidden](/api/predicates/#ishidden)
-* [clickOn](/api/actions/#clickontext)
-* [click](/api/actions/#clickable)
-* [contains](/api/predicates/#contains)
-* [text](/api/queries/#text)
+* [isVisible](api/predicates#isvisible)
+* [isHidden](api/predicates#ishidden)
+* [clickOn](api/actions#clickontext)
+* [click](api/actions#clickable)
+* [contains](api/predicates#contains)
+* [text](api/queries#text)
 
 <div class="alert alert-warning" role="alert">
   <strong>Note</strong> that these attributes will use the component scope as their selector.
