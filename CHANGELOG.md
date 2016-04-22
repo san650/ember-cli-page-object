@@ -1,5 +1,9 @@
 # master
 
+- [Feature] Add `property` property
+
+# v1.2.0
+
 - [Feature] Add option to text property to avoid text normalization
 - [Feature] Add `toArray` method to collections
 - [Feature] Add `map` method to collections

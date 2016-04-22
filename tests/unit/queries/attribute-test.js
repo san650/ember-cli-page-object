@@ -1,9 +1,7 @@
 import { test } from 'qunit';
 import { fixture, moduleFor } from '../test-helper';
 import { create, attribute } from '../../page-object';
-import {
-  test_throws_if_not_multiple
-} from '../shared';
+import { test_throws_if_not_multiple } from '../shared';
 
 moduleFor('Unit | Property | .attribute');
 

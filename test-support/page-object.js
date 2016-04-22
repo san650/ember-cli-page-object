@@ -37,6 +37,7 @@ export { attribute } from 'ember-cli-page-object/queries/attribute';
 export { count } from 'ember-cli-page-object/queries/count';
 export { text } from 'ember-cli-page-object/queries/text';
 export { value } from 'ember-cli-page-object/queries/value';
+export { property } from 'ember-cli-page-object/queries/property';
 
 export { buildSelector, findElementWithAssert, findElement } from 'ember-cli-page-object/helpers';
 

@@ -12,7 +12,8 @@ import { notHasClass } from './predicates/not-has-class'; export { notHasClass }
 import { attribute }   from './queries/attribute';        export { attribute };
 import { count }       from './queries/count';            export { count };
 import { text }        from './queries/text';             export { text };
-import { value }       from './queries/value';             export { value };
+import { value }       from './queries/value';            export { value };
+import { proeprty }    from './queries/property';         export { property };
 
 export { buildSelector, findElementWithAssert, findElement } from './helpers';
 
@@ -29,6 +30,7 @@ export default {
   isHidden,
   isVisible,
   notHasClass,
+  property,
   selectable,
   text,
   value,
