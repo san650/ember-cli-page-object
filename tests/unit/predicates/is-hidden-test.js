@@ -133,3 +133,14 @@ test('finds element by index', function(assert) {
 
   assert.ok(page.foo);
 });
+
+test('looks for elements outside the testing container', function(assert) {
+  fixture('<span>ipsum</span>');
+  fixture('<span style="display:none">ipsum</span>', { useAlternateContainer: true });
+
+  let page = create({
+    foo: isHidden('span', { testContainer: '#alternate-ember-testing' })
+  });
+
+  assert.ok(page.foo);
+});

@@ -52,6 +52,7 @@ import { findElementWithAssert, buildSelector, getContext } from '../helpers';
  * @param {string} options.scope - Nests provided scope within parent's scope
  * @param {number} options.at - Reduce the set of matched elements to the one at the specified index
  * @param {boolean} options.resetScope - Ignore parent scope
+ * @param {String} options.testContainer - Context where to search elements in the DOM
  * @return {Descriptor}
  */
 export function clickable(selector, options = {}) {
@@ -62,13 +63,17 @@ export function clickable(selector, options = {}) {
       const fullSelector = buildSelector(this, selector, options);
       const context = getContext(this);
 
-      if (context && findElementWithAssert(this, selector)) {
+      if (context && findElementWithAssert(this, selector, options)) {
         Ember.run(() => {
-          context.$(fullSelector).click();
+          if (options.testContainer) {
+            Ember.$(fullSelector, options.testContainer).click();
+          } else {
+            context.$(fullSelector).click();
+          }
         });
       } else {
         /* global click */
-        click(fullSelector);
+        click(fullSelector, options.testContainer);
       }
 
       return this;

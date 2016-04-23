@@ -1,5 +1,3 @@
-/* global findWithAssert */
-
 import Ember from 'ember';
 import Ceibo from 'ceibo';
 
@@ -134,6 +132,7 @@ export function buildSelector(node, targetSelector, options) {
  * @param {number} options.at - Filter by index using :eq(x) pseudo-class
  * @param {boolean} options.last - Filter by using :last pseudo-class
  * @param {boolean} options.multiple - Specify if built selector can match multiple elements.
+ * @param {String} options.testContainer - Context where to search elements in the DOM
  * @return {Object} jQuery object
  *
  * @throws Will throw an error if no element matches selector
@@ -150,13 +149,18 @@ export function findElementWithAssert(node, targetSelector, options = {}) {
     // or give a falsy assertion when there are no matches
     // for the selector. This will provide consistent behaviour
     // between acceptance and integration tests.
-    result = context.$(selector);
+    if (options.testContainer) {
+      result = Ember.$(selector, options.testContainer);
+    } else {
+      result = context.$(selector);
+    }
 
     if (result.length === 0) {
       throw new Ember.Error('Element ' + selector + ' not found.');
     }
   } else {
-    result = findWithAssert(selector);
+    /* global findWithAssert */
+    result = findWithAssert(selector, options.testContainer);
   }
 
   guardMultiple(result, selector, options.multiple);
@@ -177,6 +181,7 @@ export function findElementWithAssert(node, targetSelector, options = {}) {
  * @param {number} options.at - Filter by index using :eq(x) pseudo-class
  * @param {boolean} options.last - Filter by using :last pseudo-class
  * @param {boolean} options.multiple - Specify if built selector can match multiple elements.
+ * @param {String} options.testContainer - Context where to search elements in the DOM
  * @return {Object} jQuery object
  *
  * @throws Will throw an error if multiple elements are matched by selector and multiple option is not set
@@ -188,10 +193,14 @@ export function findElement(node, targetSelector, options = {}) {
   let result;
 
   if (context) {
-    result = context.$(selector);
+    if (options.testContainer) {
+      result = Ember.$(selector, options.testContainer);
+    } else {
+      result = context.$(selector);
+    }
   } else {
     /* global find */
-    result = find(selector);
+    result = find(selector, options.testContainer);
   }
 
   guardMultiple(result, selector, options.multiple);
@@ -233,7 +242,7 @@ export function map(jqArray, cb) {
  * @param {Ceibo} node - Node of the tree
  * @return {Ceibo} node - Root node of the tree
  */
-export function getRoot(node) {
+function getRoot(node) {
   var parent = Ceibo.parent(node),
       root = node;
 

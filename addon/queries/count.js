@@ -68,6 +68,7 @@ var $ = Ember.$;
  * @param {Object} options - Additional options
  * @param {string} options.scope - Add scope
  * @param {boolean} options.resetScope - Ignore parent scope
+ * @param {String} options.testContainer - Context where to search elements in the DOM
  * @return {Descriptor}
  */
 export function count(selector, options = {}) {

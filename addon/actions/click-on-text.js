@@ -4,6 +4,7 @@ import { findElement, findElementWithAssert, buildSelector, getContext } from '.
 /* global wait, click */
 
 const merge = Ember.assign || Ember.merge;
+const { run } = Ember;
 
 function childSelector(tree, selector, textToClick, options) {
   // Suppose that we have something like `<form><button>Submit</button></form>`
@@ -25,6 +26,20 @@ function actualSelector(tree, selector, textToClick, options) {
     return childSel;
   } else {
     return buildSelector(tree, selector, merge({ contains: textToClick }, options));
+  }
+}
+
+function clickOnTextInternal(tree, selector, textToClick, options, context) {
+  var fullSelector = actualSelector(tree, selector, textToClick, options);
+
+  if (context && findElementWithAssert(tree, selector, options)) {
+    if (options.testContainer) {
+      Ember.$(fullSelector, options.testContainer).click();
+    } else {
+      context.$(fullSelector).click();
+    }
+  } else {
+    click(fullSelector, options.testContainer);
   }
 }
 
@@ -100,6 +115,7 @@ function actualSelector(tree, selector, textToClick, options) {
  * @param {string} options.scope - Nests provided scope within parent's scope
  * @param {number} options.at - Reduce the set of matched elements to the one at the specified index
  * @param {boolean} options.resetScope - Override parent's scope
+ * @param {String} options.testContainer - Context where to search elements in the DOM
  * @return {Descriptor}
  */
 export function clickOnText(selector, options = {}) {
@@ -109,18 +125,10 @@ export function clickOnText(selector, options = {}) {
     value(textToClick) {
       var context = getContext(this);
 
-      if (context && findElementWithAssert(this, selector)) {
-        Ember.run(() => {
-          var fullSelector = actualSelector(this, selector, textToClick, options);
-
-          context.$(fullSelector).click();
-        });
+      if (context) {
+        run(() => clickOnTextInternal(this, selector, textToClick, options, context));
       } else {
-        wait().then(() => {
-          var fullSelector = actualSelector(this, selector, textToClick, options);
-
-          click(fullSelector);
-        });
+        wait().then(() => clickOnTextInternal(this, selector, textToClick, options));
       }
 
       return this;

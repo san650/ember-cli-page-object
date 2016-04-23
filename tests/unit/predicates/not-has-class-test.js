@@ -141,3 +141,13 @@ test('finds element by index', function(assert) {
 
   assert.ok(page.foo);
 });
+
+test('looks for elements outside the testing container', function(assert) {
+  fixture('<span class="lorem ipsum"></span>', { useAlternateContainer: true });
+
+  let page = create({
+    foo: notHasClass('ipsum', '.lorem', { testContainer: '#alternate-ember-testing' })
+  });
+
+  assert.ok(!page.foo);
+});

@@ -1,8 +1,5 @@
 import { moduleForComponent, test } from 'ember-qunit';
-import hbs from 'htmlbars-inline-precompile';
-import Ember from 'ember';
-
-import { isOldEmber } from 'dummy/tests/helpers/is-old-ember';
+import { createTemplate } from './test-helper';
 
 import PageObject, {
   collection,
@@ -83,7 +80,7 @@ const page = PageObject.create({
   }
 });
 
-moduleForComponent('calculating-device', 'Integration | component integration test support/actions', {
+moduleForComponent('calculating-device', 'Integration | actions', {
   integration: true,
 
   beforeEach() {
@@ -96,17 +93,10 @@ moduleForComponent('calculating-device', 'Integration | component integration te
 });
 
 test('Actions work when defined inside collections', function(assert) {
-  let template;
-
-  if (isOldEmber) {
-    template = Ember.HTMLBars.compile('{{calculating-device}}');
-  } else {
-    template = hbs`{{calculating-device}}`;
-  }
-
-  page.render(template);
+  let template = createTemplate();
 
   page
+    .render(template)
     .numbers(0)
     .click();
 
@@ -114,15 +104,10 @@ test('Actions work when defined inside collections', function(assert) {
 });
 
 test('Chaining of actions inside a collection works', function(assert) {
-  let template;
+  let template = createTemplate();
 
-  if (isOldEmber) {
-    template = Ember.HTMLBars.compile('{{calculating-device}}');
-  } else {
-    template = hbs`{{calculating-device}}`;
-  }
-
-  page.render(template)
+  page
+    .render(template)
     .numbers()
     .clickOn('1')
     .clickOn('2')
@@ -132,15 +117,10 @@ test('Chaining of actions inside a collection works', function(assert) {
 });
 
 test('Chaining of actions on the root works', function(assert) {
-  let template;
+  let template = createTemplate();
 
-  if (isOldEmber) {
-    template = Ember.HTMLBars.compile('{{calculating-device}}');
-  } else {
-    template = hbs`{{calculating-device}}`;
-  }
-
-  page.render(template)
+  page
+    .render(template)
     .clickOn('1')
     .clickOn('+')
     .clickOn('4')
@@ -154,15 +134,10 @@ test('Chaining of actions on the root works', function(assert) {
 });
 
 test('Chaining of actions on a component works', function(assert) {
-  let template;
+  let template = createTemplate();
 
-  if (isOldEmber) {
-    template = Ember.HTMLBars.compile('{{calculating-device}}');
-  } else {
-    template = hbs`{{calculating-device}}`;
-  }
-
-  page.render(template)
+  page
+    .render(template)
     .calculator
     .clickOn('1')
     .clickOn('+')
@@ -178,13 +153,7 @@ test('Queries and actions handle non-existant elements correctly', function(asse
   assert.expect(12);
 
   const message = /Element #non-existant not found./;
-  let template;
-
-  if (isOldEmber) {
-    template = Ember.HTMLBars.compile('{{calculating-device}}');
-  } else {
-    template = hbs`{{calculating-device}}`;
-  }
+  let template = createTemplate();
 
   page.render(template);
 
@@ -203,3 +172,28 @@ test('Queries and actions handle non-existant elements correctly', function(asse
   assert.equal(page.nonExistant.isVisible, false);
 });
 
+moduleForComponent('calculating-device', 'Integration | actions', {
+  integration: true,
+
+  afterEach() {
+    $('#alternate-ember-testing').html('');
+  }
+});
+
+test('looks for elements outside the testing container', function(assert) {
+  assert.expect(0);
+
+  $('#alternate-ember-testing').html('<button>lorem</button><input>');
+
+  var page = PageObject.create({
+    context: this,
+    clickOnText: clickOnText('button', { testContainer: '#alternate-ember-testing' }),
+    clickable: clickable('button', { testContainer: '#alternate-ember-testing' }),
+    fillable: fillable('input', { testContainer: '#alternate-ember-testing' })
+  });
+
+  page
+    .clickOnText('lorem')
+    .clickable()
+    .fillable('foo');
+});

@@ -75,6 +75,7 @@ import { findElementWithAssert, every } from '../helpers';
  * @param {number} options.at - Reduce the set of matched elements to the one at the specified index
  * @param {boolean} options.resetScope - Override parent's scope
  * @param {boolean} options.multiple - Check if all elements matched by selector have the CSS class
+ * @param {String} options.testContainer - Context where to search elements in the DOM
  * @return {Descriptor}
  *
  * @throws Will throw an error if no element matches selector

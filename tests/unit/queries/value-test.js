@@ -116,3 +116,13 @@ test('finds element by index', function(assert) {
 
   assert.equal(page.foo, 'ipsum');
 });
+
+test('looks for elements outside the testing container', function(assert) {
+  fixture('<input value="lorem">', { useAlternateContainer: true });
+
+  var page = create({
+    foo: value('input', { testContainer: '#alternate-ember-testing' })
+  });
+
+  assert.equal(page.foo, 'lorem');
+});

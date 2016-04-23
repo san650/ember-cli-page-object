@@ -186,3 +186,13 @@ test('returns multiple values', function(assert) {
 
   assert.deepEqual(page.foo, ['lorem', 'ipsum', 'dolor']);
 });
+
+test('looks for elements outside the testing container', function(assert) {
+  fixture('<h1>lorem ipsum</h1>', { useAlternateContainer: true });
+
+  var page = create({
+    foo: text('h1', { testContainer: '#alternate-ember-testing' })
+  });
+
+  assert.equal(page.foo, 'lorem ipsum');
+});

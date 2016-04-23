@@ -82,3 +82,13 @@ test('resets multiple value', function(assert) {
 
   assert.equal(page.foo, 2);
 });
+
+test('looks for elements outside the testing container', function(assert) {
+  fixture('<span></span><span></span>', { useAlternateContainer: true });
+
+  var page = create({
+    foo: count('span', { testContainer: '#alternate-ember-testing' })
+  });
+
+  assert.equal(page.foo, 2);
+});
