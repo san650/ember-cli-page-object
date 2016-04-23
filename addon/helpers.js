@@ -149,7 +149,11 @@ export function findElementWithAssert(node, targetSelector, options = {}) {
     // or give a falsy assertion when there are no matches
     // for the selector. This will provide consistent behaviour
     // between acceptance and integration tests.
-    result = context.$(selector);
+    if (options.testContainer) {
+      result = Ember.$(selector, options.testContainer);
+    } else {
+      result = context.$(selector);
+    }
 
     if (result.length === 0) {
       throw new Ember.Error('Element ' + selector + ' not found.');
@@ -189,7 +193,11 @@ export function findElement(node, targetSelector, options = {}) {
   let result;
 
   if (context) {
-    result = context.$(selector);
+    if (options.testContainer) {
+      result = Ember.$(selector, options.testContainer);
+    } else {
+      result = context.$(selector);
+    }
   } else {
     /* global find */
     result = find(selector, options.testContainer);

@@ -171,3 +171,29 @@ test('Queries and actions handle non-existant elements correctly', function(asse
   assert.equal(page.nonExistant.isHidden, true);
   assert.equal(page.nonExistant.isVisible, false);
 });
+
+moduleForComponent('calculating-device', 'Integration | actions', {
+  integration: true,
+
+  afterEach() {
+    $('#alternate-ember-testing').html('');
+  }
+});
+
+test('looks for elements outside the testing container', function(assert) {
+  assert.expect(0);
+
+  $('#alternate-ember-testing').html('<button>lorem</button><input>');
+
+  var page = PageObject.create({
+    context: this,
+    clickOnText: clickOnText('button', { testContainer: '#alternate-ember-testing' }),
+    clickable: clickable('button', { testContainer: '#alternate-ember-testing' }),
+    fillable: fillable('input', { testContainer: '#alternate-ember-testing' })
+  });
+
+  page
+    .clickOnText('lorem')
+    .clickable()
+    .fillable('foo');
+});

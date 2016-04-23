@@ -16,6 +16,7 @@ import { findElementWithAssert, buildSelector, getContext } from '../helpers';
  * @param {string} options.scope - Nests provided scope within parent's scope
  * @param {number} options.at - Reduce the set of matched elements to the one at the specified index
  * @param {boolean} options.resetScope - Override parent's scope
+ * @param {String} options.testContainer - Context where to search elements in the DOM
  * @return {Descriptor}
  */
 
@@ -92,8 +93,14 @@ export function fillable(selector, options = {}) {
       const fullSelector = buildSelector(this, selector, options);
       const context = getContext(this);
 
-      if (context && findElementWithAssert(this, selector)) {
-        const $el = context.$(fullSelector);
+      if (context && findElementWithAssert(this, selector, options)) {
+        var $el;
+
+        if (options.testContainer) {
+          $el = Ember.$(fullSelector, options.testContainer);
+        } else {
+          $el = context.$(fullSelector);
+        }
 
         Ember.run(() => {
           $el.val(text);
@@ -103,7 +110,7 @@ export function fillable(selector, options = {}) {
       } else {
         /* global fillIn */
         if (options.testContainer) {
-          fillIn(fullSelector,options.testContainer, text);
+          fillIn(fullSelector, options.testContainer, text);
         } else {
           fillIn(fullSelector, text);
         }

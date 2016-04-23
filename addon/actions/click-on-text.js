@@ -33,7 +33,11 @@ function clickOnTextInternal(tree, selector, textToClick, options, context) {
   var fullSelector = actualSelector(tree, selector, textToClick, options);
 
   if (context && findElementWithAssert(tree, selector, options)) {
-    context.$(fullSelector).click();
+    if (options.testContainer) {
+      Ember.$(fullSelector, options.testContainer).click();
+    } else {
+      context.$(fullSelector).click();
+    }
   } else {
     click(fullSelector, options.testContainer);
   }

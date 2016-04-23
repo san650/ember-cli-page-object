@@ -63,9 +63,13 @@ export function clickable(selector, options = {}) {
       const fullSelector = buildSelector(this, selector, options);
       const context = getContext(this);
 
-      if (context && findElementWithAssert(this, selector)) {
+      if (context && findElementWithAssert(this, selector, options)) {
         Ember.run(() => {
-          context.$(fullSelector).click();
+          if (options.testContainer) {
+            Ember.$(fullSelector, options.testContainer).click();
+          } else {
+            context.$(fullSelector).click();
+          }
         });
       } else {
         /* global click */
