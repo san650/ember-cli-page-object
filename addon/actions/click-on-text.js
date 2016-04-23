@@ -4,6 +4,7 @@ import { findElement, findElementWithAssert, buildSelector, getContext } from '.
 /* global wait, click */
 
 const merge = Ember.assign || Ember.merge;
+const { run } = Ember;
 
 function childSelector(tree, selector, textToClick, options) {
   // Suppose that we have something like `<form><button>Submit</button></form>`
@@ -25,6 +26,16 @@ function actualSelector(tree, selector, textToClick, options) {
     return childSel;
   } else {
     return buildSelector(tree, selector, merge({ contains: textToClick }, options));
+  }
+}
+
+function clickOnTextInternal(tree, selector, textToClick, options, context) {
+  var fullSelector = actualSelector(tree, selector, textToClick, options);
+
+  if (context && findElementWithAssert(tree, selector, options)) {
+    context.$(fullSelector).click();
+  } else {
+    click(fullSelector);
   }
 }
 
@@ -109,18 +120,10 @@ export function clickOnText(selector, options = {}) {
     value(textToClick) {
       var context = getContext(this);
 
-      if (context && findElementWithAssert(this, selector)) {
-        Ember.run(() => {
-          var fullSelector = actualSelector(this, selector, textToClick, options);
-
-          context.$(fullSelector).click();
-        });
+      if (context) {
+        run(() => clickOnTextInternal(this, selector, textToClick, options, context));
       } else {
-        wait().then(() => {
-          var fullSelector = actualSelector(this, selector, textToClick, options);
-
-          click(fullSelector);
-        });
+        wait().then(() => clickOnTextInternal(this, selector, textToClick, options));
       }
 
       return this;

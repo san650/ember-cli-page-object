@@ -233,7 +233,7 @@ export function map(jqArray, cb) {
  * @param {Ceibo} node - Node of the tree
  * @return {Ceibo} node - Root node of the tree
  */
-export function getRoot(node) {
+function getRoot(node) {
   var parent = Ceibo.parent(node),
       root = node;
 
