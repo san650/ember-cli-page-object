@@ -1,8 +1,5 @@
 import { moduleForComponent, test } from 'ember-qunit';
-import hbs from 'htmlbars-inline-precompile';
-import Ember from 'ember';
-
-import { isOldEmber } from 'dummy/tests/helpers/is-old-ember';
+import { createTemplate } from '../test-helper';
 
 import PageObject, {
   collection,
@@ -96,17 +93,10 @@ moduleForComponent('calculating-device', 'Integration | component integration te
 });
 
 test('Actions work when defined inside collections', function(assert) {
-  let template;
-
-  if (isOldEmber) {
-    template = Ember.HTMLBars.compile('{{calculating-device}}');
-  } else {
-    template = hbs`{{calculating-device}}`;
-  }
-
-  page.render(template);
+  let template = createTemplate();
 
   page
+    .render(template)
     .numbers(0)
     .click();
 
@@ -114,15 +104,10 @@ test('Actions work when defined inside collections', function(assert) {
 });
 
 test('Chaining of actions inside a collection works', function(assert) {
-  let template;
+  let template = createTemplate();
 
-  if (isOldEmber) {
-    template = Ember.HTMLBars.compile('{{calculating-device}}');
-  } else {
-    template = hbs`{{calculating-device}}`;
-  }
-
-  page.render(template)
+  page
+    .render(template)
     .numbers()
     .clickOn('1')
     .clickOn('2')
@@ -132,15 +117,10 @@ test('Chaining of actions inside a collection works', function(assert) {
 });
 
 test('Chaining of actions on the root works', function(assert) {
-  let template;
+  let template = createTemplate();
 
-  if (isOldEmber) {
-    template = Ember.HTMLBars.compile('{{calculating-device}}');
-  } else {
-    template = hbs`{{calculating-device}}`;
-  }
-
-  page.render(template)
+  page
+    .render(template)
     .clickOn('1')
     .clickOn('+')
     .clickOn('4')
@@ -154,15 +134,10 @@ test('Chaining of actions on the root works', function(assert) {
 });
 
 test('Chaining of actions on a component works', function(assert) {
-  let template;
+  let template = createTemplate();
 
-  if (isOldEmber) {
-    template = Ember.HTMLBars.compile('{{calculating-device}}');
-  } else {
-    template = hbs`{{calculating-device}}`;
-  }
-
-  page.render(template)
+  page
+    .render(template)
     .calculator
     .clickOn('1')
     .clickOn('+')
@@ -178,13 +153,7 @@ test('Queries and actions handle non-existant elements correctly', function(asse
   assert.expect(12);
 
   const message = /Element #non-existant not found./;
-  let template;
-
-  if (isOldEmber) {
-    template = Ember.HTMLBars.compile('{{calculating-device}}');
-  } else {
-    template = hbs`{{calculating-device}}`;
-  }
+  let template = createTemplate();
 
   page.render(template);
 
@@ -202,4 +171,3 @@ test('Queries and actions handle non-existant elements correctly', function(asse
   assert.equal(page.nonExistant.isHidden, true);
   assert.equal(page.nonExistant.isVisible, false);
 });
-

@@ -1,8 +1,5 @@
 import { moduleForComponent, test } from 'ember-qunit';
-import hbs from 'htmlbars-inline-precompile';
-import Ember from 'ember';
-
-import { isOldEmber } from 'dummy/tests/helpers/is-old-ember';
+import { createTemplate } from '../test-helper';
 
 import PageObject from 'dummy/tests/page-object';
 
@@ -29,11 +26,7 @@ test('Test\'s `this.$()` is accessible by the page object', function(assert) {
     context: this
   });
 
-  if (isOldEmber) {
-    this.render(Ember.HTMLBars.compile('{{calculating-device}}'));
-  } else {
-    this.render(hbs`{{calculating-device}}`);
-  }
+  this.render(createTemplate());
 
   assert.ok(page.context.$());
   assert.deepEqual(page.context.$(), this.$());
@@ -58,21 +51,14 @@ test('`setContext(this)` and `removeContext()` set and remove the test context f
 test('`render()` throws an error when no context has been set', function(assert) {
   assert.expect(2);
 
-  let template;
   let errorMessage;
-
-  if (isOldEmber) {
-    template = Ember.HTMLBars.compile('{{calculating-device}}');
-  } else {
-    template = hbs`{{calculating-device}}`;
-  }
 
   const page = PageObject.create({});
 
   assert.notOk(page.context);
 
   assert.throws(function() {
-    page.render(template);
+    page.render(createTemplate());
   }, function(err) {
     errorMessage = err.message;
 

@@ -1,10 +1,7 @@
-import Ember from 'ember';
 import { moduleForComponent, test } from 'ember-qunit';
-import hbs from 'htmlbars-inline-precompile';
+import { createTemplate } from '../test-helper';
 
 import PageObject from 'dummy/tests/page-object';
-
-import { isOldEmber } from 'dummy/tests/helpers/is-old-ember';
 
 moduleForComponent('calculating-device', 'Integration | component integration test support/default properties', {
   integration: true
@@ -22,17 +19,9 @@ test('Adds default properties', function(assert) {
       scope: '.screen'
     }
   });
-  let template;
-
-  if (isOldEmber) {
-    template = Ember.HTMLBars.compile('{{calculating-device}}');
-  } else {
-    template = hbs`{{calculating-device}}`;
-  }
-
-  page.render(template);
 
   page
+    .render(createTemplate())
     .clickOn('9')
     .one
     .click();
@@ -77,4 +66,3 @@ test('Overrides default properties', function(assert) {
   assert.equal(page.dummy.contains(), 'contains');
   assert.equal(page.dummy.text(), 'text');
 });
-
