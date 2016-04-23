@@ -1,9 +1,9 @@
 import { moduleForComponent, test } from 'ember-qunit';
-import { createTemplate } from '../test-helper';
+import { createTemplate } from './test-helper';
 
 import PageObject from 'dummy/tests/page-object';
 
-moduleForComponent('calculating-device', 'Integration | component integration test support/context', {
+moduleForComponent('calculating-device', 'Integration | context', {
   integration: true
 });
 

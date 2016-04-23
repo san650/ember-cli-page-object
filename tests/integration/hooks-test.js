@@ -1,5 +1,5 @@
 import { moduleForComponent, test } from 'ember-qunit';
-import { createTemplate } from '../test-helper';
+import { createTemplate } from './test-helper';
 
 import PageObject from 'dummy/tests/page-object';
 
@@ -8,7 +8,7 @@ const page = PageObject.create({});
 let firstThis;
 let secondThis;
 
-moduleForComponent('calculating-device', 'Integration | component integration test support/hooks', {
+moduleForComponent('calculating-device', 'Integration | hooks', {
   integration: true,
 
   beforeEach() {

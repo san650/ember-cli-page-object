@@ -1,5 +1,5 @@
 import { moduleForComponent, test } from 'ember-qunit';
-import { createTemplate } from '../test-helper';
+import { createTemplate } from './test-helper';
 
 import PageObject, {
   collection,
@@ -80,7 +80,7 @@ const page = PageObject.create({
   }
 });
 
-moduleForComponent('calculating-device', 'Integration | component integration test support/actions', {
+moduleForComponent('calculating-device', 'Integration | actions', {
   integration: true,
 
   beforeEach() {
