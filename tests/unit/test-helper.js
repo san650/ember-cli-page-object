@@ -14,10 +14,15 @@ export function moduleFor(helperName) {
 
       // Cleanup DOM
       $('#ember-testing').html('');
+      $('#alternate-ember-testing').html('');
     }
   });
 }
 
-export function fixture(str) {
-  $('#ember-testing').html(str);
+export function fixture(str, options = {}) {
+  if (options.useAlternateContainer) {
+    $('#alternate-ember-testing').html(str);
+  } else {
+    $('#ember-testing').html(str);
+  }
 }

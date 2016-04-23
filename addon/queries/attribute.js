@@ -58,6 +58,7 @@ import { findElementWithAssert, map } from '../helpers';
  * @param {boolean} options.resetScope - Override parent's scope
  * @param {number} options.at - Reduce the set of matched elements to the one at the specified index
  * @param {boolean} options.multiple - If set, the function will return an array of values
+ * @param {String} options.testContainer - Context where to search elements in the DOM
  * @return {Descriptor}
  *
  * @throws Will throw an error if no element matches selector

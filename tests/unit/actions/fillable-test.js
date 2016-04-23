@@ -125,3 +125,25 @@ test('is aliased to selectable', function(assert) {
 
   page.foo(expectedText);
 });
+
+test('looks for elements outside the testing container', function(assert) {
+  assert.expect(3);
+
+  let expectedContext = '#alternate-ember-testing',
+      expectedSelector = 'span',
+      expectedText = 'foo',
+      page;
+
+
+  window.fillIn = function(actualSelector, actualContext, actualText) {
+    assert.equal(actualSelector, expectedSelector);
+    assert.equal(actualContext, expectedContext);
+    assert.equal(actualText, expectedText);
+  };
+
+  page = create({
+    foo: fillable(expectedSelector, { testContainer: expectedContext })
+  });
+
+  page.foo(expectedText);
+});

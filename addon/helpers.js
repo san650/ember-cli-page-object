@@ -1,5 +1,3 @@
-/* global findWithAssert */
-
 import Ember from 'ember';
 import Ceibo from 'ceibo';
 
@@ -134,6 +132,7 @@ export function buildSelector(node, targetSelector, options) {
  * @param {number} options.at - Filter by index using :eq(x) pseudo-class
  * @param {boolean} options.last - Filter by using :last pseudo-class
  * @param {boolean} options.multiple - Specify if built selector can match multiple elements.
+ * @param {String} options.testContainer - Context where to search elements in the DOM
  * @return {Object} jQuery object
  *
  * @throws Will throw an error if no element matches selector
@@ -156,7 +155,8 @@ export function findElementWithAssert(node, targetSelector, options = {}) {
       throw new Ember.Error('Element ' + selector + ' not found.');
     }
   } else {
-    result = findWithAssert(selector);
+    /* global findWithAssert */
+    result = findWithAssert(selector, options.testContainer);
   }
 
   guardMultiple(result, selector, options.multiple);
@@ -177,6 +177,7 @@ export function findElementWithAssert(node, targetSelector, options = {}) {
  * @param {number} options.at - Filter by index using :eq(x) pseudo-class
  * @param {boolean} options.last - Filter by using :last pseudo-class
  * @param {boolean} options.multiple - Specify if built selector can match multiple elements.
+ * @param {String} options.testContainer - Context where to search elements in the DOM
  * @return {Object} jQuery object
  *
  * @throws Will throw an error if multiple elements are matched by selector and multiple option is not set
@@ -191,7 +192,7 @@ export function findElement(node, targetSelector, options = {}) {
     result = context.$(selector);
   } else {
     /* global find */
-    result = find(selector);
+    result = find(selector, options.testContainer);
   }
 
   guardMultiple(result, selector, options.multiple);

@@ -102,3 +102,20 @@ test('finds element by index', function(assert) {
 
   page.foo();
 });
+
+test('looks for elements outside the testing container', function(assert) {
+  assert.expect(1);
+
+  let expectedContext = '#alternate-ember-testing',
+      page;
+
+  window.click = function(_, actualContext) {
+    assert.equal(actualContext, expectedContext);
+  };
+
+  page = create({
+    foo: clickable('span', { testContainer: expectedContext })
+  });
+
+  page.foo();
+});
