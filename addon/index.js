@@ -11,9 +11,10 @@ import { isVisible }   from './predicates/is-visible';    export { isVisible };
 import { notHasClass } from './predicates/not-has-class'; export { notHasClass };
 import { attribute }   from './queries/attribute';        export { attribute };
 import { count }       from './queries/count';            export { count };
+import { is }          from './queries/is';               export { is };
+import { property }    from './queries/property';         export { property };
 import { text }        from './queries/text';             export { text };
 import { value }       from './queries/value';            export { value };
-import { proeprty }    from './queries/property';         export { property };
 
 export { buildSelector, findElementWithAssert, findElement } from './helpers';
 
@@ -27,6 +28,7 @@ export default {
   create,
   fillable,
   hasClass,
+  is,
   isHidden,
   isVisible,
   notHasClass,
