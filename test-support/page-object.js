@@ -15,6 +15,7 @@ import { notHasClass } from 'ember-cli-page-object/predicates/not-has-class';
 
 import { attribute } from 'ember-cli-page-object/queries/attribute';
 import { count } from 'ember-cli-page-object/queries/count';
+import { is } from 'ember-cli-page-object/queries/is';
 import { text } from 'ember-cli-page-object/queries/text';
 import { value } from 'ember-cli-page-object/queries/value';
 
@@ -35,6 +36,7 @@ export { notHasClass } from 'ember-cli-page-object/predicates/not-has-class';
 
 export { attribute } from 'ember-cli-page-object/queries/attribute';
 export { count } from 'ember-cli-page-object/queries/count';
+export { is } from 'ember-cli-page-object/queries/is';
 export { text } from 'ember-cli-page-object/queries/text';
 export { value } from 'ember-cli-page-object/queries/value';
 export { property } from 'ember-cli-page-object/queries/property';
@@ -51,6 +53,7 @@ export default {
   create,
   fillable,
   hasClass,
+  is,
   isHidden,
   isVisible,
   notHasClass,
