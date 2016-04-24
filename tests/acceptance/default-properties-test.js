@@ -5,7 +5,8 @@
  moduleForAcceptance('Acceptance | default properties');
 
  var {
-   visitable
+   visitable,
+   hasClass
  } = PageObject;
 
  test('Adds default properties', function(assert) {
@@ -20,7 +21,9 @@
        scope: '.screen',
 
        expression: {
-         scope: 'input'
+         scope: 'input',
+
+         isFocused: hasClass('focused')
        },
 
        result: {
@@ -30,7 +33,14 @@
    });
 
    page
-     .visit()
+    .visit()
+    .screen.expression.focus();
+
+  andThen(function() {
+    assert.ok(page.screen.expression.isFocused);
+  });
+
+   page
      .clickOn('9')
      .one
      .click();

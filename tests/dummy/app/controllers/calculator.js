@@ -7,6 +7,7 @@ export default Ember.Controller.extend({
     this.setProperties({
       result: '',
       expression: '',
+      expressionIsFocused: false,
       op: ''
     });
   },
@@ -45,6 +46,10 @@ export default Ember.Controller.extend({
           this.set('expression', result.toString());
           break;
       }
+    },
+
+    expressionFocused() {
+      this.set("expressionIsFocused", true);
     }
   }
 });
