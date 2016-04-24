@@ -68,8 +68,8 @@ export function attribute(attributeName, selector, options = {}) {
   return {
     isDescriptor: true,
 
-    get() {
-      var elements = findElementWithAssert(this, selector, options);
+    get(key) {
+      var elements = findElementWithAssert(this, selector, { ...options, pageObjectKey: key });
       var result;
 
       result = map(elements, function(element) {

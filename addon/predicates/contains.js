@@ -84,12 +84,14 @@ export function contains(selector, options = {}) {
   return {
     isDescriptor: true,
 
-    value(textToSearch) {
-      let elements = findElementWithAssert(this, selector, options);
+    get(key) {
+      return function(textToSearch) {
+        let elements = findElementWithAssert(this, selector, { ...options, pageObjectKey: `${key}("${textToSearch}")` });
 
-      return every(elements, function(element) {
-        return element.text().indexOf(textToSearch) >= 0;
-      });
+        return every(elements, function(element) {
+          return element.text().indexOf(textToSearch) >= 0;
+        });
+      };
     }
   };
 }

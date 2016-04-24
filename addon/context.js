@@ -14,7 +14,7 @@
  * @param {Object} template - A compiled component template
  * @return {PageObject} - the page object
  */
-function render(template) {
+export function render(template) {
   if (!this.context) {
     const message = 'You must set a context on the page object before calling calling `render()`';
     const error = new Error(message);
@@ -41,7 +41,7 @@ function render(template) {
  * @param {Object} context - A component integration test's `this` context
  * @return {PageObject} - the page object
  */
-function setContext(context) {
+export function setContext(context) {
   if (context) {
     this.context = context;
   }
@@ -60,22 +60,10 @@ function setContext(context) {
  *
  * @return {PageObject} - the page object
  */
-function removeContext() {
+export function removeContext() {
   if (this.context) {
     delete this.context;
   }
 
   return this;
-}
-
-function bindMethod(obj, func) {
-  return function() {
-    return func.apply(obj, arguments);
-  };
-}
-
-export function bindContextMethods(pageObject) {
-  pageObject.setContext     = bindMethod(pageObject, setContext);
-  pageObject.removeContext  = bindMethod(pageObject, removeContext);
-  pageObject.render         = bindMethod(pageObject, render);
 }

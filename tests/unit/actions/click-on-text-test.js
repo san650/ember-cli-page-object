@@ -139,6 +139,7 @@ test('resets scope', function(assert) {
 });
 
 test('returns target object', function(assert) {
+  fixture('<button>dummy text</button>');
   assert.expect(1);
 
   let page;
@@ -208,4 +209,24 @@ test('looks for elements outside the testing container', function(assert) {
   andThen(() => {
     page.foo('Lorem');
   });
+});
+
+test("raises an error when the element doesn't exist", function(assert) {
+  assert.expect(1);
+
+  var done = assert.async();
+
+  let page = create({
+    foo: {
+      bar: {
+        baz: {
+          qux: clickOnText('button')
+        }
+      }
+    }
+  });
+
+  page.foo.bar.baz.qux('Lorem').then().catch(error => {
+    assert.ok(/page\.foo\.bar\.baz\.qux/.test(error.toString()), 'Element not found');
+  }).finally(done);
 });

@@ -1,10 +1,11 @@
 import { test } from 'qunit';
-import { moduleFor } from '../test-helper';
+import { moduleFor, fixture } from '../test-helper';
 import { create, clickable } from '../../page-object';
 
 moduleFor('Unit | Property | .clickable');
 
 test('calls Ember\'s click helper', function(assert) {
+  fixture('<span></span>');
   assert.expect(1);
 
   let expectedSelector = 'span',
@@ -22,6 +23,7 @@ test('calls Ember\'s click helper', function(assert) {
 });
 
 test('looks for elements inside the scope', function(assert) {
+  fixture('<div class="scope"><span></span></div>');
   assert.expect(1);
 
   let page;
@@ -38,6 +40,7 @@ test('looks for elements inside the scope', function(assert) {
 });
 
 test('looks for elements inside page\'s scope', function(assert) {
+  fixture('<div class="scope"><span></span></div>');
   assert.expect(1);
 
   let page;
@@ -56,6 +59,7 @@ test('looks for elements inside page\'s scope', function(assert) {
 });
 
 test('resets scope', function(assert) {
+  fixture('<span></span>');
   assert.expect(1);
 
   let page;
@@ -73,6 +77,7 @@ test('resets scope', function(assert) {
 });
 
 test('returns target object', function(assert) {
+  fixture('<span></span>');
   assert.expect(1);
 
   let page;
@@ -80,13 +85,14 @@ test('returns target object', function(assert) {
   window.click = function() {};
 
   page = create({
-    foo: clickable()
+    foo: clickable('span')
   });
 
   assert.equal(page.foo(), page);
 });
 
 test('finds element by index', function(assert) {
+  fixture('<span></span><span></span><span></span><span></span>');
   assert.expect(1);
 
   let expectedSelector = 'span:eq(3)',
@@ -104,6 +110,7 @@ test('finds element by index', function(assert) {
 });
 
 test('looks for elements outside the testing container', function(assert) {
+  fixture('<span></span>', { useAlternateContainer: true });
   assert.expect(1);
 
   let expectedContext = '#alternate-ember-testing',
@@ -118,4 +125,24 @@ test('looks for elements outside the testing container', function(assert) {
   });
 
   page.foo();
+});
+
+test("raises an error when the element doesn't exist", function(assert) {
+  assert.expect(1);
+
+  var done = assert.async();
+
+  let page = create({
+    foo: {
+      bar: {
+        baz: {
+          qux: clickable('button')
+        }
+      }
+    }
+  });
+
+  page.foo.bar.baz.qux().then().catch(error => {
+    assert.ok(/page\.foo\.bar\.baz\.qux/.test(error.toString()), 'Element not found');
+  }).finally(done);
 });

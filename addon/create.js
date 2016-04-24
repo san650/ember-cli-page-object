@@ -6,7 +6,7 @@ import { isHidden } from './predicates/is-hidden';
 import { contains } from './predicates/contains';
 import { clickOnText } from './actions/click-on-text';
 import { clickable } from './actions/clickable';
-import { bindContextMethods } from './context';
+import { render, setContext, removeContext } from './context';
 
 const merge = Ember.assign || Ember.merge;
 
@@ -44,16 +44,11 @@ function plugDefaultProperties(definition) {
 
 // See https://github.com/san650/ceibo#examples for more info on how Ceibo
 // builders work.
-function buildObject(builder, target, key, definition) {
-  // Don't process the test's `this` context with
-  // Ceibo. Because some values in the test's `this` are
-  // circular references, it gets stuck in an infinite loop.
-  if (key !== 'context') {
-    plugDefaultProperties(definition);
+function buildObject(node, blueprintKey, blueprint, defaultBuilder) {
+  blueprint = { ...blueprint };
+  plugDefaultProperties(blueprint);
 
-    // Call the default object builder
-    Ceibo.defaults.builder.object(builder, target, key, definition);
-  }
+  return defaultBuilder(node, blueprintKey, blueprint, defaultBuilder);
 }
 
 /**
@@ -116,14 +111,20 @@ function buildObject(builder, target, key, definition) {
  * @return {PageObject}
  */
 export function create(definition, options = {}) {
-  const context = typeof definition === 'object' ? definition.context : null;
-  const builder = {
+  definition = { ...definition };
+  var context = definition.context;
+  delete definition.context;
+
+  var builder = {
     object: buildObject
   };
-  const page = Ceibo.create(definition, merge({ builder }, options));
+
+  var page = Ceibo.create(definition, merge({ builder }, options));
 
   if (page) {
-    bindContextMethods(page);
+    page.render = render;
+    page.setContext = setContext;
+    page.removeContext = removeContext;
 
     page.setContext(context);
   }

@@ -50,12 +50,18 @@ test("looks for elements inside page's scope", function(assert) {
   assert.ok(page.foo('ipsum'));
 });
 
-test('raises an error when the element doesn\'t exist', function(assert) {
+test("raises an error when the element doesn't exist", function(assert) {
   let page = create({
-    foo: contains('.element')
+    foo: {
+      bar: {
+        baz: {
+          qux: contains('.element')
+        }
+      }
+    }
   });
 
-  assert.throws(() => page.foo('baz'), 'Throws element not found error');
+  assert.throws(() => page.foo.bar.baz.qux('baz'), /page\.foo\.bar\.baz\.qux/);
 });
 
 test('resets scope', function(assert) {

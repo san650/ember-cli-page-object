@@ -1,5 +1,25 @@
 import Ember from 'ember';
-import { findElementWithAssert, buildSelector, getContext } from '../helpers';
+import { simpleFindElementWithAssert, buildSelector, getContext } from '../helpers';
+
+var { run } = Ember;
+
+function clickableInternal(tree, selector, options, context) {
+  var fullSelector = buildSelector(tree, selector, options);
+
+  // Run this to validate if the element exists
+  simpleFindElementWithAssert(tree, fullSelector, options)
+
+  if (context) {
+    if (options.testContainer) {
+      Ember.$(fullSelector, options.testContainer).click();
+    } else {
+      context.$(fullSelector).click();
+    }
+  } else {
+    /* global click */
+    click(fullSelector, options.testContainer);
+  }
+}
 
 /**
  * Clicks elements matched by a selector.
@@ -59,24 +79,18 @@ export function clickable(selector, options = {}) {
   return {
     isDescriptor: true,
 
-    value() {
-      const fullSelector = buildSelector(this, selector, options);
-      const context = getContext(this);
+    get(key) {
+      return function() {
+        const context = getContext(this);
 
-      if (context && findElementWithAssert(this, selector, options)) {
-        Ember.run(() => {
-          if (options.testContainer) {
-            Ember.$(fullSelector, options.testContainer).click();
-          } else {
-            context.$(fullSelector).click();
-          }
-        });
-      } else {
-        /* global click */
-        click(fullSelector, options.testContainer);
-      }
+        if (context) {
+          run(() => clickableInternal(this, selector, { ...options, pageObjectKey: `${key}()` }, context));
+        } else {
+          wait().then(() => clickableInternal(this, selector, { ...options, pageObjectKey: `${key}()` }));
+        }
 
-      return this;
+        return this;
+      };
     }
   };
 }

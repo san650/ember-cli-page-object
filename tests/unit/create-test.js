@@ -73,6 +73,7 @@ test('generates .isHidden property', function(assert) {
 });
 
 test('generates .clickOn property', function(assert) {
+  fixture('<button>dummy text</button>');
   assert.expect(1);
 
   window.click = function() {
@@ -84,10 +85,11 @@ test('generates .clickOn property', function(assert) {
     }
   });
 
-  page.foo.clickOn();
+  page.foo.clickOn('dummy text');
 });
 
 test('generates .click property', function(assert) {
+  fixture('<button>dummy text</button>');
   assert.expect(1);
 
   window.click = function() {
@@ -96,6 +98,7 @@ test('generates .click property', function(assert) {
 
   var page = create({
     foo: {
+      scope: 'button'
     }
   });
 

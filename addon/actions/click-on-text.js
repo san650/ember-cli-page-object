@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import { findElement, findElementWithAssert, buildSelector, getContext } from '../helpers';
+import { findElement, simpleFindElementWithAssert, buildSelector, getContext } from '../helpers';
 
 /* global wait, click */
 
@@ -32,7 +32,10 @@ function actualSelector(tree, selector, textToClick, options) {
 function clickOnTextInternal(tree, selector, textToClick, options, context) {
   var fullSelector = actualSelector(tree, selector, textToClick, options);
 
-  if (context && findElementWithAssert(tree, selector, options)) {
+  // Run this to validate if the element exists
+  simpleFindElementWithAssert(tree, fullSelector, options);
+
+  if (context) {
     if (options.testContainer) {
       Ember.$(fullSelector, options.testContainer).click();
     } else {
@@ -122,16 +125,18 @@ export function clickOnText(selector, options = {}) {
   return {
     isDescriptor: true,
 
-    value(textToClick) {
-      var context = getContext(this);
+    get(key) {
+      return function(textToClick) {
+        var context = getContext(this);
 
-      if (context) {
-        run(() => clickOnTextInternal(this, selector, textToClick, options, context));
-      } else {
-        wait().then(() => clickOnTextInternal(this, selector, textToClick, options));
-      }
+        if (context) {
+          run(() => clickOnTextInternal(this, selector, textToClick, { ...options, pageObjectKey: `${key}("${textToClick}")` }, context));
+        } else {
+          wait().then(() => clickOnTextInternal(this, selector, textToClick, { ...options, pageObjectKey: `${key}("${textToClick}")` }));
+        }
 
-      return this;
+        return this;
+      };
     }
   };
 }

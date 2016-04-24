@@ -119,6 +119,25 @@ export function buildSelector(node, targetSelector, options) {
   return (new Selector(node, options.scope, targetSelector, options)).toString();
 }
 
+function throwBetterError(node, key, selector) {
+  var path = [key],
+      current = node;
+
+  do {
+    path.unshift(Ceibo.meta(current).key);
+  } while(current = Ceibo.parent(current));
+
+  path[0] = 'page';
+
+  var msg = `Element not found.
+
+PageObject: '${path.join('.')}'
+  Selector: '${selector}'
+`;
+
+  throw new Ember.Error(msg);
+}
+
 /**
  * Returns a jQuery element matched by a selector built from parameters
  *
@@ -133,6 +152,7 @@ export function buildSelector(node, targetSelector, options) {
  * @param {boolean} options.last - Filter by using :last pseudo-class
  * @param {boolean} options.multiple - Specify if built selector can match multiple elements.
  * @param {String} options.testContainer - Context where to search elements in the DOM
+ * @param {String} options.pageObjectKey - Used in the error message when the element is not found
  * @return {Object} jQuery object
  *
  * @throws Will throw an error if no element matches selector
@@ -140,6 +160,16 @@ export function buildSelector(node, targetSelector, options) {
  */
 export function findElementWithAssert(node, targetSelector, options = {}) {
   const selector = buildSelector(node, targetSelector, options);
+
+  return simpleFindElementWithAssert(node, selector, options);
+}
+
+/**
+ * The difference with findElementWithAssert is that this function uses the
+ * selector as is
+ * @private
+ */
+export function simpleFindElementWithAssert(node, selector, options = {}) {
   const context = getContext(node);
 
   let result;
@@ -154,13 +184,13 @@ export function findElementWithAssert(node, targetSelector, options = {}) {
     } else {
       result = context.$(selector);
     }
-
-    if (result.length === 0) {
-      throw new Ember.Error('Element ' + selector + ' not found.');
-    }
   } else {
-    /* global findWithAssert */
-    result = findWithAssert(selector, options.testContainer);
+    /* global find */
+    result = find(selector, options.testContainer);
+  }
+
+  if (result.length === 0) {
+    throwBetterError(node, options.pageObjectKey, selector);
   }
 
   guardMultiple(result, selector, options.multiple);
