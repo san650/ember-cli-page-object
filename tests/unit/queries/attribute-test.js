@@ -27,10 +27,16 @@ test("returns null when attribute doesn't exist", function(assert) {
 
 test("raises an error when the element doesn't exist", function(assert) {
   let page = create({
-    foo: attribute('placeholder', ':input')
+    foo: {
+      bar: {
+        baz: {
+          qux: attribute('placeholder', ':input')
+        }
+      }
+    }
   });
 
-  assert.throws(() => page.foo, 'Throws element not found error');
+  assert.throws(() => page.foo.bar.baz.qux, /page\.foo\.bar\.baz\.qux/);
 });
 
 test('looks for elements inside the scope', function(assert) {

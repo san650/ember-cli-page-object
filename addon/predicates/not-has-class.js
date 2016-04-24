@@ -87,8 +87,8 @@ export function notHasClass(cssClass, selector, options = {}) {
   return {
     isDescriptor: true,
 
-    get() {
-      var elements = findElementWithAssert(this, selector, options);
+    get(key) {
+      var elements = findElementWithAssert(this, selector, { ...options, pageObjectKey: key });
 
       return every(elements, function(element) {
         return !element.hasClass(cssClass);

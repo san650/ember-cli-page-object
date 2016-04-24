@@ -152,7 +152,7 @@ test('Chaining of actions on a component works', function(assert) {
 test('Queries and actions handle non-existant elements correctly', function(assert) {
   assert.expect(12);
 
-  const message = /Element #non-existant not found./;
+  const message = /Element not found./;
   let template = createTemplate();
 
   page.render(template);

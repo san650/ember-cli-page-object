@@ -86,8 +86,8 @@ export function text(selector, options = {}) {
   return {
     isDescriptor: true,
 
-    get() {
-      const elements = findElementWithAssert(this, selector, options);
+    get(key) {
+      const elements = findElementWithAssert(this, selector, { ...options, pageObjectKey: key });
       const avoidNormalization = options.normalize === false;
       const result = map(elements, (element) => avoidNormalization ? element.text() : normalizeText(element.text()));
 

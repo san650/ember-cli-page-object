@@ -85,8 +85,8 @@ export function hasClass(cssClass, selector, options = {}) {
   return {
     isDescriptor: true,
 
-    get() {
-      let elements = findElementWithAssert(this, selector, options);
+    get(key) {
+      let elements = findElementWithAssert(this, selector, { ...options, pageObjectKey: key });
 
       return every(elements, function(element) {
         return element.hasClass(cssClass);

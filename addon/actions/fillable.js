@@ -1,5 +1,33 @@
 import Ember from 'ember';
-import { findElementWithAssert, buildSelector, getContext } from '../helpers';
+import { simpleFindElementWithAssert, buildSelector, getContext } from '../helpers';
+
+function fillableInternal(tree, selector, text, options, context) {
+  var fullSelector = buildSelector(tree, selector, options);
+
+  // Run this to validate if the element exists
+  simpleFindElementWithAssert(tree, fullSelector, options);
+
+  if (context) {
+    var $el;
+
+    if (options.testContainer) {
+      $el = Ember.$(fullSelector, options.testContainer);
+    } else {
+      $el = context.$(fullSelector);
+    }
+
+    $el.val(text);
+    $el.trigger('input');
+    $el.change();
+  } else {
+    /* global fillIn */
+    if (options.testContainer) {
+      fillIn(fullSelector, options.testContainer, text);
+    } else {
+      fillIn(fullSelector, text);
+    }
+  }
+}
 
 /**
  * Alias for `fillable`, which works for inputs and HTML select menus.
@@ -89,34 +117,18 @@ export function fillable(selector, options = {}) {
   return {
     isDescriptor: true,
 
-    value(text) {
-      const fullSelector = buildSelector(this, selector, options);
-      const context = getContext(this);
+    get(key) {
+      return function(text) {
+        var context = getContext(this);
 
-      if (context && findElementWithAssert(this, selector, options)) {
-        var $el;
-
-        if (options.testContainer) {
-          $el = Ember.$(fullSelector, options.testContainer);
+        if (context) {
+          Ember.run(() => fillableInternal(this, selector, text, { ...options, pageObjectKey: `${key}("${text}")` }, context));
         } else {
-          $el = context.$(fullSelector);
+          wait().then(() => fillableInternal(this, selector, text, { ...options, pageObjectKey: `${key}("${text}")` }, context));
         }
 
-        Ember.run(() => {
-          $el.val(text);
-          $el.trigger('input');
-          $el.change();
-        });
-      } else {
-        /* global fillIn */
-        if (options.testContainer) {
-          fillIn(fullSelector, options.testContainer, text);
-        } else {
-          fillIn(fullSelector, text);
-        }
-      }
-
-      return this;
+        return this;
+      };
     }
   };
 }
