@@ -1,6 +1,11 @@
 # master
 
+# v1.3.0
+
 - [Feature] Add `property` property
+- [Feature] Add `.is` property
+- [Feature] Add `testContainer` option to all properties
+- [Change] Improve "Element not found" error message
 
 # v1.2.0
 
