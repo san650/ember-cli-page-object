@@ -1,6 +1,6 @@
 <div class="calculator">
   <div class="screen">
-    {{input value=expression}}
+    {{input value=expression focus-in="expressionFocused" class=(if expressionIsFocused 'focused' '') }}
     <div class="result">
       {{result}}
     </div>
