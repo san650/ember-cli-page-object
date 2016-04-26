@@ -5,6 +5,7 @@ import { collection } from 'ember-cli-page-object/collection';
 import { clickable } from 'ember-cli-page-object/actions/clickable';
 import { clickOnText } from 'ember-cli-page-object/actions/click-on-text';
 import { fillable, fillable as selectable } from 'ember-cli-page-object/actions/fillable';
+import { triggerable } from 'ember-cli-page-object/actions/triggerable';
 import { visitable } from 'ember-cli-page-object/actions/visitable';
 
 import { contains } from 'ember-cli-page-object/predicates/contains';
@@ -25,6 +26,7 @@ export { collection } from 'ember-cli-page-object/collection';
 export { clickable } from 'ember-cli-page-object/actions/clickable';
 export { clickOnText } from 'ember-cli-page-object/actions/click-on-text';
 export { fillable, fillable as selectable } from 'ember-cli-page-object/actions/fillable';
+export { triggerable } from 'ember-cli-page-object/actions/triggerable';
 export { visitable } from 'ember-cli-page-object/actions/visitable';
 
 export { contains } from 'ember-cli-page-object/predicates/contains';
