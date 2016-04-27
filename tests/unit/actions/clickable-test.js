@@ -5,7 +5,7 @@ import { create, clickable } from '../../page-object';
 moduleFor('Unit | Property | .clickable');
 
 test('calls Ember\'s click helper', function(assert) {
-  fixture('<span></span>');
+  fixture('<span>Click me</span>');
   assert.expect(1);
 
   let expectedSelector = 'span',
@@ -23,7 +23,7 @@ test('calls Ember\'s click helper', function(assert) {
 });
 
 test('looks for elements inside the scope', function(assert) {
-  fixture('<div class="scope"><span></span></div>');
+  fixture('<div class="scope"><span>Click me</span></div>');
   assert.expect(1);
 
   let page;
@@ -40,7 +40,7 @@ test('looks for elements inside the scope', function(assert) {
 });
 
 test('looks for elements inside page\'s scope', function(assert) {
-  fixture('<div class="scope"><span></span></div>');
+  fixture('<div class="scope"><span>Click me</span></div>');
   assert.expect(1);
 
   let page;
@@ -59,7 +59,7 @@ test('looks for elements inside page\'s scope', function(assert) {
 });
 
 test('resets scope', function(assert) {
-  fixture('<span></span>');
+  fixture('<span>Click me</span>');
   assert.expect(1);
 
   let page;
@@ -77,7 +77,7 @@ test('resets scope', function(assert) {
 });
 
 test('returns target object', function(assert) {
-  fixture('<span></span>');
+  fixture('<span>Click me</span>');
   assert.expect(1);
 
   let page;
@@ -92,7 +92,7 @@ test('returns target object', function(assert) {
 });
 
 test('finds element by index', function(assert) {
-  fixture('<span></span><span></span><span></span><span></span>');
+  fixture('<span></span><span></span><span>Click me</span><span></span>');
   assert.expect(1);
 
   let expectedSelector = 'span:eq(3)',
@@ -110,7 +110,7 @@ test('finds element by index', function(assert) {
 });
 
 test('looks for elements outside the testing container', function(assert) {
-  fixture('<span></span>', { useAlternateContainer: true });
+  fixture('<span>Click me</span>', { useAlternateContainer: true });
   assert.expect(1);
 
   let expectedContext = '#alternate-ember-testing',
@@ -148,7 +148,7 @@ test("raises an error when the element doesn't exist", function(assert) {
 });
 
 test("raises an error when the element is not visible", function(assert) {
-  fixture('<span style="display:none"></span>');
+  fixture('<span style="display:none">Click me</span>');
   assert.expect(1);
 
   let done = assert.async();
