@@ -1,13 +1,13 @@
 import Ember from 'ember';
-import { simpleFindElementWithAssert, buildSelector, getContext } from '../helpers';
+import { simpleFindVisibleElementWithAssert, buildSelector, getContext } from '../helpers';
 
 var { run } = Ember;
 
 function clickableInternal(tree, selector, options, context) {
   var fullSelector = buildSelector(tree, selector, options);
 
-  // Run this to validate if the element exists
-  simpleFindElementWithAssert(tree, fullSelector, options)
+  // Run this to validate if the element exists and it is visible
+  simpleFindVisibleElementWithAssert(tree, fullSelector, options)
 
   if (context) {
     if (options.testContainer) {

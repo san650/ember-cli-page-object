@@ -146,3 +146,17 @@ test("raises an error when the element doesn't exist", function(assert) {
     assert.ok(/page\.foo\.bar\.baz\.qux/.test(error.toString()), 'Element not found');
   }).finally(done);
 });
+
+test("raises an error when the element is not visible", function(assert) {
+  fixture('<span style="display:none"></span>');
+  assert.expect(1);
+
+  let done = assert.async();
+  let page = create({
+    foo: clickable('span')
+  });
+
+  page.foo().then().catch(error => {
+    assert.ok(/elements are not visible/.test(error.toString()), 'Element not visible');
+  }).finally(done);
+});
