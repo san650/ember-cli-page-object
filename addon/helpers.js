@@ -199,6 +199,22 @@ export function simpleFindElementWithAssert(node, selector, options = {}) {
 }
 
 /**
+ * The difference with simpleFindElementWithAssert is that this function also checks
+ * if the elements are visible
+ * @private
+ */
+export function simpleFindVisibleElementWithAssert(node, selector, options = {}) {
+  let result = simpleFindElementWithAssert(...arguments);
+
+  assert(
+    `"${selector}" matched but the elements are not visible.`,
+    result.is(':visible')
+  );
+
+  return result;
+}
+
+/**
  * Returns a jQuery element (can be an empty jQuery result)
  *
  * @public
