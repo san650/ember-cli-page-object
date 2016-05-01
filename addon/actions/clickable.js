@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import { simpleFindVisibleElementWithAssert, buildSelector, getContext } from '../helpers';
+import { simpleFindElementWithAssert, buildSelector, getContext } from '../helpers';
 
 var { run } = Ember;
 
@@ -7,7 +7,7 @@ function clickableInternal(tree, selector, options, context) {
   var fullSelector = buildSelector(tree, selector, options);
 
   // Run this to validate if the element exists and it is visible
-  simpleFindVisibleElementWithAssert(tree, fullSelector, options)
+  simpleFindElementWithAssert(tree, fullSelector, options);
 
   if (context) {
     if (options.testContainer) {
@@ -71,6 +71,7 @@ function clickableInternal(tree, selector, options, context) {
  * @param {Object} options - Additional options
  * @param {string} options.scope - Nests provided scope within parent's scope
  * @param {number} options.at - Reduce the set of matched elements to the one at the specified index
+ * @param {boolean} options.visible - Make the action to raise an error if the element is not visible
  * @param {boolean} options.resetScope - Ignore parent scope
  * @param {String} options.testContainer - Context where to search elements in the DOM
  * @return {Descriptor}

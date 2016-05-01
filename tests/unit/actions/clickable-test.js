@@ -147,16 +147,31 @@ test("raises an error when the element doesn't exist", function(assert) {
   }).finally(done);
 });
 
-test("raises an error when the element is not visible", function(assert) {
+test("doesn't raise an error when the element is not visible and `visible` is not set", function(assert) {
+  fixture('<span style="display:none">Click me</span>');
+  assert.expect(1);
+
+  window.click = function() {
+    assert.ok(true, 'Element is clicked');
+  };
+
+  let page = create({
+    foo: clickable('span')
+  });
+
+  page.foo();
+});
+
+test('raises an error when the element is not visible and `visible` is true', function(assert) {
   fixture('<span style="display:none">Click me</span>');
   assert.expect(1);
 
   let done = assert.async();
   let page = create({
-    foo: clickable('span')
+    foo: clickable('span', { visible: true })
   });
 
   page.foo().then().catch(error => {
-    assert.ok(/elements are not visible/.test(error.toString()), 'Element not visible');
+    assert.ok(/page\.foo/.test(error.toString()), 'Element not found');
   }).finally(done);
 });
