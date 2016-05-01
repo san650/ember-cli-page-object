@@ -336,3 +336,39 @@ test('sets correct scope to child collections', function(assert) {
 
   assert.equal(page.foo(0).bar(0).text, 'Ipsum');
 });
+
+test("returns the page object path when item's element doesn't exist", function(assert) {
+  let page = create({
+    foo: {
+      bar: collection({
+        item: {
+          baz: {
+            qux: text('span')
+          }
+        }
+      })
+    }
+  });
+
+  assert.throws(function() { return page.foo.bar(1).baz.qux; }, function(error) {
+    return /page\.foo\.bar\(1\)\.baz\.qux/.test(error.message);
+  });
+});
+
+test("returns the page object path when collection's element doesn't exist", function(assert) {
+  let page = create({
+    foo: {
+      bar: collection({
+        scope: 'span',
+
+        baz: {
+          qux: text('span')
+        }
+      })
+    }
+  });
+
+  assert.throws(function() { return page.foo.bar().baz.qux; }, function(error) {
+    return /page\.foo\.bar\(\)\.baz\.qux/.test(error.message);
+  });
+});
