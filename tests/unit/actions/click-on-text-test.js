@@ -230,3 +230,32 @@ test("raises an error when the element doesn't exist", function(assert) {
     assert.ok(/page\.foo\.bar\.baz\.qux/.test(error.toString()), 'Element not found');
   }).finally(done);
 });
+
+test("doesn't raise an error when the element is not visible and `visible` is not set", function(assert) {
+  fixture('<button style="display:none">Click me</button>');
+  assert.expect(1);
+
+  window.click = function() {
+    assert.ok(true, 'Element is clicked');
+  };
+
+  let page = create({
+    foo: clickOnText('button')
+  });
+
+  page.foo('Click me');
+});
+
+test('raises an error when the element is not visible and `visible` is true', function(assert) {
+  fixture('<button style="display:none">Click me</button>');
+  assert.expect(1);
+
+  let done = assert.async();
+  let page = create({
+    foo: clickOnText('button', { visible: true })
+  });
+
+  page.foo('Click me').then().catch(error => {
+    assert.ok(/page\.foo/.test(error.toString()), 'Element not found');
+  }).finally(done);
+});

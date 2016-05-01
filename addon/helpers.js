@@ -29,6 +29,10 @@ class Selector {
   calculateFilters() {
     var filters = [];
 
+    if (this.targetFilters.visible) {
+      filters.push(`:visible`);
+    }
+
     if (this.targetFilters.contains) {
       filters.push(`:contains("${this.targetFilters.contains}")`);
     }
@@ -113,6 +117,7 @@ function guardMultiple(items, selector, supportMultiple) {
  * @param {string} options.contains - Filter by using :contains('foo') pseudo-class
  * @param {number} options.at - Filter by index using :eq(x) pseudo-class
  * @param {boolean} options.last - Filter by using :last pseudo-class
+ * @param {boolean} options.visible - Filter by using :visible pseudo-class
  * @return {string} Fully qualified selector
  */
 export function buildSelector(node, targetSelector, options) {
@@ -150,6 +155,7 @@ PageObject: '${path.join('.')}'
  * @param {string} options.contains - Filter by using :contains('foo') pseudo-class
  * @param {number} options.at - Filter by index using :eq(x) pseudo-class
  * @param {boolean} options.last - Filter by using :last pseudo-class
+ * @param {boolean} options.visible - Filter by using :visible pseudo-class
  * @param {boolean} options.multiple - Specify if built selector can match multiple elements.
  * @param {String} options.testContainer - Context where to search elements in the DOM
  * @param {String} options.pageObjectKey - Used in the error message when the element is not found
@@ -199,22 +205,6 @@ export function simpleFindElementWithAssert(node, selector, options = {}) {
 }
 
 /**
- * The difference with simpleFindElementWithAssert is that this function also checks
- * if the elements are visible
- * @private
- */
-export function simpleFindVisibleElementWithAssert(node, selector, options = {}) {
-  let result = simpleFindElementWithAssert(...arguments);
-
-  assert(
-    `"${selector}" matched but the elements are not visible.`,
-    result.is(':visible')
-  );
-
-  return result;
-}
-
-/**
  * Returns a jQuery element (can be an empty jQuery result)
  *
  * @public
@@ -226,6 +216,7 @@ export function simpleFindVisibleElementWithAssert(node, selector, options = {})
  * @param {string} options.contains - Filter by using :contains('foo') pseudo-class
  * @param {number} options.at - Filter by index using :eq(x) pseudo-class
  * @param {boolean} options.last - Filter by using :last pseudo-class
+ * @param {boolean} options.visible - Filter by using :visible pseudo-class
  * @param {boolean} options.multiple - Specify if built selector can match multiple elements.
  * @param {String} options.testContainer - Context where to search elements in the DOM
  * @return {Object} jQuery object
