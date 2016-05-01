@@ -2,6 +2,7 @@ import Ember from 'ember';
 import { buildSelector } from './helpers';
 import { create } from './create';
 import { count } from './queries/count';
+import Ceibo from 'ceibo';
 
 const mergeFunction = Ember.assign || Ember.merge;
 const arrayDelegateMethods = ['map', 'filter', 'mapBy', 'filterBy'];
@@ -12,7 +13,7 @@ function merge(target, ...objects) {
   return target;
 }
 
-function generateEnumerable(definition) {
+function generateEnumerable(node, definition, key) {
   var enumerable = merge({}, definition);
 
   delete enumerable.itemScope;
@@ -26,27 +27,35 @@ function generateEnumerable(definition) {
     arrayDelegateMethods.forEach(method => delegateToArray(enumerable, method));
   }
 
-  var collection = create(enumerable, { parent: this });
+  var collection = create(enumerable, { parent: node });
 
   if (typeof Symbol !== 'undefined' && Symbol.iterator) {
     collection[Symbol.iterator] = iteratorMethod;
   }
 
+  // Change the key of the root node
+  Ceibo.meta(collection).key = `${key}()`;
+
   return collection;
 }
 
-function generateItem(index, definition) {
+function generateItem(node, index, definition, key) {
   var filters = merge({}, { scope: definition.scope, at: index });
   var scope = buildSelector({}, definition.itemScope, filters);
 
-  return create(merge({}, definition.item, { scope, resetScope: definition.resetScope }), { parent: this });
+  var tree = create(merge({}, definition.item, { scope, resetScope: definition.resetScope }), { parent: node });
+
+  // Change the key of the root node
+  Ceibo.meta(tree).key = `${key}(${index})`;
+
+  return tree;
 }
 
 function toArrayMethod(definition) {
   return function() {
     var array = Ember.A();
     for (var index = 0, count = this.count; index < count; index++) {
-      array.push(generateItem.call(this, index, definition));
+      array.push(generateItem(this, index, definition));
     }
     return array;
   };
@@ -193,12 +202,14 @@ export function collection(definition) {
   return {
     isDescriptor: true,
 
-    value(index) {
-      if (typeof index === 'number') {
-        return generateItem.call(this, index, definition);
-      } else {
-        return generateEnumerable.call(this, definition);
-      }
+    get(key) {
+      return index => {
+        if (typeof index === 'number') {
+          return generateItem(this, index, definition, key);
+        } else {
+          return generateEnumerable(this, definition, key);
+        }
+      };
     }
   };
 }
