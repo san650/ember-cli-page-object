@@ -8,8 +8,8 @@ test('calls Ember\'s triggerEvent helper with proper args', function(assert) {
   fixture('<span></span>');
   assert.expect(2);
 
-  let expectedSelector = 'span',
-      page;
+  let expectedSelector = 'span';
+  let page;
 
   window.triggerEvent = function(actualSelector, _, event) {
     assert.equal(actualSelector, expectedSelector);
@@ -96,8 +96,8 @@ test('finds element by index', function(assert) {
   fixture('<span></span><span></span><span></span><span></span>');
   assert.expect(1);
 
-  let expectedSelector = 'span:eq(3)',
-      page;
+  let expectedSelector = 'span:eq(3)';
+  let page;
 
   window.triggerEvent = function(actualSelector) {
     assert.equal(actualSelector, expectedSelector);
@@ -114,8 +114,8 @@ test('looks for elements outside the testing container', function(assert) {
   fixture('<span></span>', { useAlternateContainer: true });
   assert.expect(1);
 
-  let expectedContext = '#alternate-ember-testing',
-      page;
+  let expectedContext = '#alternate-ember-testing';
+  let page;
 
   window.triggerEvent = function(_, actualContext) {
     assert.equal(actualContext, expectedContext);
@@ -131,7 +131,7 @@ test('looks for elements outside the testing container', function(assert) {
 test("raises an error when the element doesn't exist", function(assert) {
   assert.expect(1);
 
-  var done = assert.async();
+  let done = assert.async();
 
   let page = create({
     foo: {
@@ -143,7 +143,7 @@ test("raises an error when the element doesn't exist", function(assert) {
     }
   });
 
-  page.foo.bar.baz.qux().then().catch(error => {
+  page.foo.bar.baz.qux().then().catch((error) => {
     assert.ok(/page\.foo\.bar\.baz\.qux/.test(error.toString()), 'Element not found');
   }).finally(done);
 });

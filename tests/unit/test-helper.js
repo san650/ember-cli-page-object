@@ -6,10 +6,10 @@ let application;
 
 export function moduleFor(helperName) {
   module(`${helperName}`, {
-    beforeEach: function() {
+    beforeEach() {
       application = startApp();
     },
-    afterEach: function() {
+    afterEach() {
       Ember.run(application, 'destroy');
 
       // Cleanup DOM

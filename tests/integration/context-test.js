@@ -10,7 +10,7 @@ moduleForComponent('calculating-device', 'Integration | context', {
 test('Test\'s `this` context\'s methods are accessible to the page object', function(assert) {
   assert.expect(2);
 
-  const page = PageObject.create({
+  let page = PageObject.create({
     context: this
   });
 
@@ -22,7 +22,7 @@ test('Test\'s `this` context\'s methods are accessible to the page object', func
 test('Test\'s `this.$()` is accessible by the page object', function(assert) {
   assert.expect(2);
 
-  const page = PageObject.create({
+  let page = PageObject.create({
     context: this
   });
 
@@ -35,7 +35,7 @@ test('Test\'s `this.$()` is accessible by the page object', function(assert) {
 test('`setContext(this)` and `removeContext()` set and remove the test context from the page', function(assert) {
   assert.expect(3);
 
-  const page = PageObject.create({});
+  let page = PageObject.create({});
 
   assert.notOk(page.context);
 
@@ -53,7 +53,7 @@ test('`render()` throws an error when no context has been set', function(assert)
 
   let errorMessage;
 
-  const page = PageObject.create({});
+  let page = PageObject.create({});
 
   assert.notOk(page.context);
 

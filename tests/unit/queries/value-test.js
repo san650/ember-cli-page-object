@@ -107,7 +107,7 @@ test('matches multiple elements with multiple: true option', function(assert) {
     foo: value('input', { multiple: true })
   });
 
-  assert.deepEqual(page.foo, ["lorem", "ipsum"]);
+  assert.deepEqual(page.foo, ['lorem', 'ipsum']);
 });
 
 test('finds element by index', function(assert) {
@@ -126,7 +126,7 @@ test('finds element by index', function(assert) {
 test('looks for elements outside the testing container', function(assert) {
   fixture('<input value="lorem">', { useAlternateContainer: true });
 
-  var page = create({
+  let page = create({
     foo: value('input', { testContainer: '#alternate-ember-testing' })
   });
 

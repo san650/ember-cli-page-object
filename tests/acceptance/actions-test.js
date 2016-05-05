@@ -4,7 +4,7 @@ import PageObject from '../page-object';
 
 moduleForAcceptance('Acceptance | actions');
 
-var {
+let {
   clickOnText,
   clickable,
   fillable,
@@ -12,7 +12,7 @@ var {
   visitable
 } = PageObject;
 
-var page = PageObject.create({
+let page = PageObject.create({
   visit: visitable('/calculator'),
   keys: {
     clickOn: clickOnText('.numbers'),

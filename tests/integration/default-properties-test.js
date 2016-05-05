@@ -8,7 +8,7 @@ moduleForComponent('calculating-device', 'Integration | default properties', {
 });
 
 test('Adds default properties', function(assert) {
-  const page = PageObject.create({
+  let page = PageObject.create({
     context: this,
 
     one: {
@@ -34,7 +34,7 @@ test('Adds default properties', function(assert) {
 });
 
 test('Overrides default properties', function(assert) {
-  var page = PageObject.create({
+  let page = PageObject.create({
     context: this,
 
     dummy: {
