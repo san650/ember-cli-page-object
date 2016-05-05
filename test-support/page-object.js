@@ -61,6 +61,7 @@ export default {
   notHasClass,
   selectable,
   text,
+  triggerable,
   value,
   visitable
 };
