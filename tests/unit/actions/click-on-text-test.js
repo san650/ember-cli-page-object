@@ -195,8 +195,8 @@ test('looks for elements outside the testing container', function(assert) {
 
   fixture('<button>Lorem</button>', { useAlternateContainer: true });
 
-  let expectedContext = '#alternate-ember-testing',
-      page;
+  let expectedContext = '#alternate-ember-testing';
+  let page;
 
   window.click = function(_, actualContext) {
     assert.equal(actualContext, expectedContext);
@@ -214,7 +214,7 @@ test('looks for elements outside the testing container', function(assert) {
 test("raises an error when the element doesn't exist", function(assert) {
   assert.expect(1);
 
-  var done = assert.async();
+  let done = assert.async();
 
   let page = create({
     foo: {
@@ -226,7 +226,7 @@ test("raises an error when the element doesn't exist", function(assert) {
     }
   });
 
-  page.foo.bar.baz.qux('Lorem').then().catch(error => {
+  page.foo.bar.baz.qux('Lorem').then().catch((error) => {
     assert.ok(/page\.foo\.bar\.baz\.qux/.test(error.toString()), 'Element not found');
   }).finally(done);
 });
@@ -255,7 +255,7 @@ test('raises an error when the element is not visible and `visible` is true', fu
     foo: clickOnText('button', { visible: true })
   });
 
-  page.foo('Click me').then().catch(error => {
+  page.foo('Click me').then().catch((error) => {
     assert.ok(/page\.foo/.test(error.toString()), 'Element not found');
   }).finally(done);
 });

@@ -65,7 +65,7 @@ test('appends query params to the path', function(assert) {
     foo: visitable('/dummy-page')
   });
 
-  page.foo({ hello: "world", lorem: "ipsum" });
+  page.foo({ hello: 'world', lorem: 'ipsum' });
 });
 
 test('accepts both dynamic segments and query params', function(assert) {
@@ -81,5 +81,5 @@ test('accepts both dynamic segments and query params', function(assert) {
     foo: visitable('/users/:user_id/:another_id')
   });
 
-  page.foo({ user_id: 1, another_id: 0, hello: "world", lorem: "ipsum" });
+  page.foo({ user_id: 1, another_id: 0, hello: 'world', lorem: 'ipsum' });
 });

@@ -152,7 +152,7 @@ test('Chaining of actions on a component works', function(assert) {
 test('Queries and actions handle non-existant elements correctly', function(assert) {
   assert.expect(12);
 
-  const message = /Element not found./;
+  let message = /Element not found./;
   let template = createTemplate();
 
   page.render(template);
@@ -185,7 +185,7 @@ test('looks for elements outside the testing container', function(assert) {
 
   $('#alternate-ember-testing').html('<button>lorem</button><input>');
 
-  var page = PageObject.create({
+  let page = PageObject.create({
     context: this,
     clickOnText: clickOnText('button', { testContainer: '#alternate-ember-testing' }),
     clickable: clickable('button', { testContainer: '#alternate-ember-testing' }),

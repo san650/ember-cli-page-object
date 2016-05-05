@@ -5,7 +5,7 @@ import { create, text } from '../page-object';
 moduleFor('Unit | Property | .create');
 
 test('creates new page object', function(assert) {
-  var page = create({
+  let page = create({
     foo: 'a value',
     bar: {
       baz: 'another value'
@@ -23,7 +23,7 @@ test('resets scope', function(assert) {
     </div>
   `);
 
-  var page = create({
+  let page = create({
     scope: '.invalid-scope',
 
     foo: {
@@ -39,7 +39,7 @@ test('resets scope', function(assert) {
 test('generates .isVisible property', function(assert) {
   fixture('Lorem <span>ipsum</span>');
 
-  var page = create({
+  let page = create({
     scope: 'span',
     foo: {
     }
@@ -52,7 +52,7 @@ test('generates .isVisible property', function(assert) {
 test('generates .isHidden property', function(assert) {
   fixture('Lorem <span style="display:none">ipsum</span>');
 
-  var page = create({
+  let page = create({
     scope: 'span',
     foo: {
     }
@@ -62,9 +62,9 @@ test('generates .isHidden property', function(assert) {
   assert.ok(page.foo.isHidden, 'component is hidden');
 });
 
-['isVisible', 'isHidden', 'clickOn', 'click', 'contains', 'text'].forEach(prop => {
+['isVisible', 'isHidden', 'clickOn', 'click', 'contains', 'text'].forEach((prop) => {
   test(`does not override .${prop} property`, function(assert) {
-    var page = create({
+    let page = create({
       [prop]: 'foo bar'
     });
 
@@ -80,7 +80,7 @@ test('generates .clickOn property', function(assert) {
     assert.ok(true, 'click called');
   };
 
-  var page = create({
+  let page = create({
     foo: {
     }
   });
@@ -96,7 +96,7 @@ test('generates .click property', function(assert) {
     assert.ok(true, 'click called');
   };
 
-  var page = create({
+  let page = create({
     foo: {
       scope: 'button'
     }
@@ -108,7 +108,7 @@ test('generates .click property', function(assert) {
 test('generates .click property', function(assert) {
   fixture('Ipsum <span>Dolor</span>');
 
-  var page = create({
+  let page = create({
     foo: {
       scope: 'span'
     }
@@ -123,7 +123,7 @@ test('generates .text property', function(assert) {
     <div class="scope">Ipsum <span>Dolor</span></div>
   `);
 
-  var page = create({
+  let page = create({
     scope: '.scope',
     foo: {
       scope: 'span'
@@ -135,10 +135,10 @@ test('generates .text property', function(assert) {
 });
 
 test('generates .then property', function(assert) {
-  var page = create({
+  let page = create({
     foo: {}
   });
 
-  assert.ok(typeof(page.then) === 'function');
-  assert.ok(typeof(page.foo.then) === 'function');
+  assert.ok(typeof (page.then) === 'function');
+  assert.ok(typeof (page.foo.then) === 'function');
 });

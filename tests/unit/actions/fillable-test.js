@@ -8,10 +8,9 @@ test("calls Ember's fillIn helper", function(assert) {
   fixture('<input>');
   assert.expect(2);
 
-  let expectedSelector = 'input',
-      expectedText = 'dummy text',
-      page;
-
+  let expectedSelector = 'input';
+  let expectedText = 'dummy text';
+  let page;
 
   window.fillIn = function(actualSelector, actualText) {
     assert.equal(actualSelector, expectedSelector);
@@ -98,8 +97,8 @@ test('finds element by index', function(assert) {
   fixture('<input><input><input><input>');
   assert.expect(1);
 
-  let expectedSelector = 'input:eq(3)',
-      page;
+  let expectedSelector = 'input:eq(3)';
+  let page;
 
   window.fillIn = function(actualSelector) {
     assert.equal(actualSelector, expectedSelector);
@@ -116,10 +115,9 @@ test('is aliased to selectable', function(assert) {
   fixture('<input>');
   assert.expect(2);
 
-  let expectedSelector = 'input',
-      expectedText = 'dummy text',
-      page;
-
+  let expectedSelector = 'input';
+  let expectedText = 'dummy text';
+  let page;
 
   window.fillIn = function(actualSelector, actualText) {
     assert.equal(actualSelector, expectedSelector);
@@ -137,11 +135,10 @@ test('looks for elements outside the testing container', function(assert) {
   fixture('<input>', { useAlternateContainer: true });
   assert.expect(3);
 
-  let expectedContext = '#alternate-ember-testing',
-      expectedSelector = 'input',
-      expectedText = 'foo',
-      page;
-
+  let expectedContext = '#alternate-ember-testing';
+  let expectedSelector = 'input';
+  let expectedText = 'foo';
+  let page;
 
   window.fillIn = function(actualSelector, actualContext, actualText) {
     assert.equal(actualSelector, expectedSelector);
@@ -159,7 +156,7 @@ test('looks for elements outside the testing container', function(assert) {
 test("raises an error when the element doesn't exist", function(assert) {
   assert.expect(1);
 
-  var done = assert.async();
+  let done = assert.async();
 
   let page = create({
     foo: {
@@ -171,7 +168,7 @@ test("raises an error when the element doesn't exist", function(assert) {
     }
   });
 
-  page.foo.bar.baz.qux('lorem').then().catch(error => {
+  page.foo.bar.baz.qux('lorem').then().catch((error) => {
     assert.ok(/page\.foo\.bar\.baz\.qux/.test(error.toString()), 'Element not found');
   }).finally(done);
 });

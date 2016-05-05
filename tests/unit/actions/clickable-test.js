@@ -8,8 +8,8 @@ test('calls Ember\'s click helper', function(assert) {
   fixture('<span>Click me</span>');
   assert.expect(1);
 
-  let expectedSelector = 'span',
-      page;
+  let expectedSelector = 'span';
+  let page;
 
   window.click = function(actualSelector) {
     assert.equal(actualSelector, expectedSelector);
@@ -95,8 +95,8 @@ test('finds element by index', function(assert) {
   fixture('<span></span><span></span><span>Click me</span><span></span>');
   assert.expect(1);
 
-  let expectedSelector = 'span:eq(3)',
-      page;
+  let expectedSelector = 'span:eq(3)';
+  let page;
 
   window.click = function(actualSelector) {
     assert.equal(actualSelector, expectedSelector);
@@ -113,8 +113,8 @@ test('looks for elements outside the testing container', function(assert) {
   fixture('<span>Click me</span>', { useAlternateContainer: true });
   assert.expect(1);
 
-  let expectedContext = '#alternate-ember-testing',
-      page;
+  let expectedContext = '#alternate-ember-testing';
+  let page;
 
   window.click = function(_, actualContext) {
     assert.equal(actualContext, expectedContext);
@@ -130,7 +130,7 @@ test('looks for elements outside the testing container', function(assert) {
 test("raises an error when the element doesn't exist", function(assert) {
   assert.expect(1);
 
-  var done = assert.async();
+  let done = assert.async();
 
   let page = create({
     foo: {
@@ -142,7 +142,7 @@ test("raises an error when the element doesn't exist", function(assert) {
     }
   });
 
-  page.foo.bar.baz.qux().then().catch(error => {
+  page.foo.bar.baz.qux().then().catch((error) => {
     assert.ok(/page\.foo\.bar\.baz\.qux/.test(error.toString()), 'Element not found');
   }).finally(done);
 });
@@ -171,7 +171,7 @@ test('raises an error when the element is not visible and `visible` is true', fu
     foo: clickable('span', { visible: true })
   });
 
-  page.foo().then().catch(error => {
+  page.foo().then().catch((error) => {
     assert.ok(/page\.foo/.test(error.toString()), 'Element not found');
   }).finally(done);
 });

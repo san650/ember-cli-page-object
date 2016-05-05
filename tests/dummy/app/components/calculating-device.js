@@ -1,6 +1,6 @@
 import Ember from 'ember';
 
-var c = Ember.computed;
+let c = Ember.computed;
 
 export default Ember.Component.extend({
   result: '',
@@ -14,11 +14,11 @@ export default Ember.Component.extend({
 
   actions: {
     keyPress(key) {
-      var result = this.get('result'),
-          stack = this.get('stack'),
-          op = this.get('op');
+      let result = this.get('result');
+      let stack = this.get('stack');
+      let op = this.get('op');
 
-      switch(key) {
+      switch (key) {
         case '+':
         case '-':
         case '=':
@@ -30,7 +30,7 @@ export default Ember.Component.extend({
           break;
       }
 
-      switch(key) {
+      switch (key) {
         case '-':
           this.set('op', '-');
           break;

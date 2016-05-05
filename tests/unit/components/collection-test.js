@@ -96,11 +96,11 @@ test('delegates configured methods to `toArray()`', function(assert) {
     })
   });
 
-  assert.deepEqual(page.foo().map(i => i.text), ['Lorem', 'Ipsum']);
+  assert.deepEqual(page.foo().map((i) => i.text), ['Lorem', 'Ipsum']);
   assert.deepEqual(page.foo().mapBy('text'), ['Lorem', 'Ipsum']);
 
-  assert.deepEqual(page.foo().filter(i => i.isSpecial).map(i => i.text), ['Lorem']);
-  assert.deepEqual(page.foo().filterBy('isSpecial').map(i => i.text), ['Lorem']);
+  assert.deepEqual(page.foo().filter((i) => i.isSpecial).map((i) => i.text), ['Lorem']);
+  assert.deepEqual(page.foo().filterBy('isSpecial').map((i) => i.text), ['Lorem']);
 });
 
 test('produces an iterator for items', function(assert) {
@@ -350,7 +350,9 @@ test("returns the page object path when item's element doesn't exist", function(
     }
   });
 
-  assert.throws(function() { return page.foo.bar(1).baz.qux; }, function(error) {
+  assert.throws(function() {
+    return page.foo.bar(1).baz.qux;
+  }, function(error) {
     return /page\.foo\.bar\(1\)\.baz\.qux/.test(error.message);
   });
 });
@@ -368,7 +370,9 @@ test("returns the page object path when collection's element doesn't exist", fun
     }
   });
 
-  assert.throws(function() { return page.foo.bar().baz.qux; }, function(error) {
+  assert.throws(function() {
+    return page.foo.bar().baz.qux;
+  }, function(error) {
     return /page\.foo\.bar\(\)\.baz\.qux/.test(error.message);
   });
 });

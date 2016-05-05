@@ -28,7 +28,7 @@ test('removes white spaces from the beginning and end of the text', function(ass
 });
 
 test('normalizes inner text of the element containing newlines', function(assert) {
-  fixture(['<span>', 'Hello', 'multi-line', 'world!', '</span>'].join("\n"));
+  fixture(['<span>', 'Hello', 'multi-line', 'world!', '</span>'].join('\n'));
 
   let page = create({
     foo: text('span')
@@ -38,7 +38,7 @@ test('normalizes inner text of the element containing newlines', function(assert
 });
 
 test('avoid text normalization if normalize:false', function(assert) {
-  const denormalizedText = [' \n ', 'Hello', 'multi-line', 'world! ', '\t', '\n'].join('\n');
+  let denormalizedText = [' \n ', 'Hello', 'multi-line', 'world! ', '\t', '\n'].join('\n');
   fixture(`<span>${denormalizedText}</span>`);
 
   let page = create({
@@ -186,7 +186,7 @@ test('returns multiple values', function(assert) {
     </ul>
   `);
 
-  var page = create({
+  let page = create({
     foo: text('li', { multiple: true })
   });
 
@@ -196,7 +196,7 @@ test('returns multiple values', function(assert) {
 test('looks for elements outside the testing container', function(assert) {
   fixture('<h1>lorem ipsum</h1>', { useAlternateContainer: true });
 
-  var page = create({
+  let page = create({
     foo: text('h1', { testContainer: '#alternate-ember-testing' })
   });
 

@@ -114,12 +114,11 @@ test('finds element by index', function(assert) {
   assert.ok(page.foo);
 });
 
-
 test('looks for elements outside the testing container', function(assert) {
-  fixture('<h1 class="foo">lorem ipsum</h1>', { useAlternateContainer: true  });
+  fixture('<h1 class="foo">lorem ipsum</h1>', { useAlternateContainer: true });
 
-  var page = create({
-    foo: is('.foo', 'h1', { testContainer: '#alternate-ember-testing'  })
+  let page = create({
+    foo: is('.foo', 'h1', { testContainer: '#alternate-ember-testing' })
   });
 
   assert.equal(page.foo, true);

@@ -116,7 +116,7 @@ test('finds element by index', function(assert) {
 test('looks for elements outside the testing container', function(assert) {
   fixture('<input checked>', { useAlternateContainer: true });
 
-  var page = create({
+  let page = create({
     foo: property('checked', ':input', { testContainer: '#alternate-ember-testing' })
   });
 
