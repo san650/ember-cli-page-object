@@ -1,7 +1,7 @@
 import Ember from 'ember';
 import { simpleFindElementWithAssert, buildSelector, getContext } from '../helpers';
 
-function triggerableInternal(tree, eventType, selector, options, context) {
+function keyableInternal(tree, eventType, keyCode, selector, options, context) {
   var eventOptions = options.eventProperties,
     fullSelector = buildSelector(tree, selector, options);
 
@@ -11,7 +11,7 @@ function triggerableInternal(tree, eventType, selector, options, context) {
   simpleFindElementWithAssert(tree, fullSelector, options)
 
   if (context) {
-    let event = Ember.$.Event(eventType, eventOptions);
+    let event = Ember.$.Event(eventType, { keyCode });
 
     if (options.testContainer) {
       Ember.$(fullSelector, options.testContainer).trigger(event);
@@ -19,14 +19,14 @@ function triggerableInternal(tree, eventType, selector, options, context) {
       context.$(fullSelector).trigger(event);
     }
   } else {
-    /* global triggerEvent */
-    triggerEvent(fullSelector, options.testContainer, eventType, eventOptions);
+    /* global keyEvent */
+    keyEvent(fullSelector, options.testContainer, eventType, keyCode);
   }
 }
 
 /**
  *
- * Triggers event on element matched by selector.
+ * Triggers key event with specified key code on element matched by selector.
  *
  * @example
  *
@@ -34,19 +34,7 @@ function triggerableInternal(tree, eventType, selector, options, context) {
  * // <input class="email">
  *
  * const page = PageObject.create({
- *   focus: triggerable('focus', '.name')
- * });
- *
- * // focuses on element with selector '.name'
- * page.focus();
- *
- * @example
- *
- * // <input class="name">
- * // <input class="email">
- *
- * const page = PageObject.create({
- *   enter: triggerable('keypress', '.name', { eventProperties: { keyCode: 13 } })
+ *   enter: keyable('keypress', 13, '.name', { scope: '.name' })
  * });
  *
  * // triggers keypress using enter key on element with selector '.name'
@@ -60,11 +48,11 @@ function triggerableInternal(tree, eventType, selector, options, context) {
  * // <input class="email">
  *
  * const page = PageObject.create({
- *   focus: triggerable('focus', '.name', { scope: '.scope' })
+ *   enter: keyable('keypress', 13, '.name', { scope: '.scope' })
  * });
  *
- * // focuses on element with selector '.scope .name'
- * page.focus();
+ * // triggers keypress using enter key on element with selector '.scope .name'
+ * page.enter();
  *
  * @example
  *
@@ -75,25 +63,25 @@ function triggerableInternal(tree, eventType, selector, options, context) {
  *
  * const page = PageObject.create({
  *   scope: '.scope',
- *   focus: triggerable('focus', '.name')
+ *   enter: triggerable('keypress', 13, '.name')
  * });
  *
- * // clicks on element with selector '.scope button.continue'
- * page.focus();
+ * // triggers keypress using enter key on element with selector '.scope button.continue'
+ * page.enter();
  *
  * @public
  *
- * @param {string} event - Event to be triggered
+ * @param {string} event - Key event to be triggered
+ * @param {string} keyCode - Key code that will be passed when triggering event
  * @param {string} selector - CSS selector of the element on which the event will be triggered
  * @param {Object} options - Additional options
  * @param {string} options.scope - Nests provided scope within parent's scope
  * @param {number} options.at - Reduce the set of matched elements to the one at the specified index
  * @param {boolean} options.resetScope - Ignore parent scope
  * @param {String} options.testContainer - Context where to search elements in the DOM
- * @param {String} options.eventProperties - Event properties that will be passed to trigger function
  * @return {Descriptor}
 */
-export function triggerable(event, selector, options = {}) {
+export function keyable(event, keyCode, selector, options = {}) {
   return {
     isDescriptor: true,
 
@@ -102,9 +90,9 @@ export function triggerable(event, selector, options = {}) {
         const context = getContext(this);
 
         if (context) {
-          run(() => triggerableInternal(this, event, selector, { ...options, pageObjectKey: `${key}()` }, context));
+          run(() => keyableInternal(this, event, keyCode, selector, { ...options, pageObjectKey: `${key}()` }, context));
         } else {
-          wait().then(() => triggerableInternal(this, event, selector, { ...options, pageObjectKey: `${key}()` }));
+          wait().then(() => keyableInternal(this, event, keyCode, selector, { ...options, pageObjectKey: `${key}()` }));
         }
 
         return this;

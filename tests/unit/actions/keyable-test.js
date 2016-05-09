@@ -1,43 +1,24 @@
 import { test } from 'qunit';
 import { moduleFor, fixture } from '../test-helper';
-import { create, triggerable } from '../../page-object';
+import { create, keyable } from '../../page-object';
 
-moduleFor('Unit | Property | .triggerable');
+moduleFor('Unit | Property | .keyable');
 
-test('calls Ember\'s triggerEvent helper with proper args', function(assert) {
-  fixture('<span></span>');
-  assert.expect(2);
-
-  let expectedSelector = 'span';
-  let page;
-
-  window.triggerEvent = function(actualSelector, _, event) {
-    assert.equal(actualSelector, expectedSelector);
-    assert.equal(event, 'focus');
-  };
-
-  page = create({
-    foo: triggerable('focus', expectedSelector)
-  });
-
-  page.foo();
-});
-
-test('calls Ember\'s triggerEvent helper with event options', function(assert) {
+test('calls Ember\'s keyEvent helper with proper args', function(assert) {
   fixture('<span></span>');
   assert.expect(3);
 
   let expectedSelector = 'span';
   let page;
 
-  window.triggerEvent = function(actualSelector, _, event, options) {
+  window.keyEvent = function(actualSelector, _, event, keyCode) {
     assert.equal(actualSelector, expectedSelector);
     assert.equal(event, 'keypress');
-    assert.equal(options.keyCode, 13);
+    assert.equal(keyCode, 13);
   };
 
   page = create({
-    foo: triggerable('keypress', expectedSelector, { eventProperties: { keyCode: 13 } })
+    foo: keyable('keypress', 13, expectedSelector)
   });
 
   page.foo();
@@ -49,12 +30,12 @@ test('looks for elements inside the scope', function(assert) {
 
   let page;
 
-  window.triggerEvent = function(actualSelector) {
+  window.keyEvent = function(actualSelector) {
     assert.equal(actualSelector, '.scope span');
   };
 
   page = create({
-    foo: triggerable('focus', 'span', { scope: '.scope' })
+    foo: keyable('keypress', 13, 'span', { scope: '.scope' })
   });
 
   page.foo();
@@ -66,14 +47,14 @@ test('looks for elements inside page\'s scope', function(assert) {
 
   let page;
 
-  window.triggerEvent = function(actualSelector) {
+  window.keyEvent = function(actualSelector) {
     assert.equal(actualSelector, '.scope span');
   };
 
   page = create({
     scope: '.scope',
 
-    foo: triggerable('focus', 'span')
+    foo: keyable('keypress', 13, 'span')
   });
 
   page.foo();
@@ -85,13 +66,13 @@ test('resets scope', function(assert) {
 
   let page;
 
-  window.triggerEvent = function(actualSelector) {
+  window.keyEvent = function(actualSelector) {
     assert.equal(actualSelector, 'span');
   };
 
   page = create({
     scope: '.scope',
-    foo: triggerable('focus', 'span', { resetScope: true })
+    foo: keyable('keypress', 13, 'span', { resetScope: true })
   });
 
   page.foo();
@@ -103,10 +84,10 @@ test('returns target object', function(assert) {
 
   let page;
 
-  window.triggerEvent = function() {};
+  window.keyEvent = function() {};
 
   page = create({
-    foo: triggerable('focus', 'span')
+    foo: keyable('keypress', 13, 'span')
   });
 
   assert.equal(page.foo(), page);
@@ -119,12 +100,12 @@ test('finds element by index', function(assert) {
   let expectedSelector = 'span:eq(3)';
   let page;
 
-  window.triggerEvent = function(actualSelector) {
+  window.keyEvent = function(actualSelector) {
     assert.equal(actualSelector, expectedSelector);
   };
 
   page = create({
-    foo: triggerable('focus', 'span', { at: 3 })
+    foo: keyable('keypress', 13, 'span', { at: 3 })
   });
 
   page.foo();
@@ -137,12 +118,12 @@ test('looks for elements outside the testing container', function(assert) {
   let expectedContext = '#alternate-ember-testing';
   let page;
 
-  window.triggerEvent = function(_, actualContext) {
+  window.keyEvent = function(_, actualContext) {
     assert.equal(actualContext, expectedContext);
   };
 
   page = create({
-    foo: triggerable('focus', 'span', { testContainer: expectedContext })
+    foo: keyable('keypress', 13, 'span', { testContainer: expectedContext })
   });
 
   page.foo();
@@ -157,7 +138,7 @@ test("raises an error when the element doesn't exist", function(assert) {
     foo: {
       bar: {
         baz: {
-          qux: triggerable('focus', 'button')
+          qux: keyable('keypress', 'button', 13)
         }
       }
     }
