@@ -16,7 +16,7 @@ import { property }    from './queries/property';         export { property };
 import { text }        from './queries/text';             export { text };
 import { value }       from './queries/value';            export { value };
 
-export { buildSelector, findElementWithAssert, findElement } from './helpers';
+export { buildSelector, findElementWithAssert, findElement, getContext } from './helpers';
 
 export default {
   attribute,

@@ -43,7 +43,7 @@ export { text } from 'ember-cli-page-object/queries/text';
 export { value } from 'ember-cli-page-object/queries/value';
 export { property } from 'ember-cli-page-object/queries/property';
 
-export { buildSelector, findElementWithAssert, findElement } from 'ember-cli-page-object/helpers';
+export { buildSelector, findElementWithAssert, findElement, getContext } from 'ember-cli-page-object/helpers';
 
 export default {
   attribute,
