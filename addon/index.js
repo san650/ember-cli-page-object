@@ -4,6 +4,7 @@ import { clickable }   from './actions/clickable';        export { clickable };
 import { clickOnText } from './actions/click-on-text';    export { clickOnText };
 import { fillable }    from './actions/fillable';         export { fillable }; export const selectable = fillable;
 import { visitable }   from './actions/visitable';        export { visitable };
+import { triggerable } from './actions/triggerable';      export { triggerable };
 import { contains }    from './predicates/contains';      export { contains };
 import { hasClass }    from './predicates/has-class';     export { hasClass };
 import { isHidden }    from './predicates/is-hidden';     export { isHidden };
@@ -36,5 +37,6 @@ export default {
   selectable,
   text,
   value,
-  visitable
+  visitable,
+  triggerable
 };
