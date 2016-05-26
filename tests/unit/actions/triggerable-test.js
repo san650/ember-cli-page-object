@@ -23,6 +23,26 @@ test('calls Ember\'s triggerEvent helper with proper args', function(assert) {
   page.foo();
 });
 
+test('calls Ember\'s triggerEvent helper with event options', function(assert) {
+  fixture('<span></span>');
+  assert.expect(3);
+
+  let expectedSelector = 'span';
+  let page;
+
+  window.triggerEvent = function(actualSelector, _, event, options) {
+    assert.equal(actualSelector, expectedSelector);
+    assert.equal(event, 'keypress');
+    assert.equal(options.keyCode, 13);
+  };
+
+  page = create({
+    foo: triggerable('keypress', expectedSelector, { eventProperties: { keyCode: 13 } })
+  });
+
+  page.foo();
+});
+
 test('looks for elements inside the scope', function(assert) {
   fixture('<div class="scope"><span></span></div>');
   assert.expect(1);
