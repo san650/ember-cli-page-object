@@ -16,13 +16,10 @@ module.exports = function(defaults) {
     behave. You most likely want to be modifying `./index.js` or app's build file
   */
 
-  if (app.env === 'test') {
-    // Load ember-template-compiler for testing with Ember version <= 1.12;
-    const compilerPath = app.bowerDirectory + '/ember/ember-template-compiler.js';
+  const compilerPath = app.bowerDirectory + '/ember/ember-template-compiler.js';
 
-    if (fs.statSync(compilerPath).isFile()) {
-      app.import(compilerPath);
-    }
+  if (fs.statSync(compilerPath).isFile()) {
+    app.import(compilerPath);
   }
 
   return app.toTree();
