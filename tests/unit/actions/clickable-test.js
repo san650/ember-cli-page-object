@@ -1,53 +1,51 @@
-import { test } from 'qunit';
-import { moduleFor, fixture } from '../test-helper';
-import { create, clickable } from '../../page-object';
+import { module, test, finish } from '../../helpers/unit';
+import { create, clickable } from 'ember-cli-page-object';
 
-moduleFor('Unit | Property | .clickable');
+module('Unit | Property | .clickable');
 
-test('calls Ember\'s click helper', function(assert) {
-  fixture('<span>Click me</span>');
+test('calls click helper', function(assert, adapter) {
   assert.expect(1);
 
-  let expectedSelector = 'span';
+  let expectedSelector = 'button';
   let page;
-
-  window.click = function(actualSelector) {
-    assert.equal(actualSelector, expectedSelector);
-  };
 
   page = create({
     foo: clickable(expectedSelector)
   });
 
-  page.foo();
-});
+  adapter.createTemplate(this, page, '<button>Click me</button>');
 
-test('looks for elements inside the scope', function(assert) {
-  fixture('<div class="scope"><span>Click me</span></div>');
-  assert.expect(1);
-
-  let page;
-
-  window.click = function(actualSelector) {
-    assert.equal(actualSelector, '.scope span');
-  };
-
-  page = create({
-    foo: clickable('span', { scope: '.scope' })
+  adapter.click((actualSelector) => {
+    assert.equal(actualSelector, expectedSelector);
   });
 
   page.foo();
 });
 
-test('looks for elements inside page\'s scope', function(assert) {
-  fixture('<div class="scope"><span>Click me</span></div>');
+test('looks for elements inside the scope', function(assert, adapter) {
   assert.expect(1);
 
+  let expectedSelector = '.scope span';
   let page;
 
-  window.click = function(actualSelector) {
-    assert.equal(actualSelector, '.scope span');
-  };
+  page = create({
+    foo: clickable('span', { scope: '.scope' })
+  });
+
+  adapter.createTemplate(this, page, '<div class="scope"><span>Click me</span></div>');
+
+  adapter.click((actualSelector) => {
+    assert.equal(actualSelector, expectedSelector);
+  });
+
+  page.foo();
+});
+
+test("looks for elements inside page's scope", function(assert, adapter) {
+  assert.expect(1);
+
+  let expectedSelector = '.scope span';
+  let page;
 
   page = create({
     scope: '.scope',
@@ -55,82 +53,91 @@ test('looks for elements inside page\'s scope', function(assert) {
     foo: clickable('span')
   });
 
+  adapter.createTemplate(this, page, '<div class="scope"><span>Click me</span></div>');
+
+  adapter.click((actualSelector) => {
+    assert.equal(actualSelector, expectedSelector);
+  });
+
   page.foo();
 });
 
-test('resets scope', function(assert) {
-  fixture('<span>Click me</span>');
+test('resets scope', function(assert, adapter) {
   assert.expect(1);
 
+  let expectedSelector = 'span';
   let page;
-
-  window.click = function(actualSelector) {
-    assert.equal(actualSelector, 'span');
-  };
 
   page = create({
     scope: '.scope',
     foo: clickable('span', { resetScope: true })
   });
 
+  adapter.createTemplate(this, page, '<span>Click me</span>');
+
+  adapter.click((actualSelector) => {
+    assert.equal(actualSelector, expectedSelector);
+  });
+
   page.foo();
 });
 
-test('returns target object', function(assert) {
-  fixture('<span>Click me</span>');
+test('returns target object', function(assert, adapter) {
   assert.expect(1);
 
   let page;
-
-  window.click = function() {};
 
   page = create({
     foo: clickable('span')
   });
 
+  adapter.createTemplate(this, page, '<span>Click me</span>');
+
+  adapter.click(function() {});
+
   assert.equal(page.foo(), page);
 });
 
-test('finds element by index', function(assert) {
-  fixture('<span></span><span></span><span>Click me</span><span></span>');
+test('finds element by index', function(assert, adapter) {
   assert.expect(1);
 
   let expectedSelector = 'span:eq(3)';
   let page;
 
-  window.click = function(actualSelector) {
-    assert.equal(actualSelector, expectedSelector);
-  };
-
   page = create({
     foo: clickable('span', { at: 3 })
   });
 
+  adapter.click((actualSelector) => {
+    assert.equal(actualSelector, expectedSelector);
+  });
+
+  adapter.createTemplate(this, page, '<span></span><span></span><span>Click me</span><span></span>');
+
   page.foo();
 });
 
-test('looks for elements outside the testing container', function(assert) {
-  fixture('<span>Click me</span>', { useAlternateContainer: true });
+test('looks for elements outside the testing container', function(assert, adapter) {
   assert.expect(1);
 
   let expectedContext = '#alternate-ember-testing';
   let page;
 
-  window.click = function(_, actualContext) {
-    assert.equal(actualContext, expectedContext);
-  };
-
   page = create({
     foo: clickable('span', { testContainer: expectedContext })
+  });
+
+  adapter.createTemplate(this, page, '<span>Click me</span>', { useAlternateContainer: true });
+
+  adapter.click((_, actualContext) => {
+    assert.equal(actualContext, expectedContext);
   });
 
   page.foo();
 });
 
-test("raises an error when the element doesn't exist", function(assert) {
+test("raises an error when the element doesn't exist", function(assert, adapter) {
   assert.expect(1);
-
-  let done = assert.async();
 
   let page = create({
     foo: {
@@ -142,36 +149,41 @@ test("raises an error when the element doesn't exist", function(assert) {
     }
   });
 
-  page.foo.bar.baz.qux().then().catch((error) => {
-    assert.ok(/page\.foo\.bar\.baz\.qux/.test(error.toString()), 'Element not found');
-  }).finally(done);
+  adapter.createTemplate(this, page);
+
+  adapter.throws(assert, function() {
+    return page.foo.bar.baz.qux();
+  }, /page\.foo\.bar\.baz\.qux/, 'Element not found');
 });
 
-test("doesn't raise an error when the element is not visible and `visible` is not set", function(assert) {
-  fixture('<span style="display:none">Click me</span>');
+test("doesn't raise an error when the element is not visible and `visible` is not set", function(assert, adapter) {
   assert.expect(1);
-
-  window.click = function() {
-    assert.ok(true, 'Element is clicked');
-  };
 
   let page = create({
     foo: clickable('span')
   });
 
+  adapter.createTemplate(this, page, '<span style="display:none">Click me</span>');
+
+  adapter.click(() => {
+    assert.ok(true, 'Element is clicked');
+  });
+
   page.foo();
 });
 
-test('raises an error when the element is not visible and `visible` is true', function(assert) {
-  fixture('<span style="display:none">Click me</span>');
+test('raises an error when the element is not visible and `visible` is true', function(assert, adapter) {
   assert.expect(1);
 
-  let done = assert.async();
   let page = create({
     foo: clickable('span', { visible: true })
   });
 
-  page.foo().then().catch((error) => {
-    assert.ok(/page\.foo/.test(error.toString()), 'Element not found');
-  }).finally(done);
+  adapter.createTemplate(this, page, '<span style="display:none">Click me</span>');
+
+  adapter.throws(assert, function() {
+    return page.foo();
+  }, /page\.foo/, 'Element not found');
 });
+
+finish();
