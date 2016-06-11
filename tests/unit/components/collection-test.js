@@ -376,3 +376,15 @@ test("returns the page object path when collection's element doesn't exist", fun
     return /page\.foo\.bar\(\)\.baz\.qux/.test(error.message);
   });
 });
+
+test("doesn't generate an item or itemScope property", function(assert) {
+  let page = create({
+    foo: collection({
+      itemScope: 'span',
+      item: {}
+    })
+  });
+
+  assert.notOk(page.foo().item);
+  assert.notOk(page.foo().itemScope);
+});
