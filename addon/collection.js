@@ -12,17 +12,15 @@ function merge(target, ...objects) {
   return target;
 }
 
-function generateEnumerable(node, definition, key) {
-  let enumerable = merge({}, definition);
-
-  delete enumerable.itemScope;
+function generateEnumerable(node, definition, item, key) {
+  var enumerable = merge({}, definition);
 
   if (typeof (enumerable.count) === 'undefined') {
-    enumerable.count = count(definition.itemScope);
+    enumerable.count = count(item.itemScope);
   }
 
   if (typeof (enumerable.toArray) === 'undefined') {
-    enumerable.toArray = toArrayMethod(definition);
+    enumerable.toArray = toArrayMethod(item);
     arrayDelegateMethods.forEach((method) => delegateToArray(enumerable, method));
   }
 
@@ -205,15 +203,25 @@ function iteratorMethod() {
  * @return {Descriptor}
  */
 export function collection(definition) {
+  var item = {
+    scope: definition.scope,
+    itemScope: definition.itemScope,
+    resetScope: definition.resetScope,
+    item: definition.item
+  };
+
+  delete definition.item;
+  delete definition.itemScope;
+
   return {
     isDescriptor: true,
 
     get(key) {
       return (index) => {
         if (typeof (index) === 'number') {
-          return generateItem(this, index, definition, key);
+          return generateItem(this, index, item, key);
         } else {
-          return generateEnumerable(this, definition, key);
+          return generateEnumerable(this, definition, item, key);
         }
       };
     }
