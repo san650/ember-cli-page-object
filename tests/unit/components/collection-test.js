@@ -388,3 +388,88 @@ test("doesn't generate an item or itemScope property", function(assert) {
   assert.notOk(page.foo().item);
   assert.notOk(page.foo().itemScope);
 });
+
+
+test('Can iterate over scoped items with a for loop', function(assert) {
+  fixture(`
+    <div>
+        <span>Lorem</span>
+        <span>Ipsum</span>
+    </div>
+  `);
+
+  let page = create({
+    foo: collection({
+      scope: 'div',
+      itemScope: 'span',
+
+      item: {
+        text: text()
+      }
+    })
+  });
+
+  let textContents = [];
+  for (let i = 0; i < page.foo().count; i++) {
+    let item = page.foo(i);
+    textContents.push(item.text);
+  }
+
+  assert.deepEqual(textContents, ['Lorem', 'Ipsum']);
+});
+
+test('Can iterate over scoped items with a for of loop', function(assert) {
+  fixture(`
+    <div>
+        <span>Lorem</span>
+        <span>Ipsum</span>
+    </div>
+  `);
+
+  let page = create({
+    foo: collection({
+      scope: 'div',
+      itemScope: 'span',
+
+      item: {
+        text: text()
+      }
+    })
+  });
+
+  let textContents = [];
+  withIteratorSymbolDefined(() => {
+    for (let item of page.foo()) {
+      textContents.push(item.text);
+    }
+  });
+
+  assert.deepEqual(textContents, ['Lorem', 'Ipsum']);
+});
+
+test('Can iterate over scoped items with a forEach loop', function(assert) {
+  fixture(`
+    <div>
+        <span>Lorem</span>
+        <span>Ipsum</span>
+    </div>
+  `);
+
+  let page = create({
+    foo: collection({
+      scope: 'div',
+      itemScope: 'span',
+
+      item: {
+        text: text()
+      }
+    })
+  });
+
+  let textContents = [];
+  page.foo().toArray().forEach(function(item) {
+    textContents.push(item.text);
+  });
+
+  assert.deepEqual(textContents, ['Lorem', 'Ipsum']);
+});
