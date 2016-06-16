@@ -1,6 +1,8 @@
 import { assign, findElementWithAssert, every } from '../helpers';
 
 /**
+ * @public
+ *
  * Validates if an element or a set of elements don't have a given CSS class.
  *
  * @example
@@ -88,7 +90,7 @@ export function notHasClass(cssClass, selector, options = {}) {
     isDescriptor: true,
 
     get(key) {
-      var elements = findElementWithAssert(this, selector, assign({ pageObjectKey: key }, options));
+      let elements = findElementWithAssert(this, selector, assign({ pageObjectKey: key }, options));
 
       return every(elements, function(element) {
         return !element.hasClass(cssClass);

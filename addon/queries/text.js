@@ -1,6 +1,8 @@
 import { assign, findElementWithAssert, map, normalizeText } from '../helpers';
 
 /**
+ * @public
+ *
  * Returns text of the element or Array of texts of all matched elements by selector.
  *
  * @example
@@ -87,9 +89,15 @@ export function text(selector, options = {}) {
     isDescriptor: true,
 
     get(key) {
-      const elements = findElementWithAssert(this, selector, assign({ pageObjectKey: key }, options));
-      const avoidNormalization = options.normalize === false;
-      const result = map(elements, (element) => avoidNormalization ? element.text() : normalizeText(element.text()));
+      let elements = findElementWithAssert(this, selector, assign({ pageObjectKey: key }, options));
+      let avoidNormalization = options.normalize === false;
+      let result = map(elements, function(element) {
+        if (avoidNormalization) {
+          return element.text();
+        } else {
+          return normalizeText(element.text());
+        }
+      });
 
       return options.multiple ? result : result[0];
     }

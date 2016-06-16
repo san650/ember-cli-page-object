@@ -1,6 +1,8 @@
 import { assign, findElementWithAssert, map } from '../helpers';
 
 /**
+ * @public
+ *
  * Returns the value of a matched element, or an array of values of all matched elements.
  *
  * @example
@@ -66,8 +68,8 @@ export function value(selector, options = {}) {
     isDescriptor: true,
 
     get(key) {
-      var elements = findElementWithAssert(this, selector, assign({ pageObjectKey: key }, options));
-      var result;
+      let elements = findElementWithAssert(this, selector, assign({ pageObjectKey: key }, options));
+      let result;
 
       result = map(elements, function(element) {
         return element.val();

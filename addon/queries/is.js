@@ -1,6 +1,8 @@
 import { assign, findElementWithAssert, every } from '../helpers';
 
 /**
+ * @public
+ *
  * Validates if an element (or elements) matches a given selector.
  *
  * Useful for checking if an element (or elements) matches a selector like
@@ -44,9 +46,9 @@ export function is(testSelector, targetSelector, options = {}) {
     isDescriptor: true,
 
     get(key) {
-      const elements = findElementWithAssert(this, targetSelector, assign({ pageObjectKey: key }, options));
+      let elements = findElementWithAssert(this, targetSelector, assign({ pageObjectKey: key }, options));
 
-      const result = every(elements, function(element) {
+      let result = every(elements, function(element) {
         return element.is(testSelector);
       });
 
