@@ -1,18 +1,17 @@
 import Ember from 'ember';
-import { findElement, simpleFindElementWithAssert, buildSelector, getContext } from '../helpers';
+import { assign, findElement, simpleFindElementWithAssert, buildSelector, getContext } from '../helpers';
 
 /* global wait, click */
 
-const merge = Ember.assign || Ember.merge;
 const { run } = Ember;
 
 function childSelector(tree, selector, textToClick, options) {
   // Suppose that we have something like `<form><button>Submit</button></form>`
   // In this case <form> and <button> elements contains "Submit" text, so, we'll
   // want to __always__ click on the __last__ element that contains the text.
-  var selectorWithSpace = (selector || '') + ' ';
-  var opts = merge({ contains: textToClick, last: true, multiple: true }, options);
-  var fullSelector = buildSelector(tree, selectorWithSpace, opts);
+  let selectorWithSpace = `${selector || ''} `;
+  let opts = assign({ contains: textToClick, last: true, multiple: true }, options);
+  let fullSelector = buildSelector(tree, selectorWithSpace, opts);
 
   if (findElement(tree, selectorWithSpace, opts).length) {
     return fullSelector;
@@ -20,17 +19,17 @@ function childSelector(tree, selector, textToClick, options) {
 }
 
 function actualSelector(tree, selector, textToClick, options) {
-  var childSel = childSelector(tree, selector, textToClick, options);
+  let childSel = childSelector(tree, selector, textToClick, options);
 
   if (childSel) {
     return childSel;
   } else {
-    return buildSelector(tree, selector, merge({ contains: textToClick }, options));
+    return buildSelector(tree, selector, assign({ contains: textToClick }, options));
   }
 }
 
 function clickOnTextInternal(tree, selector, textToClick, options, context) {
-  var fullSelector = actualSelector(tree, selector, textToClick, options);
+  let fullSelector = actualSelector(tree, selector, textToClick, options);
 
   // Run this to validate if the element exists
   simpleFindElementWithAssert(tree, fullSelector, options);
@@ -128,12 +127,12 @@ export function clickOnText(selector, options = {}) {
 
     get(key) {
       return function(textToClick) {
-        var context = getContext(this);
+        let context = getContext(this);
 
         if (context) {
-          run(() => clickOnTextInternal(this, selector, textToClick, { ...options, pageObjectKey: `${key}("${textToClick}")` }, context));
+          run(() => clickOnTextInternal(this, selector, textToClick, assign({ pageObjectKey: `${key}("${textToClick}")` }, options), context));
         } else {
-          wait().then(() => clickOnTextInternal(this, selector, textToClick, { ...options, pageObjectKey: `${key}("${textToClick}")` }));
+          wait().then(() => clickOnTextInternal(this, selector, textToClick, assign({ pageObjectKey: `${key}("${textToClick}")` }, options)));
         }
 
         return this;

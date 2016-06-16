@@ -1,10 +1,10 @@
 import Ember from 'ember';
-import { simpleFindElementWithAssert, buildSelector, getContext } from '../helpers';
+import { assign, simpleFindElementWithAssert, buildSelector, getContext } from '../helpers';
 
-var { run } = Ember;
+const { run } = Ember;
 
 function clickableInternal(tree, selector, options, context) {
-  var fullSelector = buildSelector(tree, selector, options);
+  let fullSelector = buildSelector(tree, selector, options);
 
   // Run this to validate if the element exists and it is visible
   simpleFindElementWithAssert(tree, fullSelector, options);
@@ -82,12 +82,13 @@ export function clickable(selector, options = {}) {
 
     get(key) {
       return function() {
-        const context = getContext(this);
+        let context = getContext(this);
 
         if (context) {
-          run(() => clickableInternal(this, selector, { ...options, pageObjectKey: `${key}()` }, context));
+          run(() => clickableInternal(this, selector, assign({ pageObjectKey: `${key}()` }, options), context));
         } else {
-          wait().then(() => clickableInternal(this, selector, { ...options, pageObjectKey: `${key}()` }));
+          /* global wait */
+          wait().then(() => clickableInternal(this, selector, assign({ pageObjectKey: `${key}()` }, options)));
         }
 
         return this;

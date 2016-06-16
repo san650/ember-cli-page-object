@@ -1,4 +1,4 @@
-import { findElementWithAssert, every } from '../helpers';
+import { assign, findElementWithAssert, every } from '../helpers';
 
 /**
  * Validates if an element or a set of elements don't have a given CSS class.
@@ -88,7 +88,7 @@ export function notHasClass(cssClass, selector, options = {}) {
     isDescriptor: true,
 
     get(key) {
-      var elements = findElementWithAssert(this, selector, { ...options, pageObjectKey: key });
+      var elements = findElementWithAssert(this, selector, assign({ pageObjectKey: key }, options));
 
       return every(elements, function(element) {
         return !element.hasClass(cssClass);

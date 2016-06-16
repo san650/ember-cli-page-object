@@ -1,4 +1,4 @@
-import { findElementWithAssert, every } from '../helpers';
+import { assign, findElementWithAssert, every } from '../helpers';
 
 /**
  * Returns a boolean representing whether an element or a set of elements contains the specified text.
@@ -86,7 +86,7 @@ export function contains(selector, options = {}) {
 
     get(key) {
       return function(textToSearch) {
-        let elements = findElementWithAssert(this, selector, { ...options, pageObjectKey: `${key}("${textToSearch}")` });
+        let elements = findElementWithAssert(this, selector, assign({ pageObjectKey: `${key}("${textToSearch}")` }, options));
 
         return every(elements, function(element) {
           return element.text().indexOf(textToSearch) >= 0;

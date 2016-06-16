@@ -1,4 +1,4 @@
-import { findElementWithAssert, map, normalizeText } from '../helpers';
+import { assign, findElementWithAssert, map, normalizeText } from '../helpers';
 
 /**
  * Returns text of the element or Array of texts of all matched elements by selector.
@@ -87,7 +87,7 @@ export function text(selector, options = {}) {
     isDescriptor: true,
 
     get(key) {
-      const elements = findElementWithAssert(this, selector, { ...options, pageObjectKey: key });
+      const elements = findElementWithAssert(this, selector, assign({ pageObjectKey: key }, options));
       const avoidNormalization = options.normalize === false;
       const result = map(elements, (element) => avoidNormalization ? element.text() : normalizeText(element.text()));
 

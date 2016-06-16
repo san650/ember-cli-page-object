@@ -1,4 +1,4 @@
-import { findElementWithAssert, every } from '../helpers';
+import { assign, findElementWithAssert, every } from '../helpers';
 
 /**
  * Validates if an element (or elements) matches a given selector.
@@ -44,7 +44,7 @@ export function is(testSelector, targetSelector, options = {}) {
     isDescriptor: true,
 
     get(key) {
-      const elements = findElementWithAssert(this, targetSelector, { ...options, pageObjectKey: key });
+      const elements = findElementWithAssert(this, targetSelector, assign({ pageObjectKey: key }, options));
 
       const result = every(elements, function(element) {
         return element.is(testSelector);

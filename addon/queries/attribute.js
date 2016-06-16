@@ -1,4 +1,4 @@
-import { findElementWithAssert, map } from '../helpers';
+import { assign, findElementWithAssert, map } from '../helpers';
 
 /**
  * Returns the value of an attribute from the matched element, or an array of
@@ -69,7 +69,7 @@ export function attribute(attributeName, selector, options = {}) {
     isDescriptor: true,
 
     get(key) {
-      var elements = findElementWithAssert(this, selector, { ...options, pageObjectKey: key });
+      var elements = findElementWithAssert(this, selector, assign({ pageObjectKey: key }, options));
       var result;
 
       result = map(elements, function(element) {
