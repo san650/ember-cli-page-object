@@ -13,7 +13,7 @@ function merge(target, ...objects) {
 }
 
 function generateEnumerable(node, definition, item, key) {
-  var enumerable = merge({}, definition);
+  let enumerable = merge({}, definition);
 
   if (typeof (enumerable.count) === 'undefined') {
     enumerable.count = count(item.itemScope);
@@ -203,7 +203,7 @@ function iteratorMethod() {
  * @return {Descriptor}
  */
 export function collection(definition) {
-  var item = {
+  let item = {
     scope: definition.scope,
     itemScope: definition.itemScope,
     resetScope: definition.resetScope,
