@@ -389,7 +389,6 @@ test("doesn't generate an item or itemScope property", function(assert) {
   assert.notOk(page.foo().itemScope);
 });
 
-
 test('Can iterate over scoped items with a for loop', function(assert) {
   fixture(`
     <div>
@@ -410,6 +409,7 @@ test('Can iterate over scoped items with a for loop', function(assert) {
   });
 
   let textContents = [];
+
   for (let i = 0; i < page.foo().count; i++) {
     let item = page.foo(i);
     textContents.push(item.text);
@@ -438,6 +438,7 @@ test('Can iterate over scoped items with a for of loop', function(assert) {
   });
 
   let textContents = [];
+
   withIteratorSymbolDefined(() => {
     for (let item of page.foo()) {
       textContents.push(item.text);
@@ -467,6 +468,7 @@ test('Can iterate over scoped items with a forEach loop', function(assert) {
   });
 
   let textContents = [];
+
   page.foo().toArray().forEach(function(item) {
     textContents.push(item.text);
   });

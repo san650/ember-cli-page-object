@@ -20,7 +20,7 @@ function generateEnumerable(node, definition, item, key) {
   }
 
   if (typeof (enumerable.toArray) === 'undefined') {
-    enumerable.toArray = toArrayMethod(item);
+    enumerable.toArray = toArrayMethod(node, item, key);
     arrayDelegateMethods.forEach((method) => delegateToArray(enumerable, method));
   }
 
@@ -48,14 +48,14 @@ function generateItem(node, index, definition, key) {
   return tree;
 }
 
-function toArrayMethod(definition) {
+function toArrayMethod(node, definition, key) {
   return function() {
     let array = Ember.A();
     let index;
     let count;
 
     for (index = 0, count = this.count; index < count; index++) {
-      array.push(generateItem(this, index, definition));
+      array.push(generateItem(node, index, definition, key));
     }
 
     return array;
