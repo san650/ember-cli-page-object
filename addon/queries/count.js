@@ -1,9 +1,11 @@
 import Ember from 'ember';
 import { findElement } from '../helpers';
 
-var $ = Ember.$;
+const { $ } = Ember;
 
 /**
+ * @public
+ *
  * Returns the number of elements matched by a selector.
  *
  * @example

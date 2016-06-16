@@ -1,17 +1,17 @@
 import Ember from 'ember';
+import { assign } from '../helpers';
 
-var { $ } = Ember;
-const merge = Ember.assign || Ember.merge;
+const { $ } = Ember;
 
 function fillInDynamicSegments(path, params) {
   return path.split('/').map(function(segment) {
     let match = segment.match(/^:(.+)$/);
 
     if (match) {
-      let key = match[1],
-          value = params[key];
+      let [, key] = match;
+      let value = params[key];
 
-      if (typeof value === 'undefined') {
+      if (typeof (value) === 'undefined') {
         throw new Error(`Missing parameter for '${key}'`);
       }
 
@@ -27,13 +27,15 @@ function fillInDynamicSegments(path, params) {
 
 function appendQueryParams(path, queryParams) {
   if (Object.keys(queryParams).length) {
-    path += "?" + $.param(queryParams);
+    path += `?${$.param(queryParams)}`;
   }
 
   return path;
 }
 
 /**
+ * @public
+ *
  * Loads a given route.
  *
  * The resulting descriptor can be called with dynamic segments and parameters.
@@ -84,8 +86,8 @@ export function visitable(path) {
     isDescriptor: true,
 
     value(dynamicSegmentsAndQueryParams = {}) {
-      var params = merge({}, dynamicSegmentsAndQueryParams);
-      var fullPath = fillInDynamicSegments(path, params);
+      let params = assign({}, dynamicSegmentsAndQueryParams);
+      let fullPath = fillInDynamicSegments(path, params);
 
       fullPath = appendQueryParams(fullPath, params);
 

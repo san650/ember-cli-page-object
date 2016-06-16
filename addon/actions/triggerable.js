@@ -1,14 +1,16 @@
 import Ember from 'ember';
-import { simpleFindElementWithAssert, buildSelector, getContext } from '../helpers';
+import { assign, simpleFindElementWithAssert, buildSelector, getContext } from '../helpers';
+
+const { run } = Ember;
 
 function triggerableInternal(tree, eventType, selector, options, context) {
-  var eventOptions = options.eventProperties,
-    fullSelector = buildSelector(tree, selector, options);
+  let eventOptions = options.eventProperties;
+  let fullSelector = buildSelector(tree, selector, options);
 
   delete options.eventProperties;
 
   // Run this to validate if the element exists
-  simpleFindElementWithAssert(tree, fullSelector, options)
+  simpleFindElementWithAssert(tree, fullSelector, options);
 
   if (context) {
     let event = Ember.$.Event(eventType, eventOptions);
@@ -99,12 +101,13 @@ export function triggerable(event, selector, options = {}) {
 
     get(key) {
       return function() {
-        const context = getContext(this);
+        let context = getContext(this);
 
         if (context) {
-          run(() => triggerableInternal(this, event, selector, { ...options, pageObjectKey: `${key}()` }, context));
+          run(() => triggerableInternal(this, event, selector, assign({ pageObjectKey: `${key}()` }, options), context));
         } else {
-          wait().then(() => triggerableInternal(this, event, selector, { ...options, pageObjectKey: `${key}()` }));
+          /* global wait */
+          wait().then(() => triggerableInternal(this, event, selector, assign({ pageObjectKey: `${key}()` }, options)));
         }
 
         return this;

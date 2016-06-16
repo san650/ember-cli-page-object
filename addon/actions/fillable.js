@@ -1,14 +1,14 @@
 import Ember from 'ember';
-import { simpleFindElementWithAssert, buildSelector, getContext } from '../helpers';
+import { assign, simpleFindElementWithAssert, buildSelector, getContext } from '../helpers';
 
 function fillableInternal(tree, selector, text, options, context) {
-  var fullSelector = buildSelector(tree, selector, options);
+  let fullSelector = buildSelector(tree, selector, options);
 
   // Run this to validate if the element exists
   simpleFindElementWithAssert(tree, fullSelector, options);
 
   if (context) {
-    var $el;
+    let $el;
 
     if (options.testContainer) {
       $el = Ember.$(fullSelector, options.testContainer);
@@ -119,12 +119,13 @@ export function fillable(selector, options = {}) {
 
     get(key) {
       return function(text) {
-        var context = getContext(this);
+        let context = getContext(this);
 
         if (context) {
-          Ember.run(() => fillableInternal(this, selector, text, { ...options, pageObjectKey: `${key}("${text}")` }, context));
+          Ember.run(() => fillableInternal(this, selector, text, assign({ pageObjectKey: `${key}("${text}")` }, options), context));
         } else {
-          wait().then(() => fillableInternal(this, selector, text, { ...options, pageObjectKey: `${key}("${text}")` }, context));
+          /* global wait */
+          wait().then(() => fillableInternal(this, selector, text, assign({ pageObjectKey: `${key}("${text}")` }, options), context));
         }
 
         return this;

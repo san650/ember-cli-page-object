@@ -1,7 +1,7 @@
 import Ember from 'ember';
 import Ceibo from 'ceibo';
 
-var { $, assert } = Ember;
+const { $, assert } = Ember;
 
 class Selector {
   constructor(node, scope, selector, filters) {
@@ -12,8 +12,8 @@ class Selector {
   }
 
   toString() {
-    var scope,
-        filters;
+    let scope;
+    let filters;
 
     if (this.targetFilters.resetScope) {
       scope = this.targetScope;
@@ -27,7 +27,7 @@ class Selector {
   }
 
   calculateFilters() {
-    var filters = [];
+    let filters = [];
 
     if (this.targetFilters.visible) {
       filters.push(`:visible`);
@@ -47,7 +47,7 @@ class Selector {
   }
 
   calculateScope(node, targetScope) {
-    var scopes = this.getScopes(node);
+    let scopes = this.getScopes(node);
 
     scopes.reverse();
     scopes.push(targetScope);
@@ -56,7 +56,7 @@ class Selector {
   }
 
   getScopes(node) {
-    var scopes = [];
+    let scopes = [];
 
     if (node.scope) {
       scopes.push(node.scope);
@@ -78,6 +78,8 @@ function guardMultiple(items, selector, supportMultiple) {
 }
 
 /**
+ * @public
+ *
  * Builds a CSS selector from a target selector and a PageObject or a node in a PageObject, along with optional parameters.
  *
  * @example
@@ -108,8 +110,6 @@ function guardMultiple(items, selector, supportMultiple) {
  * buildSelector(page, '.my-element', { last: true });
  * // returns '.my-element:last'
  *
- * @public
- *
  * @param {Ceibo} node - Node of the tree
  * @param {string} targetSelector - CSS selector
  * @param {Object} options - Additional options
@@ -125,16 +125,16 @@ export function buildSelector(node, targetSelector, options) {
 }
 
 function throwBetterError(node, key, selector) {
-  var path = [key],
-      current = node;
+  let path = [key];
+  let current;
 
-  do {
+  for (current = node; current; current = Ceibo.parent(current)) {
     path.unshift(Ceibo.meta(current).key);
-  } while(current = Ceibo.parent(current));
+  }
 
   path[0] = 'page';
 
-  var msg = `Element not found.
+  let msg = `Element not found.
 
 PageObject: '${path.join('.')}'
   Selector: '${selector}'
@@ -144,9 +144,9 @@ PageObject: '${path.join('.')}'
 }
 
 /**
- * Returns a jQuery element matched by a selector built from parameters
- *
  * @public
+ *
+ * Returns a jQuery element matched by a selector built from parameters
  *
  * @param {Ceibo} node - Node of the tree
  * @param {string} targetSelector - Specific CSS selector
@@ -165,18 +165,19 @@ PageObject: '${path.join('.')}'
  * @throws Will throw an error if multiple elements are matched by selector and multiple option is not set
  */
 export function findElementWithAssert(node, targetSelector, options = {}) {
-  const selector = buildSelector(node, targetSelector, options);
+  let selector = buildSelector(node, targetSelector, options);
 
   return simpleFindElementWithAssert(node, selector, options);
 }
 
 /**
+ * @private
+ *
  * The difference with findElementWithAssert is that this function uses the
  * selector as is
- * @private
  */
 export function simpleFindElementWithAssert(node, selector, options = {}) {
-  const context = getContext(node);
+  let context = getContext(node);
 
   let result;
 
@@ -205,9 +206,9 @@ export function simpleFindElementWithAssert(node, selector, options = {}) {
 }
 
 /**
- * Returns a jQuery element (can be an empty jQuery result)
- *
  * @public
+ *
+ * Returns a jQuery element (can be an empty jQuery result)
  *
  * @param {Ceibo} node - Node of the tree
  * @param {string} targetSelector - Specific CSS selector
@@ -224,8 +225,8 @@ export function simpleFindElementWithAssert(node, selector, options = {}) {
  * @throws Will throw an error if multiple elements are matched by selector and multiple option is not set
  */
 export function findElement(node, targetSelector, options = {}) {
-  const selector = buildSelector(node, targetSelector, options);
-  const context = getContext(node);
+  let selector = buildSelector(node, targetSelector, options);
+  let context = getContext(node);
 
   let result;
 
@@ -246,6 +247,8 @@ export function findElement(node, targetSelector, options = {}) {
 }
 
 /**
+ * @private
+ *
  * Trim whitespaces at both ends and normalize whitespaces inside `text`
  *
  * Due to variations in the HTML parsers in different browsers, the text
@@ -258,7 +261,7 @@ export function normalizeText(text) {
 }
 
 export function every(jqArray, cb) {
-  var arr = jqArray.get();
+  let arr = jqArray.get();
 
   return Ember.A(arr).every(function(element) {
     return cb($(element));
@@ -266,7 +269,7 @@ export function every(jqArray, cb) {
 }
 
 export function map(jqArray, cb) {
-  var arr = jqArray.get();
+  let arr = jqArray.get();
 
   return Ember.A(arr).map(function(element) {
     return cb($(element));
@@ -274,14 +277,16 @@ export function map(jqArray, cb) {
 }
 
 /**
+ * @private
+ *
  * Return the root of a node's tree
  *
  * @param {Ceibo} node - Node of the tree
  * @return {Ceibo} node - Root node of the tree
  */
 function getRoot(node) {
-  var parent = Ceibo.parent(node),
-      root = node;
+  let parent = Ceibo.parent(node);
+  let root = node;
 
   while (parent) {
     root = parent;
@@ -292,14 +297,16 @@ function getRoot(node) {
 }
 
 /**
+ * @public
+ *
  * Return a test context if one was provided during `create()`
  *
  * @param {Ceibo} node - Node of the tree
  * @return {?Object} The test's `this` context, or null
  */
 export function getContext(node) {
-  var root = getRoot(node);
-  var context = root.context;
+  let root = getRoot(node);
+  let { context } = root;
 
   if (typeof context === 'object' && typeof context.$ === 'function') {
     return context;
@@ -307,3 +314,5 @@ export function getContext(node) {
     return null;
   }
 }
+
+export const assign = Ember.assign || Ember.merge;

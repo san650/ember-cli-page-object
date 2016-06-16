@@ -1,35 +1,34 @@
 import Ember from 'ember';
-import { buildSelector } from './helpers';
+import { buildSelector, assign as mergeFunction } from './helpers';
 import { create } from './create';
 import { count } from './queries/count';
 import Ceibo from 'ceibo';
 
-const mergeFunction = Ember.assign || Ember.merge;
 const arrayDelegateMethods = ['map', 'filter', 'mapBy', 'filterBy'];
 
 function merge(target, ...objects) {
-  objects.forEach(o => mergeFunction(target, o));
+  objects.forEach((o) => mergeFunction(target, o));
 
   return target;
 }
 
 function generateEnumerable(node, definition, key) {
-  var enumerable = merge({}, definition);
+  let enumerable = merge({}, definition);
 
   delete enumerable.itemScope;
 
-  if (typeof enumerable.count === 'undefined') {
+  if (typeof (enumerable.count) === 'undefined') {
     enumerable.count = count(definition.itemScope);
   }
 
-  if (typeof enumerable.toArray === 'undefined') {
+  if (typeof (enumerable.toArray) === 'undefined') {
     enumerable.toArray = toArrayMethod(definition);
-    arrayDelegateMethods.forEach(method => delegateToArray(enumerable, method));
+    arrayDelegateMethods.forEach((method) => delegateToArray(enumerable, method));
   }
 
-  var collection = create(enumerable, { parent: node });
+  let collection = create(enumerable, { parent: node });
 
-  if (typeof Symbol !== 'undefined' && Symbol.iterator) {
+  if (typeof (Symbol) !== 'undefined' && Symbol.iterator) {
     collection[Symbol.iterator] = iteratorMethod;
   }
 
@@ -40,10 +39,10 @@ function generateEnumerable(node, definition, key) {
 }
 
 function generateItem(node, index, definition, key) {
-  var filters = merge({}, { scope: definition.scope, at: index });
-  var scope = buildSelector({}, definition.itemScope, filters);
+  let filters = merge({}, { scope: definition.scope, at: index });
+  let scope = buildSelector({}, definition.itemScope, filters);
 
-  var tree = create(merge({}, definition.item, { scope, resetScope: definition.resetScope }), { parent: node });
+  let tree = create(merge({}, definition.item, { scope, resetScope: definition.resetScope }), { parent: node });
 
   // Change the key of the root node
   Ceibo.meta(tree).key = `${key}(${index})`;
@@ -53,16 +52,20 @@ function generateItem(node, index, definition, key) {
 
 function toArrayMethod(definition) {
   return function() {
-    var array = Ember.A();
-    for (var index = 0, count = this.count; index < count; index++) {
+    let array = Ember.A();
+    let index;
+    let count;
+
+    for (index = 0, count = this.count; index < count; index++) {
       array.push(generateItem(this, index, definition));
     }
+
     return array;
   };
 }
 
 function delegateToArray(enumerable, method) {
-  if (typeof enumerable[method] === 'undefined') {
+  if (typeof (enumerable[method]) === 'undefined') {
     enumerable[method] = function(...args) {
       return this.toArray()[method](...args);
     };
@@ -70,13 +73,16 @@ function delegateToArray(enumerable, method) {
 }
 
 function iteratorMethod() {
-  var i = 0;
-  var items = this.toArray();
-  var next = () => ({ done: i >= items.length, value: items[i++] });
+  let i = 0;
+  let items = this.toArray();
+  let next = () => ({ done: i >= items.length, value: items[i++] });
+
   return { next };
 }
 
 /**
+ * @public
+ *
  * Creates a component that represents a collection of items. The collection is zero-indexed.
  *
  * When called with an index, the method returns the matching item.
@@ -203,8 +209,8 @@ export function collection(definition) {
     isDescriptor: true,
 
     get(key) {
-      return index => {
-        if (typeof index === 'number') {
+      return (index) => {
+        if (typeof (index) === 'number') {
           return generateItem(this, index, definition, key);
         } else {
           return generateEnumerable(this, definition, key);

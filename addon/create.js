@@ -1,4 +1,3 @@
-import Ember from 'ember';
 import Ceibo from 'ceibo';
 import { text } from './queries/text';
 import { isVisible } from './predicates/is-visible';
@@ -7,10 +6,9 @@ import { contains } from './predicates/contains';
 import { clickOnText } from './actions/click-on-text';
 import { clickable } from './actions/clickable';
 import { render, setContext, removeContext } from './context';
+import { assign } from './helpers';
 
-const merge = Ember.assign || Ember.merge;
-
-var thenDescriptor = {
+const thenDescriptor = {
   isDescriptor: true,
   value() {
     /* global wait */
@@ -18,23 +16,23 @@ var thenDescriptor = {
   }
 };
 
-var defaultProperties = {
-  isVisible: isVisible,
-  isHidden: isHidden,
+const defaultProperties = {
+  contains,
+  isHidden,
+  isVisible,
+  text,
   clickOn: clickOnText,
   click: clickable,
-  contains: contains,
-  text: text,
   then: thenDescriptor
 };
 
 function plugDefaultProperties(definition) {
-  Object.keys(defaultProperties).forEach(key => {
-    if (typeof(definition[key]) !== 'undefined') {
+  Object.keys(defaultProperties).forEach((key) => {
+    if (typeof (definition[key]) !== 'undefined') {
       return;
     }
 
-    if (typeof(defaultProperties[key]) === 'function') {
+    if (typeof (defaultProperties[key]) === 'function') {
       definition[key] = defaultProperties[key]();
     } else {
       definition[key] = defaultProperties[key];
@@ -45,7 +43,7 @@ function plugDefaultProperties(definition) {
 // See https://github.com/san650/ceibo#examples for more info on how Ceibo
 // builders work.
 function buildObject(node, blueprintKey, blueprint, defaultBuilder) {
-  blueprint = { ...blueprint };
+  blueprint = assign({}, blueprint);
   plugDefaultProperties(blueprint);
 
   return defaultBuilder(node, blueprintKey, blueprint, defaultBuilder);
@@ -111,15 +109,15 @@ function buildObject(node, blueprintKey, blueprint, defaultBuilder) {
  * @return {PageObject}
  */
 export function create(definition, options = {}) {
-  definition = { ...definition };
-  var context = definition.context;
+  definition = assign({}, definition);
+  let { context } = definition;
   delete definition.context;
 
-  var builder = {
+  let builder = {
     object: buildObject
   };
 
-  var page = Ceibo.create(definition, merge({ builder }, options));
+  let page = Ceibo.create(definition, assign({ builder }, options));
 
   if (page) {
     page.render = render;

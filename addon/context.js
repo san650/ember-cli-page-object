@@ -1,4 +1,6 @@
 /**
+ * @public
+ *
  * Render a component's template in the context of a test.
  *
  * Throws an error if a test's context has not been set on the page.
@@ -16,8 +18,8 @@
  */
 export function render(template) {
   if (!this.context) {
-    const message = 'You must set a context on the page object before calling calling `render()`';
-    const error = new Error(message);
+    let message = 'You must set a context on the page object before calling calling `render()`';
+    let error = new Error(message);
 
     throw error;
   }
@@ -28,6 +30,8 @@ export function render(template) {
 }
 
 /**
+ * @public
+ *
  * Sets the page's test context.
  *
  * Returns the page object, which allows for method chaining.
@@ -50,6 +54,8 @@ export function setContext(context) {
 }
 
 /**
+ * @public
+ *
  * Unsets the page's test context.
  *
  * Useful in a component test's `afterEach()` hook, to make sure the context has been cleared after each test.
