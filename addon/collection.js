@@ -12,17 +12,15 @@ function merge(target, ...objects) {
   return target;
 }
 
-function generateEnumerable(node, definition, key) {
+function generateEnumerable(node, definition, item, key) {
   let enumerable = merge({}, definition);
 
-  delete enumerable.itemScope;
-
   if (typeof (enumerable.count) === 'undefined') {
-    enumerable.count = count(definition.itemScope);
+    enumerable.count = count(item.itemScope);
   }
 
   if (typeof (enumerable.toArray) === 'undefined') {
-    enumerable.toArray = toArrayMethod(definition);
+    enumerable.toArray = toArrayMethod(node, item, key);
     arrayDelegateMethods.forEach((method) => delegateToArray(enumerable, method));
   }
 
@@ -50,14 +48,14 @@ function generateItem(node, index, definition, key) {
   return tree;
 }
 
-function toArrayMethod(definition) {
+function toArrayMethod(node, definition, key) {
   return function() {
     let array = Ember.A();
     let index;
     let count;
 
     for (index = 0, count = this.count; index < count; index++) {
-      array.push(generateItem(this, index, definition));
+      array.push(generateItem(node, index, definition, key));
     }
 
     return array;
@@ -205,15 +203,25 @@ function iteratorMethod() {
  * @return {Descriptor}
  */
 export function collection(definition) {
+  let item = {
+    scope: definition.scope,
+    itemScope: definition.itemScope,
+    resetScope: definition.resetScope,
+    item: definition.item
+  };
+
+  delete definition.item;
+  delete definition.itemScope;
+
   return {
     isDescriptor: true,
 
     get(key) {
       return (index) => {
         if (typeof (index) === 'number') {
-          return generateItem(this, index, definition, key);
+          return generateItem(this, index, item, key);
         } else {
-          return generateEnumerable(this, definition, key);
+          return generateEnumerable(this, definition, item, key);
         }
       };
     }
