@@ -1,49 +1,6 @@
-import Ember from 'ember';
-import { assign, findElement, simpleFindElementWithAssert, buildSelector, getContext } from '../helpers';
-
-/* global wait, click */
-
-const { run } = Ember;
-
-function childSelector(tree, selector, textToClick, options) {
-  // Suppose that we have something like `<form><button>Submit</button></form>`
-  // In this case <form> and <button> elements contains "Submit" text, so, we'll
-  // want to __always__ click on the __last__ element that contains the text.
-  let selectorWithSpace = `${selector || ''} `;
-  let opts = assign({ contains: textToClick, last: true, multiple: true }, options);
-  let fullSelector = buildSelector(tree, selectorWithSpace, opts);
-
-  if (findElement(tree, selectorWithSpace, opts).length) {
-    return fullSelector;
-  }
-}
-
-function actualSelector(tree, selector, textToClick, options) {
-  let childSel = childSelector(tree, selector, textToClick, options);
-
-  if (childSel) {
-    return childSel;
-  } else {
-    return buildSelector(tree, selector, assign({ contains: textToClick }, options));
-  }
-}
-
-function clickOnTextInternal(tree, selector, textToClick, options, context) {
-  let fullSelector = actualSelector(tree, selector, textToClick, options);
-
-  // Run this to validate if the element exists
-  simpleFindElementWithAssert(tree, fullSelector, options);
-
-  if (context) {
-    if (options.testContainer) {
-      Ember.$(fullSelector, options.testContainer).click();
-    } else {
-      context.$(fullSelector).click();
-    }
-  } else {
-    click(fullSelector, options.testContainer);
-  }
-}
+import { assign, getContext } from '../../helpers';
+import acceptanceClick from './click-on-text/acceptance';
+import integrationClick from './click-on-text/integration';
 
 /**
  * Clicks on an element containing specified text.
@@ -121,18 +78,19 @@ function clickOnTextInternal(tree, selector, textToClick, options, context) {
  * @param {String} options.testContainer - Context where to search elements in the DOM
  * @return {Descriptor}
  */
-export function clickOnText(selector, options = {}) {
+export function clickOnText(selector, userOptions = {}) {
   return {
     isDescriptor: true,
 
     get(key) {
       return function(textToClick) {
         let context = getContext(this);
+        let options = assign({ contains: textToClick, pageObjectKey: `${key}("${textToClick}")` }, userOptions);
 
         if (context) {
-          run(() => clickOnTextInternal(this, selector, textToClick, assign({ pageObjectKey: `${key}("${textToClick}")` }, options), context));
+          integrationClick(this, selector, options, context);
         } else {
-          wait().then(() => clickOnTextInternal(this, selector, textToClick, assign({ pageObjectKey: `${key}("${textToClick}")` }, options)));
+          acceptanceClick(this, selector, options);
         }
 
         return this;

@@ -3,7 +3,7 @@ import { text } from './queries/text';
 import { isVisible } from './predicates/is-visible';
 import { isHidden } from './predicates/is-hidden';
 import { contains } from './predicates/contains';
-import { clickOnText } from './actions/click-on-text';
+import { clickOnText } from './-private/properties/click-on-text';
 import { clickable } from './-private/properties/clickable';
 import { render, setContext, removeContext } from './context';
 import { assign } from './helpers';
