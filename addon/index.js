@@ -1,6 +1,6 @@
 import { create }      from './create';                   export { create };
 import { collection }  from './collection';               export { collection };
-import { clickable }   from './actions/clickable';        export { clickable };
+import { clickable }   from './-private/properties/clickable'; export { clickable };
 import { clickOnText } from './actions/click-on-text';    export { clickOnText };
 import { fillable }    from './actions/fillable';         export { fillable }; export const selectable = fillable;
 import { visitable }   from './actions/visitable';        export { visitable };

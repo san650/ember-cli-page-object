@@ -1,25 +1,6 @@
-import Ember from 'ember';
-import { assign, simpleFindElementWithAssert, buildSelector, getContext } from '../helpers';
-
-const { run } = Ember;
-
-function clickableInternal(tree, selector, options, context) {
-  let fullSelector = buildSelector(tree, selector, options);
-
-  // Run this to validate if the element exists and it is visible
-  simpleFindElementWithAssert(tree, fullSelector, options);
-
-  if (context) {
-    if (options.testContainer) {
-      Ember.$(fullSelector, options.testContainer).click();
-    } else {
-      context.$(fullSelector).click();
-    }
-  } else {
-    /* global click */
-    click(fullSelector, options.testContainer);
-  }
-}
+import { assign, getContext } from '../../helpers';
+import acceptanceClick from './clickable/acceptance';
+import integrationClick from './clickable/integration';
 
 /**
  * Clicks elements matched by a selector.
@@ -76,19 +57,19 @@ function clickableInternal(tree, selector, options, context) {
  * @param {String} options.testContainer - Context where to search elements in the DOM
  * @return {Descriptor}
  */
-export function clickable(selector, options = {}) {
+export function clickable(selector, userOptions = {}) {
   return {
     isDescriptor: true,
 
     get(key) {
       return function() {
         let context = getContext(this);
+        let options = assign({ pageObjectKey: `${key}()` }, userOptions);
 
         if (context) {
-          run(() => clickableInternal(this, selector, assign({ pageObjectKey: `${key}()` }, options), context));
+          integrationClick(this, selector, options, context);
         } else {
-          /* global wait */
-          wait().then(() => clickableInternal(this, selector, assign({ pageObjectKey: `${key}()` }, options)));
+          acceptanceClick(this, selector, options);
         }
 
         return this;

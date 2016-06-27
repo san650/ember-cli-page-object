@@ -4,7 +4,7 @@ import { isVisible } from './predicates/is-visible';
 import { isHidden } from './predicates/is-hidden';
 import { contains } from './predicates/contains';
 import { clickOnText } from './actions/click-on-text';
-import { clickable } from './actions/clickable';
+import { clickable } from './-private/properties/clickable';
 import { render, setContext, removeContext } from './context';
 import { assign } from './helpers';
 
