@@ -18,6 +18,14 @@ IntegrationExecutionContext.prototype = {
     this.$(selector, container).click();
   },
 
+  fillIn(selector, container, text) {
+    let element = this.$(selector, container);
+
+    element.val(text);
+    element.trigger('input');
+    element.change();
+  },
+
   $(selector, container) {
     if (container) {
       return $(selector, container);

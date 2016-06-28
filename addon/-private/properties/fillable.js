@@ -1,33 +1,9 @@
-import Ember from 'ember';
-import { assign, simpleFindElementWithAssert, buildSelector, getContext } from '../helpers';
-
-function fillableInternal(tree, selector, text, options, context) {
-  let fullSelector = buildSelector(tree, selector, options);
-
-  // Run this to validate if the element exists
-  simpleFindElementWithAssert(tree, fullSelector, options);
-
-  if (context) {
-    let $el;
-
-    if (options.testContainer) {
-      $el = Ember.$(fullSelector, options.testContainer);
-    } else {
-      $el = context.$(fullSelector);
-    }
-
-    $el.val(text);
-    $el.trigger('input');
-    $el.change();
-  } else {
-    /* global fillIn */
-    if (options.testContainer) {
-      fillIn(fullSelector, options.testContainer, text);
-    } else {
-      fillIn(fullSelector, text);
-    }
-  }
-}
+import { getExecutionContext } from '../execution_context';
+import {
+  assign,
+  buildSelector,
+  simpleFindElementWithAssert
+} from '../../helpers';
 
 /**
  * Alias for `fillable`, which works for inputs and HTML select menus.
@@ -113,20 +89,23 @@ function fillableInternal(tree, selector, text, options, context) {
  * @param {String} options.testContainer - Context where to search elements in the DOM
  * @return {Descriptor}
  */
-export function fillable(selector, options = {}) {
+export function fillable(selector, userOptions = {}) {
   return {
     isDescriptor: true,
 
     get(key) {
       return function(text) {
-        let context = getContext(this);
+        let executionContext = getExecutionContext(this);
+        let options = assign({ pageObjectKey: `${key}()` }, userOptions);
 
-        if (context) {
-          Ember.run(() => fillableInternal(this, selector, text, assign({ pageObjectKey: `${key}("${text}")` }, options), context));
-        } else {
-          /* global wait */
-          wait().then(() => fillableInternal(this, selector, text, assign({ pageObjectKey: `${key}("${text}")` }, options), context));
-        }
+        executionContext.run((context) => {
+          let fullSelector = buildSelector(this, selector, options);
+
+          // Run this to validate if the element exists
+          simpleFindElementWithAssert(this, fullSelector, options);
+
+          context.fillIn(fullSelector, options.testContainer, text);
+        });
 
         return this;
       };

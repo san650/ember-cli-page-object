@@ -2,7 +2,7 @@ import { create }      from './create';                   export { create };
 import { collection }  from './collection';               export { collection };
 import { clickable }   from './-private/properties/clickable';        export { clickable };
 import { clickOnText } from './-private/properties/click-on-text';    export { clickOnText };
-import { fillable }    from './actions/fillable';         export { fillable }; export const selectable = fillable;
+import { fillable }    from './-private/properties/fillable';         export { fillable }; export const selectable = fillable;
 import { visitable }   from './actions/visitable';        export { visitable };
 import { triggerable } from './actions/triggerable';      export { triggerable };
 import { contains }    from './predicates/contains';      export { contains };
