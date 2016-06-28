@@ -1,4 +1,8 @@
-import { assign, simpleFindElementWithAssert, getExecutionContext } from '../../helpers';
+import {
+  assign,
+  simpleFindElementWithAssert
+} from '../../helpers';
+import { getExecutionContext } from '../execution_context';
 import { buildSelector } from './click-on-text/helpers';
 
 /**

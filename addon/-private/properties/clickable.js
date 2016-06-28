@@ -1,9 +1,9 @@
 import {
   assign,
   buildSelector,
-  getExecutionContext,
   simpleFindElementWithAssert
 } from '../../helpers';
+import { getExecutionContext } from '../execution_context';
 
 /**
  * Clicks elements matched by a selector.
