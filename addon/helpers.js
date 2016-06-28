@@ -1,7 +1,7 @@
 import Ember from 'ember';
 import Ceibo from 'ceibo';
 
-const { $, assert } = Ember;
+const { $, assert, run } = Ember;
 
 class Selector {
   constructor(node, scope, selector, filters) {
@@ -324,3 +324,55 @@ export function getContext(node) {
 }
 
 export const assign = Ember.assign || Ember.merge;
+
+function AcceptanceExecutionContext(pageObjectNode) {
+  this.pageObjectNode = pageObjectNode;
+}
+
+AcceptanceExecutionContext.prototype = {
+  run(cb) {
+    /* global wait */
+    wait().then(() => {
+      cb(this);
+    });
+  },
+
+  click(selector, container) {
+    /* global click */
+    click(selector, container);
+  }
+};
+
+function IntegrationExecutionContext(pageObjectNode, testContext) {
+  this.pageObjectNode = pageObjectNode;
+  this.testContext = testContext;
+}
+
+IntegrationExecutionContext.prototype = {
+  run(cb) {
+    run(() => {
+      cb(this);
+    });
+  },
+
+  click(selector, container) {
+    this.$(selector, container).click();
+  },
+
+  $(selector, container) {
+    if (container) {
+      return $(selector, container);
+    } else {
+      return this.testContext.$(selector);
+    }
+  }
+};
+
+export function getExecutionContext(pageObjectNode) {
+  let testContext = getContext(pageObjectNode);
+  if (testContext) {
+    return new IntegrationExecutionContext(pageObjectNode, testContext);
+  } else {
+    return new AcceptanceExecutionContext(pageObjectNode);
+  }
+}

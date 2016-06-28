@@ -1,6 +1,9 @@
-import { assign, getContext } from '../../helpers';
-import acceptanceClick from './clickable/acceptance';
-import integrationClick from './clickable/integration';
+import {
+  assign,
+  buildSelector,
+  getExecutionContext,
+  simpleFindElementWithAssert
+} from '../../helpers';
 
 /**
  * Clicks elements matched by a selector.
@@ -63,14 +66,17 @@ export function clickable(selector, userOptions = {}) {
 
     get(key) {
       return function() {
-        let context = getContext(this);
+        let executionContext = getExecutionContext(this);
         let options = assign({ pageObjectKey: `${key}()` }, userOptions);
 
-        if (context) {
-          integrationClick(this, selector, options, context);
-        } else {
-          acceptanceClick(this, selector, options);
-        }
+        executionContext.run((context) => {
+          let fullSelector = buildSelector(this, selector, options);
+
+          // Run this to validate if the element exists and it is visible
+          simpleFindElementWithAssert(this, fullSelector, options);
+
+          context.click(fullSelector, options.testContainer);
+        });
 
         return this;
       };

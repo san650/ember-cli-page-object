@@ -1,6 +1,5 @@
-import { assign, getContext } from '../../helpers';
-import acceptanceClick from './click-on-text/acceptance';
-import integrationClick from './click-on-text/integration';
+import { assign, simpleFindElementWithAssert, getExecutionContext } from '../../helpers';
+import { buildSelector } from './click-on-text/helpers';
 
 /**
  * Clicks on an element containing specified text.
@@ -84,14 +83,17 @@ export function clickOnText(selector, userOptions = {}) {
 
     get(key) {
       return function(textToClick) {
-        let context = getContext(this);
+        let executionContext = getExecutionContext(this);
         let options = assign({ contains: textToClick, pageObjectKey: `${key}("${textToClick}")` }, userOptions);
 
-        if (context) {
-          integrationClick(this, selector, options, context);
-        } else {
-          acceptanceClick(this, selector, options);
-        }
+        executionContext.run((context) => {
+          let fullSelector = buildSelector(this, selector, options);
+
+          // Run this to validate if the element exists
+          simpleFindElementWithAssert(this, fullSelector, options);
+
+          context.click(fullSelector, options.testContainer);
+        });
 
         return this;
       };
