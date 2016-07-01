@@ -23,6 +23,6 @@ export function fixture(str, options = {}) {
   if (options.useAlternateContainer) {
     $('#alternate-ember-testing').html(str);
   } else {
-    $('#ember-testing').html(str);
+    $('#ember-testing').html(`<section>${str}</section>`);
   }
 }
