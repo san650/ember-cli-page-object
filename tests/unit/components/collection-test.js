@@ -389,7 +389,7 @@ test("doesn't generate an item or itemScope property", function(assert) {
   assert.notOk(page.foo().itemScope);
 });
 
-test('Can iterate over scoped items with a for loop', function(assert) {
+test('iterates over scoped items with a for loop', function(assert) {
   fixture(`
     <div>
         <span>Lorem</span>
@@ -418,7 +418,7 @@ test('Can iterate over scoped items with a for loop', function(assert) {
   assert.deepEqual(textContents, ['Lorem', 'Ipsum']);
 });
 
-test('Can iterate over scoped items with a for of loop', function(assert) {
+test('iterates over scoped items with a for of loop', function(assert) {
   fixture(`
     <div>
         <span>Lorem</span>
@@ -448,7 +448,7 @@ test('Can iterate over scoped items with a for of loop', function(assert) {
   assert.deepEqual(textContents, ['Lorem', 'Ipsum']);
 });
 
-test('Can iterate over scoped items with a forEach loop', function(assert) {
+test('iterates over scoped items with a forEach loop', function(assert) {
   fixture(`
     <div>
         <span>Lorem</span>
@@ -474,4 +474,32 @@ test('Can iterate over scoped items with a forEach loop', function(assert) {
   });
 
   assert.deepEqual(textContents, ['Lorem', 'Ipsum']);
+});
+
+test('does not mutate definition object', function(assert) {
+  let prop = text('.baz');
+  let expected = {
+    scope: '.a-scope',
+    itemScope: '.another-scope',
+    item: {
+      baz: prop
+    },
+
+    bar: prop
+  };
+  let actual = {
+    scope: '.a-scope',
+    itemScope: '.another-scope',
+    item: {
+      baz: prop
+    },
+
+    bar: prop
+  };
+
+  create({
+    foo: collection(actual)
+  });
+
+  assert.deepEqual(actual, expected);
 });
