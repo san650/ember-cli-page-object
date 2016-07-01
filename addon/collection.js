@@ -203,6 +203,8 @@ function iteratorMethod() {
  * @return {Descriptor}
  */
 export function collection(definition) {
+  definition = mergeFunction({}, definition);
+
   let item = {
     scope: definition.scope,
     itemScope: definition.itemScope,

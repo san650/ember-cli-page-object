@@ -142,3 +142,29 @@ test('generates .then property', function(assert) {
   assert.ok(typeof (page.then) === 'function');
   assert.ok(typeof (page.foo.then) === 'function');
 });
+
+test('does not mutate definition object', function(assert) {
+  let prop = text('.baz');
+  let expected = {
+    context: '.a-context',
+    scope: '.a-scope',
+    foo: {
+      baz: prop
+    },
+
+    bar: prop
+  };
+  let actual = {
+    context: '.a-context',
+    scope: '.a-scope',
+    foo: {
+      baz: prop
+    },
+
+    bar: prop
+  };
+
+  create(actual);
+
+  assert.deepEqual(actual, expected);
+});
