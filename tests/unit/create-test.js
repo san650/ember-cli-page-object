@@ -168,3 +168,11 @@ test('does not mutate definition object', function(assert) {
 
   assert.deepEqual(actual, expected);
 });
+
+test('generates a default scope', function(assert) {
+  fixture('Lorem ipsum');
+
+  let page = create({});
+
+  assert.ok(page.contains('ipsum'));
+});

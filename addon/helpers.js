@@ -23,7 +23,15 @@ class Selector {
 
     filters = this.calculateFilters(this.targetFilters);
 
-    return $.trim(`${scope} ${this.targetSelector}${filters}`);
+    let selector = $.trim(`${scope} ${this.targetSelector}${filters}`);
+
+    if (!selector.length) {
+      // When an empty selector is resolved take the first direct child of the
+      // testing container.
+      selector = ':first';
+    }
+
+    return selector;
   }
 
   calculateFilters() {
