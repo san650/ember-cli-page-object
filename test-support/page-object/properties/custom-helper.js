@@ -1,6 +1,9 @@
 import { create } from '../create';
 import Descriptor from '../descriptor';
+import Ember from 'ember';
 import { qualifySelector } from '../helpers';
+
+const { $ } = Ember;
 
 function action(target, key, options, ...args){
   let selector = qualifySelector(options.scope || target.scope, options.selector);

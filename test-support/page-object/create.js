@@ -7,6 +7,8 @@ import clickable from './properties/clickable';
 import contains from './properties/contains';
 import text from './properties/text';
 
+const { $ } = Ember;
+
 function Node() {
   this.isHidden = isHidden().propertyFor(this, 'isHidden');
   this.isVisible = isVisible().propertyFor(this, 'isVisible');
