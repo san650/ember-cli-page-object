@@ -1,5 +1,7 @@
 import Ember from 'ember';
 
+const { $ } = Ember;
+
 export function qualifySelector(...selectors) {
   return selectors.filter(item => !!item).join(' ');
 }
