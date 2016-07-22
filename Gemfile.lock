@@ -21,6 +21,7 @@ GEM
       multipart-post (>= 1.2, < 3)
     ffi (1.9.10)
     gemoji (2.1.0)
+    github-markdown (0.6.9)
     github-pages (48)
       RedCloth (= 4.2.9)
       github-pages-health-check (= 0.6.1)
@@ -123,4 +124,9 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  github-markdown
   github-pages
+  kramdown
+
+BUNDLED WITH
+   1.12.5
