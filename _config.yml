@@ -9,7 +9,7 @@ baseurl: ""
 url: "http://ember-cli-page-object.js.org"
 twitter_username: san650
 github_username: san650
-exclude: ["bower_components", "tmp", "node_modules", "tmp_docs"]
+exclude: ["bower_components", "tmp", "node_modules", "tmp_docs", "README.md"]
 
 # Build settings
 markdown: kramdown
