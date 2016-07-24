@@ -1,0 +1,105 @@
+
+body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  background-color: $primary-color;
+  text-align: center;
+  padding-top: 50px;
+}
+
+h1 {
+  font-family: 'Pacifico', cursive;
+  font-size: 80px;
+  color: #fff;
+  text-shadow: 1px 1px 3px rgba(0,0,0, .3);
+}
+
+h2 {
+  font-family: 'Poiret One', cursive;
+  color: #fff;
+  font-size: 20px;
+  margin-top: 40px;
+}
+
+p {
+  font-family: 'Patrick Hand', cursive;
+  font-size: 30px;
+  margin-top: 50px;
+  color: #fff;
+}
+
+.terminal {
+  position: relative;
+  padding: 45px 100px 20px 15px;
+  background-color: rgba(0, 0, 0, 0.3);
+  margin-top: 27px;
+  display: inline-block;
+  border-radius: 6px;
+  font-family: 'Inconsolata';
+  font-size:18px;
+  color: #fff;
+
+  .icon-bar {
+    position: absolute;
+    left: 12px;;
+    top: 12px;
+
+    .icon {
+      width: 15px;
+      height: 15px;
+      border-radius: 50%;
+      display: inline-block;
+      background-color: rgba(0,0,0,.2);
+    }
+  }
+
+  .command {
+    &:before {
+      display: inline-block;
+      content: '$';
+      margin-right: 10px;
+    }
+
+    &:after {
+      content: '|';
+      margin-left: 2px;
+      -webkit-animation: 1s blink step-end infinite;
+      -moz-animation: 1s blink step-end infinite;
+      -ms-animation: 1s blink step-end infinite;
+      -o-animation: 1s blink step-end infinite;
+      animation: 1s blink step-end infinite;
+    }
+  }
+}
+
+
+.nav {
+  display: inline-block;
+}
+
+@keyframes "blink" {
+  from, to { color: transparent; }
+  50% { color: #fff; }
+}
+
+@-moz-keyframes blink {
+  from, to { color: transparent; }
+  50% { color: #fff; }
+}
+
+@-webkit-keyframes "blink" {
+  from, to { color: transparent; }
+  50% { color: #fff; }
+}
+
+@-ms-keyframes "blink" {
+  from, to { color: transparent; }
+  50% { color: #fff; }
+}
+
+@-o-keyframes "blink" {
+  from, to { color: transparent; }
+  50% { color: #fff; }
+}
