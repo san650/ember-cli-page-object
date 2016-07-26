@@ -17,8 +17,11 @@
 
     <link rel="stylesheet" href="{{ "/css/main.css" | prepend: site.baseurl }}">
     <!-- <meta http-equiv="refresh" content="0;url={{site.url}}{{site.baseurl}}/docs/{{latestVersion}}" /> -->
+
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+
   </head>
-  <body>
+  <body class="intro">
     <div class="container-fluid">
       <h1>Page <span>object</span></h1>
 
@@ -34,7 +37,7 @@
           <div class="icon"></div>
           <div class="icon"></div>
         </div>
-        <span class="command">ember install <span>ember-cli-page-object</span></span>
+        <span class="command"></span>
         <!-- <span class="cursor">|</span> -->
       </span>
 
@@ -72,5 +75,39 @@
       </footer>
 
     </div>
+
+    <script type="text/javascript">
+      var index = 0;
+      var interval = null;
+      var characters = ['e', 'm', 'b', 'e', 'r', ' ', 'i', 'n', 's', 't', 'a',
+      'l', 'l', ' ', 'e', 'm', 'b', 'e', 'r', '-', 'c', 'l', 'i', '-', 'p',
+      'a', 'g', 'e', '-', 'o', 'b', 'j', 'e', 'c', 't'];
+
+
+      $(function () {
+        setTimeout(function () {
+          interval = setInterval(typeALetter, 120);
+        }, 1000);
+      });
+
+      function typeALetter() {
+        if (index < 13) {
+          var text = $('.command').text();
+          $('.command').text(text + characters[index]);
+        } else if (index === 13) {
+          var html = $('.command').html();
+          $('.command').html(html + '&nbsp;<span></span>');
+        } else {
+          var text = $('.command span').text();
+          $('.command span').text(text + characters[index]);
+        }
+
+        index = index + 1;
+
+        if (index >= characters.length) {
+          clearInterval(interval);
+        }
+      }
+    </script>
   </body>
 </html>
