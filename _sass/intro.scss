@@ -10,52 +10,64 @@ body {
 }
 
 h1 {
+  position: relative;
   font-family: 'Pacifico', cursive;
   font-size: 80px;
   color: #fff;
-  text-shadow: 1px 1px 3px rgba(0,0,0, .3);
+  text-shadow: 1px 1px 1px rgba(19, 35, 66, 0.6);
+
+  span {
+    color: rgb(86, 128, 209);
+    text-shadow: 1px 1px 1px rgb(19, 35, 66);
+  }
 }
 
 h2 {
-  font-family: 'Poiret One', cursive;
+  font-family: monospace;
   color: #fff;
-  font-size: 20px;
+  font-size: 14px;
   margin-top: 40px;
 }
 
 p {
   font-family: 'Patrick Hand', cursive;
   font-size: 30px;
-  margin-top: 50px;
+  margin-top: 20px;
   color: #fff;
 }
 
 .terminal {
   position: relative;
-  padding: 45px 100px 20px 15px;
-  background-color: rgba(0, 0, 0, 0.3);
+  padding: 60px 100px 20px 15px;
+  background-color: rgba(0, 0, 0, 0.8);
   margin-top: 27px;
   display: inline-block;
   border-radius: 6px;
   font-family: 'Inconsolata';
   font-size:18px;
-  color: #fff;
+  overflow: hidden;
 
   .icon-bar {
     position: absolute;
-    left: 12px;;
-    top: 12px;
+    left: 0;
+    top: 0;
+    width: 100%;
+    text-align: left;
+    padding: 4px 0 2px 12px;
+    background-color: rgba(255,255,255,.2);
 
     .icon {
       width: 15px;
       height: 15px;
       border-radius: 50%;
       display: inline-block;
-      background-color: rgba(0,0,0,.2);
+      background-color: rgba(0,0,0,.3);
     }
   }
 
   .command {
+    color: rgba(255,255,255,.5);
+
     &:before {
       display: inline-block;
       content: '$';
@@ -65,11 +77,15 @@ p {
     &:after {
       content: '|';
       margin-left: 2px;
-      -webkit-animation: 1s blink step-end infinite;
-      -moz-animation: 1s blink step-end infinite;
-      -ms-animation: 1s blink step-end infinite;
-      -o-animation: 1s blink step-end infinite;
-      animation: 1s blink step-end infinite;
+      -webkit-animation: 1.3s blink step-end infinite;
+      -moz-animation: 1.3s blink step-end infinite;
+      -ms-animation: 1.3s blink step-end infinite;
+      -o-animation: 1.3s blink step-end infinite;
+      animation: 1.3s blink step-end infinite;
+    }
+
+    span {
+      color: #fff;
     }
   }
 }
@@ -77,29 +93,78 @@ p {
 
 .nav {
   display: inline-block;
+  margin-top: 50px;
+}
+
+.nav-pills > li {
+  padding: 0 5px;
+
+  a {
+    background-color: RGBA(156, 196, 228, 0.7);
+    font-family: 'Inconsolata';
+    font-size: 20px;
+    color: $primary-color;
+    transition: all .3s;
+
+    &:hover {
+      background-color: #E9F2F9;
+      transition: all .3s;
+    }
+  }
+}
+
+iframe {
+  margin-top: 120px;
+  margin-left: 10px;
+}
+
+.star-text {
+  display: block;
+  margin-top: 15px;
+  color: rgba(255, 255, 255, 0.4);
+
+  .glyphicon {
+    font-size: 16px;
+    color: #fff;
+  }
+}
+
+footer {
+  width: 100%;
+  height: 40px;
+  position: fixed;
+  bottom: 0;
+  background-color: rgba(255,255,255,.2);
+  color: #fff;
+  margin-left: -15px;
+  margin-right: -15px;
+
+  a {
+    color: $primary-color;
+  }
 }
 
 @keyframes "blink" {
   from, to { color: transparent; }
-  50% { color: #fff; }
+  50% { color: rgba(255,255,255,.5); }
 }
 
 @-moz-keyframes blink {
   from, to { color: transparent; }
-  50% { color: #fff; }
+  50% { color: rgba(255,255,255,.5); }
 }
 
 @-webkit-keyframes "blink" {
   from, to { color: transparent; }
-  50% { color: #fff; }
+  50% { color: rgba(255,255,255,.5); }
 }
 
 @-ms-keyframes "blink" {
   from, to { color: transparent; }
-  50% { color: #fff; }
+  50% { color: rgba(255,255,255,.5); }
 }
 
 @-o-keyframes "blink" {
   from, to { color: transparent; }
-  50% { color: #fff; }
+  50% { color: rgba(255,255,255,.5); }
 }
