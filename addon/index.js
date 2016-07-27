@@ -7,7 +7,7 @@ import { visitable }   from './-private/properties/visitable';        export { v
 import { triggerable } from './-private/properties/triggerable';      export { triggerable };
 import { contains }    from './-private/properties/contains';         export { contains };
 import { hasClass }    from './-private/properties/has-class';        export { hasClass };
-import { isHidden }    from './predicates/is-hidden';     export { isHidden };
+import { isHidden }    from './-private/properties/is-hidden';        export { isHidden };
 import { isVisible }   from './predicates/is-visible';    export { isVisible };
 import { notHasClass } from './predicates/not-has-class'; export { notHasClass };
 import { attribute }   from './queries/attribute';        export { attribute };

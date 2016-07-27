@@ -1,5 +1,6 @@
 import Ember from 'ember';
 import {
+  findElement,
   findElementWithAssert,
   simpleFindElementWithAssert
 } from '../../helpers';
@@ -56,6 +57,10 @@ IntegrationExecutionContext.prototype = {
 
   assertElementExists(selector, options) {
     simpleFindElementWithAssert(this.pageObjectNode, selector, options);
+  },
+
+  find(selector, options) {
+    return findElement(this.pageObjectNode, selector, options);
   },
 
   findWithAssert(selector, options) {
