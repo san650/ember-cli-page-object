@@ -1,8 +1,7 @@
 import { getExecutionContext } from '../execution_context';
 import {
   assign,
-  buildSelector,
-  simpleFindElementWithAssert
+  buildSelector
 } from '../../helpers';
 
 /**
@@ -101,8 +100,7 @@ export function fillable(selector, userOptions = {}) {
         return executionContext.runAsync((context) => {
           let fullSelector = buildSelector(this, selector, options);
 
-          // Run this to validate if the element exists
-          simpleFindElementWithAssert(this, fullSelector, options);
+          context.assertElementExists(fullSelector, options);
 
           context.fillIn(fullSelector, options.testContainer, text);
         });

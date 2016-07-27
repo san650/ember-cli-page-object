@@ -1,8 +1,7 @@
 import { getExecutionContext } from '../execution_context';
 import {
   assign,
-  buildSelector,
-  simpleFindElementWithAssert
+  buildSelector
 } from '../../helpers';
 
 /**
@@ -86,8 +85,7 @@ export function triggerable(event, selector, userOptions = {}) {
         return executionContext.runAsync((context) => {
           let fullSelector = buildSelector(this, selector, options);
 
-          // Run this to validate if the element exists
-          simpleFindElementWithAssert(this, fullSelector, options);
+          context.assertElementExists(fullSelector, options);
 
           context.triggerEvent(fullSelector, options.testContainer, event, options.eventProperties);
         });

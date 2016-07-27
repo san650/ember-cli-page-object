@@ -1,5 +1,6 @@
 import {
-  findElementWithAssert
+  findElementWithAssert,
+  simpleFindElementWithAssert
 } from '../../helpers';
 
 export default function AcceptanceExecutionContext(pageObjectNode) {
@@ -37,6 +38,10 @@ AcceptanceExecutionContext.prototype = {
   triggerEvent(selector, container, eventName, eventOptions) {
     /* global triggerEvent */
     triggerEvent(selector, container, eventName, eventOptions);
+  },
+
+  assertElementExists(selector, options) {
+    simpleFindElementWithAssert(this.pageObjectNode, selector, options);
   },
 
   findWithAssert(selector, options) {

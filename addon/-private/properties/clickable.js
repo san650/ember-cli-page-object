@@ -1,8 +1,4 @@
-import {
-  assign,
-  buildSelector,
-  simpleFindElementWithAssert
-} from '../../helpers';
+import { assign, buildSelector } from '../../helpers';
 import { getExecutionContext } from '../execution_context';
 
 /**
@@ -72,8 +68,7 @@ export function clickable(selector, userOptions = {}) {
         return executionContext.runAsync((context) => {
           let fullSelector = buildSelector(this, selector, options);
 
-          // Run this to validate if the element exists and it is visible
-          simpleFindElementWithAssert(this, fullSelector, options);
+          context.assertElementExists(fullSelector, options);
 
           context.click(fullSelector, options.testContainer);
         });
