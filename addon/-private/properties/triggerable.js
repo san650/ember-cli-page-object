@@ -83,7 +83,7 @@ export function triggerable(event, selector, userOptions = {}) {
         let executionContext = getExecutionContext(this);
         let options = assign({ pageObjectKey: `${key}()` }, userOptions);
 
-        executionContext.run((context) => {
+        return executionContext.runAsync((context) => {
           let fullSelector = buildSelector(this, selector, options);
 
           // Run this to validate if the element exists
@@ -91,8 +91,6 @@ export function triggerable(event, selector, userOptions = {}) {
 
           context.triggerEvent(fullSelector, options.testContainer, event, options.eventProperties);
         });
-
-        return this;
       };
     }
   };

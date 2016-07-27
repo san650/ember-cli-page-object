@@ -5,7 +5,7 @@ import { clickOnText } from './-private/properties/click-on-text';    export { c
 import { fillable }    from './-private/properties/fillable';         export { fillable }; export const selectable = fillable;
 import { visitable }   from './-private/properties/visitable';        export { visitable };
 import { triggerable } from './-private/properties/triggerable';      export { triggerable };
-import { contains }    from './predicates/contains';      export { contains };
+import { contains }    from './-private/properties/contains';         export { contains };
 import { hasClass }    from './predicates/has-class';     export { hasClass };
 import { isHidden }    from './predicates/is-hidden';     export { isHidden };
 import { isVisible }   from './predicates/is-visible';    export { isVisible };

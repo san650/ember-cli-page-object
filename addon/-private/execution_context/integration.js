@@ -1,4 +1,7 @@
 import Ember from 'ember';
+import {
+  findElementWithAssert
+} from '../../helpers';
 
 const { $, run } = Ember;
 
@@ -9,9 +12,15 @@ export default function IntegrationExecutionContext(pageObjectNode, testContext)
 
 IntegrationExecutionContext.prototype = {
   run(cb) {
+    return cb(this);
+  },
+
+  runAsync(cb) {
     run(() => {
       cb(this);
     });
+
+    return this.pageObjectNode;
   },
 
   click(selector, container) {
@@ -42,5 +51,9 @@ IntegrationExecutionContext.prototype = {
     } else {
       this.testContext.$(selector).trigger(event);
     }
+  },
+
+  findWithAssert(selector, options) {
+    return findElementWithAssert(this.pageObjectNode, selector, options);
   }
 };

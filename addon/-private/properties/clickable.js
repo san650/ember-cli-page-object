@@ -69,7 +69,7 @@ export function clickable(selector, userOptions = {}) {
         let executionContext = getExecutionContext(this);
         let options = assign({ pageObjectKey: `${key}()` }, userOptions);
 
-        executionContext.run((context) => {
+        return executionContext.runAsync((context) => {
           let fullSelector = buildSelector(this, selector, options);
 
           // Run this to validate if the element exists and it is visible
@@ -77,8 +77,6 @@ export function clickable(selector, userOptions = {}) {
 
           context.click(fullSelector, options.testContainer);
         });
-
-        return this;
       };
     }
   };

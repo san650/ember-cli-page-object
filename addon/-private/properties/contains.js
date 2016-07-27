@@ -1,4 +1,5 @@
-import { assign, findElementWithAssert, every } from '../helpers';
+import { assign, every } from '../../helpers';
+import { getExecutionContext } from '../execution_context';
 
 /**
  * Returns a boolean representing whether an element or a set of elements contains the specified text.
@@ -80,16 +81,21 @@ import { assign, findElementWithAssert, every } from '../helpers';
  * @throws Will throw an error if no element matches selector
  * @throws Will throw an error if multiple elements are matched by selector and multiple option is not set
  */
-export function contains(selector, options = {}) {
+export function contains(selector, userOptions = {}) {
   return {
     isDescriptor: true,
 
     get(key) {
       return function(textToSearch) {
-        let elements = findElementWithAssert(this, selector, assign({ pageObjectKey: `${key}("${textToSearch}")` }, options));
+        let executionContext = getExecutionContext(this);
+        let options = assign({ pageObjectKey: `${key}("${textToSearch}")` }, userOptions);
 
-        return every(elements, function(element) {
-          return element.text().indexOf(textToSearch) >= 0;
+        return executionContext.run((context) => {
+          let elements = context.findWithAssert(selector, options);
+
+          return every(elements, function(element) {
+            return element.text().indexOf(textToSearch) >= 0;
+          });
         });
       };
     }

@@ -88,9 +88,9 @@ export function clickOnText(selector, userOptions = {}) {
     get(key) {
       return function(textToClick) {
         let executionContext = getExecutionContext(this);
-        let options = assign({ contains: textToClick, pageObjectKey: `${key}("${textToClick}")` }, userOptions);
+        let options = assign({ pageObjectKey: `${key}("${textToClick}")`, contains: textToClick }, userOptions);
 
-        executionContext.run((context) => {
+        return executionContext.runAsync((context) => {
           let fullSelector = buildSelector(this, selector, options);
 
           // Run this to validate if the element exists
@@ -98,8 +98,6 @@ export function clickOnText(selector, userOptions = {}) {
 
           context.click(fullSelector, options.testContainer);
         });
-
-        return this;
       };
     }
   };

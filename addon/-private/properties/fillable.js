@@ -98,7 +98,7 @@ export function fillable(selector, userOptions = {}) {
         let executionContext = getExecutionContext(this);
         let options = assign({ pageObjectKey: `${key}()` }, userOptions);
 
-        executionContext.run((context) => {
+        return executionContext.runAsync((context) => {
           let fullSelector = buildSelector(this, selector, options);
 
           // Run this to validate if the element exists
@@ -106,8 +106,6 @@ export function fillable(selector, userOptions = {}) {
 
           context.fillIn(fullSelector, options.testContainer, text);
         });
-
-        return this;
       };
     }
   };

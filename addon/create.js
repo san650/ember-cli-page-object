@@ -2,7 +2,7 @@ import Ceibo from 'ceibo';
 import { text } from './queries/text';
 import { isVisible } from './predicates/is-visible';
 import { isHidden } from './predicates/is-hidden';
-import { contains } from './predicates/contains';
+import { contains } from './-private/properties/contains';
 import { clickOnText } from './-private/properties/click-on-text';
 import { clickable } from './-private/properties/clickable';
 import { render, setContext, removeContext } from './context';
