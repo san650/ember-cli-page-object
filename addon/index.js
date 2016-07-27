@@ -6,7 +6,7 @@ import { fillable }    from './-private/properties/fillable';         export { f
 import { visitable }   from './-private/properties/visitable';        export { visitable };
 import { triggerable } from './-private/properties/triggerable';      export { triggerable };
 import { contains }    from './-private/properties/contains';         export { contains };
-import { hasClass }    from './predicates/has-class';     export { hasClass };
+import { hasClass }    from './-private/properties/has-class';        export { hasClass };
 import { isHidden }    from './predicates/is-hidden';     export { isHidden };
 import { isVisible }   from './predicates/is-visible';    export { isVisible };
 import { notHasClass } from './predicates/not-has-class'; export { notHasClass };

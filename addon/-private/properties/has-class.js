@@ -1,4 +1,5 @@
-import { assign, findElementWithAssert, every } from '../helpers';
+import { assign, every } from '../../helpers';
+import { getExecutionContext } from '../execution_context';
 
 /**
  * Validates if an element or a set of elements have a given CSS class.
@@ -81,15 +82,20 @@ import { assign, findElementWithAssert, every } from '../helpers';
  * @throws Will throw an error if no element matches selector
  * @throws Will throw an error if multiple elements are matched by selector and multiple option is not set
  */
-export function hasClass(cssClass, selector, options = {}) {
+export function hasClass(cssClass, selector, userOptions = {}) {
   return {
     isDescriptor: true,
 
     get(key) {
-      let elements = findElementWithAssert(this, selector, assign({ pageObjectKey: key }, options));
+      let executionContext = getExecutionContext(this);
+      let options = assign({ pageObjectKey: key }, userOptions);
 
-      return every(elements, function(element) {
-        return element.hasClass(cssClass);
+      return executionContext.run((context) => {
+        let elements = context.findWithAssert(selector, options);
+
+        return every(elements, function(element) {
+          return element.hasClass(cssClass);
+        });
       });
     }
   };
