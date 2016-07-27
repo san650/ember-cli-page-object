@@ -1,7 +1,7 @@
 import { findElement, every } from '../helpers';
 
 /**
- * Validates if an element or set of elements are hidden.
+ * Validates if an element or set of elements are hidden or exist in the DOM.
  *
  * @example
  *
