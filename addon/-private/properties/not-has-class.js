@@ -1,4 +1,5 @@
-import { assign, findElementWithAssert, every } from '../helpers';
+import { assign, every } from '../../helpers';
+import { getExecutionContext } from '../execution_context';
 
 /**
  * @public
@@ -85,15 +86,20 @@ import { assign, findElementWithAssert, every } from '../helpers';
  * @throws Will throw an error if no element matches selector
  * @throws Will throw an error if multiple elements are matched by selector and multiple option is not set
  */
-export function notHasClass(cssClass, selector, options = {}) {
+export function notHasClass(cssClass, selector, userOptions = {}) {
   return {
     isDescriptor: true,
 
     get(key) {
-      let elements = findElementWithAssert(this, selector, assign({ pageObjectKey: key }, options));
+      let executionContext = getExecutionContext(this);
+      let options = assign({ pageObjectKey: key }, userOptions);
 
-      return every(elements, function(element) {
-        return !element.hasClass(cssClass);
+      return executionContext.run((context) => {
+        let elements = context.findWithAssert(selector, options);
+
+        return every(elements, function(element) {
+          return !element.hasClass(cssClass);
+        });
       });
     }
   };
