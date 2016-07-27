@@ -1,30 +1,9 @@
-import Ember from 'ember';
-import { assign, simpleFindElementWithAssert, buildSelector, getContext } from '../helpers';
-
-const { run } = Ember;
-
-function triggerableInternal(tree, eventType, selector, options, context) {
-  let eventOptions = options.eventProperties;
-  let fullSelector = buildSelector(tree, selector, options);
-
-  delete options.eventProperties;
-
-  // Run this to validate if the element exists
-  simpleFindElementWithAssert(tree, fullSelector, options);
-
-  if (context) {
-    let event = Ember.$.Event(eventType, eventOptions);
-
-    if (options.testContainer) {
-      Ember.$(fullSelector, options.testContainer).trigger(event);
-    } else {
-      context.$(fullSelector).trigger(event);
-    }
-  } else {
-    /* global triggerEvent */
-    triggerEvent(fullSelector, options.testContainer, eventType, eventOptions);
-  }
-}
+import { getExecutionContext } from '../execution_context';
+import {
+  assign,
+  buildSelector,
+  simpleFindElementWithAssert
+} from '../../helpers';
 
 /**
  *
@@ -95,20 +74,23 @@ function triggerableInternal(tree, eventType, selector, options, context) {
  * @param {String} options.eventProperties - Event properties that will be passed to trigger function
  * @return {Descriptor}
 */
-export function triggerable(event, selector, options = {}) {
+export function triggerable(event, selector, userOptions = {}) {
   return {
     isDescriptor: true,
 
     get(key) {
       return function() {
-        let context = getContext(this);
+        let executionContext = getExecutionContext(this);
+        let options = assign({ pageObjectKey: `${key}()` }, userOptions);
 
-        if (context) {
-          run(() => triggerableInternal(this, event, selector, assign({ pageObjectKey: `${key}()` }, options), context));
-        } else {
-          /* global wait */
-          wait().then(() => triggerableInternal(this, event, selector, assign({ pageObjectKey: `${key}()` }, options)));
-        }
+        executionContext.run((context) => {
+          let fullSelector = buildSelector(this, selector, options);
+
+          // Run this to validate if the element exists
+          simpleFindElementWithAssert(this, fullSelector, options);
+
+          context.triggerEvent(fullSelector, options.testContainer, event, options.eventProperties);
+        });
 
         return this;
       };

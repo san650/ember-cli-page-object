@@ -32,5 +32,15 @@ IntegrationExecutionContext.prototype = {
     } else {
       return this.testContext.$(selector);
     }
+  },
+
+  triggerEvent(selector, container, eventName, eventOptions) {
+    let event = Ember.$.Event(eventName, eventOptions);
+
+    if (container) {
+      $(selector, container).trigger(event);
+    } else {
+      this.testContext.$(selector).trigger(event);
+    }
   }
 };

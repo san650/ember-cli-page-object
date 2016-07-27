@@ -22,5 +22,10 @@ AcceptanceExecutionContext.prototype = {
     } else {
       fillIn(selector, text);
     }
+  },
+
+  triggerEvent(selector, container, eventName, eventOptions) {
+    /* global triggerEvent */
+    triggerEvent(selector, container, eventName, eventOptions);
   }
 };
