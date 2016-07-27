@@ -8,7 +8,7 @@ import { triggerable } from './-private/properties/triggerable';      export { t
 import { contains }    from './-private/properties/contains';         export { contains };
 import { hasClass }    from './-private/properties/has-class';        export { hasClass };
 import { isHidden }    from './-private/properties/is-hidden';        export { isHidden };
-import { isVisible }   from './predicates/is-visible';    export { isVisible };
+import { isVisible }   from './-private/properties/is-visible';    export { isVisible };
 import { notHasClass } from './predicates/not-has-class'; export { notHasClass };
 import { attribute }   from './queries/attribute';        export { attribute };
 import { count }       from './queries/count';            export { count };

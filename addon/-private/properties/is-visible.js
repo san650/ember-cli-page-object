@@ -1,4 +1,5 @@
-import { findElement, every } from '../helpers';
+import { assign, every } from '../../helpers';
+import { getExecutionContext } from '../execution_context';
 
 /**
  * Validates if an element or set of elements are visible.
@@ -92,19 +93,24 @@ import { findElement, every } from '../helpers';
  *
  * @throws Will throw an error if multiple elements are matched by selector and multiple option is not set
  */
-export function isVisible(selector, options = {}) {
+export function isVisible(selector, userOptions = {}) {
   return {
     isDescriptor: true,
 
-    get() {
-      let elements = findElement(this, selector, options);
+    get(key) {
+      let executionContext = getExecutionContext(this);
+      let options = assign({ pageObjectKey: key }, userOptions);
 
-      if (elements.length === 0) {
-        return false;
-      }
+      return executionContext.run((context) => {
+        let elements = context.find(selector, options);
 
-      return every(elements, function(element) {
-        return element.is(':visible');
+        if (elements.length === 0) {
+          return false;
+        }
+
+        return every(elements, function(element) {
+          return element.is(':visible');
+        });
       });
     }
   };
