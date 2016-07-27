@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import { assign } from '../helpers';
+import { assign } from '../../helpers';
 
 const { $ } = Ember;
 

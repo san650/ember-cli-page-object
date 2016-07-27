@@ -3,7 +3,7 @@ import { collection }  from './collection';               export { collection };
 import { clickable }   from './-private/properties/clickable';        export { clickable };
 import { clickOnText } from './-private/properties/click-on-text';    export { clickOnText };
 import { fillable }    from './-private/properties/fillable';         export { fillable }; export const selectable = fillable;
-import { visitable }   from './actions/visitable';        export { visitable };
+import { visitable }   from './-private/properties/visitable';        export { visitable };
 import { triggerable } from './-private/properties/triggerable';      export { triggerable };
 import { contains }    from './predicates/contains';      export { contains };
 import { hasClass }    from './predicates/has-class';     export { hasClass };
