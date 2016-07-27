@@ -1,4 +1,5 @@
-import { assign, findElementWithAssert, map } from '../helpers';
+import { assign, map } from '../../helpers';
+import { getExecutionContext } from '../execution_context';
 
 /**
  * @public
@@ -66,19 +67,24 @@ import { assign, findElementWithAssert, map } from '../helpers';
  * @throws Will throw an error if no element matches selector
  * @throws Will throw an error if multiple elements are matched by selector and multiple option is not set
  */
-export function attribute(attributeName, selector, options = {}) {
+export function attribute(attributeName, selector, userOptions = {}) {
   return {
     isDescriptor: true,
 
     get(key) {
-      let elements = findElementWithAssert(this, selector, assign({ pageObjectKey: key }, options));
-      let result;
+      let executionContext = getExecutionContext(this);
+      let options = assign({ pageObjectKey: key }, userOptions);
 
-      result = map(elements, function(element) {
-        return element.attr(attributeName);
+      return executionContext.run((context) => {
+        let elements = context.findWithAssert(selector, options);
+        let result;
+
+        result = map(elements, function(element) {
+          return element.attr(attributeName);
+        });
+
+        return options.multiple ? result : result[0];
       });
-
-      return options.multiple ? result : result[0];
     }
   };
 }
