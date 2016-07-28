@@ -16,7 +16,7 @@ body.intro {
     font-family: $primary-font;
     font-size: 80px;
     color: $primary-color;
-    text-shadow: 1px 1px 1px rgba(255, 255, 255, 0.6);
+    text-shadow: 1px 1px 1px $text-shadow-color;
   }
 
   h2 {
@@ -120,7 +120,7 @@ body.intro {
   .star-text {
     display: block;
     margin-top: 15px;
-    color: $primary-color;
+    color: $github-text-color;
 
     .glyphicon {
       font-size: 16px;
