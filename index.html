@@ -44,10 +44,10 @@
       <div class="row">
         <div class="col-xs-12 text-center">
           <ul class="nav nav-pills">
-            <li role="presentation"><a href="/docs/v1.4.x/">Overview</a></li>
-            <li role="presentation"><a href="/docs/v1.4.x/">Guides</a></li>
-            <li role="presentation"><a href="/docs/v1.4.x/">API</a></li>
-            <li role="presentation"><a href="/docs/v1.4.x/">Contributors</a></li>
+            <li role="presentation"><a href="/docs/v1.2.x/">Overview</a></li>
+            <li role="presentation"><a href="/docs/v1.2.x/">Guides</a></li>
+            <li role="presentation"><a href="/docs/v1.2.x/">API</a></li>
+            <li role="presentation"><a href="/docs/v1.2.x/">Contributors</a></li>
           </ul>
         </div>
       </div>
@@ -70,7 +70,7 @@
 
       <footer>
         <div class="row">
-          <div class="col-xs-6">© 2016 <a href="https://twitter.com/san650">Santiago Ferreira</a>. Code licensed under MIT License.</div>
+          <div class="col-xs-12 text-center">© 2016 <a href="https://twitter.com/san650">Santiago Ferreira</a>. Code licensed under MIT License.</div>
         </div>
       </footer>
 
@@ -87,22 +87,24 @@
       $(function () {
         setTimeout(function () {
           interval = setInterval(typeALetter, 120);
-        }, 1000);
+        }, 1200);
       });
 
       function typeALetter() {
+        var command = $('.command');
+
         if (index < 13) {
-          var text = $('.command').text();
-          $('.command').text(text + characters[index]);
+          var text = command.text();
+          command.text(text + characters[index]);
         } else if (index === 13) {
-          var html = $('.command').html();
-          $('.command').html(html + '&nbsp;<span></span>');
+          var html = command.html();
+          command.html(html + '&nbsp;<span></span>');
         } else {
           var text = $('.command span').text();
           $('.command span').text(text + characters[index]);
         }
 
-        index = index + 1;
+        index++;
 
         if (index >= characters.length) {
           clearInterval(interval);

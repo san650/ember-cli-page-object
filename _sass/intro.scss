@@ -4,46 +4,41 @@ body.intro {
   padding: 0;
   width: 100%;
   height: 100%;
-  background-color: $primary-color;
+  background-color: $bg-color;
   text-align: center;
   padding-top: 50px;
+  color: $secondary-color;
+  font-family: $text-font;
 
 
   h1 {
     position: relative;
-    font-family: 'Pacifico', cursive;
+    font-family: $primary-font;
     font-size: 80px;
-    color: #fff;
-    text-shadow: 1px 1px 1px rgba(19, 35, 66, 0.6);
-
-    span {
-      color: rgb(86, 128, 209);
-      text-shadow: 1px 1px 1px rgb(19, 35, 66);
-    }
+    color: $primary-color;
+    text-shadow: 1px 1px 1px rgba(255, 255, 255, 0.6);
   }
 
   h2 {
     font-family: monospace;
-    color: #fff;
     font-size: 14px;
     margin-top: 40px;
   }
 
   p {
-    font-family: 'Patrick Hand', cursive;
+    font-family: $secondary-font;
     font-size: 30px;
     margin-top: 20px;
-    color: #fff;
   }
 
   .terminal {
     position: relative;
     padding: 60px 2px 20px 15px;
-    background-color: rgba(0, 0, 0, 0.8);
+    background-color: $terminal-color;
     margin-top: 27px;
     display: inline-block;
     border-radius: 6px;
-    font-family: 'Inconsolata';
+    font-family: $text-font;
     font-size:18px;
     overflow: hidden;
     width: 430px;
@@ -95,7 +90,6 @@ body.intro {
     }
   }
 
-
   .nav {
     display: inline-block;
     margin-top: 50px;
@@ -105,14 +99,14 @@ body.intro {
     padding: 0 5px;
 
     a {
-      background-color: RGBA(156, 196, 228, 0.7);
+      background-color: $button-color;
       font-family: 'Inconsolata';
       font-size: 20px;
-      color: $primary-color;
+      color: $light-color;
       transition: all .3s;
 
       &:hover {
-        background-color: #E9F2F9;
+        background-color: $button-color-hover;
         transition: all .3s;
       }
     }
@@ -126,11 +120,10 @@ body.intro {
   .star-text {
     display: block;
     margin-top: 15px;
-    color: rgba(255, 255, 255, 0.4);
+    color: $primary-color;
 
     .glyphicon {
       font-size: 16px;
-      color: #fff;
     }
   }
 
@@ -139,13 +132,14 @@ body.intro {
     height: 40px;
     position: fixed;
     bottom: 0;
-    background-color: rgba(255,255,255,.2);
-    color: #fff;
+    background-color: $primary-color;
+    color: $light-color;
     margin-left: -15px;
     margin-right: -15px;
+    line-height: 40px;
 
     a {
-      color: $primary-color;
+      color: $dark-color;
     }
   }
 }
