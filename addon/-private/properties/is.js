@@ -1,4 +1,5 @@
-import { assign, findElementWithAssert, every } from '../helpers';
+import { assign, every } from '../../helpers';
+import { getExecutionContext } from '../execution_context';
 
 /**
  * @public
@@ -41,18 +42,21 @@ import { assign, findElementWithAssert, every } from '../helpers';
  * @throws Will throw an error if no element matches selector
  * @throws Will throw an error if multiple elements are matched by selector and multiple option is not set
  */
-export function is(testSelector, targetSelector, options = {}) {
+export function is(testSelector, targetSelector, userOptions = {}) {
   return {
     isDescriptor: true,
 
     get(key) {
-      let elements = findElementWithAssert(this, targetSelector, assign({ pageObjectKey: key }, options));
+      let executionContext = getExecutionContext(this);
+      let options = assign({ pageObjectKey: key }, userOptions);
 
-      let result = every(elements, function(element) {
-        return element.is(testSelector);
+      return executionContext.run((context) => {
+        let elements = context.findWithAssert(targetSelector, options);
+
+        return every(elements, function(element) {
+          return element.is(testSelector);
+        });
       });
-
-      return result;
     }
   };
 }

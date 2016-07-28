@@ -11,8 +11,8 @@ import { isHidden }    from './-private/properties/is-hidden';        export { i
 import { isVisible }   from './-private/properties/is-visible';       export { isVisible };
 import { notHasClass } from './-private/properties/not-has-class';    export { notHasClass };
 import { attribute }   from './-private/properties/attribute';        export { attribute };
-import { is }          from './queries/is';               export { is };
 import { count }       from './-private/properties/count';            export { count };
+import { is }          from './-private/properties/is';               export { is };
 import { property }    from './queries/property';         export { property };
 import { text }        from './queries/text';             export { text };
 import { value }       from './queries/value';            export { value };
