@@ -13,7 +13,7 @@ import { notHasClass } from './-private/properties/not-has-class';    export { n
 import { attribute }   from './-private/properties/attribute';        export { attribute };
 import { count }       from './-private/properties/count';            export { count };
 import { is }          from './-private/properties/is';               export { is };
-import { property }    from './queries/property';         export { property };
+import { property }    from './-private/properties/property';         export { property };
 import { text }        from './queries/text';             export { text };
 import { value }       from './queries/value';            export { value };
 
