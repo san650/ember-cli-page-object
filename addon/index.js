@@ -14,7 +14,7 @@ import { attribute }   from './-private/properties/attribute';        export { a
 import { count }       from './-private/properties/count';            export { count };
 import { is }          from './-private/properties/is';               export { is };
 import { property }    from './-private/properties/property';         export { property };
-import { text }        from './queries/text';             export { text };
+import { text }        from './-private/properties/text';             export { text };
 import { value }       from './queries/value';            export { value };
 
 export { buildSelector, findElementWithAssert, findElement, getContext } from './helpers';

@@ -1,4 +1,9 @@
-import { assign, findElementWithAssert, map, normalizeText } from '../helpers';
+import { assign, map, normalizeText } from '../../helpers';
+import { getExecutionContext } from '../execution_context';
+
+function identity(v) {
+  return v;
+}
 
 /**
  * @public
@@ -84,22 +89,24 @@ import { assign, findElementWithAssert, map, normalizeText } from '../helpers';
  * @throws Will throw an error if no element matches selector
  * @throws Will throw an error if multiple elements are matched by selector and multiple option is not set
  */
-export function text(selector, options = {}) {
+export function text(selector, userOptions = {}) {
   return {
     isDescriptor: true,
 
     get(key) {
-      let elements = findElementWithAssert(this, selector, assign({ pageObjectKey: key }, options));
-      let avoidNormalization = options.normalize === false;
-      let result = map(elements, function(element) {
-        if (avoidNormalization) {
-          return element.text();
-        } else {
-          return normalizeText(element.text());
-        }
-      });
+      let executionContext = getExecutionContext(this);
+      let options = assign({ pageObjectKey: key }, userOptions);
 
-      return options.multiple ? result : result[0];
+      return executionContext.run((context) => {
+        let elements = context.findWithAssert(selector, options);
+        let f = options.normalize === false ? identity : normalizeText;
+
+        let result = map(elements, function(element) {
+          return f(element.text());
+        });
+
+        return options.multiple ? result : result[0];
+      });
     }
   };
 }

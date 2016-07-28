@@ -1,5 +1,5 @@
 import Ceibo from 'ceibo';
-import { text } from './queries/text';
+import { text } from './-private/properties/text';
 import { isVisible } from './-private/properties/is-visible';
 import { isHidden } from './-private/properties/is-hidden';
 import { contains } from './-private/properties/contains';
