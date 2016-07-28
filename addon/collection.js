@@ -1,7 +1,7 @@
 import Ember from 'ember';
 import { buildSelector, assign as mergeFunction } from './helpers';
 import { create } from './create';
-import { count } from './queries/count';
+import { count } from './-private/properties/count';
 import Ceibo from 'ceibo';
 
 const arrayDelegateMethods = ['map', 'filter', 'mapBy', 'filterBy'];

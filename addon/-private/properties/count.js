@@ -1,7 +1,5 @@
-import Ember from 'ember';
-import { findElement } from '../helpers';
-
-const { $ } = Ember;
+import { assign } from '../../helpers';
+import { getExecutionContext } from '../execution_context';
 
 /**
  * @public
@@ -73,16 +71,19 @@ const { $ } = Ember;
  * @param {String} options.testContainer - Context where to search elements in the DOM
  * @return {Descriptor}
  */
-export function count(selector, options = {}) {
+export function count(selector, userOptions = {}) {
   return {
     isDescriptor: true,
 
-    get() {
-      let countOptions = {};
+    get(key) {
+      let executionContext = getExecutionContext(this);
+      let options = assign({ pageObjectKey: key }, userOptions);
 
-      $.extend(true, countOptions, options, { multiple: true });
+      options = assign(options, { multiple: true });
 
-      return findElement(this, selector, countOptions).length;
+      return executionContext.run((context) => {
+        return context.find(selector, options).length;
+      });
     }
   };
 }
