@@ -1,10 +1,10 @@
 import Ceibo from 'ceibo';
-import { text } from './-private/properties/text';
-import { isVisible } from './-private/properties/is-visible';
-import { isHidden } from './-private/properties/is-hidden';
-import { contains } from './-private/properties/contains';
-import { clickOnText } from './-private/properties/click-on-text';
-import { clickable } from './-private/properties/clickable';
+import { text } from './properties/text';
+import { isVisible } from './properties/is-visible';
+import { isHidden } from './properties/is-hidden';
+import { contains } from './properties/contains';
+import { clickOnText } from './properties/click-on-text';
+import { clickable } from './properties/clickable';
 import { render, setContext, removeContext } from './context';
 import { assign } from './helpers';
 

@@ -1,4 +1,4 @@
-import { assign, map, normalizeText } from '../../helpers';
+import { assign, map, normalizeText } from '../helpers';
 import { getExecutionContext } from '../execution_context';
 
 function identity(v) {

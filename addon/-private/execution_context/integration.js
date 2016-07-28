@@ -3,7 +3,7 @@ import {
   findElement,
   findElementWithAssert,
   simpleFindElementWithAssert
-} from '../../helpers';
+} from '../helpers';
 
 const { $, run } = Ember;
 

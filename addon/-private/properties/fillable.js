@@ -1,8 +1,5 @@
+import { assign, buildSelector } from '../helpers';
 import { getExecutionContext } from '../execution_context';
-import {
-  assign,
-  buildSelector
-} from '../../helpers';
 
 /**
  * Alias for `fillable`, which works for inputs and HTML select menus.

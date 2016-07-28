@@ -1,4 +1,4 @@
-import { assign, buildSelector } from '../../helpers';
+import { assign, buildSelector } from '../helpers';
 import { getExecutionContext } from '../execution_context';
 
 /**

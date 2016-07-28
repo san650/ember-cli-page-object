@@ -1,4 +1,4 @@
-import { assign } from '../../helpers';
+import { assign } from '../helpers';
 import { getExecutionContext } from '../execution_context';
 
 /**

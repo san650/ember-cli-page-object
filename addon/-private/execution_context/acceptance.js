@@ -2,7 +2,7 @@ import {
   findElement,
   findElementWithAssert,
   simpleFindElementWithAssert
-} from '../../helpers';
+} from '../helpers';
 
 export default function AcceptanceExecutionContext(pageObjectNode) {
   this.pageObjectNode = pageObjectNode;

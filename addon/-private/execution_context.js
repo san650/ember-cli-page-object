@@ -1,4 +1,4 @@
-import { getContext } from '../helpers';
+import { getContext } from './helpers';
 import AcceptanceExecutionContext from './execution_context/acceptance';
 import IntegrationExecutionContext from './execution_context/integration';
 

@@ -2,7 +2,7 @@ import {
   assign,
   findElement,
   buildSelector as originalBuildSelector
-} from '../../../helpers';
+} from '../../helpers';
 
 function childSelector(pageObjectNode, selector, options) {
   // Suppose that we have something like `<form><button>Submit</button></form>`

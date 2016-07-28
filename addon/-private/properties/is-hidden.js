@@ -1,4 +1,4 @@
-import { assign, every } from '../../helpers';
+import { assign, every } from '../helpers';
 import { getExecutionContext } from '../execution_context';
 
 /**
