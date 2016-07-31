@@ -4,6 +4,7 @@ export { moduleForComponent as moduleForIntegration, test as testForIntegration 
 
 export function IntegrationAdapter() {
   this.originalClick = window.jQuery.fn.click;
+  this.originalFillIn = window.jQuery.fn.val;
 }
 
 IntegrationAdapter.prototype = {
@@ -24,8 +25,26 @@ IntegrationAdapter.prototype = {
     };
   },
 
+  fillIn(fn) {
+    window.jQuery.fn.val = function(text) {
+      let selector, context;
+
+      // If the context is window and the selector is prefixed with our
+      // alternate container, split it
+      if (/^#alternate-ember-testing/.test(this.selector) && this.context === document) {
+        context = '#alternate-ember-testing';
+        selector = this.selector.replace(/^#alternate-ember-testing\s?/, '');
+      } else {
+        selector = this.selector.replace(/^#ember-testing > .ember-view\s?/, '');
+      }
+
+      fn(selector, context, text);
+    };
+  },
+
   revert() {
     window.jQuery.fn.click = this.originalClick;
+    window.jQuery.fn.val = this.originalFillIn;
   },
 
   createTemplate(test, page, template, options) {

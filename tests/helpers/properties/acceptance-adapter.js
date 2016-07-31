@@ -8,6 +8,7 @@ let noop = function() {};
 
 export function AcceptanceAdapter() {
   this.originalClick = window.click;
+  this.originalFillIn = window.fillIn;
 }
 
 AcceptanceAdapter.prototype = {
@@ -15,8 +16,19 @@ AcceptanceAdapter.prototype = {
     window.click = fn;
   },
 
+  fillIn(fn) {
+    window.fillIn = function(selector, contextOrText, text) {
+      if (text) {
+        fn(selector, contextOrText, text);
+      } else {
+        fn(selector, undefined, contextOrText);
+      }
+    };
+  },
+
   revert() {
     window.click = this.originalClick;
+    window.fillIn = this.originalFillIn;
   },
 
   createTemplate(test, page, template, options) {
