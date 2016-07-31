@@ -1,6 +1,7 @@
 import Ember from 'ember';
 import {
-  findElement,
+  guardMultiple,
+  buildSelector,
   findElementWithAssert,
   simpleFindElementWithAssert
 } from '../helpers';
@@ -46,7 +47,7 @@ IntegrationExecutionContext.prototype = {
   },
 
   triggerEvent(selector, container, eventName, eventOptions) {
-    let event = Ember.$.Event(eventName, eventOptions);
+    let event = $.Event(eventName, eventOptions);
 
     if (container) {
       $(selector, container).trigger(event);
@@ -60,7 +61,19 @@ IntegrationExecutionContext.prototype = {
   },
 
   find(selector, options) {
-    return findElement(this.pageObjectNode, selector, options);
+    let result;
+
+    selector = buildSelector(this.pageObjectNode, selector, options);
+
+    if (options.testContainer) {
+      result = $(selector, options.testContainer);
+    } else {
+      result = this.testContext.$(selector);
+    }
+
+    guardMultiple(result, selector, options.multiple);
+
+    return result;
   },
 
   findWithAssert(selector, options) {

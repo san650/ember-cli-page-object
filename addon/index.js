@@ -18,7 +18,8 @@ import { triggerable } from './-private/properties/triggerable';   export { trig
 import { value }       from './-private/properties/value';         export { value };
 import { visitable }   from './-private/properties/visitable';     export { visitable };
 
-export { buildSelector, findElementWithAssert, findElement, getContext } from './-private/helpers';
+export { findElement } from './-private/extend/find-element';
+export { buildSelector, findElementWithAssert, getContext } from './-private/helpers';
 
 export default {
   attribute,

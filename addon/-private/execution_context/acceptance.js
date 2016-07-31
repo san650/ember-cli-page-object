@@ -1,5 +1,6 @@
 import {
-  findElement,
+  guardMultiple,
+  buildSelector,
   findElementWithAssert,
   simpleFindElementWithAssert
 } from '../helpers';
@@ -46,7 +47,16 @@ AcceptanceExecutionContext.prototype = {
   },
 
   find(selector, options) {
-    return findElement(this.pageObjectNode, selector, options);
+    let result;
+
+    selector = buildSelector(this.pageObjectNode, selector, options);
+
+    /* global find */
+    result = find(selector, options.testContainer);
+
+    guardMultiple(result, selector, options.multiple);
+
+    return result;
   },
 
   findWithAssert(selector, options) {

@@ -88,7 +88,7 @@ export function clickOnText(selector, userOptions = {}) {
         let options = assign({ pageObjectKey: `${key}("${textToClick}")`, contains: textToClick }, userOptions);
 
         return executionContext.runAsync((context) => {
-          let fullSelector = buildSelector(this, selector, options);
+          let fullSelector = buildSelector(this, context, selector, options);
 
           context.assertElementExists(fullSelector, options);
 

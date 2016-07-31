@@ -78,7 +78,7 @@ class Selector {
   }
 }
 
-function guardMultiple(items, selector, supportMultiple) {
+export function guardMultiple(items, selector, supportMultiple) {
   assert(
     `"${selector}" matched more than one element. If this is not an error use { multiple: true }`,
     supportMultiple || items.length <= 1
@@ -206,47 +206,6 @@ export function simpleFindElementWithAssert(node, selector, options = {}) {
 
   if (result.length === 0) {
     throwBetterError(node, options.pageObjectKey, selector);
-  }
-
-  guardMultiple(result, selector, options.multiple);
-
-  return result;
-}
-
-/**
- * @public
- *
- * Returns a jQuery element (can be an empty jQuery result)
- *
- * @param {Ceibo} node - Node of the tree
- * @param {string} targetSelector - Specific CSS selector
- * @param {Object} options - Additional options
- * @param {boolean} options.resetScope - Do not use inherited scope
- * @param {string} options.contains - Filter by using :contains('foo') pseudo-class
- * @param {number} options.at - Filter by index using :eq(x) pseudo-class
- * @param {boolean} options.last - Filter by using :last pseudo-class
- * @param {boolean} options.visible - Filter by using :visible pseudo-class
- * @param {boolean} options.multiple - Specify if built selector can match multiple elements.
- * @param {String} options.testContainer - Context where to search elements in the DOM
- * @return {Object} jQuery object
- *
- * @throws Will throw an error if multiple elements are matched by selector and multiple option is not set
- */
-export function findElement(node, targetSelector, options = {}) {
-  let selector = buildSelector(node, targetSelector, options);
-  let context = getContext(node);
-
-  let result;
-
-  if (context) {
-    if (options.testContainer) {
-      result = Ember.$(selector, options.testContainer);
-    } else {
-      result = context.$(selector);
-    }
-  } else {
-    /* global find */
-    result = find(selector, options.testContainer);
   }
 
   guardMultiple(result, selector, options.multiple);
