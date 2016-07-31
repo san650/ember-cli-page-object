@@ -1,0 +1,170 @@
+
+body.intro {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  background-color: $bg-color;
+  text-align: center;
+  padding-top: 50px;
+  color: $secondary-color;
+  font-family: $text-font;
+
+
+  h1 {
+    position: relative;
+    font-family: $primary-font;
+    font-size: 80px;
+    color: $primary-color;
+    text-shadow: 1px 1px 1px $text-shadow-color;
+  }
+
+  h2 {
+    font-family: monospace;
+    font-size: 14px;
+    margin-top: 40px;
+  }
+
+  p {
+    font-family: $secondary-font;
+    font-size: 30px;
+    margin-top: 20px;
+  }
+
+  .terminal {
+    position: relative;
+    padding: 60px 2px 20px 15px;
+    background-color: $terminal-color;
+    margin-top: 27px;
+    display: inline-block;
+    border-radius: 6px;
+    font-family: $text-font;
+    font-size:18px;
+    overflow: hidden;
+    width: 430px;
+    text-align: left;
+
+    .icon-bar {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      text-align: left;
+      padding: 4px 0 2px 12px;
+      background-color: rgba(255,255,255,.2);
+
+      .icon {
+        width: 15px;
+        height: 15px;
+        border-radius: 50%;
+        display: inline-block;
+        background-color: rgba(0,0,0,.3);
+      }
+    }
+
+    .command {
+      color: rgba(255,255,255,.5);
+      overflow: hidden;
+      // width: 18px;
+      display: inline-block;
+
+      &:before {
+        display: inline-block;
+        content: '$';
+        margin-right: 10px;
+      }
+
+      &:after {
+        content: '|';
+        margin-left: 2px;
+        -webkit-animation: 1.3s blink step-end infinite;
+        -moz-animation: 1.3s blink step-end infinite;
+        -ms-animation: 1.3s blink step-end infinite;
+        -o-animation: 1.3s blink step-end infinite;
+        animation: 1.3s blink step-end infinite;
+      }
+
+      span {
+        color: #fff;
+      }
+    }
+  }
+
+  .nav {
+    display: inline-block;
+    margin-top: 50px;
+  }
+
+  .nav-pills > li {
+    padding: 0 5px;
+
+    a {
+      background-color: $button-color;
+      font-family: 'Inconsolata';
+      font-size: 20px;
+      color: $light-color;
+      transition: all .3s;
+
+      &:hover {
+        background-color: $button-color-hover;
+        transition: all .3s;
+      }
+    }
+  }
+
+  iframe {
+    margin-top: 120px;
+    margin-left: 10px;
+  }
+
+  .star-text {
+    display: block;
+    margin-top: 15px;
+    color: $github-text-color;
+
+    .glyphicon {
+      font-size: 16px;
+    }
+  }
+
+  footer {
+    width: 100%;
+    height: 40px;
+    position: fixed;
+    bottom: 0;
+    background-color: $primary-color;
+    color: $light-color;
+    margin-left: -15px;
+    margin-right: -15px;
+    line-height: 40px;
+
+    a {
+      color: $dark-color;
+    }
+  }
+}
+
+@keyframes "blink" {
+  from, to { color: transparent; }
+  50% { color: rgba(255,255,255,.5); }
+}
+
+@-moz-keyframes blink {
+  from, to { color: transparent; }
+  50% { color: rgba(255,255,255,.5); }
+}
+
+@-webkit-keyframes "blink" {
+  from, to { color: transparent; }
+  50% { color: rgba(255,255,255,.5); }
+}
+
+@-ms-keyframes "blink" {
+  from, to { color: transparent; }
+  50% { color: rgba(255,255,255,.5); }
+}
+
+@-o-keyframes "blink" {
+  from, to { color: transparent; }
+  50% { color: rgba(255,255,255,.5); }
+}
