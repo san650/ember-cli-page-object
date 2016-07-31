@@ -1,9 +1,8 @@
 import {
   guardMultiple,
-  buildSelector,
-  findElementWithAssert,
-  simpleFindElementWithAssert
+  buildSelector
 } from '../helpers';
+import { throwBetterError } from '../better-errors';
 
 export default function AcceptanceExecutionContext(pageObjectNode) {
   this.pageObjectNode = pageObjectNode;
@@ -43,7 +42,12 @@ AcceptanceExecutionContext.prototype = {
   },
 
   assertElementExists(selector, options) {
-    simpleFindElementWithAssert(this.pageObjectNode, selector, options);
+    /* global find */
+    let result = find(selector, options.testContainer);
+
+    if (result.length === 0) {
+      throwBetterError(this.pageObjectNode, options.pageObjectKey, selector);
+    }
   },
 
   find(selector, options) {
@@ -60,6 +64,19 @@ AcceptanceExecutionContext.prototype = {
   },
 
   findWithAssert(selector, options) {
-    return findElementWithAssert(this.pageObjectNode, selector, options);
+    let result;
+
+    selector = buildSelector(this.pageObjectNode, selector, options);
+
+    /* global find */
+    result = find(selector, options.testContainer);
+
+    if (result.length === 0) {
+      throwBetterError(this.pageObjectNode, options.pageObjectKey, selector);
+    }
+
+    guardMultiple(result, selector, options.multiple);
+
+    return result;
   }
 };

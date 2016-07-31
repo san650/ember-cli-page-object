@@ -1,10 +1,9 @@
 import Ember from 'ember';
 import {
   guardMultiple,
-  buildSelector,
-  findElementWithAssert,
-  simpleFindElementWithAssert
+  buildSelector
 } from '../helpers';
+import { throwBetterError } from '../better-errors';
 
 const { $, run } = Ember;
 
@@ -57,7 +56,17 @@ IntegrationExecutionContext.prototype = {
   },
 
   assertElementExists(selector, options) {
-    simpleFindElementWithAssert(this.pageObjectNode, selector, options);
+    let result;
+
+    if (options.testContainer) {
+      result = $(selector, options.testContainer);
+    } else {
+      result = this.testContext.$(selector);
+    }
+
+    if (result.length === 0) {
+      throwBetterError(this.pageObjectNode, options.pageObjectKey, selector);
+    }
   },
 
   find(selector, options) {
@@ -77,6 +86,22 @@ IntegrationExecutionContext.prototype = {
   },
 
   findWithAssert(selector, options) {
-    return findElementWithAssert(this.pageObjectNode, selector, options);
+    let result;
+
+    selector = buildSelector(this.pageObjectNode, selector, options);
+
+    if (options.testContainer) {
+      result = $(selector, options.testContainer);
+    } else {
+      result = this.testContext.$(selector);
+    }
+
+    guardMultiple(result, selector, options.multiple);
+
+    if (result.length === 0) {
+      throwBetterError(this.pageObjectNode, options.pageObjectKey, selector);
+    }
+
+    return result;
   }
 };

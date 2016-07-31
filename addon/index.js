@@ -19,7 +19,8 @@ import { value }       from './-private/properties/value';         export { valu
 import { visitable }   from './-private/properties/visitable';     export { visitable };
 
 export { findElement } from './-private/extend/find-element';
-export { buildSelector, findElementWithAssert, getContext } from './-private/helpers';
+export { findElementWithAssert } from './-private/extend/find-element-with-assert';
+export { buildSelector, getContext } from './-private/helpers';
 
 export default {
   attribute,
