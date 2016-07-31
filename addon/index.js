@@ -1,23 +1,26 @@
-import { create }      from './create';                   export { create };
-import { collection }  from './collection';               export { collection };
-import { clickable }   from './actions/clickable';        export { clickable };
-import { clickOnText } from './actions/click-on-text';    export { clickOnText };
-import { fillable }    from './actions/fillable';         export { fillable }; export const selectable = fillable;
-import { visitable }   from './actions/visitable';        export { visitable };
-import { triggerable } from './actions/triggerable';      export { triggerable };
-import { contains }    from './predicates/contains';      export { contains };
-import { hasClass }    from './predicates/has-class';     export { hasClass };
-import { isHidden }    from './predicates/is-hidden';     export { isHidden };
-import { isVisible }   from './predicates/is-visible';    export { isVisible };
-import { notHasClass } from './predicates/not-has-class'; export { notHasClass };
-import { attribute }   from './queries/attribute';        export { attribute };
-import { count }       from './queries/count';            export { count };
-import { is }          from './queries/is';               export { is };
-import { property }    from './queries/property';         export { property };
-import { text }        from './queries/text';             export { text };
-import { value }       from './queries/value';            export { value };
+import { create }      from './-private/create';                   export { create };
 
-export { buildSelector, findElementWithAssert, findElement, getContext } from './helpers';
+import { attribute }   from './-private/properties/attribute';     export { attribute };
+import { clickOnText } from './-private/properties/click-on-text'; export { clickOnText };
+import { clickable }   from './-private/properties/clickable';     export { clickable };
+import { collection }  from './-private/properties/collection';    export { collection };
+import { contains }    from './-private/properties/contains';      export { contains };
+import { count }       from './-private/properties/count';         export { count };
+import { fillable }    from './-private/properties/fillable';      export { fillable }; export const selectable = fillable;
+import { hasClass }    from './-private/properties/has-class';     export { hasClass };
+import { is }          from './-private/properties/is';            export { is };
+import { isHidden }    from './-private/properties/is-hidden';     export { isHidden };
+import { isVisible }   from './-private/properties/is-visible';    export { isVisible };
+import { notHasClass } from './-private/properties/not-has-class'; export { notHasClass };
+import { property }    from './-private/properties/property';      export { property };
+import { text }        from './-private/properties/text';          export { text };
+import { triggerable } from './-private/properties/triggerable';   export { triggerable };
+import { value }       from './-private/properties/value';         export { value };
+import { visitable }   from './-private/properties/visitable';     export { visitable };
+
+export { findElement } from './-private/extend/find-element';
+export { findElementWithAssert } from './-private/extend/find-element-with-assert';
+export { buildSelector, getContext } from './-private/helpers';
 
 export default {
   attribute,
