@@ -1,115 +1,59 @@
 ---
+layout: default
+title: Page Objects in Ember
+description: ember-cli-page-object helps you represent the screens of your web app as a series of objects. This ember-cli addon eases the construction of these objects on your acceptance tests
+className: splash-body
 ---
+<div class="splash container-fluid">
+  <h1 class="splash__title">Page <span>object</span></h1>
 
-{% for version in site.data.navs %}
-  {% if forloop.first %}
-    {% assign latestVersion = version[0] %}
-  {% endif %}
-{% endfor %}
+  <h2 class="splash__version">version 1.5.0</h2>
 
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-    <link href='https://fonts.googleapis.com/css?family=Pacifico' rel='stylesheet' type='text/css'>
-    <link href='https://fonts.googleapis.com/css?family=Patrick+Hand' rel='stylesheet' type='text/css'>
-    <link href='https://fonts.googleapis.com/css?family=Inconsolata' rel='stylesheet' type='text/css'>
+  <p class="splash__caption">
+    Makes it easy to create page objects for your tests.
+  </p>
 
-    <link rel="stylesheet" href="{{ "/css/main.css" | prepend: site.baseurl }}">
-    <!-- <meta http-equiv="refresh" content="0;url={{site.url}}{{site.baseurl}}/docs/{{latestVersion}}" /> -->
-
-    <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
-
-  </head>
-  <body class="intro">
-    <div class="container-fluid">
-      <h1>Page <span>object</span></h1>
-
-      <h2>version 1.4.0</h2>
-
-      <p>
-        Makes it easy to create page objects for your tests.
-      </p>
-
-      <span class="terminal">
-        <div class="icon-bar">
-          <div class="icon"></div>
-          <div class="icon"></div>
-          <div class="icon"></div>
-        </div>
-        <span class="command"></span>
-        <!-- <span class="cursor">|</span> -->
-      </span>
-
-      <div class="row">
-        <div class="col-xs-12 text-center">
-          <ul class="nav nav-pills">
-            <li role="presentation"><a href="/docs/v1.2.x/">Overview</a></li>
-            <li role="presentation"><a href="/docs/v1.2.x/">Guides</a></li>
-            <li role="presentation"><a href="/docs/v1.2.x/">API</a></li>
-            <li role="presentation"><a href="/docs/v1.2.x/">Contributors</a></li>
-          </ul>
-        </div>
+  <div class="row">
+    <div class="terminal col-sm-offset-3 col-sm-6 col-xs-10 col-xs-offset-1">
+      <div class="terminal__icon-bar">
+        <div class="terminal__icon"></div>
+        <div class="terminal__icon"></div>
+        <div class="terminal__icon"></div>
       </div>
-
-      <div class="row">
-        <div class="col-xs-12">
-          <iframe src="https://ghbtns.com/github-btn.html?user=san650&repo=ember-cli-page-object&type=star&count=true&size=large"
-          frameborder="0"
-          scrolling="0"
-          width="140px"
-          height="30px"></iframe>
-
-          <span class="star-text">
-            Don't forget to
-            <span class="glyphicon glyphicon-star"></span>
-            on GitHub if you liked this project!
-          </span>
-        </div>
-      </div>
-
-      <footer>
-        <div class="row">
-          <div class="col-xs-12 text-center">© 2016 <a href="https://twitter.com/san650">Santiago Ferreira</a>. Code licensed under MIT License.</div>
-        </div>
-      </footer>
-
+      <span class="command">ember install <span>ember-cli-page-object</span></span>
     </div>
+  </div>
 
-    <script type="text/javascript">
-      var index = 0;
-      var interval = null;
-      var characters = ['e', 'm', 'b', 'e', 'r', ' ', 'i', 'n', 's', 't', 'a',
-      'l', 'l', ' ', 'e', 'm', 'b', 'e', 'r', '-', 'c', 'l', 'i', '-', 'p',
-      'a', 'g', 'e', '-', 'o', 'b', 'j', 'e', 'c', 't'];
+  <div class="row">
+    <div class="col-xs-12 text-center">
+      <ul class="nav nav-pills">
+        <li role="presentation"><a href="/overview.html">Overview</a></li>
+        <li role="presentation"><a href="/guides/">Guides</a></li>
+        <li role="presentation"><a href="/api/">API</a></li>
+        <li role="presentation"><a href="/contributors.html">Contributors</a></li>
+      </ul>
+    </div>
+  </div>
 
+  <div class="row">
+    <div class="col-xs-12">
+      <iframe class="github-star__widget" src="https://ghbtns.com/github-btn.html?user=san650&repo=ember-cli-page-object&type=star&count=true&size=large" frameborder="0" scrolling="0" width="140px" height="30px"></iframe>
+    </div>
+    <div class="col-xs-12">
+      <span class="github-star__caption">
+        Don't forget to
+        <span class="github-star__glyphicon glyphicon glyphicon-star"></span>
+        on GitHub if you liked this project!
+      </span>
+    </div>
+  </div>
+</div>
 
-      $(function () {
-        setTimeout(function () {
-          interval = setInterval(typeALetter, 120);
-        }, 1200);
-      });
+<footer class="footer">
+  <div class="footer__caption">
+    © 2016 <a class="footer__user-link" href="https://twitter.com/san650">Santiago Ferreira</a>.
+    Code licensed under MIT License.
+  </div>
+</footer>
 
-      function typeALetter() {
-        var command = $('.command');
-
-        if (index < 13) {
-          var text = command.text();
-          command.text(text + characters[index]);
-        } else if (index === 13) {
-          var html = command.html();
-          command.html(html + '&nbsp;<span></span>');
-        } else {
-          var text = $('.command span').text();
-          $('.command span').text(text + characters[index]);
-        }
-
-        index++;
-
-        if (index >= characters.length) {
-          clearInterval(interval);
-        }
-      }
-    </script>
-  </body>
-</html>
+{% include console-animation-js.html %}

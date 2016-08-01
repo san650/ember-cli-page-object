@@ -1,0 +1,44 @@
+<script type="text/javascript">
+!function(win, doc) {
+  if (!doc.querySelector) {
+    return;
+  }
+
+  doc.querySelector('.command').innerHTML = '';
+
+  var index = 0;
+  var interval = null;
+  var phrase = 'ember install ember-cli-page-object';
+
+  interval = win.setTimeout(function () {
+    win.clearTimeout(interval);
+    interval = win.setTimeout(typeALetter, 80);
+  }, 800);
+
+  function typeALetter() {
+    win.clearTimeout(interval);
+
+    var parent;
+    var delay = false;
+
+    if (index <= 13) {
+      parent = doc.querySelector('.command');
+      parent.appendChild(doc.createTextNode(phrase[index]));
+
+      if (index === 13) {
+        delay = true;
+        parent.appendChild(doc.createElement('span'));
+      }
+    } else {
+      parent = doc.querySelector('.command span');
+      parent.appendChild(doc.createTextNode(phrase[index]));
+    }
+
+    index++;
+
+    if (index < phrase.length) {
+      win.setTimeout(typeALetter, delay ? 1000 : 80);
+    }
+  }
+}(window, document);
+</script>

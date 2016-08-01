@@ -1,68 +1,64 @@
-body {
-  padding-top: 82px;
+.main-header {
+  background-color: $primary-color;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 100;
 
-  .main-header {
-    background-color: $primary-color;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    z-index: 100;
+  .left-side {
+    background-color: $bg-color;
+  }
 
-    .left-side {
-      background-color: $bg-color;
-    }
+  h1.logo {
+    position: relative;
+    font-family: 'Pacifico', cursive;
+    font-size: 43px;
+    color: #fff;
+    margin: 10px 0 25px 0;
+    text-shadow: 1px 1px 1px rgba(19, 35, 66, 0.6);
 
-    h1.logo {
-      position: relative;
-      font-family: 'Pacifico', cursive;
-      font-size: 43px;
-      color: #fff;
-      margin: 10px 0 25px 0;
-      text-shadow: 1px 1px 1px rgba(19, 35, 66, 0.6);
-
-      span {
-        color: rgb(86, 128, 209);
-        text-shadow: 1px 1px 1px rgb(19, 35, 66);
-      }
-    }
-
-    .nav {
-      display: inline-block;
-      margin-top: 22px;
-    }
-
-    .nav-pills > li {
-      padding: 0 5px;
-
-      a {
-        background-color: $button-color;
-        font-family: 'Inconsolata';
-        font-size: 18px;
-        color: $light-color;
-        padding: 5px 10px;
-        transition: all .3s;
-
-        &:hover {
-          background-color: $button-color-hover;
-          color: $light-color;
-          transition: all .3s;
-        }
-      }
-
-      &.active {
-        a, a:hover {
-          background-color: #E9F2F9;
-          color: $primary-color;
-        }
-      }
+    span {
+      color: rgb(86, 128, 209);
+      text-shadow: 1px 1px 1px rgb(19, 35, 66);
     }
   }
 
-  section {
-    .left-side {
-      background-color: $bg-color;
-      padding-top: 25px;
+  .nav {
+    display: inline-block;
+    margin-top: 22px;
+  }
+
+  .nav-pills > li {
+    padding: 0 5px;
+
+    a {
+      background-color: $button-color;
+      font-family: 'Inconsolata';
+      font-size: 18px;
+      color: $light-color;
+      padding: 5px 10px;
+      transition: all .3s;
+
+      &:hover {
+        background-color: $button-color-hover;
+        color: $light-color;
+        transition: all .3s;
+      }
     }
+
+    &.active {
+      a, a:hover {
+        background-color: #E9F2F9;
+        color: $primary-color;
+      }
+    }
+  }
+}
+
+section {
+  .left-side {
+    background-color: $bg-color;
+    padding-top: 25px;
   }
 }

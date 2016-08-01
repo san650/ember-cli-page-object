@@ -1,0 +1,54 @@
+.splash-body {
+  background-color: $bg-color;
+  color: $secondary-color;
+  font-family: $text-font;
+}
+
+.splash {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  min-height: calc(100% - 40px);
+  text-align: center;
+}
+
+.splash__title {
+  position: relative;
+  font-family: $primary-font;
+  font-size: 80px;
+  color: $primary-color;
+  text-shadow: 1px 1px 1px $text-shadow-color;
+}
+
+.splash__version {
+  font-family: monospace;
+  font-size: 14px;
+  margin-top: 40px;
+}
+
+.splash__caption {
+  font-family: $secondary-font;
+  font-size: 30px;
+  margin-top: 20px;
+}
+
+.nav {
+  display: inline-block;
+  margin-top: 50px;
+}
+.nav-pills > li {
+  padding: 0 5px;
+
+  a {
+    background-color: $button-color;
+    font-family: 'Inconsolata';
+    font-size: 20px;
+    color: $light-color;
+    transition: all .3s;
+
+    &:hover {
+      background-color: $button-color-hover;
+      transition: all .3s;
+    }
+  }
+}

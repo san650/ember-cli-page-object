@@ -1,0 +1,78 @@
+.terminal {
+  position: relative;
+  padding: 60px 2px 20px 15px;
+  background-color: $terminal-color;
+  margin-top: 27px;
+  display: inline-block;
+  border-radius: 6px;
+  font-family: $text-font;
+  font-size:18px;
+  overflow: hidden;
+  text-align: left;
+}
+
+.terminal__icon-bar {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  text-align: left;
+  padding: 4px 0 2px 12px;
+  background-color: rgba(255,255,255,.2);
+}
+
+.terminal__icon {
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  display: inline-block;
+  background-color: rgba(0,0,0,.3);
+}
+
+.command {
+  color: rgba(255,255,255,.5);
+  overflow: hidden;
+  display: inline-block;
+
+  &:before {
+    display: inline-block;
+    content: '$';
+    margin-right: 10px;
+  }
+
+  &:after {
+    @include animation(1.3s blink step-end infinite);
+
+    content: '|';
+    margin-left: 2px;
+  }
+
+  span {
+    color: #fff;
+  }
+}
+
+@keyframes "blink" {
+  from, to { color: transparent; }
+  50% { color: rgba(255,255,255,.5); }
+}
+
+@-moz-keyframes blink {
+  from, to { color: transparent; }
+  50% { color: rgba(255,255,255,.5); }
+}
+
+@-webkit-keyframes "blink" {
+  from, to { color: transparent; }
+  50% { color: rgba(255,255,255,.5); }
+}
+
+@-ms-keyframes "blink" {
+  from, to { color: transparent; }
+  50% { color: rgba(255,255,255,.5); }
+}
+
+@-o-keyframes "blink" {
+  from, to { color: transparent; }
+  50% { color: rgba(255,255,255,.5); }
+}

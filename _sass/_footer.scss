@@ -1,0 +1,12 @@
+.footer {
+  background-color: $primary-color;
+  color: $light-color;
+  width: 100%;
+  height: 40px;
+  padding-top: 10px;
+  text-align: center;
+}
+
+.footer__user-link {
+  color: $dark-color;
+}
