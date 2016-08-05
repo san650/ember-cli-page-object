@@ -15,7 +15,7 @@ title: Queries
 
 ## attribute
 
-[addon/queries/attribute.js:67-82](undefined/blob/f6764e1741c7d2964c1cba26ae375c672ad45d02/addon/queries/attribute.js#L67-L82 "Source code on GitHub")
+[addon/queries/attribute.js:67-82](https://github.com/san650/ember-cli-page-object/blob/f6764e1741c7d2964c1cba26ae375c672ad45d02/addon/queries/attribute.js#L67-L82 "Source code on GitHub")
 
 Returns the value of an attribute from the matched element, or an array of
 values from multiple matched elements.
@@ -83,7 +83,7 @@ Returns **Descriptor**
 
 ## count
 
-[addon/queries/count.js:74-86](undefined/blob/f6764e1741c7d2964c1cba26ae375c672ad45d02/addon/queries/count.js#L74-L86 "Source code on GitHub")
+[addon/queries/count.js:74-86](https://github.com/san650/ember-cli-page-object/blob/f6764e1741c7d2964c1cba26ae375c672ad45d02/addon/queries/count.js#L74-L86 "Source code on GitHub")
 
 Returns the number of elements matched by a selector.
 
@@ -157,7 +157,7 @@ Returns **Descriptor**
 
 ## is
 
-[addon/queries/is.js:42-56](undefined/blob/f6764e1741c7d2964c1cba26ae375c672ad45d02/addon/queries/is.js#L42-L56 "Source code on GitHub")
+[addon/queries/is.js:42-56](https://github.com/san650/ember-cli-page-object/blob/f6764e1741c7d2964c1cba26ae375c672ad45d02/addon/queries/is.js#L42-L56 "Source code on GitHub")
 
 Validates if an element (or elements) matches a given selector.
 
@@ -203,7 +203,7 @@ Returns **Descriptor**
 
 ## property
 
-[addon/queries/property.js:53-68](undefined/blob/f6764e1741c7d2964c1cba26ae375c672ad45d02/addon/queries/property.js#L53-L68 "Source code on GitHub")
+[addon/queries/property.js:53-68](https://github.com/san650/ember-cli-page-object/blob/f6764e1741c7d2964c1cba26ae375c672ad45d02/addon/queries/property.js#L53-L68 "Source code on GitHub")
 
 Returns the value of a property from the matched element, or an array of
 values from multiple matched elements.
@@ -257,7 +257,7 @@ Returns **Descriptor**
 
 ## text
 
-[addon/queries/text.js:85-97](undefined/blob/f6764e1741c7d2964c1cba26ae375c672ad45d02/addon/queries/text.js#L85-L97 "Source code on GitHub")
+[addon/queries/text.js:85-97](https://github.com/san650/ember-cli-page-object/blob/f6764e1741c7d2964c1cba26ae375c672ad45d02/addon/queries/text.js#L85-L97 "Source code on GitHub")
 
 Returns text of the element or Array of texts of all matched elements by selector.
 
@@ -342,7 +342,7 @@ Returns **Descriptor**
 
 ## value
 
-[addon/queries/value.js:64-79](undefined/blob/f6764e1741c7d2964c1cba26ae375c672ad45d02/addon/queries/value.js#L64-L79 "Source code on GitHub")
+[addon/queries/value.js:64-79](https://github.com/san650/ember-cli-page-object/blob/f6764e1741c7d2964c1cba26ae375c672ad45d02/addon/queries/value.js#L64-L79 "Source code on GitHub")
 
 Returns the value of a matched element, or an array of values of all matched elements.
 

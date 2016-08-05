@@ -15,7 +15,7 @@ title: Actions
 
 ## clickOnText
 
-[addon/actions/click-on-text.js:125-143](undefined/blob/f6764e1741c7d2964c1cba26ae375c672ad45d02/addon/actions/click-on-text.js#L125-L143 "Source code on GitHub")
+[addon/actions/click-on-text.js:125-143](https://github.com/san650/ember-cli-page-object/blob/f6764e1741c7d2964c1cba26ae375c672ad45d02/addon/actions/click-on-text.js#L125-L143 "Source code on GitHub")
 
 Clicks on an element containing specified text.
 
@@ -97,7 +97,7 @@ Returns **Descriptor**
 
 ## clickable
 
-[addon/actions/clickable.js:79-97](undefined/blob/f6764e1741c7d2964c1cba26ae375c672ad45d02/addon/actions/clickable.js#L79-L97 "Source code on GitHub")
+[addon/actions/clickable.js:79-97](https://github.com/san650/ember-cli-page-object/blob/f6764e1741c7d2964c1cba26ae375c672ad45d02/addon/actions/clickable.js#L79-L97 "Source code on GitHub")
 
 Clicks elements matched by a selector.
 
@@ -158,7 +158,7 @@ Returns **Descriptor**
 
 ## fillable
 
-[addon/actions/fillable.js:116-134](undefined/blob/f6764e1741c7d2964c1cba26ae375c672ad45d02/addon/actions/fillable.js#L116-L134 "Source code on GitHub")
+[addon/actions/fillable.js:116-134](https://github.com/san650/ember-cli-page-object/blob/f6764e1741c7d2964c1cba26ae375c672ad45d02/addon/actions/fillable.js#L116-L134 "Source code on GitHub")
 
 Fills in an input matched by a selector.
 
@@ -229,7 +229,7 @@ Returns **Descriptor**
 
 ## selectable
 
-[addon/actions/fillable.js:116-134](undefined/blob/f6764e1741c7d2964c1cba26ae375c672ad45d02/addon/actions/fillable.js#L116-L134 "Source code on GitHub")
+[addon/actions/fillable.js:116-134](https://github.com/san650/ember-cli-page-object/blob/f6764e1741c7d2964c1cba26ae375c672ad45d02/addon/actions/fillable.js#L116-L134 "Source code on GitHub")
 
 Alias for `fillable`, which works for inputs and HTML select menus.
 
@@ -248,7 +248,7 @@ Returns **Descriptor**
 
 ## triggerable
 
-[addon/actions/triggerable.js:96-114](undefined/blob/f6764e1741c7d2964c1cba26ae375c672ad45d02/addon/actions/triggerable.js#L96-L114 "Source code on GitHub")
+[addon/actions/triggerable.js:96-114](https://github.com/san650/ember-cli-page-object/blob/f6764e1741c7d2964c1cba26ae375c672ad45d02/addon/actions/triggerable.js#L96-L114 "Source code on GitHub")
 
 Triggers event on element matched by selector.
 
@@ -322,7 +322,7 @@ Returns **Descriptor**
 
 ## visitable
 
-[addon/actions/visitable.js:82-98](undefined/blob/f6764e1741c7d2964c1cba26ae375c672ad45d02/addon/actions/visitable.js#L82-L98 "Source code on GitHub")
+[addon/actions/visitable.js:82-98](https://github.com/san650/ember-cli-page-object/blob/f6764e1741c7d2964c1cba26ae375c672ad45d02/addon/actions/visitable.js#L82-L98 "Source code on GitHub")
 
 Loads a given route.
 
