@@ -23,6 +23,43 @@ moduleForProperty('fillable', function(test, adapter) {
     page.foo(expectedText);
   });
 
+  test('looks for inputs with data-test="clue" attributes', function(assert) {
+    let expectedText = 'dummy text';
+    let clue = 'clue';
+    let page;
+
+    page = create({
+      scope: '.scope',
+
+      foo: fillable()
+    });
+
+    adapter.createTemplate(this, page, '<div class="scope"><input data-test="clue"></div>');
+
+    adapter.fillIn((actualSelector, actualContext, actualText) => {
+      assert.ok(/.scope input\[data-test="clue"\]/.test(actualSelector));
+      assert.ok(/.scope input\[aria-label="clue"\]/.test(actualSelector));
+      assert.ok(/.scope input\[placeholder="clue"\]/.test(actualSelector));
+      assert.ok(/.scope input\[name="clue"\]/.test(actualSelector));
+      assert.ok(/.scope input#clue/.test(actualSelector));
+
+      assert.ok(/.scope textarea\[data-test="clue"\]/.test(actualSelector));
+      assert.ok(/.scope textarea\[aria-label="clue"\]/.test(actualSelector));
+      assert.ok(/.scope textarea\[placeholder="clue"\]/.test(actualSelector));
+      assert.ok(/.scope textarea\[name="clue"\]/.test(actualSelector));
+      assert.ok(/.scope textarea#clue/.test(actualSelector));
+
+      assert.ok(/.scope select\[data-test="clue"\]/.test(actualSelector));
+      assert.ok(/.scope select\[aria-label="clue"\]/.test(actualSelector));
+      assert.ok(/.scope select\[placeholder="clue"\]/.test(actualSelector));
+      assert.ok(/.scope select\[name="clue"\]/.test(actualSelector));
+      assert.ok(/.scope select#clue/.test(actualSelector));
+      assert.equal(actualText, expectedText);
+    });
+
+    page.foo(clue, expectedText);
+  });
+
   test('looks for elements inside the scope', function(assert) {
     assert.expect(1);
 

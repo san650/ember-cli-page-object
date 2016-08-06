@@ -7,6 +7,7 @@ const Router = Ember.Router.extend({
 
 Router.map(function() {
   this.route('calculator');
+  this.route('inputs');
 });
 
 export default Router;

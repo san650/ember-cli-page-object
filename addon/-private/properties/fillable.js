@@ -75,6 +75,25 @@ import { getExecutionContext } from '../execution_context';
  * //   <input value="John Doe">
  * // </div>
  *
+ * @example <caption>Filling different inputs with the same property</caption>
+ *
+ * // <input id="name">
+ * // <input name="lastname">
+ * // <input data-test="email">
+ * // <textarea aria-label="address">
+ * // <input placeholder="phone">
+ *
+ * const page = create({
+ *   fillIn: fillable('input')
+ * });
+ *
+ * page
+ *   .fillIn('name', 'Doe')
+ *   .fillIn('lastname', 'Doe')
+ *   .fillIn('email', 'john@doe')
+ *   .fillIn('address', 'A street')
+ *   .fillIn('phone', '555-000');
+ *
  * @public
  *
  * @param {string} selector - CSS selector of the element to look for text
@@ -90,12 +109,33 @@ export function fillable(selector, userOptions = {}) {
     isDescriptor: true,
 
     get(key) {
-      return function(text) {
+      return function(textOrClue, text) {
+        let clue;
+
+        if (text === undefined) {
+          text = textOrClue;
+        } else {
+          clue = textOrClue;
+        }
+
         let executionContext = getExecutionContext(this);
         let options = assign({ pageObjectKey: `${key}()` }, userOptions);
 
         return executionContext.runAsync((context) => {
           let fullSelector = buildSelector(this, selector, options);
+
+          if (clue) {
+            fullSelector = ['input', 'textarea', 'select']
+              .map((tag) => [
+                `${fullSelector} ${tag}[data-test="${clue}"]`,
+                `${fullSelector} ${tag}[aria-label="${clue}"]`,
+                `${fullSelector} ${tag}[placeholder="${clue}"]`,
+                `${fullSelector} ${tag}[name="${clue}"]`,
+                `${fullSelector} ${tag}#${clue}`
+              ])
+              .reduce((total, other) => total.concat(other), [])
+              .join(',');
+          }
 
           context.assertElementExists(fullSelector, options);
 
