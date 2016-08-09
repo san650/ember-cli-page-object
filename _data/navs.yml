@@ -1,374 +1,154 @@
 v1.5.x:
   sections:
-    - title: Getting started
-      links:
-        - path: /
-          name: Overview
-        - path: /installation
-          name: Installation
-        - path: /quickstart
-          name: Quickstart
-        - path: /migrating
-          name: Migration Guide
-
     - title: API reference
       links:
-      - path: /options
-        name: Options
-      - path: /api/create
-        name: Create
-      - path: /api/context
-        name: Integration Test Context
-      - path: /components
-        name: Components
-      - path: /api/collection
-        name: Collections
-      - path: /api/predicates
-        name: Predicates
-      - path: /api/queries
-        name: Queries
-      - path: /api/actions
-        name: Actions
-      - path: /api/helpers
-        name: Helpers
-
-    - title: Contribute
-      links:
-        - path: https://github.com/san650/ember-cli-page-object
-          name: Github
-          external: true
-        - path: https://github.com/san650/ember-cli-page-object/issues
-          name: Bugs
-          external: true
-        - path: https://github.com/san650/ember-cli-page-object/issues
-          name: Feature requests
-          external: true
-        - path: https://github.com/san650/ember-cli-page-object/releases
-          name: Release notes
-          external: true
-        - path: http://emberobserver.com/addons/ember-cli-page-object
-          name: Ember Observer
-          external: true
-        - path: https://www.npmjs.com/package/ember-cli-page-object
-          name: NPM
-          external: true
+        - path: /options
+          name: Options
+        - path: /api/create
+          name: Create
+        - path: /api/context
+          name: Integration Test Context
+        - path: /components
+          name: Components
+        - path: /api/collection
+          name: Collections
+        - path: /api/predicates
+          name: Predicates
+        - path: /api/queries
+          name: Queries
+        - path: /api/actions
+          name: Actions
+        - path: /api/helpers
+          name: Helpers
 
 v1.4.x:
   sections:
-    - title: Getting started
-      links:
-        - path: /
-          name: Overview
-        - path: /installation
-          name: Installation
-        - path: /quickstart
-          name: Quickstart
-        - path: /migrating
-          name: Migration Guide
-
     - title: API reference
       links:
-      - path: /options
-        name: Options
-      - path: /api/create
-        name: Create
-      - path: /api/context
-        name: Integration Test Context
-      - path: /components
-        name: Components
-      - path: /api/collection
-        name: Collections
-      - path: /api/predicates
-        name: Predicates
-      - path: /api/queries
-        name: Queries
-      - path: /api/actions
-        name: Actions
-      - path: /api/helpers
-        name: Helpers
-
-    - title: Contribute
-      links:
-        - path: https://github.com/san650/ember-cli-page-object
-          name: Github
-          external: true
-        - path: https://github.com/san650/ember-cli-page-object/issues
-          name: Bugs
-          external: true
-        - path: https://github.com/san650/ember-cli-page-object/issues
-          name: Feature requests
-          external: true
-        - path: https://github.com/san650/ember-cli-page-object/releases
-          name: Release notes
-          external: true
-        - path: http://emberobserver.com/addons/ember-cli-page-object
-          name: Ember Observer
-          external: true
-        - path: https://www.npmjs.com/package/ember-cli-page-object
-          name: NPM
-          external: true
+        - path: /options
+          name: Options
+        - path: /api/create
+          name: Create
+        - path: /api/context
+          name: Integration Test Context
+        - path: /components
+          name: Components
+        - path: /api/collection
+          name: Collections
+        - path: /api/predicates
+          name: Predicates
+        - path: /api/queries
+          name: Queries
+        - path: /api/actions
+          name: Actions
+        - path: /api/helpers
+          name: Helpers
 
 v1.3.x:
   sections:
-    - title: Getting started
-      links:
-        - path: /
-          name: Overview
-        - path: /installation
-          name: Installation
-        - path: /quickstart
-          name: Quickstart
-        - path: /migrating
-          name: Migration Guide
-
     - title: API reference
       links:
-      - path: /options
-        name: Options
-      - path: /api/create
-        name: Create
-      - path: /api/context
-        name: Integration Test Context
-      - path: /components
-        name: Components
-      - path: /api/collection
-        name: Collections
-      - path: /api/predicates
-        name: Predicates
-      - path: /api/queries
-        name: Queries
-      - path: /api/actions
-        name: Actions
-      - path: /api/helpers
-        name: Helpers
-
-    - title: Contribute
-      links:
-        - path: https://github.com/san650/ember-cli-page-object
-          name: Github
-          external: true
-        - path: https://github.com/san650/ember-cli-page-object/issues
-          name: Bugs
-          external: true
-        - path: https://github.com/san650/ember-cli-page-object/issues
-          name: Feature requests
-          external: true
-        - path: https://github.com/san650/ember-cli-page-object/releases
-          name: Release notes
-          external: true
-        - path: http://emberobserver.com/addons/ember-cli-page-object
-          name: Ember Observer
-          external: true
-        - path: https://www.npmjs.com/package/ember-cli-page-object
-          name: NPM
-          external: true
+        - path: /options
+          name: Options
+        - path: /api/create
+          name: Create
+        - path: /api/context
+          name: Integration Test Context
+        - path: /components
+          name: Components
+        - path: /api/collection
+          name: Collections
+        - path: /api/predicates
+          name: Predicates
+        - path: /api/queries
+          name: Queries
+        - path: /api/actions
+          name: Actions
+        - path: /api/helpers
+          name: Helpers
 
 v1.2.x:
   sections:
-    - title: Getting started
-      links:
-        - path: /
-          name: Overview
-        - path: /installation
-          name: Installation
-        - path: /quickstart
-          name: Quickstart
-        - path: /migrating
-          name: Migration Guide
-
     - title: API reference
       links:
-      - path: /options
-        name: Options
-      - path: /api/create
-        name: Create
-      - path: /api/context
-        name: Integration Test Context
-      - path: /components
-        name: Components
-      - path: /api/collection
-        name: Collections
-      - path: /api/predicates
-        name: Predicates
-      - path: /api/queries
-        name: Queries
-      - path: /api/actions
-        name: Actions
-      - path: /api/helpers
-        name: Helpers
-
-    - title: Contribute
-      links:
-        - path: https://github.com/san650/ember-cli-page-object
-          name: Github
-          external: true
-        - path: https://github.com/san650/ember-cli-page-object/issues
-          name: Bugs
-          external: true
-        - path: https://github.com/san650/ember-cli-page-object/issues
-          name: Feature requests
-          external: true
-        - path: https://github.com/san650/ember-cli-page-object/releases
-          name: Release notes
-          external: true
-        - path: http://emberobserver.com/addons/ember-cli-page-object
-          name: Ember Observer
-          external: true
-        - path: https://www.npmjs.com/package/ember-cli-page-object
-          name: NPM
-          external: true
+        - path: /options
+          name: Options
+        - path: /api/create
+          name: Create
+        - path: /api/context
+          name: Integration Test Context
+        - path: /components
+          name: Components
+        - path: /api/collection
+          name: Collections
+        - path: /api/predicates
+          name: Predicates
+        - path: /api/queries
+          name: Queries
+        - path: /api/actions
+          name: Actions
+        - path: /api/helpers
+          name: Helpers
 
 v1.1.x:
   sections:
-    - title: Getting started
-      links:
-        - path: /
-          name: Overview
-        - path: /installation
-          name: Installation
-        - path: /quickstart
-          name: Quickstart
-        - path: /migrating
-          name: Migration Guide
-
     - title: API reference
       links:
-      - path: /options
-        name: Options
-      - path: /api/create
-        name: Create
-      - path: /api/context
-        name: Integration Test Context
-      - path: /components
-        name: Components
-      - path: /api/collection
-        name: Collections
-      - path: /api/predicates
-        name: Predicates
-      - path: /api/queries
-        name: Queries
-      - path: /api/actions
-        name: Actions
-      - path: /api/helpers
-        name: Helpers
-
-    - title: Contribute
-      links:
-        - path: https://github.com/san650/ember-cli-page-object
-          name: Github
-          external: true
-        - path: https://github.com/san650/ember-cli-page-object/issues
-          name: Bugs
-          external: true
-        - path: https://github.com/san650/ember-cli-page-object/issues
-          name: Feature requests
-          external: true
-        - path: https://github.com/san650/ember-cli-page-object/releases
-          name: Release notes
-          external: true
-        - path: http://emberobserver.com/addons/ember-cli-page-object
-          name: Ember Observer
-          external: true
-        - path: https://www.npmjs.com/package/ember-cli-page-object
-          name: NPM
-          external: true
+        - path: /options
+          name: Options
+        - path: /api/create
+          name: Create
+        - path: /api/context
+          name: Integration Test Context
+        - path: /components
+          name: Components
+        - path: /api/collection
+          name: Collections
+        - path: /api/predicates
+          name: Predicates
+        - path: /api/queries
+          name: Queries
+        - path: /api/actions
+          name: Actions
+        - path: /api/helpers
+          name: Helpers
 
 v1.0.x:
   sections:
-    - title: Getting started
-      links:
-        - path: /
-          name: Overview
-        - path: /installation
-          name: Installation
-        - path: /quickstart
-          name: Quickstart
-        - path: /migrating
-          name: Migration Guide
-
     - title: API reference
       links:
-      - path: /options
-        name: Options
-      - path: /api/create
-        name: Create
-      - path: /components
-        name: Components
-      - path: /api/collection
-        name: Collections
-      - path: /api/predicates
-        name: Predicates
-      - path: /api/queries
-        name: Queries
-      - path: /api/actions
-        name: Actions
-      - path: /api/helpers
-        name: Helpers
-
-    - title: Contribute
-      links:
-        - path: https://github.com/san650/ember-cli-page-object
-          name: Github
-          external: true
-        - path: https://github.com/san650/ember-cli-page-object/issues
-          name: Bugs
-          external: true
-        - path: https://github.com/san650/ember-cli-page-object/issues
-          name: Feature requests
-          external: true
-        - path: https://github.com/san650/ember-cli-page-object/releases
-          name: Release notes
-          external: true
-        - path: http://emberobserver.com/addons/ember-cli-page-object
-          name: Ember Observer
-          external: true
-        - path: https://www.npmjs.com/package/ember-cli-page-object
-          name: NPM
-          external: true
+        - path: /options
+          name: Options
+        - path: /api/create
+          name: Create
+        - path: /api/context
+          name: Integration Test Context
+        - path: /components
+          name: Components
+        - path: /api/collection
+          name: Collections
+        - path: /api/predicates
+          name: Predicates
+        - path: /api/queries
+          name: Queries
+        - path: /api/actions
+          name: Actions
+        - path: /api/helpers
+          name: Helpers
 
 v0.11.x:
   sections:
-    - title: Getting started
-      links:
-        - path: /
-          name: Overview
-        - path: /installation
-          name: Installation
-        - path: /quickstart
-          name: Quickstart
-
     - title: API reference
       links:
-      - path: /api/setup
-        name: Setup
-      - path: /api/predicates
-        name: Predicates
-      - path: /api/queries
-        name: Queries
-      - path: /api/actions
-        name: Actions
-      - path: /api/components
-        name: Components
-      - path: /api/options
-        name: Options
-
-    - title: Contribute
-      links:
-        - path: https://github.com/san650/ember-cli-page-object
-          name: Github
-          external: true
-        - path: https://github.com/san650/ember-cli-page-object/issues
-          name: Bugs
-          external: true
-        - path: https://github.com/san650/ember-cli-page-object/issues
-          name: Feature requests
-          external: true
-        - path: https://github.com/san650/ember-cli-page-object/releases
-          name: Release notes
-          external: true
-        - path: http://emberobserver.com/addons/ember-cli-page-object
-          name: Ember Observer
-          external: true
-        - path: https://www.npmjs.com/package/ember-cli-page-object
-          name: NPM
-          external: true
+        - path: /api/setup
+          name: Setup
+        - path: /api/predicates
+          name: Predicates
+        - path: /api/queries
+          name: Queries
+        - path: /api/actions
+          name: Actions
+        - path: /api/components
+          name: Components
+        - path: /api/options
+          name: Options

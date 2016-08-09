@@ -18,17 +18,14 @@ layout: default
       </div>
       <div class="col-xs-8 col-md-9">
         <ul class="nav nav-pills pull-right">
-          <li role="presentation" class="active">
-            <a href="/docs/v1.4.x/">Overview</a>
+          <li role="presentation">
+            <a href="{{site.baseurl}}/guides/">Guides</a>
           </li>
           <li role="presentation">
-            <a href="/docs/v1.4.x/">Guides</a>
+            <a href="{{site.baseurl}}/docs/{{latestVersion}}/">API</a>
           </li>
           <li role="presentation">
-            <a href="/docs/v1.4.x/">API</a>
-          </li>
-          <li role="presentation">
-            <a href="/docs/v1.4.x/">Contributors</a>
+            <a href="{{site.baseurl}}/contributors">Contributors</a>
           </li>
         </ul>
       </div>
@@ -38,16 +35,7 @@ layout: default
 
 <section>
   <div class="container-fluid">
-    <div class="row">
-      <div class="col-xs-4 col-md-3 left-side">
-        <nav>
-          {% include sidebar.html %}
-        </nav>
-      </div>
-      <div class="col-xs-8 col-md-9">
-        {{ content }}
-      </div>
-    </div>
+    {{content}}
   </div>
 </section>
 
