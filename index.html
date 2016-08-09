@@ -4,6 +4,13 @@ title: Page Objects in Ember
 description: ember-cli-page-object helps you represent the screens of your web app as a series of objects. This ember-cli addon eases the construction of these objects on your acceptance tests
 className: splash-body
 ---
+
+{% for version in site.data.navs %}
+  {% if forloop.first %}
+    {% assign latestVersion = version[0] %}
+  {% endif %}
+{% endfor %}
+
 <div class="splash container-fluid">
   <h1 class="splash__title">Page <span>object</span></h1>
 
@@ -27,9 +34,9 @@ className: splash-body
   <div class="row">
     <div class="col-xs-12 text-center">
       <ul class="nav nav-pills">
-        <li role="presentation"><a href="/guides/">Guides</a></li>
-        <li role="presentation"><a href="/api/">API</a></li>
-        <li role="presentation"><a href="/contributors.html">Contributors</a></li>
+        <li role="presentation"><a href="{{site.baseurl}}/guides/">Guides</a></li>
+        <li role="presentation"><a href="{{site.baseurl}}/docs/{{latestVersion}}/">API</a></li>
+        <li role="presentation"><a href="{{site.baseurl}}/contributors">Contributors</a></li>
       </ul>
     </div>
   </div>
