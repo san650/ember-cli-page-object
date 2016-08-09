@@ -1,10 +1,4 @@
 ---
-layout: page
-title: Installation
+layout: redirect
+redirect: /guides/installation.html
 ---
-
-{% highlight bash %}
-$ ember install ember-cli-page-object
-{% endhighlight %}
-
-That's it!
