@@ -22,5 +22,7 @@ module.exports = function(defaults) {
     app.import(compilerPath);
   }
 
+  app.import('vendor/ember-cli-page-object/qunit-configuration.js');
+
   return app.toTree();
 };
