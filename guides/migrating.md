@@ -1,5 +1,5 @@
 ---
-layout: page
+layout: guide
 title: Migration Guide
 ---
 {% raw %}
