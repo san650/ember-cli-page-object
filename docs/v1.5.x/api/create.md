@@ -10,7 +10,7 @@ title: Create
 
 ## create
 
-[addon/create.js:113-133](undefined/blob/f6764e1741c7d2964c1cba26ae375c672ad45d02/addon/create.js#L113-L133 "Source code on GitHub")
+[addon/create.js:113-133](https://github.com/san650/ember-cli-page-object/blob/f6764e1741c7d2964c1cba26ae375c672ad45d02/addon/create.js#L113-L133 "Source code on GitHub")
 
 Creates a new PageObject.
 

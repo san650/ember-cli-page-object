@@ -15,7 +15,7 @@ title: Helpers
 
 ## buildSelector
 
-[addon/helpers.js:123-125](undefined/blob/f6764e1741c7d2964c1cba26ae375c672ad45d02/addon/helpers.js#L123-L125 "Source code on GitHub")
+[addon/helpers.js:123-125](https://github.com/san650/ember-cli-page-object/blob/f6764e1741c7d2964c1cba26ae375c672ad45d02/addon/helpers.js#L123-L125 "Source code on GitHub")
 
 Builds a CSS selector from a target selector and a PageObject or a node in a PageObject, along with optional parameters.
 
@@ -64,7 +64,7 @@ Returns **string** Fully qualified selector
 
 ## findElement
 
-[addon/helpers.js:226-246](undefined/blob/f6764e1741c7d2964c1cba26ae375c672ad45d02/addon/helpers.js#L226-L246 "Source code on GitHub")
+[addon/helpers.js:226-246](https://github.com/san650/ember-cli-page-object/blob/f6764e1741c7d2964c1cba26ae375c672ad45d02/addon/helpers.js#L226-L246 "Source code on GitHub")
 
 Returns a jQuery element (can be an empty jQuery result)
 
@@ -85,7 +85,7 @@ Returns **Object** jQuery object
 
 ## findElementWithAssert
 
-[addon/helpers.js:167-171](undefined/blob/f6764e1741c7d2964c1cba26ae375c672ad45d02/addon/helpers.js#L167-L171 "Source code on GitHub")
+[addon/helpers.js:167-171](https://github.com/san650/ember-cli-page-object/blob/f6764e1741c7d2964c1cba26ae375c672ad45d02/addon/helpers.js#L167-L171 "Source code on GitHub")
 
 Returns a jQuery element matched by a selector built from parameters
 
@@ -107,7 +107,7 @@ Returns **Object** jQuery object
 
 ## getContext
 
-[addon/helpers.js:300-309](undefined/blob/f6764e1741c7d2964c1cba26ae375c672ad45d02/addon/helpers.js#L300-L309 "Source code on GitHub")
+[addon/helpers.js:300-309](https://github.com/san650/ember-cli-page-object/blob/f6764e1741c7d2964c1cba26ae375c672ad45d02/addon/helpers.js#L300-L309 "Source code on GitHub")
 
 Return a test context if one was provided during `create()`
 
@@ -119,7 +119,7 @@ Returns **** The test's `this` context, or null
 
 ## getRoot
 
-[addon/helpers.js:282-292](undefined/blob/f6764e1741c7d2964c1cba26ae375c672ad45d02/addon/helpers.js#L282-L292 "Source code on GitHub")
+[addon/helpers.js:282-292](https://github.com/san650/ember-cli-page-object/blob/f6764e1741c7d2964c1cba26ae375c672ad45d02/addon/helpers.js#L282-L292 "Source code on GitHub")
 
 Return the root of a node's tree
 
@@ -131,7 +131,7 @@ Returns **Ceibo** node - Root node of the tree
 
 ## normalizeText
 
-[addon/helpers.js:256-258](undefined/blob/f6764e1741c7d2964c1cba26ae375c672ad45d02/addon/helpers.js#L256-L258 "Source code on GitHub")
+[addon/helpers.js:256-258](https://github.com/san650/ember-cli-page-object/blob/f6764e1741c7d2964c1cba26ae375c672ad45d02/addon/helpers.js#L256-L258 "Source code on GitHub")
 
 Trim whitespaces at both ends and normalize whitespaces inside `text`
 

@@ -10,7 +10,7 @@ title: Collection
 
 ## collection
 
-[addon/collection.js:201-215](undefined/blob/f6764e1741c7d2964c1cba26ae375c672ad45d02/addon/collection.js#L201-L215 "Source code on GitHub")
+[addon/collection.js:201-215](https://github.com/san650/ember-cli-page-object/blob/f6764e1741c7d2964c1cba26ae375c672ad45d02/addon/collection.js#L201-L215 "Source code on GitHub")
 
 Creates a component that represents a collection of items. The collection is zero-indexed.
 

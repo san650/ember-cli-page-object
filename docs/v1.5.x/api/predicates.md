@@ -14,7 +14,7 @@ title: Predicates
 
 ## contains
 
-[addon/predicates/contains.js:83-97](undefined/blob/f6764e1741c7d2964c1cba26ae375c672ad45d02/addon/predicates/contains.js#L83-L97 "Source code on GitHub")
+[addon/predicates/contains.js:83-97](https://github.com/san650/ember-cli-page-object/blob/f6764e1741c7d2964c1cba26ae375c672ad45d02/addon/predicates/contains.js#L83-L97 "Source code on GitHub")
 
 Returns a boolean representing whether an element or a set of elements contains the specified text.
 
@@ -97,7 +97,7 @@ Returns **Descriptor**
 
 ## hasClass
 
-[addon/predicates/has-class.js:84-96](undefined/blob/f6764e1741c7d2964c1cba26ae375c672ad45d02/addon/predicates/has-class.js#L84-L96 "Source code on GitHub")
+[addon/predicates/has-class.js:84-96](https://github.com/san650/ember-cli-page-object/blob/f6764e1741c7d2964c1cba26ae375c672ad45d02/addon/predicates/has-class.js#L84-L96 "Source code on GitHub")
 
 Validates if an element or a set of elements have a given CSS class.
 
@@ -181,7 +181,7 @@ Returns **Descriptor**
 
 ## isHidden
 
-[addon/predicates/is-hidden.js:89-101](undefined/blob/f6764e1741c7d2964c1cba26ae375c672ad45d02/addon/predicates/is-hidden.js#L89-L101 "Source code on GitHub")
+[addon/predicates/is-hidden.js:89-101](https://github.com/san650/ember-cli-page-object/blob/f6764e1741c7d2964c1cba26ae375c672ad45d02/addon/predicates/is-hidden.js#L89-L101 "Source code on GitHub")
 
 Validates if an element or set of elements are hidden.
 
@@ -271,7 +271,7 @@ Returns **Descriptor**
 
 ## isVisible
 
-[addon/predicates/is-visible.js:95-111](undefined/blob/f6764e1741c7d2964c1cba26ae375c672ad45d02/addon/predicates/is-visible.js#L95-L111 "Source code on GitHub")
+[addon/predicates/is-visible.js:95-111](https://github.com/san650/ember-cli-page-object/blob/f6764e1741c7d2964c1cba26ae375c672ad45d02/addon/predicates/is-visible.js#L95-L111 "Source code on GitHub")
 
 Validates if an element or set of elements are visible.
 
@@ -367,7 +367,7 @@ Returns **Descriptor**
 
 ## notHasClass
 
-[addon/predicates/not-has-class.js:86-98](undefined/blob/f6764e1741c7d2964c1cba26ae375c672ad45d02/addon/predicates/not-has-class.js#L86-L98 "Source code on GitHub")
+[addon/predicates/not-has-class.js:86-98](https://github.com/san650/ember-cli-page-object/blob/f6764e1741c7d2964c1cba26ae375c672ad45d02/addon/predicates/not-has-class.js#L86-L98 "Source code on GitHub")
 
 Validates if an element or a set of elements don't have a given CSS class.
 
