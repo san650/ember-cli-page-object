@@ -1,7 +1,9 @@
+/* globals QUnit */
+
 import Ember from 'ember';
 import Ceibo from 'ceibo';
 
-export function throwBetterError(node, key, selector) {
+export function throwBetterError(node, key, selector, stopOnError = false) {
   let path = [key];
   let current;
 
@@ -17,5 +19,14 @@ PageObject: '${path.join('.')}'
   Selector: '${selector}'
 `;
 
-  throw new Ember.Error(msg);
+  let error = new Ember.Error(msg);
+
+  if (stopOnError) {
+    console.error(error);
+    QUnit.stop();
+    alert('Test have been stopped');
+  } else {
+    throw error;
+  }
+
 }
