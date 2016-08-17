@@ -18,3 +18,4 @@ testem.js
 Brocfile.js
 /node-tests
 /_site
+node-tests/
