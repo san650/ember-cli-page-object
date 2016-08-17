@@ -5,6 +5,7 @@ module('Unit | Exports');
 /* global require */
 const Addon = require('ember-cli-page-object');
 const TestSupport = require('dummy/tests/page-object');
+const Extend = require('ember-cli-page-object/extend');
 
 const EXPECTED_METHODS = [
   'attribute',
@@ -55,5 +56,11 @@ EXPECTED_METHODS.forEach((method) => {
 EXPECTED_METHODS.concat(HELPER_METHODS).forEach((method) => {
   test(`imports { ${method} } from test-support`, function(assert) {
     assert.equal(typeof (TestSupport[method]), 'function', `Imports PageObject.${method}`);
+  });
+});
+
+HELPER_METHODS.forEach((method) => {
+  test(`imports { ${method} } from extend folder`, function(assert) {
+    assert.equal(typeof (Extend['default'][method]), 'function', `Imports ${method}`);
   });
 });
