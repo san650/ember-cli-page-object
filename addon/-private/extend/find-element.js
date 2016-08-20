@@ -5,6 +5,20 @@ import { getExecutionContext } from '../execution_context';
  *
  * Returns a jQuery element (can be an empty jQuery result)
  *
+ * @example
+ *
+ * import { findElement } from 'ember-cli-page-object/extend';
+ *
+ * export default function isDisabled(selector, options = {}) {
+ *   return {
+ *     isDescriptor: true,
+ *
+ *     get() {
+ *       return findElement(this, selector, options).is(':disabled');
+ *     }
+ *   };
+ * }
+ *
  * @param {Ceibo} pageObjectNode - Node of the tree
  * @param {string} targetSelector - Specific CSS selector
  * @param {Object} options - Additional options

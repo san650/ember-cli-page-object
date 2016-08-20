@@ -11,6 +11,7 @@ var EmberAddon = require('ember-cli/lib/broccoli/ember-addon');
 function getAddon() {
   var app = new EmberAddon();
   var addons = app.project.addons;
+
   for(var i = 0; i < addons.length; i++) {
     if(addons[i].name === 'ember-cli-page-object') {
       return addons[i];
@@ -25,7 +26,7 @@ describe('Addon', function() {
     delete process.env.EMBER_ENV;
   });
 
-  var treeForTests = function(name) {
+  function treeForTests(name) {
     it('returns an empty tree in production environment by default', function() {
       process.env.EMBER_ENV = 'production';
       var addonTree = getAddon().treeFor(name);
@@ -50,5 +51,4 @@ describe('Addon', function() {
   describe('#treeFor app', function() {
     treeForTests('app');
   });
-
 });
