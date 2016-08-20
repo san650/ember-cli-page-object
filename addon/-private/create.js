@@ -5,6 +5,7 @@ import { isHidden } from './properties/is-hidden';
 import { contains } from './properties/contains';
 import { clickOnText } from './properties/click-on-text';
 import { clickable } from './properties/clickable';
+import { fillable } from './properties/fillable';
 import { render, setContext, removeContext } from './context';
 import { assign } from './helpers';
 
@@ -23,6 +24,8 @@ const defaultProperties = {
   text,
   clickOn: clickOnText,
   click: clickable,
+  fillIn: fillable,
+  select: fillable,
   then: thenDescriptor
 };
 
@@ -54,7 +57,7 @@ function buildObject(node, blueprintKey, blueprint, defaultBuilder) {
  *
  * By default, the resulting PageObject will respond to:
  *
- * - **Actions**: click, clickOn
+ * - **Actions**: click, clickOn, fillIn, select
  * - **Predicates**: contains, isHidden, isVisible
  * - **Queries**: text
  *
@@ -100,6 +103,12 @@ function buildObject(node, blueprintKey, blueprint, defaultBuilder) {
  *
  * // clicks button
  * page.clickOn('Press Me');
+ *
+ * // fills an input
+ * page.fillIn('name', 'John Doe');
+ *
+ * // selects an option
+ * page.select('country', 'Uruguay');
  *
  * @public
  *
