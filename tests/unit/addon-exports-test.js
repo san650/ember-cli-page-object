@@ -35,6 +35,8 @@ const HELPER_METHODS = [
   'findElementWithAssert'
 ];
 
+const EXTEND_METHODS = HELPER_METHODS.concat('registerExecutionContext');
+
 EXPECTED_METHODS.forEach((method) => {
   test(`imports PageObject.${method} from addon`, function(assert) {
     assert.equal(typeof (Addon['default'][method]), 'function', `Imports PageObject.${method}`);
@@ -59,7 +61,7 @@ EXPECTED_METHODS.concat(HELPER_METHODS).forEach((method) => {
   });
 });
 
-HELPER_METHODS.forEach((method) => {
+EXTEND_METHODS.forEach((method) => {
   test(`imports { ${method} } from extend folder`, function(assert) {
     assert.equal(typeof (Extend['default'][method]), 'function', `Imports ${method}`);
   });
