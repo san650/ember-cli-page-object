@@ -12,7 +12,7 @@ Group attributes and create new ones
 
 ## Components
 
-Components let you group attributes together, they are just plain objects with attributes on it. Components can define a scope.
+Components let you group attributes together, they are just plain objects with attributes on it. You can even define these objects in different files and reuse them in multiple places. Components can define a scope.
 
 __Example__
 
