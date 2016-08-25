@@ -6,6 +6,7 @@ import { contains } from './properties/contains';
 import { clickOnText } from './properties/click-on-text';
 import { clickable } from './properties/clickable';
 import { fillable } from './properties/fillable';
+import { value } from './properties/value';
 import { visitable } from './properties/visitable';
 import { render, setContext, removeContext } from './context';
 import { assign } from './helpers';
@@ -23,6 +24,7 @@ const defaultProperties = {
   isHidden,
   isVisible,
   text,
+  value,
   clickOn: clickOnText,
   click: clickable,
   fillIn: fillable,
@@ -98,6 +100,7 @@ function buildObject(node, blueprintKey, blueprint, defaultBuilder) {
  * assert.ok(page.contains('super'));
  * assert.ok(page.isVisible);
  * assert.notOk(page.isHidden);
+ * assert.equal(page.value, 'my input value');
  *
  * // clicks div#my-page
  * page.click();

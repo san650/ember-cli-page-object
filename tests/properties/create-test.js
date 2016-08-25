@@ -223,6 +223,20 @@ moduleForProperty('create', function(test, adapter) {
     page.foo.select('lorem ipsum');
   });
 
+  test('generates .value property', function(assert) {
+    assert.expect(1);
+
+    let page = create({
+      foo: {
+        scope: 'input'
+      }
+    });
+
+    adapter.createTemplate(this, page, '<input value="lorem ipsum">');
+
+    assert.equal(page.foo.value, 'lorem ipsum');
+  });
+
   test('generates .then property', function(assert) {
     let page = create({
       foo: {}
