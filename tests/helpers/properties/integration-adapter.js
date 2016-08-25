@@ -9,6 +9,8 @@ export function IntegrationAdapter() {
 }
 
 IntegrationAdapter.prototype = {
+  name: 'integration',
+
   click(fn) {
     window.jQuery.fn.click = function() {
       let selector, context;
