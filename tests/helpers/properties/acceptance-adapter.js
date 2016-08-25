@@ -10,9 +10,12 @@ export function AcceptanceAdapter() {
   this.originalClick = window.click;
   this.originalFillIn = window.fillIn;
   this.originalTriggerEvent = window.triggerEvent;
+  this.originalVisit = window.visit;
 }
 
 AcceptanceAdapter.prototype = {
+  name: 'acceptance',
+
   click(fn) {
     window.click = fn;
   },
@@ -31,10 +34,15 @@ AcceptanceAdapter.prototype = {
     window.triggerEvent = fn;
   },
 
+  visit(fn) {
+    window.visit = fn;
+  },
+
   revert() {
     window.click = this.originalClick;
     window.fillIn = this.originalFillIn;
     window.triggerEvent = this.originalTriggerEvent;
+    window.visit = this.originalVisit;
   },
 
   createTemplate(test, page, template, options) {
