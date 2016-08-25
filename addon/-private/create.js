@@ -1,56 +1,13 @@
 import Ceibo from 'ceibo';
-import { text } from './properties/text';
-import { isVisible } from './properties/is-visible';
-import { isHidden } from './properties/is-hidden';
-import { contains } from './properties/contains';
-import { clickOnText } from './properties/click-on-text';
-import { clickable } from './properties/clickable';
-import { fillable } from './properties/fillable';
-import { value } from './properties/value';
-import { visitable } from './properties/visitable';
 import { render, setContext, removeContext } from './context';
 import { assign } from './helpers';
-
-const thenDescriptor = {
-  isDescriptor: true,
-  value() {
-    /* global wait */
-    return wait().then(...arguments);
-  }
-};
-
-const defaultProperties = {
-  contains,
-  isHidden,
-  isVisible,
-  text,
-  value,
-  clickOn: clickOnText,
-  click: clickable,
-  fillIn: fillable,
-  select: fillable,
-  then: thenDescriptor
-};
-
-function plugDefaultProperties(definition) {
-  Object.keys(defaultProperties).forEach((key) => {
-    if (typeof (definition[key]) !== 'undefined') {
-      return;
-    }
-
-    if (typeof (defaultProperties[key]) === 'function') {
-      definition[key] = defaultProperties[key]();
-    } else {
-      definition[key] = defaultProperties[key];
-    }
-  });
-}
+import { visitable } from './properties/visitable';
+import dsl from './dsl';
 
 // See https://github.com/san650/ceibo#examples for more info on how Ceibo
 // builders work.
 function buildObject(node, blueprintKey, blueprint, defaultBuilder) {
-  blueprint = assign({}, blueprint);
-  plugDefaultProperties(blueprint);
+  blueprint = assign(assign({}, dsl), blueprint);
 
   return defaultBuilder(node, blueprintKey, blueprint, defaultBuilder);
 }
