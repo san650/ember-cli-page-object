@@ -1,5 +1,6 @@
 import Ember from 'ember';
 import { assign } from '../helpers';
+import { getExecutionContext } from '../execution_context';
 
 const { $ } = Ember;
 
@@ -86,13 +87,16 @@ export function visitable(path) {
     isDescriptor: true,
 
     value(dynamicSegmentsAndQueryParams = {}) {
-      let params = assign({}, dynamicSegmentsAndQueryParams);
-      let fullPath = fillInDynamicSegments(path, params);
+      let executionContext = getExecutionContext(this);
 
-      fullPath = appendQueryParams(fullPath, params);
+      executionContext.run((context) => {
+        let params = assign({}, dynamicSegmentsAndQueryParams);
+        let fullPath = fillInDynamicSegments(path, params);
 
-      /* global visit */
-      visit(fullPath);
+        fullPath = appendQueryParams(fullPath, params);
+
+        context.visit(fullPath);
+      });
 
       return this;
     }

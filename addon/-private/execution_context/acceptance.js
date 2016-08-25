@@ -22,6 +22,11 @@ AcceptanceExecutionContext.prototype = {
     return this.pageObjectNode;
   },
 
+  visit(path) {
+    /* global visit */
+    visit(path);
+  },
+
   click(selector, container) {
     /* global click */
     click(selector, container);
