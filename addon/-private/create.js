@@ -6,6 +6,7 @@ import { contains } from './properties/contains';
 import { clickOnText } from './properties/click-on-text';
 import { clickable } from './properties/clickable';
 import { fillable } from './properties/fillable';
+import { visitable } from './properties/visitable';
 import { render, setContext, removeContext } from './context';
 import { assign } from './helpers';
 
@@ -110,6 +111,24 @@ function buildObject(node, blueprintKey, blueprint, defaultBuilder) {
  * // selects an option
  * page.select('country', 'Uruguay');
  *
+ * @example Defining path
+ *
+ * const usersPage = PageObject.create('/users');
+ *
+ * // visits user page
+ * usersPage.visit();
+ *
+ * const userTasksPage = PageObject.create('/users/tasks', {
+ *  tasks: collection({
+ *    itemScope: '.tasks li',
+ *    item: {}
+ *  });
+ * });
+ *
+ * // get user's tasks
+ * userTasksPage.visit();
+ * userTasksPage.tasks().count
+ *
  * @public
  *
  * @param {Object} definition - PageObject definition
@@ -117,8 +136,27 @@ function buildObject(node, blueprintKey, blueprint, defaultBuilder) {
  * @param {Object} options - [private] Ceibo options. Do not use!
  * @return {PageObject}
  */
-export function create(definition, options = {}) {
+export function create(definitionOrUrl, definitionOrOptions, optionsOrNothing) {
+  let definition;
+  let url;
+  let options;
+
+  if (typeof (definitionOrUrl) === 'string') {
+    url = definitionOrUrl;
+    definition = definitionOrOptions || {};
+    options = optionsOrNothing || {};
+  } else {
+    url = false;
+    definition = definitionOrUrl;
+    options = definitionOrOptions || {};
+  }
+
   definition = assign({}, definition);
+
+  if (url) {
+    definition.visit = visitable(url);
+  }
+
   let { context } = definition;
   delete definition.context;
 

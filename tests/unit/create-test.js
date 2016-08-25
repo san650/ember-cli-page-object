@@ -16,6 +16,31 @@ test('creates new page object', function(assert) {
   assert.equal(page.bar.baz, 'another value');
 });
 
+test('generates default visit helper', function(assert) {
+  assert.expect(1);
+  let page = create('/foo');
+
+  window.visit = function(path) {
+    assert.equal(path, '/foo');
+  };
+
+  page.visit();
+});
+
+test('generates default visit helper plus a definition', function(assert) {
+  fixture('<span>dummy text</span>');
+  assert.expect(2);
+
+  let page = create('/foo', { foo: text('span') });
+
+  window.visit = function(path) {
+    assert.equal(path, '/foo');
+  };
+
+  page.visit();
+  assert.equal(page.foo, 'dummy text');
+});
+
 test('resets scope', function(assert) {
   fixture(`
     <div>
