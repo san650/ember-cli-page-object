@@ -28,7 +28,7 @@
     padding: 0 5px;
 
     a {
-      background-color: $button-color;
+      background-color: $button-primary-bg-color;
       font-family: 'Inconsolata';
       font-size: 18px;
       color: $light-color;
@@ -36,7 +36,6 @@
       transition: all .3s;
 
       &:hover {
-        background-color: $button-color-hover;
         color: $light-color;
         transition: all .3s;
       }

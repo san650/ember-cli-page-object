@@ -1,0 +1,20 @@
+.btn {
+  &.uppercase {
+    text-transform: uppercase;
+  }
+
+  &.btn-primary {
+    font-family: $text-font;
+    background-color: $button-primary-bg-color;
+    border: solid 1px darken($button-primary-bg-color, 5%);
+    box-shadow: 0 -2px 3px rgba(255,255,255,.2) inset;
+    transition: all .4s;
+
+    &:hover{
+      background-color: lighten($button-primary-bg-color, 3%);
+      border: solid 1px darken($button-primary-bg-color, 5%);
+      box-shadow: 0 2px 7px rgba(0,0,0,.3), 0 -2px 3px rgba(255,255,255,.2) inset;
+      transition: all .4s;
+    }
+  }
+}

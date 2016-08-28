@@ -5,8 +5,6 @@
 }
 
 .splash {
-  // margin: 0;
-  // padding: 0;
   width: 100%;
   min-height: calc(100% - 70px);
   text-align: center;
@@ -42,16 +40,8 @@
     width: 100%;
 
     a {
-      background-color: $button-color;
-      font-family: 'Inconsolata';
       font-size: 20px;
       color: $light-color;
-      transition: all .3s;
-
-      &:hover {
-        background-color: $button-color-hover;
-        transition: all .3s;
-      }
     }
   }
 }
@@ -81,16 +71,8 @@
       width: auto;
 
       a {
-        background-color: $button-color;
-        font-family: 'Inconsolata';
         font-size: 20px;
         color: $light-color;
-        transition: all .3s;
-
-        &:hover {
-          background-color: $button-color-hover;
-          transition: all .3s;
-        }
       }
     }
   }
