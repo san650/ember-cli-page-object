@@ -12,31 +12,45 @@ className: splash-body
 {% endfor %}
 
 <div class="splash container-fluid">
-  <h1 class="splash__title">Page <span>object</span></h1>
-
-  <h2 class="splash__version">version 1.5.0</h2>
-
-  <p class="splash__caption">
-    Makes it easy to create page objects for your tests.
-  </p>
-
   <div class="row">
-    <div class="terminal col-sm-offset-3 col-sm-6 col-xs-10 col-xs-offset-1">
-      <div class="terminal__icon-bar">
-        <div class="terminal__icon"></div>
-        <div class="terminal__icon"></div>
-        <div class="terminal__icon"></div>
-      </div>
-      <span class="command">ember install <span>ember-cli-page-object</span></span>
+    <div class="col-xs-10 col-xs-offset-1 text-center">
+      <h1 class="splash__title">Page <span>object</span></h1>
+    </div>
+    <div class="col-xs-10 col-xs-offset-1">
+      <h2 class="splash__version">version 1.5.0</h2>
+    </div>
+    <div class="col-xs-10 col-xs-offset-1">
+      <p class="splash__caption">
+        Makes it easy to create page objects for your tests.
+      </p>
     </div>
   </div>
 
   <div class="row">
-    <div class="col-xs-12 text-center">
+    <div class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3">
+      <div class="terminal">
+        <div class="terminal__icon-bar">
+          <div class="terminal__icon"></div>
+          <div class="terminal__icon"></div>
+          <div class="terminal__icon"></div>
+        </div>
+        <span class="command">ember install <span>ember-cli-page-object</span></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-xs-10 col-xs-offset-1 text-center">
       <ul class="nav nav-pills">
-        <li role="presentation"><a href="{{site.baseurl}}/guides/">Guides</a></li>
-        <li role="presentation"><a href="{{site.baseurl}}/docs/{{latestVersion}}/">API</a></li>
-        <li role="presentation"><a href="{{site.baseurl}}/contributors">Contributors</a></li>
+        <li role="presentation">
+          <a href="{{site.baseurl}}/guides/">Guides</a>
+        </li>
+        <li role="presentation">
+          <a href="{{site.baseurl}}/docs/{{latestVersion}}/">API</a>
+        </li>
+        <li role="presentation">
+          <a href="{{site.baseurl}}/contributors">Contributors</a>
+        </li>
       </ul>
     </div>
   </div>
@@ -45,7 +59,7 @@ className: splash-body
     <div class="col-xs-12">
       <iframe class="github-star__widget" src="https://ghbtns.com/github-btn.html?user=san650&repo=ember-cli-page-object&type=star&count=true&size=large" frameborder="0" scrolling="0" width="140px" height="30px"></iframe>
     </div>
-    <div class="col-xs-12">
+    <div class="col-xs-10 col-xs-offset-1">
       <span class="github-star__caption">
         Don't forget to
         <span class="github-star__glyphicon glyphicon glyphicon-star"></span>
@@ -57,8 +71,14 @@ className: splash-body
 
 <footer class="footer">
   <div class="footer__caption">
-    © 2016 <a class="footer__user-link" href="https://twitter.com/san650">Santiago Ferreira</a>.
-    Code licensed under MIT License.
+    <div class="container">
+      <div class="row">
+        <div class="col-xs-10 col-xs-offset-1">
+          © 2016 <a class="footer__user-link" href="https://twitter.com/san650">Santiago Ferreira</a>.
+          Code licensed under MIT License.
+        </div>
+      </div>
+    </div>
   </div>
 </footer>
 

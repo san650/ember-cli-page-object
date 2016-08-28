@@ -5,17 +5,17 @@
 }
 
 .splash {
-  margin: 0;
-  padding: 0;
+  // margin: 0;
+  // padding: 0;
   width: 100%;
-  min-height: calc(100% - 40px);
+  min-height: calc(100% - 70px);
   text-align: center;
 }
 
 .splash__title {
   position: relative;
   font-family: $primary-font;
-  font-size: 80px;
+  font-size: $main-title-font-size;
   color: $primary-color;
   text-shadow: 1px 1px 1px $text-shadow-color;
 }
@@ -28,27 +28,70 @@
 
 .splash__caption {
   font-family: $secondary-font;
-  font-size: 30px;
+  font-size: $main-caption-font-size;
   margin-top: 20px;
 }
 
-.nav {
-  display: inline-block;
+.nav-pills {
+  display: block;
   margin-top: 50px;
-}
-.nav-pills > li {
-  padding: 0 5px;
 
-  a {
-    background-color: $button-color;
-    font-family: 'Inconsolata';
-    font-size: 20px;
-    color: $light-color;
-    transition: all .3s;
+  li {
+    padding: 0;
+    margin-bottom: 15px;
+    width: 100%;
 
-    &:hover {
-      background-color: $button-color-hover;
+    a {
+      background-color: $button-color;
+      font-family: 'Inconsolata';
+      font-size: 20px;
+      color: $light-color;
       transition: all .3s;
+
+      &:hover {
+        background-color: $button-color-hover;
+        transition: all .3s;
+      }
+    }
+  }
+}
+
+@media (min-width: 480px) {
+  $main-title-font-size: 80px;
+  $main-caption-font-size: 30px;
+
+  .splash {
+    min-height: calc(100% - 40px);
+  }
+
+  .splash__title {
+    font-size: $main-title-font-size;
+  }
+
+  .splash__caption {
+    font-size: $main-caption-font-size;
+  }
+
+  .nav-pills {
+    display: inline-block;
+
+    li {
+      padding: 0 5px;
+      margin-bottom: 0;
+      width: auto;
+
+      a {
+        background-color: $button-color;
+        font-family: 'Inconsolata';
+        font-size: 20px;
+        color: $light-color;
+        transition: all .3s;
+
+        &:hover {
+          background-color: $button-color-hover;
+          transition: all .3s;
+        }
+      }
     }
   }
 }
