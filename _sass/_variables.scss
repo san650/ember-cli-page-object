@@ -2,6 +2,9 @@ $primary-font: 'Pacifico', cursive;
 $secondary-font: 'Patrick Hand', cursive;
 $text-font: 'Inconsolata';
 
+$main-title-font-size: 50px;
+$main-caption-font-size: 25px;
+
 /* Green theme */
 $bg-color: #C1E1A6;
 $primary-color: #118C4E;
@@ -14,8 +17,7 @@ $dark-color: #222;
 
 $github-text-color: #118C4E;
 
-$button-color: #ff7b09;
-$button-color-hover: #FF9009;
+$button-primary-bg-color: #ff7b09;
 
 /* Red theme */
 $bg-color: #3B3738;
@@ -29,8 +31,7 @@ $dark-color: #222;
 
 $github-text-color: #FDF3E7;
 
-$button-color: #7E8F7C;
-$button-color-hover: #7E8F7C;
+$button-primary-bg-color: #7E8F7C;
 
 /* Blue theme */
 $bg-color: #74AFAD;
@@ -44,5 +45,4 @@ $dark-color: #222;
 
 $github-text-color: #444;
 
-$button-color: #D9853B;
-$button-color-hover: #D9853B;
+$button-primary-bg-color: #D9853B;

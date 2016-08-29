@@ -7,9 +7,16 @@
   display: block;
   margin-top: 1rem;
   color: $github-text-color;
+  margin-bottom: 10px;
 }
 
 .github-star__glyphicon {
   font-size: 16px;
   vertical-align: text-bottom;
+}
+
+@media (min-width: 480px) {
+  .github-star__caption {
+    margin-bottom: 0;
+  }
 }
