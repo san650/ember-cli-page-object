@@ -1,29 +1,39 @@
 .main-header {
-  h1.logo {
-    position: relative;
-    font-family: $primary-font;
-    font-size: 34px;
-    color: $primary-color;
-    margin: 10px 0 25px 0;
-    text-shadow: 1px 1px 1px $text-shadow-color;
-  }
-
   .nav {
     display: inline-block;
-    margin-top: 22px;
+    margin-top: 5px;
+    margin-bottom: 5px;
   }
 
   .nav-pills > li {
     padding: 0 5px;
 
     a {
-      font-size: 16px;
+      color: $primary-color;
+      font-size: 14px;
       padding: 5px 10px;
     }
   }
 }
 
 .jumbotron {
+  position: relative;
+
+  .logo {
+    font-family: $primary-font;
+    font-size: 38px;
+    color: $light-color;
+    text-shadow: 4px 4px 0px $primary-color, 5px 5px 0px $text-shadow-color;
+  }
+
+  .section-name {
+    position: absolute;
+    top: 5px;
+    right: 30px;
+    font-size: 50px;
+    color: rgba(255,255,255,.1);
+  }
+
   background-color: $primary-color;
   background-image: -webkit-linear-gradient($primary-color, $primary-color-darken-3);
   background-image: -moz-linear-gradient($primary-color, $primary-color-darken-3);
@@ -35,14 +45,11 @@
   border-bottom: solid 1px $primary-color-darken-3;
   box-shadow: 0 -8px 1px rgba(255,255,255,.2) inset;
 
-  h1 {
-    font-size: 45px;
-    text-shadow: 1px 1px 2px rgba(0,0,0,.2);
-  }
-
   p {
+    font-size: 18px;
     text-shadow: 1px 1px 2px rgba(255,255,255,.2);
     color: $primary-color-darken-30;
+    padding-top: 15px;
   }
 }
 
@@ -55,6 +62,39 @@ section {
 
       h2 {
         margin-top: 0;
+        font-size: 25px;
+        padding-bottom: 5px;
+        border-bottom: 1px dotted $primary-color;
+      }
+    }
+
+    .nav {
+      margin-bottom: 25px;
+
+      li {
+
+        a {
+          display: table;
+          width: 100%;
+          border-left: 6px solid #fff;
+          color: $primary-color-darken-30;
+
+          .label-default {
+            background-color: $primary-color-darken-30;
+            margin-top: 2px;
+          }
+
+          &:hover {
+            border-left: 6px solid $primary-color-lighten-20;
+            background-color: $primary-color-lighten-30;
+          }
+
+          &.active {
+            border-left: 6px solid $primary-color-darken-20;
+            color: #fff;
+            background-color: $primary-color;
+          }
+        }
       }
     }
 
