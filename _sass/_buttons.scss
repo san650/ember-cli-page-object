@@ -5,16 +5,15 @@
 
   &.btn-primary {
     font-family: $text-font;
-    background-color: $button-primary-bg-color;
-    border: solid 1px darken($button-primary-bg-color, 5%);
-    box-shadow: 0 -2px 3px rgba(255,255,255,.2) inset;
+    background-color: $primary-color-darken-30;
+    border: solid 1px $primary-color-darken-3;
     transition: all .4s;
 
     &:hover{
-      background-color: lighten($button-primary-bg-color, 3%);
-      border: solid 1px darken($button-primary-bg-color, 5%);
-      box-shadow: 0 2px 7px rgba(0,0,0,.3), 0 -2px 3px rgba(255,255,255,.2) inset;
-      transition: all .4s;
+      background-color: $primary-color-darken-20;
+      border: solid 1px $primary-color-darken-30;
+      box-shadow: 0 2px 7px rgba(0,0,0,.3), 0 0 3px rgba(255,255,255,.2) inset;
+      transition: all .2s;
     }
   }
 }

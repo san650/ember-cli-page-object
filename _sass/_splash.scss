@@ -1,6 +1,9 @@
 .splash-body {
-  background-color: $bg-color;
-  color: $secondary-color;
+  background-color: $primary-color;
+  background-image: -webkit-linear-gradient($primary-color, $primary-color-darken-3);
+  background-image: -moz-linear-gradient($primary-color, $primary-color-darken-3);
+  background-image: linear-gradient($primary-color, $primary-color-darken-3);
+  color: $light-color;
   font-family: $text-font;
 }
 
@@ -14,8 +17,8 @@
   position: relative;
   font-family: $primary-font;
   font-size: $main-title-font-size;
-  color: $primary-color;
-  text-shadow: 1px 1px 1px $text-shadow-color;
+  color: $light-color;
+  text-shadow: 4px 4px 0px $primary-color-lighten-3, 7px 7px 0px $text-shadow-color;
 }
 
 .splash__version {

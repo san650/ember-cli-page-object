@@ -6,13 +6,19 @@
 .github-star__caption {
   display: block;
   margin-top: 1rem;
-  color: $github-text-color;
+  color: $light-color;
   margin-bottom: 10px;
+  line-height: 1.8;
 }
 
 .github-star__glyphicon {
-  font-size: 16px;
+  font-size: 20px;
   vertical-align: text-bottom;
+  position: relative;
+  top: 8px;
+  color: $primary-color-darken-30;
+  border-bottom: 1px dashed $primary-color-darken-30;
+  padding-bottom: 5px;
 }
 
 @media (min-width: 480px) {
