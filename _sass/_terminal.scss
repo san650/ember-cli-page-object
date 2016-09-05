@@ -14,16 +14,18 @@
 .terminal__icon-bar {
   position: absolute;
   left: 0;
-  top: 0;
+  top: -1px;
   width: 100%;
   text-align: left;
   padding: 4px 0 2px 12px;
-  background-color: rgba(255,255,255,.2);
+  background-color: $primary-color-darken-30;
 }
 
 .terminal__icon {
+  position: relative;
   width: 15px;
   height: 15px;
+  top: 3px;
   border-radius: 50%;
   display: inline-block;
   background-color: rgba(0,0,0,.3);

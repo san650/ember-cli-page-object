@@ -5,44 +5,23 @@ $text-font: 'Inconsolata';
 $main-title-font-size: 50px;
 $main-caption-font-size: 25px;
 
-/* Green theme */
-$bg-color: #C1E1A6;
-$primary-color: #118C4E;
-$secondary-color: #585858;
+
+$primary-color: #f47a33;
+$primary-color-darken-3: darken($primary-color, 3%);
+$primary-color-darken-20: darken($primary-color, 20%);
+$primary-color-darken-30: darken($primary-color, 30%);
+$primary-color-lighten-3: lighten($primary-color, 3%);
+$primary-color-lighten-20: lighten($primary-color, 20%);
+$primary-color-lighten-30: lighten($primary-color, 30%);
+
+$secondary-color: #f26234;
+
+
 $terminal-color: rgba(0, 0, 0, 0.9);
-$text-shadow-color: rgba(255, 255, 255, 0.6);
+$text-shadow-color: rgba(0, 0, 0, .2);
 
 $light-color: #fff;
 $dark-color: #222;
 
-$github-text-color: #118C4E;
 
 $button-primary-bg-color: #ff7b09;
-
-/* Red theme */
-$bg-color: #3B3738;
-$primary-color: #C63D0F;
-$secondary-color: #FDF3E7;
-$terminal-color: rgba(0, 0, 0, 0.9);
-$text-shadow-color: rgba(0, 0, 0, 0.2);
-
-$light-color: #fff;
-$dark-color: #222;
-
-$github-text-color: #FDF3E7;
-
-$button-primary-bg-color: #7E8F7C;
-
-/* Blue theme */
-$bg-color: #74AFAD;
-$primary-color: #558C89;
-$secondary-color: #ECECEA;
-$terminal-color: rgba(0, 0, 0, 0.9);
-$text-shadow-color: rgba(255, 255, 255, 0.6);
-
-$light-color: #fff;
-$dark-color: #222;
-
-$github-text-color: #444;
-
-$button-primary-bg-color: #D9853B;
