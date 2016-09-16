@@ -1,3 +1,54 @@
+v1.6.x:
+  sections:
+    - title: Getting started
+      links:
+        - path: /
+          name: Overview
+        - path: /installation
+          name: Installation
+        - path: /quickstart
+          name: Quickstart
+        - path: /migrating
+          name: Migration Guide
+
+    - title: API reference
+      links:
+      - path: /api/create
+        name: Create
+      - path: /api/properties
+        name: Properties
+      - path: /components
+        name: Components
+      - path: /options
+        name: Options
+      - path: /api/helpers
+        name: Helpers
+      - path: /api/context
+        name: Integration Test Context
+      - path: /api/extend
+        name: Extend
+
+    - title: Contribute
+      links:
+        - path: https://github.com/san650/ember-cli-page-object
+          name: Github
+          external: true
+        - path: https://github.com/san650/ember-cli-page-object/issues
+          name: Bugs
+          external: true
+        - path: https://github.com/san650/ember-cli-page-object/issues
+          name: Feature requests
+          external: true
+        - path: https://github.com/san650/ember-cli-page-object/releases
+          name: Release notes
+          external: true
+        - path: http://emberobserver.com/addons/ember-cli-page-object
+          name: Ember Observer
+          external: true
+        - path: https://www.npmjs.com/package/ember-cli-page-object
+          name: NPM
+          external: true
+
 v1.5.x:
   sections:
     - title: Getting started
