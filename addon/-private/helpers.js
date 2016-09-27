@@ -201,4 +201,33 @@ export function getContext(node) {
   }
 }
 
+function getAllValuesForProperty(node, property) {
+  let iterator = node;
+  let values = [];
+
+  while (Ember.isPresent(iterator)) {
+    if (Ember.isPresent(iterator[property])) {
+      values.push(iterator[property]);
+    }
+
+    iterator = Ceibo.parent(iterator);
+  }
+
+  return values;
+}
+
+/**
+ * @public
+ *
+ * Return full scope of node (includes all ancestors scopes)
+ *
+ * @param {Ceibo} node - Node of the tree
+ * @return {?Object} Full scope of node
+ */
+export function fullScope(node) {
+  let scopes = getAllValuesForProperty(node, 'scope');
+
+  return scopes.reverse().join(' ');
+}
+
 export const assign = Ember.assign || Ember.merge;

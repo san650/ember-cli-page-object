@@ -62,4 +62,4 @@ export default {
   visitable
 };
 
-export { buildSelector, findElementWithAssert, findElement, getContext } from 'ember-cli-page-object';
+export { buildSelector, findElementWithAssert, findElement, getContext, fullScope } from 'ember-cli-page-object';
