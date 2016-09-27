@@ -135,6 +135,26 @@ moduleForProperty('clickable', function(test) {
     page.foo();
   });
 
+  test('looks for elements within test container specified at node level', function(assert) {
+    assert.expect(1);
+
+    let expectedContext = '#alternate-ember-testing';
+    let page;
+
+    page = create({
+      testContainer: expectedContext,
+      foo: clickable('span')
+    });
+
+    this.adapter.createTemplate(this, page, '<span>Click me</span>', { useAlternateContainer: true });
+
+    this.adapter.click((_, actualContext) => {
+      assert.equal(actualContext, expectedContext);
+    });
+
+    page.foo();
+  });
+
   test("raises an error when the element doesn't exist", function(assert) {
     assert.expect(1);
 

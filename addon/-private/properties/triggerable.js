@@ -1,4 +1,4 @@
-import { assign, buildSelector } from '../helpers';
+import { assign, buildSelector, findClosestValue } from '../helpers';
 import { getExecutionContext } from '../execution_context';
 
 /**
@@ -81,10 +81,11 @@ export function triggerable(event, selector, userOptions = {}) {
 
         return executionContext.runAsync((context) => {
           let fullSelector = buildSelector(this, selector, options);
+          let container =  options.testContainer || findClosestValue(this, 'testContainer');
 
           context.assertElementExists(fullSelector, options);
 
-          context.triggerEvent(fullSelector, options.testContainer, event, options.eventProperties);
+          context.triggerEvent(fullSelector, container, event, options.eventProperties);
         });
       };
     }

@@ -1,4 +1,4 @@
-import { assign } from '../helpers';
+import { assign, findClosestValue } from '../helpers';
 import { getExecutionContext } from '../execution_context';
 import { buildSelector } from './click-on-text/helpers';
 
@@ -89,10 +89,11 @@ export function clickOnText(selector, userOptions = {}) {
 
         return executionContext.runAsync((context) => {
           let fullSelector = buildSelector(this, context, selector, options);
+          let container = options.testContainer || findClosestValue(this, 'testContainer');
 
           context.assertElementExists(fullSelector, options);
 
-          context.click(fullSelector, options.testContainer);
+          context.click(fullSelector, container);
         });
       };
     }

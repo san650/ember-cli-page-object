@@ -197,3 +197,22 @@ test('looks for elements outside the testing container', function(assert) {
     .clickable()
     .fillable('foo');
 });
+
+test('looks for elements within test container specified at node level', function(assert) {
+  assert.expect(0);
+
+  $('#alternate-ember-testing').html('<button>lorem</button><input>');
+
+  let page = PageObject.create({
+    context: this,
+    testContainer: '#alternate-ember-testing',
+    clickOnText: clickOnText('button'),
+    clickable: clickable('button'),
+    fillable: fillable('input')
+  });
+
+  page
+    .clickOnText('lorem')
+    .clickable()
+    .fillable('foo');
+});
