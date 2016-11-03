@@ -64,4 +64,4 @@ This addon allows you to define page objects in a declarative fashion making rea
 
 - [Using the page object pattern with ember-cli](https://wyeworks.com/blog/2015/5/13/using-the-page-object-pattern-with-ember-cli/)
 - [Martin Fowler's original description](http://martinfowler.com/bliki/PageObject.html)
-- [Selenium's wiki page](https://code.google.com/p/selenium/wiki/PageObjects)
+- [Selenium's wiki page](https://seleniumhq.github.io/docs/best.html#page_object_models)
