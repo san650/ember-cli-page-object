@@ -10,21 +10,21 @@ moduleForProperty('create', function(test, adapter) {
       }
     });
 
-    adapter.createTemplate(this, page);
+    this.adapter.createTemplate(this, page);
 
     assert.equal(page.foo, 'a value');
     assert.equal(page.bar.baz, 'another value');
   });
 
-  if (adapter.name === 'acceptance') {
+  if (adapter === 'acceptance') {
     test('generates default visit helper', function(assert) {
       assert.expect(1);
 
       let page = create('/foo');
 
-      adapter.createTemplate(this, page);
+      this.adapter.createTemplate(this, page);
 
-      adapter.visit((path) => {
+      this.adapter.visit((path) => {
         assert.equal(path, '/foo');
       });
 
@@ -36,9 +36,9 @@ moduleForProperty('create', function(test, adapter) {
 
       let page = create('/foo', { foo: text('span') });
 
-      adapter.createTemplate(this, page, '<span>dummy text</span>');
+      this.adapter.createTemplate(this, page, '<span>dummy text</span>');
 
-      adapter.visit((path) => {
+      this.adapter.visit((path) => {
         assert.equal(path, '/foo');
       });
 
@@ -58,7 +58,7 @@ moduleForProperty('create', function(test, adapter) {
       }
     });
 
-    adapter.createTemplate(this, page, `
+    this.adapter.createTemplate(this, page, `
       <div>
         <span class="scope">Lorem</span>
       </div>
@@ -90,7 +90,7 @@ moduleForProperty('create', function(test, adapter) {
 
     let page = create(actual);
 
-    adapter.createTemplate(this, page);
+    this.adapter.createTemplate(this, page);
 
     assert.deepEqual(actual, expected);
   });
@@ -98,7 +98,7 @@ moduleForProperty('create', function(test, adapter) {
   test('generates a default scope', function(assert) {
     let page = create({});
 
-    adapter.createTemplate(this, page, '<p>Lorem ipsum</p>');
+    this.adapter.createTemplate(this, page, '<p>Lorem ipsum</p>');
 
     assert.ok(page.contains('ipsum'));
   });

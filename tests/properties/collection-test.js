@@ -2,7 +2,7 @@ import { moduleForProperty } from '../helpers/properties';
 import { create, collection, text, hasClass } from 'ember-cli-page-object';
 import withIteratorSymbolDefined from '../helpers/with-iterator-symbol-defined';
 
-moduleForProperty('collection', function(test, adapter) {
+moduleForProperty('collection', function(test) {
   test('generates a count property', function(assert) {
     let page = create({
       foo: collection({
@@ -10,7 +10,7 @@ moduleForProperty('collection', function(test, adapter) {
       })
     });
 
-    adapter.createTemplate(this, page, `
+    this.adapter.createTemplate(this, page, `
       <span>Lorem</span>
       <span>Ipsum</span>
     `);
@@ -27,7 +27,7 @@ moduleForProperty('collection', function(test, adapter) {
       })
     });
 
-    adapter.createTemplate(this, page, `
+    this.adapter.createTemplate(this, page, `
       <span>Lorem</span>
       <span>Ipsum</span>
     `);
@@ -46,7 +46,7 @@ moduleForProperty('collection', function(test, adapter) {
       })
     });
 
-    adapter.createTemplate(this, page, `
+    this.adapter.createTemplate(this, page, `
       <span>Lorem</span>
       <span>Ipsum</span>
     `);
@@ -66,7 +66,7 @@ moduleForProperty('collection', function(test, adapter) {
       })
     });
 
-    adapter.createTemplate(this, page, `
+    this.adapter.createTemplate(this, page, `
       <span>Lorem</span>
       <span>Ipsum</span>
     `);
@@ -89,7 +89,7 @@ moduleForProperty('collection', function(test, adapter) {
       })
     });
 
-    adapter.createTemplate(this, page, `
+    this.adapter.createTemplate(this, page, `
       <span class="special">Lorem</span>
       <span>Ipsum</span>
     `);
@@ -112,7 +112,7 @@ moduleForProperty('collection', function(test, adapter) {
       })
     });
 
-    adapter.createTemplate(this, page, `
+    this.adapter.createTemplate(this, page, `
       <span>Lorem</span>
       <span>Ipsum</span>
     `);
@@ -141,7 +141,7 @@ moduleForProperty('collection', function(test, adapter) {
       })
     });
 
-    adapter.createTemplate(this, page, `
+    this.adapter.createTemplate(this, page, `
       <div>
         <span>Lorem</span>
       </div>
@@ -170,7 +170,7 @@ moduleForProperty('collection', function(test, adapter) {
       })
     });
 
-    adapter.createTemplate(this, page, `
+    this.adapter.createTemplate(this, page, `
       <ul>
         <li>Blah</li>
         <li>
@@ -208,7 +208,7 @@ moduleForProperty('collection', function(test, adapter) {
       })
     });
 
-    adapter.createTemplate(this, page, `
+    this.adapter.createTemplate(this, page, `
       <ul>
         <li>Lorem</li>
       </ul>
@@ -229,7 +229,7 @@ moduleForProperty('collection', function(test, adapter) {
       })
     });
 
-    adapter.createTemplate(this, page, `
+    this.adapter.createTemplate(this, page, `
       <span>Lorem</span>
       <span>Second</span>
       <button>Submit</button>
@@ -248,7 +248,7 @@ moduleForProperty('collection', function(test, adapter) {
       })
     });
 
-    adapter.createTemplate(this, page, `
+    this.adapter.createTemplate(this, page, `
       <div>
         <span>Lorem</span>
       </div>
@@ -275,7 +275,7 @@ moduleForProperty('collection', function(test, adapter) {
       })
     });
 
-    adapter.createTemplate(this, page, `
+    this.adapter.createTemplate(this, page, `
       <div>
         <span>Lorem</span>
       </div>
@@ -298,7 +298,7 @@ moduleForProperty('collection', function(test, adapter) {
       })
     });
 
-    adapter.createTemplate(this, page, `
+    this.adapter.createTemplate(this, page, `
       <div>
         <span>Lorem</span>
       </div>
@@ -327,7 +327,7 @@ moduleForProperty('collection', function(test, adapter) {
       })
     });
 
-    adapter.createTemplate(this, page, `
+    this.adapter.createTemplate(this, page, `
       <div><span><em>Lorem</em></span></div>
       <div class="scope"><span><em>Ipsum</em></span></div>
     `);
@@ -348,7 +348,7 @@ moduleForProperty('collection', function(test, adapter) {
       }
     });
 
-    adapter.createTemplate(this, page);
+    this.adapter.createTemplate(this, page);
 
     assert.throws(() => page.foo.bar(1).baz.qux, /page\.foo\.bar\(1\)\.baz\.qux/);
   });
@@ -366,7 +366,7 @@ moduleForProperty('collection', function(test, adapter) {
       }
     });
 
-    adapter.createTemplate(this, page);
+    this.adapter.createTemplate(this, page);
 
     assert.throws(() => page.foo.bar().baz.qux, /page\.foo\.bar\(\)\.baz\.qux/);
   });
@@ -379,7 +379,7 @@ moduleForProperty('collection', function(test, adapter) {
       })
     });
 
-    adapter.createTemplate(this, page);
+    this.adapter.createTemplate(this, page);
 
     assert.notOk(page.foo().item);
     assert.notOk(page.foo().itemScope);
@@ -397,7 +397,7 @@ moduleForProperty('collection', function(test, adapter) {
       })
     });
 
-    adapter.createTemplate(this, page, `
+    this.adapter.createTemplate(this, page, `
       <div>
           <span>Lorem</span>
           <span>Ipsum</span>
@@ -426,7 +426,7 @@ moduleForProperty('collection', function(test, adapter) {
       })
     });
 
-    adapter.createTemplate(this, page, `
+    this.adapter.createTemplate(this, page, `
       <div>
           <span>Lorem</span>
           <span>Ipsum</span>
@@ -456,7 +456,7 @@ moduleForProperty('collection', function(test, adapter) {
       })
     });
 
-    adapter.createTemplate(this, page, `
+    this.adapter.createTemplate(this, page, `
       <div>
           <span>Lorem</span>
           <span>Ipsum</span>
@@ -497,7 +497,7 @@ moduleForProperty('collection', function(test, adapter) {
       foo: collection(actual)
     });
 
-    adapter.createTemplate(this, page);
+    this.adapter.createTemplate(this, page);
 
     assert.deepEqual(actual, expected);
   });

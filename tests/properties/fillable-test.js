@@ -1,7 +1,7 @@
 import { moduleForProperty } from '../helpers/properties';
 import { create, fillable, selectable } from 'ember-cli-page-object';
 
-moduleForProperty('fillable', function(test, adapter) {
+moduleForProperty('fillable', function(test) {
   test("calls Ember's fillIn helper", function(assert) {
     assert.expect(2);
 
@@ -13,12 +13,12 @@ moduleForProperty('fillable', function(test, adapter) {
       foo: fillable(expectedSelector)
     });
 
-    adapter.fillIn((actualSelector, actualContext, actualText) => {
+    this.adapter.fillIn((actualSelector, actualContext, actualText) => {
       assert.equal(actualSelector, expectedSelector);
       assert.equal(actualText, expectedText);
     });
 
-    adapter.createTemplate(this, page, '<input>');
+    this.adapter.createTemplate(this, page, '<input>');
 
     page.foo(expectedText);
   });
@@ -34,9 +34,9 @@ moduleForProperty('fillable', function(test, adapter) {
       foo: fillable()
     });
 
-    adapter.createTemplate(this, page, '<div class="scope"><input data-test="clue"></div>');
+    this.adapter.createTemplate(this, page, '<div class="scope"><input data-test="clue"></div>');
 
-    adapter.fillIn((actualSelector, actualContext, actualText) => {
+    this.adapter.fillIn((actualSelector, actualContext, actualText) => {
       assert.ok(/.scope input\[data-test="clue"\]/.test(actualSelector));
       assert.ok(/.scope input\[aria-label="clue"\]/.test(actualSelector));
       assert.ok(/.scope input\[placeholder="clue"\]/.test(actualSelector));
@@ -67,9 +67,9 @@ moduleForProperty('fillable', function(test, adapter) {
       foo: fillable('input', { scope: '.scope' })
     });
 
-    adapter.createTemplate(this, page, '<div class="scope"><input></div>');
+    this.adapter.createTemplate(this, page, '<div class="scope"><input></div>');
 
-    adapter.fillIn((actualSelector) => {
+    this.adapter.fillIn((actualSelector) => {
       assert.equal(actualSelector, '.scope input');
     });
 
@@ -85,11 +85,11 @@ moduleForProperty('fillable', function(test, adapter) {
       foo: fillable('input')
     });
 
-    adapter.fillIn((actualSelector) => {
+    this.adapter.fillIn((actualSelector) => {
       assert.equal(actualSelector, '.scope input');
     });
 
-    adapter.createTemplate(this, page, '<div class="scope"><input></div>');
+    this.adapter.createTemplate(this, page, '<div class="scope"><input></div>');
 
     page.foo('dummy text');
   });
@@ -102,11 +102,11 @@ moduleForProperty('fillable', function(test, adapter) {
       foo: fillable('input', { resetScope: true })
     });
 
-    adapter.fillIn((actualSelector) => {
+    this.adapter.fillIn((actualSelector) => {
       assert.equal(actualSelector, 'input');
     });
 
-    adapter.createTemplate(this, page, '<input>');
+    this.adapter.createTemplate(this, page, '<input>');
 
     page.foo('dummy text');
   });
@@ -118,9 +118,9 @@ moduleForProperty('fillable', function(test, adapter) {
       foo: fillable('input')
     });
 
-    adapter.fillIn(() => {});
+    this.adapter.fillIn(() => {});
 
-    adapter.createTemplate(this, page, '<input>');
+    this.adapter.createTemplate(this, page, '<input>');
 
     assert.equal(page.foo(), page);
   });
@@ -133,11 +133,11 @@ moduleForProperty('fillable', function(test, adapter) {
       foo: fillable('input', { at: 3 })
     });
 
-    adapter.fillIn((actualSelector) => {
+    this.adapter.fillIn((actualSelector) => {
       assert.equal(actualSelector, expectedSelector);
     });
 
-    adapter.createTemplate(this, page, '<input><input><input><input>');
+    this.adapter.createTemplate(this, page, '<input><input><input><input>');
 
     page.foo();
   });
@@ -151,9 +151,9 @@ moduleForProperty('fillable', function(test, adapter) {
       foo: selectable(expectedSelector)
     });
 
-    adapter.createTemplate(this, page, '<input>');
+    this.adapter.createTemplate(this, page, '<input>');
 
-    adapter.fillIn((actualSelector, actualContext, actualText) => {
+    this.adapter.fillIn((actualSelector, actualContext, actualText) => {
       assert.equal(actualSelector, expectedSelector);
       assert.equal(actualText, expectedText);
     });
@@ -171,9 +171,9 @@ moduleForProperty('fillable', function(test, adapter) {
       foo: fillable(expectedSelector, { testContainer: expectedContext })
     });
 
-    adapter.createTemplate(this, page, '<input>', { useAlternateContainer: true });
+    this.adapter.createTemplate(this, page, '<input>', { useAlternateContainer: true });
 
-    adapter.fillIn((actualSelector, actualContext, actualText) => {
+    this.adapter.fillIn((actualSelector, actualContext, actualText) => {
       assert.equal(actualSelector, expectedSelector);
       assert.equal(actualContext, expectedContext);
       assert.equal(actualText, expectedText);
@@ -195,9 +195,9 @@ moduleForProperty('fillable', function(test, adapter) {
       }
     });
 
-    adapter.createTemplate(this, page);
+    this.adapter.createTemplate(this, page);
 
-    adapter.throws(assert, function() {
+    this.adapter.throws(assert, function() {
       return page.foo.bar.baz.qux('lorem');
     }, /page\.foo\.bar\.baz\.qux\(\)/, 'Element not found');
   });

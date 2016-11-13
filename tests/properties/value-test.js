@@ -1,13 +1,13 @@
 import { moduleForProperty } from '../helpers/properties';
 import { create, value } from 'ember-cli-page-object';
 
-moduleForProperty('value', function(test, adapter) {
+moduleForProperty('value', function(test) {
   test('returns the text of the input', function(assert) {
     let page = create({
       foo: value('input')
     });
 
-    adapter.createTemplate(this, page, '<input value="Lorem ipsum">');
+    this.adapter.createTemplate(this, page, '<input value="Lorem ipsum">');
 
     assert.equal(page.foo, 'Lorem ipsum');
   });
@@ -17,7 +17,7 @@ moduleForProperty('value', function(test, adapter) {
       foo: value('input')
     });
 
-    adapter.createTemplate(this, page, '<input>');
+    this.adapter.createTemplate(this, page, '<input>');
 
     assert.equal(page.foo, '');
   });
@@ -33,7 +33,7 @@ moduleForProperty('value', function(test, adapter) {
       }
     });
 
-    adapter.createTemplate(this, page);
+    this.adapter.createTemplate(this, page);
 
     assert.throws(() => page.foo.bar.baz.qux, /page\.foo\.bar\.baz\.qux/);
   });
@@ -43,7 +43,7 @@ moduleForProperty('value', function(test, adapter) {
       foo: value('input', { scope: '.scope' })
     });
 
-    adapter.createTemplate(this, page, `
+    this.adapter.createTemplate(this, page, `
       <div><input value="lorem"></div>
       <div class="scope"><input value="ipsum"></div>
     `);
@@ -58,7 +58,7 @@ moduleForProperty('value', function(test, adapter) {
       foo: value('input')
     });
 
-    adapter.createTemplate(this, page, `
+    this.adapter.createTemplate(this, page, `
       <div><input value="lorem"></div>
       <div class="scope"><input value="ipsum"></div>
     `);
@@ -73,7 +73,7 @@ moduleForProperty('value', function(test, adapter) {
       foo: value('input', { at: 0, resetScope: true })
     });
 
-    adapter.createTemplate(this, page, `
+    this.adapter.createTemplate(this, page, `
       <div><input value="lorem"></div>
       <div class="scope"><input value="ipsum"></div>
     `);
@@ -86,7 +86,7 @@ moduleForProperty('value', function(test, adapter) {
       foo: value('input')
     });
 
-    adapter.createTemplate(this, page, `
+    this.adapter.createTemplate(this, page, `
       <input value="lorem">
       <input value="ipsum">
     `);
@@ -100,7 +100,7 @@ moduleForProperty('value', function(test, adapter) {
       foo: value('input', { multiple: true })
     });
 
-    adapter.createTemplate(this, page, `
+    this.adapter.createTemplate(this, page, `
       <input value="lorem">
       <input value="ipsum">
     `);
@@ -113,7 +113,7 @@ moduleForProperty('value', function(test, adapter) {
       foo: value('input', { at: 1 })
     });
 
-    adapter.createTemplate(this, page, `
+    this.adapter.createTemplate(this, page, `
       <input value="lorem">
       <input value="ipsum">
     `);
@@ -126,7 +126,7 @@ moduleForProperty('value', function(test, adapter) {
       foo: value('input', { testContainer: '#alternate-ember-testing' })
     });
 
-    adapter.createTemplate(this, page, '<input value="lorem">', { useAlternateContainer: true });
+    this.adapter.createTemplate(this, page, '<input value="lorem">', { useAlternateContainer: true });
 
     assert.equal(page.foo, 'lorem');
   });

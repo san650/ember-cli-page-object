@@ -2,70 +2,31 @@ import Ember from 'ember';
 import { fixture } from './acceptance-adapter';
 export { moduleForComponent as moduleForIntegration, test as testForIntegration } from 'ember-qunit';
 
-export function IntegrationAdapter() {
-  this.originalClick = window.jQuery.fn.click;
-  this.originalFillIn = window.jQuery.fn.val;
-  this.originalTriggerEvent = window.jQuery.fn.trigger;
+export function IntegrationAdapter(original) {
+  this.original = original;
+  this.originalPrototype = original.prototype;
+
+  original.prototype = Object.create(this.originalPrototype);
+  this.spy = original.prototype;
 }
 
 IntegrationAdapter.prototype = {
   name: 'integration',
 
   click(fn) {
-    window.jQuery.fn.click = function() {
-      let selector, context;
-
-      // If the context is window and the selector is prefixed with our
-      // alternate container, split it
-      if (/^#alternate-ember-testing/.test(this.selector) && this.context === document) {
-        context = '#alternate-ember-testing';
-        selector = this.selector.replace(/^#alternate-ember-testing\s?/, '');
-      } else {
-        selector = this.selector.replace(/^#ember-testing > .ember-view\s?/, '');
-      }
-
-      fn(selector, context);
-    };
+    this.spy.click = fn;
   },
 
   fillIn(fn) {
-    window.jQuery.fn.val = function(text) {
-      let selector, context;
-
-      // If the context is window and the selector is prefixed with our
-      // alternate container, split it
-      if (/^#alternate-ember-testing/.test(this.selector) && this.context === document) {
-        context = '#alternate-ember-testing';
-        selector = this.selector.replace(/^#alternate-ember-testing\s?/, '');
-      } else {
-        selector = this.selector.replace(/^#ember-testing > .ember-view\s?/, '');
-      }
-
-      fn(selector, context, text);
-    };
+    this.spy.fillIn = fn;
   },
 
-  triggerEvent(fn /*selector, container, eventName, eventOptions*/) {
-    window.jQuery.fn.trigger = function(event) {
-      let selector, context;
-
-      // If the context is window and the selector is prefixed with our
-      // alternate container, split it
-      if (/^#alternate-ember-testing/.test(this.selector) && this.context === document) {
-        context = '#alternate-ember-testing';
-        selector = this.selector.replace(/^#alternate-ember-testing\s?/, '');
-      } else {
-        selector = this.selector.replace(/^#ember-testing > .ember-view\s?/, '');
-      }
-
-      fn(selector, context, event.type, event);
-    };
+  triggerEvent(fn) {
+    this.spy.triggerEvent = fn;
   },
 
   revert() {
-    window.jQuery.fn.click = this.originalClick;
-    window.jQuery.fn.val = this.originalFillIn;
-    window.jQuery.fn.trigger = this.originalTriggerEvent;
+    this.original.prototype = Object.create(this.originalPrototype);
   },
 
   createTemplate(test, page, template, options) {
