@@ -1,13 +1,13 @@
 import { moduleForProperty } from '../helpers/properties';
 import { create, isVisible } from 'ember-cli-page-object';
 
-moduleForProperty('isVisible', function(test, adapter) {
+moduleForProperty('isVisible', function(test) {
   test('returns true when the element is visible', function(assert) {
     let page = create({
       foo: isVisible('span')
     });
 
-    adapter.createTemplate(this, page, 'Lorem <span>ipsum</span>');
+    this.adapter.createTemplate(this, page, 'Lorem <span>ipsum</span>');
 
     assert.ok(page.foo);
   });
@@ -17,7 +17,7 @@ moduleForProperty('isVisible', function(test, adapter) {
       foo: isVisible('span')
     });
 
-    adapter.createTemplate(this, page, 'Lorem <span style="display:none">ipsum</span>');
+    this.adapter.createTemplate(this, page, 'Lorem <span style="display:none">ipsum</span>');
 
     assert.ok(!page.foo);
   });
@@ -27,7 +27,7 @@ moduleForProperty('isVisible', function(test, adapter) {
       foo: isVisible('span')
     });
 
-    adapter.createTemplate(this, page);
+    this.adapter.createTemplate(this, page);
 
     assert.ok(!page.foo);
   });
@@ -37,7 +37,7 @@ moduleForProperty('isVisible', function(test, adapter) {
       foo: isVisible('span', { scope: '.scope', at: 0 })
     });
 
-    adapter.createTemplate(this, page, `
+    this.adapter.createTemplate(this, page, `
       <div><span style="display:none">lorem</span></div>
       <div class="scope"><span>ipsum</span></div>
     `);
@@ -52,7 +52,7 @@ moduleForProperty('isVisible', function(test, adapter) {
       foo: isVisible('span', { at: 0 })
     });
 
-    adapter.createTemplate(this, page, `
+    this.adapter.createTemplate(this, page, `
       <div><span style="display:none">lorem</span></div>
       <div class="scope"><span>ipsum</span></div>
     `);
@@ -67,7 +67,7 @@ moduleForProperty('isVisible', function(test, adapter) {
       foo: isVisible('span', { resetScope: true, at: 0 })
     });
 
-    adapter.createTemplate(this, page, `
+    this.adapter.createTemplate(this, page, `
       <div><span>lorem</span></div>
       <div class="scope"><span style="display:none">ipsum</span></div>
     `);
@@ -80,7 +80,7 @@ moduleForProperty('isVisible', function(test, adapter) {
       foo: isVisible('span')
     });
 
-    adapter.createTemplate(this, page, `
+    this.adapter.createTemplate(this, page, `
       <span>lorem</span>
       <span> ipsum </span>
       <span>dolor</span>
@@ -95,7 +95,7 @@ moduleForProperty('isVisible', function(test, adapter) {
       foo: isVisible('span', { multiple: true })
     });
 
-    adapter.createTemplate(this, page, `
+    this.adapter.createTemplate(this, page, `
       <span>lorem</span>
       <span style="display:none"> ipsum </span>
       <span>dolor</span>
@@ -109,7 +109,7 @@ moduleForProperty('isVisible', function(test, adapter) {
       foo: isVisible('span', { multiple: true })
     });
 
-    adapter.createTemplate(this, page, `
+    this.adapter.createTemplate(this, page, `
       <span>lorem</span>
       <span>dolor</span>
     `);
@@ -123,7 +123,7 @@ moduleForProperty('isVisible', function(test, adapter) {
       bar: isVisible('em', { at: 2 })
     });
 
-    adapter.createTemplate(this, page, `
+    this.adapter.createTemplate(this, page, `
       <em style="display:none">lorem</em>
       <em style="display:none">ipsum</em>
       <em>dolor</em>
@@ -139,8 +139,8 @@ moduleForProperty('isVisible', function(test, adapter) {
     });
 
     // FIXME the order we call createTemplate here is important! (it shouldn't, that's why there's a FIXME tag)
-    adapter.createTemplate(this, page, '<span>ipsum</span>', { useAlternateContainer: true });
-    adapter.createTemplate(this, page, '<span style="display:none">ipsum</span>');
+    this.adapter.createTemplate(this, page, '<span>ipsum</span>', { useAlternateContainer: true });
+    this.adapter.createTemplate(this, page, '<span style="display:none">ipsum</span>');
 
     assert.ok(page.foo);
   });

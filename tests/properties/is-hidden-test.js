@@ -1,13 +1,13 @@
 import { moduleForProperty } from '../helpers/properties';
 import { create, isHidden } from 'ember-cli-page-object';
 
-moduleForProperty('isHidden', function(test, adapter) {
+moduleForProperty('isHidden', function(test) {
   test('returns true when the element is hidden', function(assert) {
     let page = create({
       foo: isHidden('span')
     });
 
-    adapter.createTemplate(this, page, 'Lorem <span style="display:none">ipsum</span>');
+    this.adapter.createTemplate(this, page, 'Lorem <span style="display:none">ipsum</span>');
 
     assert.ok(page.foo);
   });
@@ -17,7 +17,7 @@ moduleForProperty('isHidden', function(test, adapter) {
       foo: isHidden('span')
     });
 
-    adapter.createTemplate(this, page);
+    this.adapter.createTemplate(this, page);
 
     assert.ok(page.foo);
   });
@@ -27,7 +27,7 @@ moduleForProperty('isHidden', function(test, adapter) {
       foo: isHidden('span')
     });
 
-    adapter.createTemplate(this, page, 'Lorem <span>ipsum</span>');
+    this.adapter.createTemplate(this, page, 'Lorem <span>ipsum</span>');
 
     assert.ok(!page.foo);
   });
@@ -37,7 +37,7 @@ moduleForProperty('isHidden', function(test, adapter) {
       foo: isHidden('span', { scope: '.scope' })
     });
 
-    adapter.createTemplate(this, page, `
+    this.adapter.createTemplate(this, page, `
       <div><span>lorem</span></div>
       <div class="scope"><span style="display:none">ipsum</span></div>
       <div><span>dolor</span></div>
@@ -53,7 +53,7 @@ moduleForProperty('isHidden', function(test, adapter) {
       foo: isHidden('span')
     });
 
-    adapter.createTemplate(this, page, `
+    this.adapter.createTemplate(this, page, `
       <div><span>lorem</span></div>
       <div class="scope"><span style="display:none">ipsum</span></div>
       <div><span>dolor</span></div>
@@ -69,7 +69,7 @@ moduleForProperty('isHidden', function(test, adapter) {
       foo: isHidden('span', { resetScope: true, at: 0 })
     });
 
-    adapter.createTemplate(this, page, `
+    this.adapter.createTemplate(this, page, `
       <div><span style="display:none">lorem</span></div>
       <div class="scope"><span>ipsum</span></div>
       <div><span>dolor</span></div>
@@ -83,7 +83,7 @@ moduleForProperty('isHidden', function(test, adapter) {
       foo: isHidden('em')
     });
 
-    adapter.createTemplate(this, page, `
+    this.adapter.createTemplate(this, page, `
       <em style="display:none">ipsum</em>
       <em style="display:none">dolor</em>
     `);
@@ -97,7 +97,7 @@ moduleForProperty('isHidden', function(test, adapter) {
       foo: isHidden('em', { multiple: true })
     });
 
-    adapter.createTemplate(this, page, `
+    this.adapter.createTemplate(this, page, `
       <em style="display:none">ipsum</em>
       <em style="display:none">dolor</em>
     `);
@@ -110,7 +110,7 @@ moduleForProperty('isHidden', function(test, adapter) {
       foo: isHidden('em', { multiple: true })
     });
 
-    adapter.createTemplate(this, page, `
+    this.adapter.createTemplate(this, page, `
       <em>ipsum</em>
       <em style="display:none">dolor</em>
     `);
@@ -123,7 +123,7 @@ moduleForProperty('isHidden', function(test, adapter) {
       foo: isHidden('em', { at: 2 })
     });
 
-    adapter.createTemplate(this, page, `
+    this.adapter.createTemplate(this, page, `
       <em>lorem</em>
       <em>ipsum</em>
       <em style="display:none">dolor</em>
@@ -138,8 +138,8 @@ moduleForProperty('isHidden', function(test, adapter) {
     });
 
     // FIXME the order we call createTemplate here is important! (it shouldn't, that's why there's a FIXME tag)
-    adapter.createTemplate(this, page, '<span style="display:none">ipsum</span>', { useAlternateContainer: true });
-    adapter.createTemplate(this, page, '<span>ipsum</span>');
+    this.adapter.createTemplate(this, page, '<span style="display:none">ipsum</span>', { useAlternateContainer: true });
+    this.adapter.createTemplate(this, page, '<span>ipsum</span>');
 
     assert.ok(page.foo);
   });

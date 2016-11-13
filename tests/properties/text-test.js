@@ -1,13 +1,13 @@
 import { moduleForProperty } from '../helpers/properties';
 import { create, text } from 'ember-cli-page-object';
 
-moduleForProperty('text', function(test, adapter) {
+moduleForProperty('text', function(test) {
   test('returns the inner text of the element', function(assert) {
     let page = create({
       foo: text('span')
     });
 
-    adapter.createTemplate(this, page, 'Hello <span>world!</span>');
+    this.adapter.createTemplate(this, page, 'Hello <span>world!</span>');
 
     assert.equal(page.foo, 'world!');
   });
@@ -18,7 +18,7 @@ moduleForProperty('text', function(test, adapter) {
       foo: text('span')
     });
 
-    adapter.createTemplate(this, page, '<span>  awesome!  </span>');
+    this.adapter.createTemplate(this, page, '<span>  awesome!  </span>');
 
     assert.equal(page.foo, 'awesome!');
   });
@@ -28,7 +28,7 @@ moduleForProperty('text', function(test, adapter) {
       foo: text('span')
     });
 
-    adapter.createTemplate(this, page, ['<span>', 'Hello', 'multi-line', 'world!', '</span>'].join('\n'));
+    this.adapter.createTemplate(this, page, ['<span>', 'Hello', 'multi-line', 'world!', '</span>'].join('\n'));
 
     assert.equal(page.foo, 'Hello multi-line world!');
   });
@@ -40,7 +40,7 @@ moduleForProperty('text', function(test, adapter) {
       foo: text('span', { normalize: false })
     });
 
-    adapter.createTemplate(this, page, `<span>${denormalizedText}</span>`);
+    this.adapter.createTemplate(this, page, `<span>${denormalizedText}</span>`);
 
     assert.equal(page.foo, denormalizedText);
   });
@@ -50,7 +50,7 @@ moduleForProperty('text', function(test, adapter) {
       foo: text('span')
     });
 
-    adapter.createTemplate(this, page, '<span>This&nbsp;is&nbsp;awesome.</span>');
+    this.adapter.createTemplate(this, page, '<span>This&nbsp;is&nbsp;awesome.</span>');
 
     assert.equal(page.foo, 'This is awesome.');
   });
@@ -60,7 +60,7 @@ moduleForProperty('text', function(test, adapter) {
       foo: text('span')
     });
 
-    adapter.createTemplate(this, page, '<span />');
+    this.adapter.createTemplate(this, page, '<span />');
 
     assert.equal(page.foo, '');
   });
@@ -76,7 +76,7 @@ moduleForProperty('text', function(test, adapter) {
       }
     });
 
-    adapter.createTemplate(this, page);
+    this.adapter.createTemplate(this, page);
 
     assert.throws(() => page.foo.bar.baz.qux, /page\.foo\.bar\.baz\.qux/);
   });
@@ -86,7 +86,7 @@ moduleForProperty('text', function(test, adapter) {
       foo: text('span', { scope: '.scope' })
     });
 
-    adapter.createTemplate(this, page, `
+    this.adapter.createTemplate(this, page, `
       <div><span>lorem</span></div>
       <div class="scope"><span>ipsum</span></div>
       <div><span>dolor</span></div>
@@ -102,7 +102,7 @@ moduleForProperty('text', function(test, adapter) {
       foo: text('span')
     });
 
-    adapter.createTemplate(this, page, `
+    this.adapter.createTemplate(this, page, `
       <div><span>lorem</span></div>
       <div class="scope"><span>ipsum</span></div>
       <div><span>dolor</span></div>
@@ -118,7 +118,7 @@ moduleForProperty('text', function(test, adapter) {
       foo: text('span', { at: 0, resetScope: true })
     });
 
-    adapter.createTemplate(this, page, `
+    this.adapter.createTemplate(this, page, `
       <div><span>lorem</span></div>
       <div class="scope"><span> ipsum </span></div>
       <div><span>dolor</span></div>
@@ -132,7 +132,7 @@ moduleForProperty('text', function(test, adapter) {
       foo: text('span', { at: 1 })
     });
 
-    adapter.createTemplate(this, page, `
+    this.adapter.createTemplate(this, page, `
       <span>lorem</span>
       <span>ipsum</span>
       <span>dolor</span>
@@ -154,7 +154,7 @@ moduleForProperty('text', function(test, adapter) {
       }
     });
 
-    adapter.createTemplate(this, page, '<p>Hello <span>world!</span></p>');
+    this.adapter.createTemplate(this, page, '<p>Hello <span>world!</span></p>');
 
     assert.equal(page.foo, 'Hello world!');
     assert.equal(page.bar.baz, 'world!');
@@ -165,7 +165,7 @@ moduleForProperty('text', function(test, adapter) {
       foo: text('span')
     });
 
-    adapter.createTemplate(this, page, `
+    this.adapter.createTemplate(this, page, `
       <span>lorem</span>
       <span> ipsum </span>
       <span>dolor</span>
@@ -180,7 +180,7 @@ moduleForProperty('text', function(test, adapter) {
       foo: text('li', { multiple: true })
     });
 
-    adapter.createTemplate(this, page, `
+    this.adapter.createTemplate(this, page, `
       <ul>
         <li>lorem</li>
         <li> ipsum </li>
@@ -196,7 +196,7 @@ moduleForProperty('text', function(test, adapter) {
       foo: text('h1', { testContainer: '#alternate-ember-testing' })
     });
 
-    adapter.createTemplate(this, page, '<h1>lorem ipsum</h1>', { useAlternateContainer: true });
+    this.adapter.createTemplate(this, page, '<h1>lorem ipsum</h1>', { useAlternateContainer: true });
 
     assert.equal(page.foo, 'lorem ipsum');
   });

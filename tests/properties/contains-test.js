@@ -1,13 +1,13 @@
 import { moduleForProperty } from '../helpers/properties';
 import { create, contains } from 'ember-cli-page-object';
 
-moduleForProperty('contains', function(test, adapter) {
+moduleForProperty('contains', function(test) {
   test('returns true when the element contains the text', function(assert) {
     let page = create({
       foo: contains('span')
     });
 
-    adapter.createTemplate(this, page, 'Lorem <span>ipsum</span>');
+    this.adapter.createTemplate(this, page, 'Lorem <span>ipsum</span>');
 
     assert.ok(!page.foo('Not here'));
     assert.ok(page.foo('ipsum'));
@@ -18,7 +18,7 @@ moduleForProperty('contains', function(test, adapter) {
       foo: contains('span', { scope: '.scope' })
     });
 
-    adapter.createTemplate(this, page, `
+    this.adapter.createTemplate(this, page, `
       <div><span>lorem</span></div>
       <div class="scope"><span>ipsum</span></div>
       <div><span>dolor</span></div>
@@ -35,7 +35,7 @@ moduleForProperty('contains', function(test, adapter) {
       foo: contains('span')
     });
 
-    adapter.createTemplate(this, page, `
+    this.adapter.createTemplate(this, page, `
       <div><span>lorem</span></div>
       <div class="scope"><span>ipsum</span></div>
       <div><span>dolor</span></div>
@@ -56,7 +56,7 @@ moduleForProperty('contains', function(test, adapter) {
       }
     });
 
-    adapter.createTemplate(this, page);
+    this.adapter.createTemplate(this, page);
 
     assert.throws(() => page.foo.bar.baz.qux('baz'), /page\.foo\.bar\.baz\.qux/);
   });
@@ -68,7 +68,7 @@ moduleForProperty('contains', function(test, adapter) {
       foo: contains('span', { at: 0, resetScope: true })
     });
 
-    adapter.createTemplate(this, page, `
+    this.adapter.createTemplate(this, page, `
       <div><span>lorem</span></div>
       <div class="scope"><span>ipsum</span></div>
       <div><span>dolor</span></div>
@@ -82,7 +82,7 @@ moduleForProperty('contains', function(test, adapter) {
       foo: contains('span')
     });
 
-    adapter.createTemplate(this, page, `
+    this.adapter.createTemplate(this, page, `
       <span>lorem</span>
       <span>lorem</span>
       <span>lorem</span>
@@ -97,7 +97,7 @@ moduleForProperty('contains', function(test, adapter) {
       foo: contains('span', { multiple: true })
     });
 
-    adapter.createTemplate(this, page, `
+    this.adapter.createTemplate(this, page, `
       <span>lorem</span>
       <span>ipsum</span>
       <span>dolor</span>
@@ -111,7 +111,7 @@ moduleForProperty('contains', function(test, adapter) {
       foo: contains('span', { multiple: true })
     });
 
-    adapter.createTemplate(this, page, `
+    this.adapter.createTemplate(this, page, `
       <span>lorem</span>
       <span>lorem</span>
     `);
@@ -124,7 +124,7 @@ moduleForProperty('contains', function(test, adapter) {
       foo: contains('span', { at: 1 })
     });
 
-    adapter.createTemplate(this, page, `
+    this.adapter.createTemplate(this, page, `
       <span>lorem</span>
       <span>ipsum</span>
       <span>dolor</span>
@@ -139,7 +139,7 @@ moduleForProperty('contains', function(test, adapter) {
       foo: contains('span', { testContainer: '#alternate-ember-testing' })
     });
 
-    adapter.createTemplate(this, page, 'Lorem <span>ipsum</span>', { useAlternateContainer: true });
+    this.adapter.createTemplate(this, page, 'Lorem <span>ipsum</span>', { useAlternateContainer: true });
 
     assert.ok(page.foo('ipsum'));
   });

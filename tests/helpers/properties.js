@@ -1,3 +1,4 @@
+import IntegrationExecutionContext from 'ember-cli-page-object/-private/execution_context/integration';
 import { AcceptanceAdapter, moduleForAcceptance, testForAcceptance } from './properties/acceptance-adapter';
 import { IntegrationAdapter, moduleForIntegration, testForIntegration } from './properties/integration-adapter';
 
@@ -6,25 +7,30 @@ export function moduleForProperty(name, cbOrOptions, cb) {
   cb = cb || cbOrOptions;
 
   // Generate acceptance tests
-  let acceptanceAdapter = new AcceptanceAdapter();
   moduleForAcceptance(`Acceptance mode | Property | ${name}`, {
+    beforeEach() {
+      this.adapter = new AcceptanceAdapter();
+    },
+
     afterEach() {
-      acceptanceAdapter.revert();
+      this.adapter.revert();
     }
   });
-  cb(testForAcceptance, acceptanceAdapter);
+  cb(testForAcceptance, 'acceptance');
 
   if (options.acceptanceOnly) {
     return;
   }
 
   // Generate integration tests
-  let integrationAdapter = new IntegrationAdapter();
   moduleForIntegration('html-render', `Integration mode | Property | ${name}`, {
     integration: true,
+    beforeEach() {
+      this.adapter = new IntegrationAdapter(IntegrationExecutionContext);
+    },
     afterEach() {
-      integrationAdapter.revert();
+      this.adapter.revert();
     }
   });
-  cb(testForIntegration, new IntegrationAdapter());
+  cb(testForIntegration, 'integration');
 }

@@ -1,7 +1,7 @@
 import { moduleForProperty } from '../helpers/properties';
 import { create } from 'ember-cli-page-object';
 
-moduleForProperty('dsl', function(test, adapter) {
+moduleForProperty('dsl', function(test) {
   test('generates .isVisible', function(assert) {
     let page = create({
       scope: 'span',
@@ -9,7 +9,7 @@ moduleForProperty('dsl', function(test, adapter) {
       }
     });
 
-    adapter.createTemplate(this, page, 'Lorem <span>ipsum</span>');
+    this.adapter.createTemplate(this, page, 'Lorem <span>ipsum</span>');
 
     assert.ok(page.isVisible, 'page is visible');
     assert.ok(page.foo.isVisible, 'component is visible');
@@ -22,7 +22,7 @@ moduleForProperty('dsl', function(test, adapter) {
       }
     });
 
-    adapter.createTemplate(this, page, 'Lorem <span style="display:none">ipsum</span>');
+    this.adapter.createTemplate(this, page, 'Lorem <span style="display:none">ipsum</span>');
 
     assert.ok(page.isHidden, 'page is hidden');
     assert.ok(page.foo.isHidden, 'component is hidden');
@@ -34,7 +34,7 @@ moduleForProperty('dsl', function(test, adapter) {
         [prop]: 'foo bar'
       });
 
-      adapter.createTemplate(this, page);
+      this.adapter.createTemplate(this, page);
 
       assert.equal(page[prop], 'foo bar');
     });
@@ -48,9 +48,9 @@ moduleForProperty('dsl', function(test, adapter) {
       }
     });
 
-    adapter.createTemplate(this, page, '<button>dummy text</button>');
+    this.adapter.createTemplate(this, page, '<button>dummy text</button>');
 
-    adapter.click(() => {
+    this.adapter.click(() => {
       assert.ok(true, 'click called');
     });
 
@@ -66,9 +66,9 @@ moduleForProperty('dsl', function(test, adapter) {
       }
     });
 
-    adapter.createTemplate(this, page, '<button>dummy text</button>');
+    this.adapter.createTemplate(this, page, '<button>dummy text</button>');
 
-    adapter.click(() => {
+    this.adapter.click(() => {
       assert.ok(true, 'click called');
     });
 
@@ -82,7 +82,7 @@ moduleForProperty('dsl', function(test, adapter) {
       }
     });
 
-    adapter.createTemplate(this, page, 'Ipsum <span>Dolor</span>');
+    this.adapter.createTemplate(this, page, 'Ipsum <span>Dolor</span>');
 
     assert.ok(page.foo.contains('or'), 'contains');
   });
@@ -95,7 +95,7 @@ moduleForProperty('dsl', function(test, adapter) {
       }
     });
 
-    adapter.createTemplate(this, page, `
+    this.adapter.createTemplate(this, page, `
       <div>Lorem</div>
       <div class="scope">Ipsum <span>Dolor</span></div>
     `);
@@ -113,9 +113,9 @@ moduleForProperty('dsl', function(test, adapter) {
       }
     });
 
-    adapter.createTemplate(this, page, '<input name="email">');
+    this.adapter.createTemplate(this, page, '<input name="email">');
 
-    adapter.fillIn((selector, context, text) => {
+    this.adapter.fillIn((selector, context, text) => {
       assert.equal(text, 'lorem ipsum');
     });
 
@@ -131,9 +131,9 @@ moduleForProperty('dsl', function(test, adapter) {
       }
     });
 
-    adapter.createTemplate(this, page, '<input name="email">');
+    this.adapter.createTemplate(this, page, '<input name="email">');
 
-    adapter.fillIn((selector, context, text) => {
+    this.adapter.fillIn((selector, context, text) => {
       assert.equal(text, 'lorem ipsum');
     });
 
@@ -149,7 +149,7 @@ moduleForProperty('dsl', function(test, adapter) {
       }
     });
 
-    adapter.createTemplate(this, page, '<input value="lorem ipsum">');
+    this.adapter.createTemplate(this, page, '<input value="lorem ipsum">');
 
     assert.equal(page.foo.value, 'lorem ipsum');
   });
@@ -159,7 +159,7 @@ moduleForProperty('dsl', function(test, adapter) {
       foo: {}
     });
 
-    adapter.createTemplate(this, page);
+    this.adapter.createTemplate(this, page);
 
     assert.ok(typeof (page.then) === 'function');
     assert.ok(typeof (page.foo.then) === 'function');
