@@ -1,8 +1,8 @@
-import { test } from 'qunit';
-import moduleForAcceptance from '../helpers/module-for-acceptance';
-import { create, collection, fullScope } from 'ember-cli-page-object';
+import { test, module } from 'qunit';
+import { create, collection } from 'ember-cli-page-object';
+import { fullScope } from 'ember-cli-page-object/-private/helpers';
 
-moduleForAcceptance('Acceptance | utils');
+module('Unit | utils');
 
 let page = create({
   scope: '.calculator',

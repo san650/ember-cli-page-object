@@ -20,7 +20,7 @@ import { visitable }   from './-private/properties/visitable';     export { visi
 
 export { findElement } from './-private/extend/find-element';
 export { findElementWithAssert } from './-private/extend/find-element-with-assert';
-export { buildSelector, getContext, fullScope } from './-private/helpers';
+export { buildSelector, getContext } from './-private/helpers';
 
 export default {
   attribute,

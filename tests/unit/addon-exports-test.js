@@ -32,8 +32,7 @@ const HELPER_METHODS = [
   'buildSelector',
   'getContext',
   'findElement',
-  'findElementWithAssert',
-  'fullScope'
+  'findElementWithAssert'
 ];
 
 const EXTEND_METHODS = HELPER_METHODS.concat('registerExecutionContext');
