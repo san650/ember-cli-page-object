@@ -96,7 +96,7 @@ function iteratorMethod() {
  * - `mapBy`
  * - `filter`
  * - `filterBy`
- *
+ * - `forEach`
  *
  * @example
  *
