@@ -1,4 +1,4 @@
-import { assign, buildSelector } from '../helpers';
+import { assign, buildSelector, findClosestValue } from '../helpers';
 import { getExecutionContext } from '../execution_context';
 
 /**
@@ -123,6 +123,7 @@ export function fillable(selector, userOptions = {}) {
 
         return executionContext.runAsync((context) => {
           let fullSelector = buildSelector(this, selector, options);
+          let container = options.testContainer || findClosestValue(this, 'testContainer');
 
           if (clue) {
             fullSelector = ['input', 'textarea', 'select']
@@ -139,7 +140,7 @@ export function fillable(selector, userOptions = {}) {
 
           context.assertElementExists(fullSelector, options);
 
-          context.fillIn(fullSelector, options.testContainer, text);
+          context.fillIn(fullSelector, container, text);
         });
       };
     }

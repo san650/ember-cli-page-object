@@ -1,7 +1,8 @@
 import Ember from 'ember';
 import {
   guardMultiple,
-  buildSelector
+  buildSelector,
+  findClosestValue
 } from '../helpers';
 import { throwBetterError } from '../better-errors';
 
@@ -60,9 +61,10 @@ IntegrationExecutionContext.prototype = {
 
   assertElementExists(selector, options) {
     let result;
+    let container = options.testContainer || findClosestValue(this.pageObjectNode, 'testContainer');
 
-    if (options.testContainer) {
-      result = $(selector, options.testContainer);
+    if (container) {
+      result = $(selector, container);
     } else {
       result = this.testContext.$(selector);
     }
@@ -74,11 +76,12 @@ IntegrationExecutionContext.prototype = {
 
   find(selector, options) {
     let result;
+    let container = options.testContainer || findClosestValue(this.pageObjectNode, 'testContainer');
 
     selector = buildSelector(this.pageObjectNode, selector, options);
 
-    if (options.testContainer) {
-      result = $(selector, options.testContainer);
+    if (container) {
+      result = $(selector, container);
     } else {
       result = this.testContext.$(selector);
     }
@@ -90,11 +93,12 @@ IntegrationExecutionContext.prototype = {
 
   findWithAssert(selector, options) {
     let result;
+    let container = options.testContainer || findClosestValue(this.pageObjectNode, 'testContainer');
 
     selector = buildSelector(this.pageObjectNode, selector, options);
 
-    if (options.testContainer) {
-      result = $(selector, options.testContainer);
+    if (container) {
+      result = $(selector, container);
     } else {
       result = this.testContext.$(selector);
     }

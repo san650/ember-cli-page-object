@@ -182,6 +182,28 @@ moduleForProperty('fillable', function(test) {
     page.foo(expectedText);
   });
 
+  test('looks for elements within test container specified at node level', function(assert) {
+    assert.expect(3);
+
+    let expectedContext = '#alternate-ember-testing';
+    let expectedSelector = 'input';
+    let expectedText = 'foo';
+    let page = create({
+      testContainer: expectedContext,
+      foo: fillable(expectedSelector)
+    });
+
+    this.adapter.createTemplate(this, page, '<input>', { useAlternateContainer: true });
+
+    this.adapter.fillIn((actualSelector, actualContext, actualText) => {
+      assert.equal(actualSelector, expectedSelector);
+      assert.equal(actualContext, expectedContext);
+      assert.equal(actualText, expectedText);
+    });
+
+    page.foo(expectedText);
+  });
+
   test("raises an error when the element doesn't exist", function(assert) {
     assert.expect(1);
 
