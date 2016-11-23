@@ -139,4 +139,15 @@ moduleForProperty('is', function(test) {
 
     assert.equal(page.foo, true);
   });
+
+  test('looks for elements within test container specified at node level', function(assert) {
+    let page = create({
+      testContainer: '#alternate-ember-testing',
+      foo: is('.foo', 'h1')
+    });
+
+    this.adapter.createTemplate(this, page, '<h1 class="foo">lorem ipsum</h1>', { useAlternateContainer: true });
+
+    assert.equal(page.foo, true);
+  });
 });

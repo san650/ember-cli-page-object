@@ -155,4 +155,15 @@ moduleForProperty('notHasClass', function(test) {
 
     assert.ok(!page.foo);
   });
+
+  test('looks for elements within test container specified at node level', function(assert) {
+    let page = create({
+      testContainer: '#alternate-ember-testing',
+      foo: notHasClass('ipsum', '.lorem')
+    });
+
+    this.adapter.createTemplate(this, page, '<span class="lorem ipsum"></span>', { useAlternateContainer: true });
+
+    assert.ok(!page.foo);
+  });
 });

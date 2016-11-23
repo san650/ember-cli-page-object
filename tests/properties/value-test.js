@@ -121,9 +121,20 @@ moduleForProperty('value', function(test) {
     assert.equal(page.foo, 'ipsum');
   });
 
-  test('looks for elements outside the testing container', function(assert) {
+  test('looks for elements within test container specified at the property', function(assert) {
     let page = create({
       foo: value('input', { testContainer: '#alternate-ember-testing' })
+    });
+
+    this.adapter.createTemplate(this, page, '<input value="lorem">', { useAlternateContainer: true });
+
+    assert.equal(page.foo, 'lorem');
+  });
+
+  test('looks for elements within test container specified at the node', function(assert) {
+    let page = create({
+      testContainer: '#alternate-ember-testing',
+      foo: value('input')
     });
 
     this.adapter.createTemplate(this, page, '<input value="lorem">', { useAlternateContainer: true });

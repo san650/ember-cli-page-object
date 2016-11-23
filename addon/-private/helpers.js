@@ -1,7 +1,7 @@
 import Ember from 'ember';
 import Ceibo from 'ceibo';
 
-const { $, assert } = Ember;
+const { $, assert, isPresent } = Ember;
 
 class Selector {
   constructor(node, scope, selector, filters) {
@@ -228,6 +228,28 @@ export function fullScope(node) {
   let scopes = getAllValuesForProperty(node, 'scope');
 
   return scopes.reverse().join(' ');
+}
+
+/**
+ * @public
+ *
+ * Returns the value of property defined on the closest ancestor of given
+ * node.
+ *
+ * @param {Ceibo} node - Node of the tree
+ * @param {String} property - Property to look for
+ * @return {?Object} The value of property on closest node to the given node
+ */
+export function findClosestValue(node, property) {
+  if (isPresent(node[property])) {
+    return node[property];
+  }
+
+  let parent = Ceibo.parent(node);
+
+  if (isPresent(parent)) {
+    return findClosestValue(parent, property);
+  }
 }
 
 export const assign = Ember.assign || Ember.merge;

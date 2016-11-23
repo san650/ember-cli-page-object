@@ -1,6 +1,7 @@
 import {
   guardMultiple,
-  buildSelector
+  buildSelector,
+  findClosestValue
 } from '../helpers';
 import { throwBetterError } from '../better-errors';
 
@@ -48,7 +49,7 @@ AcceptanceExecutionContext.prototype = {
 
   assertElementExists(selector, options) {
     /* global find */
-    let result = find(selector, options.testContainer);
+    let result = find(selector, options.testContainer || findClosestValue(this.pageObjectNode, 'testContainer'));
 
     if (result.length === 0) {
       throwBetterError(this.pageObjectNode, options.pageObjectKey, selector);
@@ -61,7 +62,7 @@ AcceptanceExecutionContext.prototype = {
     selector = buildSelector(this.pageObjectNode, selector, options);
 
     /* global find */
-    result = find(selector, options.testContainer);
+    result = find(selector, options.testContainer || findClosestValue(this.pageObjectNode, 'testContainer'));
 
     guardMultiple(result, selector, options.multiple);
 
@@ -74,7 +75,7 @@ AcceptanceExecutionContext.prototype = {
     selector = buildSelector(this.pageObjectNode, selector, options);
 
     /* global find */
-    result = find(selector, options.testContainer);
+    result = find(selector, options.testContainer || findClosestValue(this.pageObjectNode, 'testContainer'));
 
     if (result.length === 0) {
       throwBetterError(this.pageObjectNode, options.pageObjectKey, selector);

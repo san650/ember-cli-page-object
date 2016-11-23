@@ -144,4 +144,17 @@ moduleForProperty('isVisible', function(test) {
 
     assert.ok(page.foo);
   });
+
+  test('looks for elements within test container specified at node level', function(assert) {
+    let page = create({
+      testContainer: '#alternate-ember-testing',
+      foo: isVisible('span')
+    });
+
+    // FIXME the order we call createTemplate here is important! (it shouldn't, that's why there's a FIXME tag)
+    this.adapter.createTemplate(this, page, '<span>ipsum</span>', { useAlternateContainer: true });
+    this.adapter.createTemplate(this, page, '<span style="display:none">ipsum</span>');
+
+    assert.ok(page.foo);
+  });
 });
