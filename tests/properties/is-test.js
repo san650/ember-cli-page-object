@@ -1,13 +1,13 @@
 import { moduleForProperty } from '../helpers/properties';
 import { create, is } from 'ember-cli-page-object';
 
-moduleForProperty('is', function(test, adapter) {
+moduleForProperty('is', function(test) {
   test('returns is value', function(assert) {
     let page = create({
       foo: is(':checked', ':input')
     });
 
-    adapter.createTemplate(this, page, '<input type="checkbox" checked>');
+    this.adapter.createTemplate(this, page, '<input type="checkbox" checked>');
 
     assert.equal(page.foo, true);
   });
@@ -19,7 +19,7 @@ moduleForProperty('is', function(test, adapter) {
       }
     });
 
-    adapter.createTemplate(this, page);
+    this.adapter.createTemplate(this, page);
 
     assert.throws(() => page.foo.checked, /page\.foo\.checked/);
   });
@@ -29,7 +29,7 @@ moduleForProperty('is', function(test, adapter) {
       foo: is(':checked', ':input', { scope: '.scope' })
     });
 
-    adapter.createTemplate(this, page, `
+    this.adapter.createTemplate(this, page, `
       <div><input></div>
       <div class="scope"><input type="checkbox" checked></div>
       <div><input></div>
@@ -45,7 +45,7 @@ moduleForProperty('is', function(test, adapter) {
       foo: is(':checked', ':input')
     });
 
-    adapter.createTemplate(this, page, `
+    this.adapter.createTemplate(this, page, `
       <div><input></div>
       <div class="scope"><input type="checkbox" checked></div>
       <div><input></div>
@@ -61,7 +61,7 @@ moduleForProperty('is', function(test, adapter) {
       foo: is(':checked', ':input', { resetScope: true })
     });
 
-    adapter.createTemplate(this, page, `
+    this.adapter.createTemplate(this, page, `
       <div class="scope"></div>
       <div><input type="checkbox" checked></div>
     `);
@@ -80,7 +80,7 @@ moduleForProperty('is', function(test, adapter) {
       }
     });
 
-    adapter.createTemplate(this, page);
+    this.adapter.createTemplate(this, page);
 
     assert.throws(() => page.foo.bar.baz.qux, /page\.foo\.bar\.baz\.qux/);
   });
@@ -90,7 +90,7 @@ moduleForProperty('is', function(test, adapter) {
       foo: is(':checked', ':input')
     });
 
-    adapter.createTemplate(this, page, `
+    this.adapter.createTemplate(this, page, `
       <input type="checkbox" checked>
       <input type="checkbox" checked>
     `);
@@ -105,7 +105,7 @@ moduleForProperty('is', function(test, adapter) {
       bar: is(':checked', 'input.bar', { multiple: true })
     });
 
-    adapter.createTemplate(this, page, `
+    this.adapter.createTemplate(this, page, `
       <input class="foo" type="checkbox" checked>
       <input class="foo" type="checkbox" checked="checked">
       <input class="foo" type="checkbox" checked=true>
@@ -122,7 +122,7 @@ moduleForProperty('is', function(test, adapter) {
       foo: is(':checked', ':input', { at: 1 })
     });
 
-    adapter.createTemplate(this, page, `
+    this.adapter.createTemplate(this, page, `
       <input>
       <input type="checkbox" checked>
     `);
@@ -135,7 +135,18 @@ moduleForProperty('is', function(test, adapter) {
       foo: is('.foo', 'h1', { testContainer: '#alternate-ember-testing' })
     });
 
-    adapter.createTemplate(this, page, '<h1 class="foo">lorem ipsum</h1>', { useAlternateContainer: true });
+    this.adapter.createTemplate(this, page, '<h1 class="foo">lorem ipsum</h1>', { useAlternateContainer: true });
+
+    assert.equal(page.foo, true);
+  });
+
+  test('looks for elements within test container specified at node level', function(assert) {
+    let page = create({
+      testContainer: '#alternate-ember-testing',
+      foo: is('.foo', 'h1')
+    });
+
+    this.adapter.createTemplate(this, page, '<h1 class="foo">lorem ipsum</h1>', { useAlternateContainer: true });
 
     assert.equal(page.foo, true);
   });

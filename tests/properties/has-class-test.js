@@ -1,13 +1,13 @@
 import { moduleForProperty } from '../helpers/properties';
 import { create, hasClass } from 'ember-cli-page-object';
 
-moduleForProperty('hasClass', function(test, adapter) {
+moduleForProperty('hasClass', function(test) {
   test('returns true when the element has the class', function(assert) {
     let page = create({
       foo: hasClass('ipsum', 'span')
     });
 
-    adapter.createTemplate(this, page, '<em class="lorem"></em><span class="ipsum"></span>');
+    this.adapter.createTemplate(this, page, '<em class="lorem"></em><span class="ipsum"></span>');
 
     assert.ok(page.foo);
   });
@@ -17,7 +17,7 @@ moduleForProperty('hasClass', function(test, adapter) {
       foo: hasClass('lorem', 'span')
     });
 
-    adapter.createTemplate(this, page, '<em class="lorem"></em><span class="ipsum"></span>');
+    this.adapter.createTemplate(this, page, '<em class="lorem"></em><span class="ipsum"></span>');
 
     assert.ok(!page.foo);
   });
@@ -33,7 +33,7 @@ moduleForProperty('hasClass', function(test, adapter) {
       }
     });
 
-    adapter.createTemplate(this, page);
+    this.adapter.createTemplate(this, page);
 
     assert.throws(() => page.foo.bar.baz.qux, /page\.foo\.bar\.baz\.qux/);
   });
@@ -43,7 +43,7 @@ moduleForProperty('hasClass', function(test, adapter) {
       foo: hasClass('ipsum', 'span', { scope: '.scope' })
     });
 
-    adapter.createTemplate(this, page, `
+    this.adapter.createTemplate(this, page, `
       <div>
         <span class="lorem"></span>
       </div>
@@ -62,7 +62,7 @@ moduleForProperty('hasClass', function(test, adapter) {
       foo: hasClass('ipsum', 'span')
     });
 
-    adapter.createTemplate(this, page, `
+    this.adapter.createTemplate(this, page, `
       <div>
         <span class="lorem"></span>
       </div>
@@ -81,7 +81,7 @@ moduleForProperty('hasClass', function(test, adapter) {
       foo: hasClass('lorem', 'div:first span', { resetScope: true })
     });
 
-    adapter.createTemplate(this, page, `
+    this.adapter.createTemplate(this, page, `
       <div>
         <span class="lorem"></span>
       </div>
@@ -98,7 +98,7 @@ moduleForProperty('hasClass', function(test, adapter) {
       foo: hasClass('lorem', 'span')
     });
 
-    adapter.createTemplate(this, page, `
+    this.adapter.createTemplate(this, page, `
       <span class="lorem"></span>
       <span class="lorem"></span>
     `);
@@ -112,7 +112,7 @@ moduleForProperty('hasClass', function(test, adapter) {
       foo: hasClass('lorem', 'span', { multiple: true })
     });
 
-    adapter.createTemplate(this, page, `
+    this.adapter.createTemplate(this, page, `
       <span class="lorem"></span>
       <span class="ipsum"></span>
     `);
@@ -125,7 +125,7 @@ moduleForProperty('hasClass', function(test, adapter) {
       foo: hasClass('lorem', 'span', { multiple: true })
     });
 
-    adapter.createTemplate(this, page, `
+    this.adapter.createTemplate(this, page, `
       <span class="lorem"></span>
       <span class="lorem"></span>
     `);
@@ -138,7 +138,7 @@ moduleForProperty('hasClass', function(test, adapter) {
       foo: hasClass('ipsum', 'span', { at: 1 })
     });
 
-    adapter.createTemplate(this, page, `
+    this.adapter.createTemplate(this, page, `
       <span class="lorem"></span>
       <span class="ipsum"></span>
     `);
@@ -151,7 +151,18 @@ moduleForProperty('hasClass', function(test, adapter) {
       foo: hasClass('lorem', 'span', { testContainer: '#alternate-ember-testing' })
     });
 
-    adapter.createTemplate(this, page, '<span class="lorem"></span>', { useAlternateContainer: true });
+    this.adapter.createTemplate(this, page, '<span class="lorem"></span>', { useAlternateContainer: true });
+
+    assert.ok(page.foo);
+  });
+
+  test('looks for elements within test container specified at node level', function(assert) {
+    let page = create({
+      testContainer: '#alternate-ember-testing',
+      foo: hasClass('lorem', 'span')
+    });
+
+    this.adapter.createTemplate(this, page, '<span class="lorem"></span>', { useAlternateContainer: true });
 
     assert.ok(page.foo);
   });

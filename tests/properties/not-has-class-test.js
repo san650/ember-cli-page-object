@@ -1,13 +1,13 @@
 import { moduleForProperty } from '../helpers/properties';
 import { create, notHasClass } from 'ember-cli-page-object';
 
-moduleForProperty('notHasClass', function(test, adapter) {
+moduleForProperty('notHasClass', function(test) {
   test('returns false when the element has the class', function(assert) {
     let page = create({
       foo: notHasClass('ipsum', '.lorem')
     });
 
-    adapter.createTemplate(this, page, '<span class="lorem ipsum"></span>');
+    this.adapter.createTemplate(this, page, '<span class="lorem ipsum"></span>');
 
     assert.ok(!page.foo);
   });
@@ -17,7 +17,7 @@ moduleForProperty('notHasClass', function(test, adapter) {
       foo: notHasClass('ipsum', '.lorem')
     });
 
-    adapter.createTemplate(this, page, '<span class="lorem"></span>');
+    this.adapter.createTemplate(this, page, '<span class="lorem"></span>');
 
     assert.ok(page.foo);
   });
@@ -33,7 +33,7 @@ moduleForProperty('notHasClass', function(test, adapter) {
       }
     });
 
-    adapter.createTemplate(this, page);
+    this.adapter.createTemplate(this, page);
 
     assert.throws(() => page.foo.bar.baz.qux, /page\.foo\.bar\.baz\.qux/);
   });
@@ -43,7 +43,7 @@ moduleForProperty('notHasClass', function(test, adapter) {
       foo: notHasClass('lorem', 'span', { scope: '.scope' })
     });
 
-    adapter.createTemplate(this, page, `
+    this.adapter.createTemplate(this, page, `
       <div>
         <span class="lorem"></span>
       </div>
@@ -62,7 +62,7 @@ moduleForProperty('notHasClass', function(test, adapter) {
       foo: notHasClass('lorem', 'span')
     });
 
-    adapter.createTemplate(this, page, `
+    this.adapter.createTemplate(this, page, `
       <div>
         <span class="lorem"></span>
       </div>
@@ -81,7 +81,7 @@ moduleForProperty('notHasClass', function(test, adapter) {
       foo: notHasClass('ipsum', 'span', { resetScope: true, at: 0 })
     });
 
-    adapter.createTemplate(this, page, `
+    this.adapter.createTemplate(this, page, `
       <div>
         <span class="lorem"></span>
       </div>
@@ -98,7 +98,7 @@ moduleForProperty('notHasClass', function(test, adapter) {
       foo: notHasClass('lorem', 'span')
     });
 
-    adapter.createTemplate(this, page, `
+    this.adapter.createTemplate(this, page, `
       <span class="lorem"></span>
       <span class="ipsum"></span>
     `);
@@ -112,7 +112,7 @@ moduleForProperty('notHasClass', function(test, adapter) {
       foo: notHasClass('other-class', 'span', { multiple: true })
     });
 
-    adapter.createTemplate(this, page, `
+    this.adapter.createTemplate(this, page, `
       <span class="lorem"></span>
       <span class="ipsum"></span>
     `);
@@ -125,7 +125,7 @@ moduleForProperty('notHasClass', function(test, adapter) {
       foo: notHasClass('lorem', 'span', { multiple: true })
     });
 
-    adapter.createTemplate(this, page, `
+    this.adapter.createTemplate(this, page, `
       <span class="lorem"></span>
       <span class="ipsum"></span>
     `);
@@ -138,7 +138,7 @@ moduleForProperty('notHasClass', function(test, adapter) {
       foo: notHasClass('lorem', 'span', { at: 1 })
     });
 
-    adapter.createTemplate(this, page, `
+    this.adapter.createTemplate(this, page, `
       <span class="lorem"></span>
       <span class="ipsum"></span>
     `);
@@ -151,7 +151,18 @@ moduleForProperty('notHasClass', function(test, adapter) {
       foo: notHasClass('ipsum', '.lorem', { testContainer: '#alternate-ember-testing' })
     });
 
-    adapter.createTemplate(this, page, '<span class="lorem ipsum"></span>', { useAlternateContainer: true });
+    this.adapter.createTemplate(this, page, '<span class="lorem ipsum"></span>', { useAlternateContainer: true });
+
+    assert.ok(!page.foo);
+  });
+
+  test('looks for elements within test container specified at node level', function(assert) {
+    let page = create({
+      testContainer: '#alternate-ember-testing',
+      foo: notHasClass('ipsum', '.lorem')
+    });
+
+    this.adapter.createTemplate(this, page, '<span class="lorem ipsum"></span>', { useAlternateContainer: true });
 
     assert.ok(!page.foo);
   });

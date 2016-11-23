@@ -1,7 +1,7 @@
 import { moduleForProperty } from '../helpers/properties';
 import { create, clickable } from 'ember-cli-page-object';
 
-moduleForProperty('clickable', function(test, adapter) {
+moduleForProperty('clickable', function(test) {
   test('calls click helper', function(assert) {
     assert.expect(1);
 
@@ -12,9 +12,9 @@ moduleForProperty('clickable', function(test, adapter) {
       foo: clickable(expectedSelector)
     });
 
-    adapter.createTemplate(this, page, '<button>Click me</button>');
+    this.adapter.createTemplate(this, page, '<button>Click me</button>');
 
-    adapter.click((actualSelector) => {
+    this.adapter.click((actualSelector) => {
       assert.equal(actualSelector, expectedSelector);
     });
 
@@ -31,9 +31,9 @@ moduleForProperty('clickable', function(test, adapter) {
       foo: clickable('span', { scope: '.scope' })
     });
 
-    adapter.createTemplate(this, page, '<div class="scope"><span>Click me</span></div>');
+    this.adapter.createTemplate(this, page, '<div class="scope"><span>Click me</span></div>');
 
-    adapter.click((actualSelector) => {
+    this.adapter.click((actualSelector) => {
       assert.equal(actualSelector, expectedSelector);
     });
 
@@ -52,9 +52,9 @@ moduleForProperty('clickable', function(test, adapter) {
       foo: clickable('span')
     });
 
-    adapter.createTemplate(this, page, '<div class="scope"><span>Click me</span></div>');
+    this.adapter.createTemplate(this, page, '<div class="scope"><span>Click me</span></div>');
 
-    adapter.click((actualSelector) => {
+    this.adapter.click((actualSelector) => {
       assert.equal(actualSelector, expectedSelector);
     });
 
@@ -72,9 +72,9 @@ moduleForProperty('clickable', function(test, adapter) {
       foo: clickable('span', { resetScope: true })
     });
 
-    adapter.createTemplate(this, page, '<span>Click me</span>');
+    this.adapter.createTemplate(this, page, '<span>Click me</span>');
 
-    adapter.click((actualSelector) => {
+    this.adapter.click((actualSelector) => {
       assert.equal(actualSelector, expectedSelector);
     });
 
@@ -90,9 +90,9 @@ moduleForProperty('clickable', function(test, adapter) {
       foo: clickable('span')
     });
 
-    adapter.createTemplate(this, page, '<span>Click me</span>');
+    this.adapter.createTemplate(this, page, '<span>Click me</span>');
 
-    adapter.click(function() {});
+    this.adapter.click(function() {});
 
     assert.equal(page.foo(), page);
   });
@@ -107,11 +107,11 @@ moduleForProperty('clickable', function(test, adapter) {
       foo: clickable('span', { at: 3 })
     });
 
-    adapter.click((actualSelector) => {
+    this.adapter.click((actualSelector) => {
       assert.equal(actualSelector, expectedSelector);
     });
 
-    adapter.createTemplate(this, page, '<span></span><span></span><span>Click me</span><span></span>');
+    this.adapter.createTemplate(this, page, '<span></span><span></span><span>Click me</span><span></span>');
 
     page.foo();
   });
@@ -126,9 +126,29 @@ moduleForProperty('clickable', function(test, adapter) {
       foo: clickable('span', { testContainer: expectedContext })
     });
 
-    adapter.createTemplate(this, page, '<span>Click me</span>', { useAlternateContainer: true });
+    this.adapter.createTemplate(this, page, '<span>Click me</span>', { useAlternateContainer: true });
 
-    adapter.click((_, actualContext) => {
+    this.adapter.click((_, actualContext) => {
+      assert.equal(actualContext, expectedContext);
+    });
+
+    page.foo();
+  });
+
+  test('looks for elements within test container specified at node level', function(assert) {
+    assert.expect(1);
+
+    let expectedContext = '#alternate-ember-testing';
+    let page;
+
+    page = create({
+      testContainer: expectedContext,
+      foo: clickable('span')
+    });
+
+    this.adapter.createTemplate(this, page, '<span>Click me</span>', { useAlternateContainer: true });
+
+    this.adapter.click((_, actualContext) => {
       assert.equal(actualContext, expectedContext);
     });
 
@@ -148,9 +168,9 @@ moduleForProperty('clickable', function(test, adapter) {
       }
     });
 
-    adapter.createTemplate(this, page);
+    this.adapter.createTemplate(this, page);
 
-    adapter.throws(assert, function() {
+    this.adapter.throws(assert, function() {
       return page.foo.bar.baz.qux();
     }, /page\.foo\.bar\.baz\.qux/, 'Element not found');
   });
@@ -162,9 +182,9 @@ moduleForProperty('clickable', function(test, adapter) {
       foo: clickable('span')
     });
 
-    adapter.createTemplate(this, page, '<span style="display:none">Click me</span>');
+    this.adapter.createTemplate(this, page, '<span style="display:none">Click me</span>');
 
-    adapter.click(() => {
+    this.adapter.click(() => {
       assert.ok(true, 'Element is clicked');
     });
 
@@ -178,9 +198,9 @@ moduleForProperty('clickable', function(test, adapter) {
       foo: clickable('span', { visible: true })
     });
 
-    adapter.createTemplate(this, page, '<span style="display:none">Click me</span>');
+    this.adapter.createTemplate(this, page, '<span style="display:none">Click me</span>');
 
-    adapter.throws(assert, function() {
+    this.adapter.throws(assert, function() {
       return page.foo();
     }, /page\.foo/, 'Element not found');
   });

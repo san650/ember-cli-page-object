@@ -1,13 +1,13 @@
 import { moduleForProperty } from '../helpers/properties';
 import { create, attribute } from 'ember-cli-page-object';
 
-moduleForProperty('attribute', function(test, adapter) {
+moduleForProperty('attribute', function(test) {
   test('returns attribute value', function(assert) {
     let page = create({
       foo: attribute('placeholder', ':input')
     });
 
-    adapter.createTemplate(this, page, '<input placeholder="a value">');
+    this.adapter.createTemplate(this, page, '<input placeholder="a value">');
 
     assert.equal(page.foo, 'a value');
   });
@@ -17,7 +17,7 @@ moduleForProperty('attribute', function(test, adapter) {
       foo: attribute('placeholder', ':input')
     });
 
-    adapter.createTemplate(this, page, '<input>');
+    this.adapter.createTemplate(this, page, '<input>');
 
     assert.equal(page.foo, null);
   });
@@ -33,7 +33,7 @@ moduleForProperty('attribute', function(test, adapter) {
       }
     });
 
-    adapter.createTemplate(this, page);
+    this.adapter.createTemplate(this, page);
 
     assert.throws(() => page.foo.bar.baz.qux, /page\.foo\.bar\.baz\.qux/);
   });
@@ -43,7 +43,7 @@ moduleForProperty('attribute', function(test, adapter) {
       foo: attribute('placeholder', ':input', { scope: '.scope' })
     });
 
-    adapter.createTemplate(this, page, `
+    this.adapter.createTemplate(this, page, `
       <div><input></div>
       <div class="scope"><input placeholder="a value"></div>
       <div><input></div>
@@ -59,7 +59,7 @@ moduleForProperty('attribute', function(test, adapter) {
       foo: attribute('placeholder', ':input')
     });
 
-    adapter.createTemplate(this, page, `
+    this.adapter.createTemplate(this, page, `
       <div><input></div>
       <div class="scope"><input placeholder="a value"></div>
       <div><input></div>
@@ -75,7 +75,7 @@ moduleForProperty('attribute', function(test, adapter) {
       foo: attribute('placeholder', ':input', { resetScope: true })
     });
 
-    adapter.createTemplate(this, page, `
+    this.adapter.createTemplate(this, page, `
       <div class="scope"></div>
       <div><input placeholder="a value"></div>
     `);
@@ -88,7 +88,7 @@ moduleForProperty('attribute', function(test, adapter) {
       foo: attribute('placeholder', ':input')
     });
 
-    adapter.createTemplate(this, page, `
+    this.adapter.createTemplate(this, page, `
       <input placeholder="a value">
       <input placeholder="other value">
     `);
@@ -102,7 +102,7 @@ moduleForProperty('attribute', function(test, adapter) {
       foo: attribute('placeholder', ':input', { multiple: true })
     });
 
-    adapter.createTemplate(this, page, `
+    this.adapter.createTemplate(this, page, `
       <input placeholder="a value">
       <input placeholder="other value">
     `);
@@ -115,7 +115,7 @@ moduleForProperty('attribute', function(test, adapter) {
       foo: attribute('placeholder', ':input', { at: 1 })
     });
 
-    adapter.createTemplate(this, page, `
+    this.adapter.createTemplate(this, page, `
       <input>
       <input placeholder="a value">
     `);
@@ -128,7 +128,7 @@ moduleForProperty('attribute', function(test, adapter) {
       foo: attribute('placeholder', ':input', { testContainer: '#alternate-ember-testing' })
     });
 
-    adapter.createTemplate(this, page, '<input placeholder="a value">', { useAlternateContainer: true });
+    this.adapter.createTemplate(this, page, '<input placeholder="a value">', { useAlternateContainer: true });
 
     assert.equal(page.foo, 'a value');
   });

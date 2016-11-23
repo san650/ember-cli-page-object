@@ -1,7 +1,7 @@
 import { moduleForProperty } from '../helpers/properties';
 import { create, clickOnText } from 'ember-cli-page-object';
 
-moduleForProperty('clickOnText', function(test, adapter) {
+moduleForProperty('clickOnText', function(test) {
   test('calls click helper', function(assert) {
     assert.expect(2);
 
@@ -13,23 +13,23 @@ moduleForProperty('clickOnText', function(test, adapter) {
       bar: clickOnText('button')
     });
 
-    adapter.createTemplate(this, page, `
+    this.adapter.createTemplate(this, page, `
       <fieldset>
         <button>Lorem</button>
         <button>Ipsum</button>
       </fieldset>
     `);
 
-    adapter.click((actualSelector) => {
+    this.adapter.click((actualSelector) => {
       assert.equal(actualSelector, expectedSelector);
     });
 
-    adapter.andThen(() => {
+    this.adapter.andThen(() => {
       expectedSelector = 'fieldset :contains("Lorem"):last';
       page.foo('Lorem');
     });
 
-    adapter.andThen(() => {
+    this.adapter.andThen(() => {
       expectedSelector = 'button:contains("Lorem")';
       page.bar('Lorem');
     });
@@ -46,7 +46,7 @@ moduleForProperty('clickOnText', function(test, adapter) {
       bar: clickOnText('button', { scope: '.scope' })
     });
 
-    adapter.createTemplate(this, page, `
+    this.adapter.createTemplate(this, page, `
       <div class="scope">
         <fieldset>
           <button>Lorem</button>
@@ -55,16 +55,16 @@ moduleForProperty('clickOnText', function(test, adapter) {
       </div>
     `);
 
-    adapter.click((actualSelector) => {
+    this.adapter.click((actualSelector) => {
       assert.equal(actualSelector, expectedSelector);
     });
 
-    adapter.andThen(() => {
+    this.adapter.andThen(() => {
       expectedSelector = '.scope fieldset :contains("Lorem"):last';
       page.foo('Lorem');
     });
 
-    adapter.andThen(() => {
+    this.adapter.andThen(() => {
       expectedSelector = '.scope button:contains("Lorem")';
       page.bar('Lorem');
     });
@@ -82,7 +82,7 @@ moduleForProperty('clickOnText', function(test, adapter) {
       bar: clickOnText('button')
     });
 
-    adapter.createTemplate(this, page, `
+    this.adapter.createTemplate(this, page, `
       <div class="scope">
         <fieldset>
           <button>Lorem</button>
@@ -91,16 +91,16 @@ moduleForProperty('clickOnText', function(test, adapter) {
       </div>
     `);
 
-    adapter.click((actualSelector) => {
+    this.adapter.click((actualSelector) => {
       assert.equal(actualSelector, expectedSelector);
     });
 
-    adapter.andThen(() => {
+    this.adapter.andThen(() => {
       expectedSelector = '.scope fieldset :contains("Lorem"):last';
       page.foo('Lorem');
     });
 
-    adapter.andThen(() => {
+    this.adapter.andThen(() => {
       expectedSelector = '.scope button:contains("Lorem")';
       page.bar('Lorem');
     });
@@ -118,23 +118,23 @@ moduleForProperty('clickOnText', function(test, adapter) {
       bar: clickOnText('button', { resetScope: true })
     });
 
-    adapter.createTemplate(this, page, `
+    this.adapter.createTemplate(this, page, `
       <fieldset>
         <button>Lorem</button>
         <button>Ipsum</button>
       </fieldset>
     `);
 
-    adapter.click((actualSelector) => {
+    this.adapter.click((actualSelector) => {
       assert.equal(actualSelector, expectedSelector);
     });
 
-    adapter.andThen(() => {
+    this.adapter.andThen(() => {
       expectedSelector = 'fieldset :contains("Lorem"):last';
       page.foo('Lorem');
     });
 
-    adapter.andThen(() => {
+    this.adapter.andThen(() => {
       expectedSelector = 'button:contains("Lorem")';
       page.bar('Lorem');
     });
@@ -151,9 +151,9 @@ moduleForProperty('clickOnText', function(test, adapter) {
       foo: clickOnText()
     });
 
-    adapter.createTemplate(this, page, '<button>dummy text</button>');
+    this.adapter.createTemplate(this, page, '<button>dummy text</button>');
 
-    adapter.click(() => {});
+    this.adapter.click(() => {});
 
     assert.equal(page.foo('dummy text'), page);
   });
@@ -169,7 +169,7 @@ moduleForProperty('clickOnText', function(test, adapter) {
       bar: clickOnText('button', { at: 2 })
     });
 
-    adapter.createTemplate(this, page, `
+    this.adapter.createTemplate(this, page, `
       <fieldset>
         <button>Lorem</button>
         <button>Lorem</button>
@@ -178,16 +178,16 @@ moduleForProperty('clickOnText', function(test, adapter) {
       </fieldset>
     `);
 
-    adapter.click((actualSelector) => {
+    this.adapter.click((actualSelector) => {
       assert.equal(actualSelector, expectedSelector);
     });
 
-    adapter.andThen(() => {
+    this.adapter.andThen(() => {
       expectedSelector = 'fieldset :contains("Lorem"):eq(2)';
       page.foo('Lorem');
     });
 
-    adapter.andThen(() => {
+    this.adapter.andThen(() => {
       expectedSelector = 'button:contains("Lorem"):eq(2)';
       page.bar('Lorem');
     });
@@ -203,13 +203,35 @@ moduleForProperty('clickOnText', function(test, adapter) {
       foo: clickOnText('button', { testContainer: expectedContext })
     });
 
-    adapter.createTemplate(this, page, '<button>Lorem</button>', { useAlternateContainer: true });
+    this.adapter.createTemplate(this, page, '<button>Lorem</button>', { useAlternateContainer: true });
 
-    adapter.click((_, actualContext) => {
+    this.adapter.click((_, actualContext) => {
       assert.equal(actualContext, expectedContext);
     });
 
-    adapter.andThen(() => {
+    this.adapter.andThen(() => {
+      page.foo('Lorem');
+    });
+  });
+
+  test('looks for elements within test container specified at node level', function(assert) {
+    assert.expect(1);
+
+    let expectedContext = '#alternate-ember-testing';
+    let page;
+
+    page = create({
+      testContainer: expectedContext,
+      foo: clickOnText('button')
+    });
+
+    this.adapter.createTemplate(this, page, '<button>Lorem</button>', { useAlternateContainer: true });
+
+    this.adapter.click((_, actualContext) => {
+      assert.equal(actualContext, expectedContext);
+    });
+
+    this.adapter.andThen(() => {
       page.foo('Lorem');
     });
   });
@@ -227,9 +249,9 @@ moduleForProperty('clickOnText', function(test, adapter) {
       }
     });
 
-    adapter.createTemplate(this, page);
+    this.adapter.createTemplate(this, page);
 
-    adapter.throws(assert, function() {
+    this.adapter.throws(assert, function() {
       return page.foo.bar.baz.qux('Lorem');
     }, /page\.foo\.bar\.baz\.qux/, 'Element not found');
   });
@@ -241,9 +263,9 @@ moduleForProperty('clickOnText', function(test, adapter) {
       foo: clickOnText('button')
     });
 
-    adapter.createTemplate(this, page, '<button style="display:none">Click me</button>');
+    this.adapter.createTemplate(this, page, '<button style="display:none">Click me</button>');
 
-    adapter.click(() => {
+    this.adapter.click(() => {
       assert.ok(true, 'Element is clicked');
     });
 
@@ -257,9 +279,9 @@ moduleForProperty('clickOnText', function(test, adapter) {
       foo: clickOnText('button', { visible: true })
     });
 
-    adapter.createTemplate(this, page, '<button style="display:none">Click me</button>');
+    this.adapter.createTemplate(this, page, '<button style="display:none">Click me</button>');
 
-    adapter.throws(assert, function() {
+    this.adapter.throws(assert, function() {
       return page.foo('Click me');
     }, /page\.foo/, 'Element not found');
   });

@@ -1,13 +1,13 @@
 import { moduleForProperty } from '../helpers/properties';
 import { create, count } from 'ember-cli-page-object';
 
-moduleForProperty('count', function(test, adapter) {
+moduleForProperty('count', function(test) {
   test('returns the number of elements that match the selector', function(assert) {
     let page = create({
       foo: count('span')
     });
 
-    adapter.createTemplate(this, page, `
+    this.adapter.createTemplate(this, page, `
       <span></span>
       <span></span>
     `);
@@ -20,7 +20,7 @@ moduleForProperty('count', function(test, adapter) {
       foo: count('span')
     });
 
-    adapter.createTemplate(this, page);
+    this.adapter.createTemplate(this, page);
 
     assert.equal(page.foo, 0);
   });
@@ -30,7 +30,7 @@ moduleForProperty('count', function(test, adapter) {
       foo: count('span', { scope: '.scope' })
     });
 
-    adapter.createTemplate(this, page, `
+    this.adapter.createTemplate(this, page, `
       <div><span></span></div>
       <div class="scope"><span></span><span></span></div>
     `);
@@ -45,7 +45,7 @@ moduleForProperty('count', function(test, adapter) {
       foo: count('span')
     });
 
-    adapter.createTemplate(this, page, `
+    this.adapter.createTemplate(this, page, `
       <div><span></span></div>
       <div class="scope"><span></span><span></span></div>
     `);
@@ -60,7 +60,7 @@ moduleForProperty('count', function(test, adapter) {
       foo: count('span', { resetScope: true })
     });
 
-    adapter.createTemplate(this, page, `
+    this.adapter.createTemplate(this, page, `
       <div class="scope"></div>
       <div><span></span></div>
     `);
@@ -75,7 +75,7 @@ moduleForProperty('count', function(test, adapter) {
       foo: count('span', { multiple: false })
     });
 
-    adapter.createTemplate(this, page, `
+    this.adapter.createTemplate(this, page, `
       <div><span></span></div>
       <div class="scope"><span></span><span></span></div>
     `);
@@ -88,7 +88,18 @@ moduleForProperty('count', function(test, adapter) {
       foo: count('span', { testContainer: '#alternate-ember-testing' })
     });
 
-    adapter.createTemplate(this, page, '<span></span><span></span>', { useAlternateContainer: true });
+    this.adapter.createTemplate(this, page, '<span></span><span></span>', { useAlternateContainer: true });
+
+    assert.equal(page.foo, 2);
+  });
+
+  test('looks for elements within test container specified at node level', function(assert) {
+    let page = create({
+      testContainer: '#alternate-ember-testing',
+      foo: count('span')
+    });
+
+    this.adapter.createTemplate(this, page, '<span></span><span></span>', { useAlternateContainer: true });
 
     assert.equal(page.foo, 2);
   });
