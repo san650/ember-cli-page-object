@@ -2,123 +2,68 @@
 module.exports = {
   scenarios: [
     {
-      name: "ember-1-12",
+      name: 'ember-1.12',
       bower: {
         dependencies: {
-          "ember": "~1.12.0"
+          'ember': '~1.12.0'
         },
         resolutions: {
-          "ember": "~1.12.0"
+          'ember': '~1.12.0'
         }
       }
     },
     {
-      name: "ember-1-13",
+      name: 'ember-1.13',
       bower: {
         dependencies: {
-          "ember": "~1.13.0"
+          'ember': '~1.13.0'
         },
         resolutions: {
-          "ember": "~1.13.0"
+          'ember': '~1.13.0'
         }
       }
     },
     {
-      name: "ember-2-0",
+      name: 'ember-lts-2.4',
       bower: {
         dependencies: {
-          "ember": "~2.0.0"
+          'ember': 'components/ember#lts-2-4'
         },
         resolutions: {
-          "ember": "~2.0.0"
+          'ember': 'lts-2-4'
         }
       }
     },
     {
-      name: "ember-2-1",
+      name: 'ember-release',
       bower: {
         dependencies: {
-          "ember": "~2.1.0"
+          'ember': 'components/ember#release'
         },
         resolutions: {
-          "ember": "~2.1.0"
+          'ember': 'release'
         }
       }
     },
     {
-      name: "ember-2-2",
+      name: 'ember-beta',
       bower: {
         dependencies: {
-          "ember": "~2.2.0"
+          'ember': 'components/ember#beta'
         },
         resolutions: {
-          "ember": "~2.2.0"
+          'ember': 'beta'
         }
       }
     },
     {
-      name: "ember-2-3",
+      name: 'ember-canary',
       bower: {
         dependencies: {
-          "ember": "~2.3.0"
+          'ember': 'components/ember#canary'
         },
         resolutions: {
-          "ember": "~2.3.0"
-        }
-      }
-    },
-    {
-      name: "ember-2-4",
-      bower: {
-        dependencies: {
-          "ember": "~2.4.0"
-        },
-        resolutions: {
-          "ember": "~2.4.0"
-        }
-      }
-    },
-    {
-      name: "ember-2-5",
-      bower: {
-        dependencies: {
-          "ember": "~2.5.0"
-        },
-        resolutions: {
-          "ember": "~2.5.0"
-        }
-      }
-    },
-    {
-      name: "ember-release",
-      bower: {
-        dependencies: {
-          "ember": "components/ember#release"
-        },
-        resolutions: {
-          "ember": "release"
-        }
-      }
-    },
-    {
-      name: "ember-beta",
-      bower: {
-        dependencies: {
-          "ember": "components/ember#beta"
-        },
-        resolutions: {
-          "ember": "beta"
-        }
-      }
-    },
-    {
-      name: "ember-canary",
-      bower: {
-        dependencies: {
-          "ember": "components/ember#canary"
-        },
-        resolutions: {
-          "ember": "canary"
+          'ember': 'canary'
         }
       }
     }

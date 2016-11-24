@@ -21,6 +21,8 @@ moduleForProperty('fillable', function(test) {
     this.adapter.createTemplate(this, page, '<input>');
 
     page.foo(expectedText);
+
+    return this.adapter.wait();
   });
 
   test('looks for inputs with data-test="clue" attributes', function(assert) {
@@ -58,6 +60,8 @@ moduleForProperty('fillable', function(test) {
     });
 
     page.foo(clue, expectedText);
+
+    return this.adapter.wait();
   });
 
   test('looks for elements inside the scope', function(assert) {
@@ -74,6 +78,8 @@ moduleForProperty('fillable', function(test) {
     });
 
     page.foo('dummy text');
+
+    return this.adapter.wait();
   });
 
   test("looks for elements inside page's scope", function(assert) {
@@ -92,6 +98,8 @@ moduleForProperty('fillable', function(test) {
     this.adapter.createTemplate(this, page, '<div class="scope"><input></div>');
 
     page.foo('dummy text');
+
+    return this.adapter.wait();
   });
 
   test('resets scope', function(assert) {
@@ -109,6 +117,8 @@ moduleForProperty('fillable', function(test) {
     this.adapter.createTemplate(this, page, '<input>');
 
     page.foo('dummy text');
+
+    return this.adapter.wait();
   });
 
   test('returns target object', function(assert) {
@@ -140,6 +150,8 @@ moduleForProperty('fillable', function(test) {
     this.adapter.createTemplate(this, page, '<input><input><input><input>');
 
     page.foo();
+
+    return this.adapter.wait();
   });
 
   test('is aliased to selectable', function(assert) {
@@ -159,6 +171,8 @@ moduleForProperty('fillable', function(test) {
     });
 
     page.foo(expectedText);
+
+    return this.adapter.wait();
   });
 
   test('looks for elements outside the testing container', function(assert) {
@@ -180,6 +194,8 @@ moduleForProperty('fillable', function(test) {
     });
 
     page.foo(expectedText);
+
+    return this.adapter.wait();
   });
 
   test('looks for elements within test container specified at node level', function(assert) {
@@ -202,6 +218,8 @@ moduleForProperty('fillable', function(test) {
     });
 
     page.foo(expectedText);
+
+    return this.adapter.wait();
   });
 
   test("raises an error when the element doesn't exist", function(assert) {

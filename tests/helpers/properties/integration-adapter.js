@@ -57,5 +57,7 @@ IntegrationAdapter.prototype = {
 
   andThen(fn) {
     fn();
-  }
+  },
+
+  wait() {}
 };

@@ -68,6 +68,8 @@ moduleForProperty('clickOnText', function(test) {
       expectedSelector = '.scope button:contains("Lorem")';
       page.bar('Lorem');
     });
+
+    return this.adapter.wait();
   });
 
   test("looks for elements inside page's scope", function(assert) {
@@ -270,6 +272,8 @@ moduleForProperty('clickOnText', function(test) {
     });
 
     page.foo('Click me');
+
+    return this.adapter.wait();
   });
 
   test('raises an error when the element is not visible and `visible` is true', function(assert) {

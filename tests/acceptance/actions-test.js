@@ -59,6 +59,8 @@ test('action chains act like a promise', function(assert) {
     .then(function() {
       assert.equal(page.screen, '12');
     });
+
+  return wait();
 });
 
 test('fill in by attribute', function(assert) {

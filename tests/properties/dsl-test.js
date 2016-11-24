@@ -55,6 +55,8 @@ moduleForProperty('dsl', function(test) {
     });
 
     page.foo.clickOn('dummy text');
+
+    return this.adapter.wait();
   });
 
   test('generates .click', function(assert) {
@@ -73,6 +75,8 @@ moduleForProperty('dsl', function(test) {
     });
 
     page.foo.click();
+
+    return this.adapter.wait();
   });
 
   test('generates .contains', function(assert) {
@@ -120,6 +124,8 @@ moduleForProperty('dsl', function(test) {
     });
 
     page.foo.fillIn('lorem ipsum');
+
+    return this.adapter.wait();
   });
 
   test('generates .select', function(assert) {
@@ -138,6 +144,8 @@ moduleForProperty('dsl', function(test) {
     });
 
     page.foo.select('lorem ipsum');
+
+    return this.adapter.wait();
   });
 
   test('generates .value', function(assert) {
