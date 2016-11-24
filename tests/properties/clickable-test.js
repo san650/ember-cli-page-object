@@ -19,6 +19,8 @@ moduleForProperty('clickable', function(test) {
     });
 
     page.foo();
+
+    return this.adapter.wait();
   });
 
   test('looks for elements inside the scope', function(assert) {
@@ -38,6 +40,8 @@ moduleForProperty('clickable', function(test) {
     });
 
     page.foo();
+
+    return this.adapter.wait();
   });
 
   test("looks for elements inside page's scope", function(assert) {
@@ -59,6 +63,8 @@ moduleForProperty('clickable', function(test) {
     });
 
     page.foo();
+
+    return this.adapter.wait();
   });
 
   test('resets scope', function(assert) {
@@ -79,6 +85,8 @@ moduleForProperty('clickable', function(test) {
     });
 
     page.foo();
+
+    return this.adapter.wait();
   });
 
   test('returns target object', function(assert) {
@@ -114,6 +122,8 @@ moduleForProperty('clickable', function(test) {
     this.adapter.createTemplate(this, page, '<span></span><span></span><span>Click me</span><span></span>');
 
     page.foo();
+
+    return this.adapter.wait();
   });
 
   test('looks for elements outside the testing container', function(assert) {
@@ -133,6 +143,8 @@ moduleForProperty('clickable', function(test) {
     });
 
     page.foo();
+
+    return this.adapter.wait();
   });
 
   test('looks for elements within test container specified at node level', function(assert) {
@@ -153,6 +165,8 @@ moduleForProperty('clickable', function(test) {
     });
 
     page.foo();
+
+    return this.adapter.wait();
   });
 
   test("raises an error when the element doesn't exist", function(assert) {
@@ -173,6 +187,8 @@ moduleForProperty('clickable', function(test) {
     this.adapter.throws(assert, function() {
       return page.foo.bar.baz.qux();
     }, /page\.foo\.bar\.baz\.qux/, 'Element not found');
+
+    return this.adapter.wait();
   });
 
   test("doesn't raise an error when the element is not visible and `visible` is not set", function(assert) {
@@ -189,6 +205,8 @@ moduleForProperty('clickable', function(test) {
     });
 
     page.foo();
+
+    return this.adapter.wait();
   });
 
   test('raises an error when the element is not visible and `visible` is true', function(assert) {

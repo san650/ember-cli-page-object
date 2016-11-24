@@ -18,6 +18,8 @@ moduleForProperty('triggerable', function(test) {
     });
 
     page.foo();
+
+    return this.adapter.wait();
   });
 
   test("calls Ember's triggerEvent helper with event options", function(assert) {
@@ -37,6 +39,8 @@ moduleForProperty('triggerable', function(test) {
     });
 
     page.foo();
+
+    return this.adapter.wait();
   });
 
   test('looks for elements inside the scope', function(assert) {
@@ -53,6 +57,8 @@ moduleForProperty('triggerable', function(test) {
     });
 
     page.foo();
+
+    return this.adapter.wait();
   });
 
   test("looks for elements inside page's scope", function(assert) {
@@ -70,6 +76,8 @@ moduleForProperty('triggerable', function(test) {
     });
 
     page.foo();
+
+    return this.adapter.wait();
   });
 
   test('resets scope', function(assert) {
@@ -87,6 +95,8 @@ moduleForProperty('triggerable', function(test) {
     });
 
     page.foo();
+
+    return this.adapter.wait();
   });
 
   test('returns target object', function(assert) {
@@ -116,6 +126,8 @@ moduleForProperty('triggerable', function(test) {
     });
 
     page.foo();
+
+    return this.adapter.wait();
   });
 
   test('looks for elements outside the testing container', function(assert) {
@@ -132,6 +144,8 @@ moduleForProperty('triggerable', function(test) {
     });
 
     page.foo();
+
+    return this.adapter.wait();
   });
 
   test('looks for elements within test container specified at node level', function(assert) {
@@ -149,6 +163,8 @@ moduleForProperty('triggerable', function(test) {
     });
 
     page.foo();
+
+    return this.adapter.wait();
   });
 
   test("raises an error when the element doesn't exist", function(assert) {

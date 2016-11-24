@@ -65,6 +65,10 @@ AcceptanceAdapter.prototype = {
 
   andThen(fn) {
     andThen(fn);
+  },
+
+  wait() {
+    return wait();
   }
 };
 
