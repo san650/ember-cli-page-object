@@ -43,7 +43,7 @@ import { getExecutionContext } from '../execution_context';
  * // Lorem <strong>ipsum</strong>
  *
  * const page = PageObject.create({
- *   spanIsVisible: PageObject.isHidden('span')
+ *   spanIsVisible: PageObject.isVisible('span')
  * });
  *
  * // returns false when element doesn't exist in DOM
@@ -59,7 +59,7 @@ import { getExecutionContext } from '../execution_context';
  * // </div>
  *
  * const page = PageObject.create({
- *   spanIsVisible: PageObject.isHidden('span', { scope: '.scope' })
+ *   spanIsVisible: PageObject.isVisible('span', { scope: '.scope' })
  * });
  *
  * assert.ok(page.spanIsVisible);
@@ -75,7 +75,7 @@ import { getExecutionContext } from '../execution_context';
  *
  * const page = PageObject.create({
  *   scope: '.scope',
- *   spanIsVisible: PageObject.isHidden('span')
+ *   spanIsVisible: PageObject.isVisible('span')
  * });
  *
  * assert.ok(page.spanIsVisible);
