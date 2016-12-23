@@ -76,7 +76,12 @@
   "dependencies": {
     "ceibo": "~2.0.0",
     "ember-cli-babel": "^5.1.7",
-    "ember-cli-node-assets": "^0.1.2"
+    "ember-cli-get-component-path-option": "^1.0.0",
+    "ember-cli-node-assets": "^0.1.2",
+    "ember-cli-normalize-entity-name": "^1.0.0",
+    "ember-cli-path-utils": "^1.0.0",
+    "ember-cli-string-utils": "^1.0.0",
+    "ember-cli-valid-component-name": "^1.0.0"
   },
   "ember-addon": {
     "configPath": "tests/dummy/config"
