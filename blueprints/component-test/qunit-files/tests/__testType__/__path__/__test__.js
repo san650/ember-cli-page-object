@@ -1,10 +1,23 @@
 import { moduleForComponent, test } from 'ember-qunit';<% if (testType === 'integration') { %>
-import hbs from 'htmlbars-inline-precompile';<% } %>
+import hbs from 'htmlbars-inline-precompile';<% } %><% if (usePageObject) { %>
+import {
+  create
+} from 'ember-cli-page-object';
+import <%= camelizedModuleName %> from '<%= pageObjectPath %>';
+
+const component = create(<%= camelizedModuleName %>);<% } %>
 
 moduleForComponent('<%= componentPathName %>', '<%= friendlyTestDescription %>', {
   <% if (testType === 'integration' ) { %>integration: true<% } else if(testType === 'unit') { %>// Specify the other units that are required for this test
   // needs: ['component:foo', 'helper:bar'],
-  unit: true<% } %>
+  unit: true<% } %><% if (usePageObject) { %>,
+  beforeEach() {
+    component.setContext(this);
+  },
+
+  afterEach() {
+    component.removeContext();
+  }<% } %>
 });
 
 test('it renders', function(assert) {
@@ -14,7 +27,7 @@ test('it renders', function(assert) {
 
   this.render(hbs`{{<%= componentPathName %>}}`);
 
-  assert.equal(this.$().text().trim(), '');
+  <% if (usePageObject) { %>assert.equal(component.text, '');<% } else { %>assert.equal(this.$().text().trim(), '');<% } %>
 
   // Template block usage:
   this.render(hbs`
@@ -23,7 +36,7 @@ test('it renders', function(assert) {
     {{/<%= componentPathName %>}}
   `);
 
-  assert.equal(this.$().text().trim(), 'template block text');<% } else if(testType === 'unit') { %>
+  <% if (usePageObject) { %>assert.equal(component.text, 'template block text');<% } else { %>assert.equal(this.$().text().trim(), 'template block text');<% } } else if(testType === 'unit') { %>
   // Creates the component instance
   /*let component =*/ this.subject();
   // Renders the component to the page
