@@ -84,6 +84,10 @@
     "ember-cli-valid-component-name": "^1.0.0"
   },
   "ember-addon": {
-    "configPath": "tests/dummy/config"
+    "configPath": "tests/dummy/config",
+    "after": [
+      "ember-cli-legacy-blueprints",
+      "ember-source"
+    ]
   }
 }

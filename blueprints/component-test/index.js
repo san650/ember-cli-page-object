@@ -8,7 +8,7 @@ var pathUtil      = require('ember-cli-path-utils');
 var Promise       = require('rsvp').Promise;
 
 module.exports = useTestFrameworkDetector({
-  description: 'Generates a component integration or unit test.',
+  description: 'Generates a component integration or unit test, with optional support for page objects',
 
   availableOptions: [
     {
@@ -35,7 +35,10 @@ module.exports = useTestFrameworkDetector({
         return options.locals.testType || 'integration';
       },
       __path__: function(options) {
-        return options.locals.path
+        if (options.pod) {
+          return path.join(options.podPath, options.locals.path, options.dasherizedModuleName);
+        }
+        return 'components';
       }
     };
   },
@@ -46,7 +49,9 @@ module.exports = useTestFrameworkDetector({
     var friendlyTestDescription = testInfo.description(options.entity.name, 'Integration', 'Component');
     var usePageObject = testType === 'integration' && options.pageObject;
     var localPath = getPathOption(options);
-    var fullPath = options.pod ? path.join(options.podPath, localPath, options.dasherizedModuleName) : 'components';
+    var podModulePrefix = this.project.config().podModulePrefix || '';
+    var podPath = podModulePrefix.substr(podModulePrefix.lastIndexOf('/') + 1);
+    var fullPath = options.pod ? path.join(podPath, localPath, dasherizedModuleName) : 'components';
     var pageObjectPath = path.join(pathUtil.getRelativeParentPath(fullPath), '..', 'pages', 'components', componentPathName);
 
     if (options.pod && options.path && options.path !== 'components') {
@@ -58,7 +63,7 @@ module.exports = useTestFrameworkDetector({
     }
 
     return {
-      path: fullPath,
+      path: localPath,
       testType: testType,
       componentPathName: componentPathName,
       friendlyTestDescription: friendlyTestDescription,
