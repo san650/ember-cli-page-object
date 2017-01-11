@@ -66,6 +66,13 @@ module.exports = {
           'ember': 'canary'
         }
       }
+    },
+    {
+      name: 'node-tests',
+      command: 'npm run nodetest',
+      bower: {
+        dependencies: {}
+      }
     }
   ]
 };
