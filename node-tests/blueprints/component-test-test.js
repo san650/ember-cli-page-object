@@ -20,8 +20,8 @@ describe('Acceptance: ember generate and destroy component-test', function() {
       var args = ['component-test', 'x-foo'];
 
       return emberNew()
-        .then(() => emberGenerateDestroy(args, _file => {
-          expect(_file('tests/integration/components/x-foo-test.js'))
+        .then(() => emberGenerateDestroy(args, file => {
+          expect(file('tests/integration/components/x-foo-test.js'))
             .to.contain("import { moduleForComponent, test } from 'ember-qunit';")
             .to.contain("import hbs from 'htmlbars-inline-precompile';")
             .to.contain("moduleForComponent('x-foo'")
@@ -36,8 +36,8 @@ describe('Acceptance: ember generate and destroy component-test', function() {
 
       return emberNew()
         .then(() => setupPodConfig({ podModulePrefix: true }))
-        .then(() => emberGenerateDestroy(args, _file => {
-          expect(_file('tests/integration/pods/components/x-foo/component-test.js'))
+        .then(() => emberGenerateDestroy(args, file => {
+          expect(file('tests/integration/pods/components/x-foo/component-test.js'))
             .to.contain("import { moduleForComponent, test } from 'ember-qunit';")
             .to.contain("import hbs from 'htmlbars-inline-precompile';")
             .to.contain("moduleForComponent('x-foo'")
@@ -51,8 +51,8 @@ describe('Acceptance: ember generate and destroy component-test', function() {
       var args = ['component-test', 'x-foo', '--unit'];
 
       return emberNew()
-        .then(() => emberGenerateDestroy(args, _file => {
-          expect(_file('tests/unit/components/x-foo-test.js'))
+        .then(() => emberGenerateDestroy(args, file => {
+          expect(file('tests/unit/components/x-foo-test.js'))
             .to.contain("import { moduleForComponent, test } from 'ember-qunit';")
             .to.contain("moduleForComponent('x-foo'")
             .to.contain("unit: true");
@@ -63,13 +63,13 @@ describe('Acceptance: ember generate and destroy component-test', function() {
       var args = ['component-test', 'x-foo', '--dummy'];
 
       return emberNew({ target: 'addon' })
-        .then(() => emberGenerateDestroy(args, _file => {
-          expect(_file('tests/integration/components/x-foo-test.js'))
+        .then(() => emberGenerateDestroy(args, file => {
+          expect(file('tests/integration/components/x-foo-test.js'))
             .to.contain("import { moduleForComponent, test } from 'ember-qunit';")
             .to.contain("import hbs from 'htmlbars-inline-precompile';")
             .to.contain("moduleForComponent('x-foo'");
 
-          expect(_file('app/component-test/x-foo.js'))
+          expect(file('app/component-test/x-foo.js'))
             .to.not.exist;
         }));
     });
@@ -83,8 +83,8 @@ describe('Acceptance: ember generate and destroy component-test', function() {
           {name: 'ember-cli-mocha', dev: true}
         ]))
         .then(() => generateFakePackageManifest('ember-cli-mocha', '0.11.0'))
-        .then(() => emberGenerateDestroy(args, _file => {
-          expect(_file('tests/integration/components/x-foo-test.js'))
+        .then(() => emberGenerateDestroy(args, file => {
+          expect(file('tests/integration/components/x-foo-test.js'))
             .to.contain("import { describeComponent, it } from 'ember-mocha';")
             .to.contain("import hbs from 'htmlbars-inline-precompile';")
             .to.contain("describeComponent('x-foo', 'Integration | Component | x foo'")
@@ -103,8 +103,8 @@ describe('Acceptance: ember generate and destroy component-test', function() {
           {name: 'ember-cli-mocha', dev: true}
         ]))
         .then(() => generateFakePackageManifest('ember-cli-mocha', '0.11.0'))
-        .then(() => emberGenerateDestroy(args, _file => {
-          expect(_file('tests/unit/components/x-foo-test.js'))
+        .then(() => emberGenerateDestroy(args, file => {
+          expect(file('tests/unit/components/x-foo-test.js'))
             .to.contain("import { describeComponent, it } from 'ember-mocha';")
             .to.contain("describeComponent('x-foo', 'Unit | Component | x foo")
             .to.contain("unit: true");
@@ -120,8 +120,8 @@ describe('Acceptance: ember generate and destroy component-test', function() {
           {name: 'ember-cli-mocha', dev: true}
         ]))
         .then(() => generateFakePackageManifest('ember-cli-mocha', '0.12.0'))
-        .then(() => emberGenerateDestroy(args, _file => {
-          expect(_file('tests/integration/components/x-foo-test.js'))
+        .then(() => emberGenerateDestroy(args, file => {
+          expect(file('tests/integration/components/x-foo-test.js'))
             .to.contain("import { describe, it } from 'mocha';")
             .to.contain("import { setupComponentTest } from 'ember-mocha';")
             .to.contain("import hbs from 'htmlbars-inline-precompile';")
@@ -142,8 +142,8 @@ describe('Acceptance: ember generate and destroy component-test', function() {
           {name: 'ember-cli-mocha', dev: true}
         ]))
         .then(() => generateFakePackageManifest('ember-cli-mocha', '0.12.0'))
-        .then(() => emberGenerateDestroy(args, _file => {
-          expect(_file('tests/unit/components/x-foo-test.js'))
+        .then(() => emberGenerateDestroy(args, file => {
+          expect(file('tests/unit/components/x-foo-test.js'))
             .to.contain("import { describe, it } from 'mocha';")
             .to.contain("import { setupComponentTest } from 'ember-mocha';")
             .to.contain("describe('Unit | Component | x foo', function() {")
@@ -160,8 +160,8 @@ describe('Acceptance: ember generate and destroy component-test', function() {
       var args = ['component-test', 'x-foo', '--page-object'];
 
       return emberNew()
-        .then(() => emberGenerateDestroy(args, _file => {
-          expect(_file('tests/integration/components/x-foo-test.js'))
+        .then(() => emberGenerateDestroy(args, file => {
+          expect(file('tests/integration/components/x-foo-test.js'))
             .to.contain("import { moduleForComponent, test } from 'ember-qunit';")
             .to.contain("import hbs from 'htmlbars-inline-precompile';")
             .to.contain("import xFoo from '../../pages/components/x-foo';")
@@ -181,8 +181,8 @@ describe('Acceptance: ember generate and destroy component-test', function() {
 
       return emberNew()
         .then(() => setupPodConfig({ podModulePrefix: true }))
-        .then(() => emberGenerateDestroy(args, _file => {
-          expect(_file('tests/integration/pods/components/x-foo/component-test.js'))
+        .then(() => emberGenerateDestroy(args, file => {
+          expect(file('tests/integration/pods/components/x-foo/component-test.js'))
             .to.contain("import { moduleForComponent, test } from 'ember-qunit';")
             .to.contain("import hbs from 'htmlbars-inline-precompile';")
             .to.contain("import xFoo from '../../../../pages/components/x-foo';")
@@ -194,6 +194,10 @@ describe('Acceptance: ember generate and destroy component-test', function() {
             .to.contain("component.removeContext();")
             .to.contain("{{x-foo}}")
             .to.contain("{{#x-foo}}");
+
+          expect(file('tests/pages/components/x-foo.js'))
+            .to.contain("from 'ember-cli-page-object';")
+            .to.contain('export default {');
         }));
     });
 
@@ -206,8 +210,8 @@ describe('Acceptance: ember generate and destroy component-test', function() {
           {name: 'ember-cli-mocha', dev: true}
         ]))
         .then(() => generateFakePackageManifest('ember-cli-mocha', '0.11.0'))
-        .then(() => emberGenerateDestroy(args, _file => {
-          expect(_file('tests/integration/components/x-foo-test.js'))
+        .then(() => emberGenerateDestroy(args, file => {
+          expect(file('tests/integration/components/x-foo-test.js'))
             .to.contain("import { describeComponent, it } from 'ember-mocha';")
             .to.contain("import hbs from 'htmlbars-inline-precompile';")
             .to.contain("import { beforeEach, afterEach } from 'mocha';")
@@ -219,6 +223,10 @@ describe('Acceptance: ember generate and destroy component-test', function() {
             .to.contain("component.removeContext();")
             .to.contain("{{x-foo}}")
             .to.contain("{{#x-foo}}");
+
+          expect(file('tests/pages/components/x-foo.js'))
+            .to.contain("from 'ember-cli-page-object';")
+            .to.contain('export default {');
         }));
     });
 
@@ -231,8 +239,8 @@ describe('Acceptance: ember generate and destroy component-test', function() {
           {name: 'ember-cli-mocha', dev: true}
         ]))
         .then(() => generateFakePackageManifest('ember-cli-mocha', '0.12.0'))
-        .then(() => emberGenerateDestroy(args, _file => {
-          expect(_file('tests/integration/components/x-foo-test.js'))
+        .then(() => emberGenerateDestroy(args, file => {
+          expect(file('tests/integration/components/x-foo-test.js'))
             .to.contain("import { describe, it, beforeEach, afterEach } from 'mocha';")
             .to.contain("import { setupComponentTest } from 'ember-mocha';")
             .to.contain("import hbs from 'htmlbars-inline-precompile';")
@@ -245,6 +253,10 @@ describe('Acceptance: ember generate and destroy component-test', function() {
             .to.contain("component.removeContext();")
             .to.contain("{{x-foo}}")
             .to.contain("{{#x-foo}}");
+
+          expect(file('tests/pages/components/x-foo.js'))
+            .to.contain("from 'ember-cli-page-object';")
+            .to.contain('export default {');
         }));
     });
 
