@@ -36,5 +36,10 @@ module.exports = {
 
   _shouldIncludeFiles: function() {
     return this.app.env !== 'production';
+  },
+
+  included: function(app) {
+    this._super.included.apply(this, arguments);
+    app.import('vendor/ember-cli-page-object/qunit-configuration.js', { type: 'test' });
   }
 };

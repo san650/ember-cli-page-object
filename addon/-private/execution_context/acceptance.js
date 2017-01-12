@@ -1,3 +1,4 @@
+/* globals QUnit */
 import {
   guardMultiple,
   buildSelector,
@@ -52,7 +53,7 @@ AcceptanceExecutionContext.prototype = {
     let result = find(selector, options.testContainer || findClosestValue(this.pageObjectNode, 'testContainer'));
 
     if (result.length === 0) {
-      throwBetterError(this.pageObjectNode, options.pageObjectKey, selector);
+      throwBetterError(this.pageObjectNode, options.pageObjectKey, selector, QUnit.urlParams.stopOnError);
     }
   },
 
@@ -78,7 +79,7 @@ AcceptanceExecutionContext.prototype = {
     result = find(selector, options.testContainer || findClosestValue(this.pageObjectNode, 'testContainer'));
 
     if (result.length === 0) {
-      throwBetterError(this.pageObjectNode, options.pageObjectKey, selector);
+      throwBetterError(this.pageObjectNode, options.pageObjectKey, selector, QUnit.urlParams.stopOnError);
     }
 
     guardMultiple(result, selector, options.multiple);
