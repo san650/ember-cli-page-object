@@ -1,13 +1,8 @@
 import { expect } from 'chai';
 import { describeComponent, it } from 'ember-mocha';<% if (testType === 'integration') { %>
 import hbs from 'htmlbars-inline-precompile';<% } %><% if (usePageObject) { %>
-import {
-  beforeEach,
-  afterEach
-} from 'mocha';
-import {
-  create
-} from 'ember-cli-page-object';
+import { beforeEach, afterEach } from 'mocha';
+import { create } from 'ember-cli-page-object';
 import <%= camelizedModuleName %> from '<%= pageObjectPath %>';
 
 const component = create(<%= camelizedModuleName %>);<% } %>

@@ -1,8 +1,6 @@
 import { moduleForComponent, test } from 'ember-qunit';<% if (testType === 'integration') { %>
 import hbs from 'htmlbars-inline-precompile';<% } %><% if (usePageObject) { %>
-import {
-  create
-} from 'ember-cli-page-object';
+import { create } from 'ember-cli-page-object';
 import <%= camelizedModuleName %> from '<%= pageObjectPath %>';
 
 const component = create(<%= camelizedModuleName %>);<% } %>
