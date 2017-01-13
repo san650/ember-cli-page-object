@@ -27,7 +27,7 @@ describe('<%= friendlyTestDescription %>', function() {
   afterEach(function() {
     component.removeContext();
   });
- <% } %>
+<% } %>
   it('renders', function() {
     <% if (testType === 'integration' ) { %>// Set any properties with this.set('myProperty', 'value');
     // Handle any actions with this.on('myAction', function(val) { ... });
