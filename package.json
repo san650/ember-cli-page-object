@@ -57,7 +57,6 @@
     "mocha-only-detector": "0.0.2",
     "ncp": "^2.0.0",
     "rimraf": "^2.5.2",
-    "rsvp": "^3.2.1",
     "sync-exec": "^0.6.2"
   },
   "keywords": [
@@ -77,11 +76,14 @@
     "ceibo": "~2.0.0",
     "ember-cli-babel": "^5.1.7",
     "ember-cli-get-component-path-option": "^1.0.0",
+    "ember-cli-is-package-missing": "^1.0.0",
     "ember-cli-node-assets": "^0.1.2",
     "ember-cli-normalize-entity-name": "^1.0.0",
     "ember-cli-path-utils": "^1.0.0",
     "ember-cli-string-utils": "^1.0.0",
-    "ember-cli-valid-component-name": "^1.0.0"
+    "ember-cli-test-info": "^1.0.0",
+    "ember-cli-valid-component-name": "^1.0.0",
+    "rsvp": "^3.2.1"
   },
   "ember-addon": {
     "configPath": "tests/dummy/config",
