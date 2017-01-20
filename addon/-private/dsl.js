@@ -15,6 +15,11 @@ const thenDescriptor = {
   }
 };
 
+const as = function(cb) {
+  cb(this);
+  return this;
+};
+
 const dsl = {
   contains: contains(),
   isHidden: isHidden(),
@@ -25,7 +30,8 @@ const dsl = {
   click: clickable(),
   fillIn: fillable(),
   select: fillable(),
-  then: thenDescriptor
+  then: thenDescriptor,
+  as
 };
 
 export default dsl;

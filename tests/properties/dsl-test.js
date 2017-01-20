@@ -1,5 +1,5 @@
 import { moduleForProperty } from '../helpers/properties';
-import { create } from 'ember-cli-page-object';
+import { create, collection } from 'ember-cli-page-object';
 
 moduleForProperty('dsl', function(test) {
   test('generates .isVisible', function(assert) {
@@ -171,5 +171,68 @@ moduleForProperty('dsl', function(test) {
 
     assert.ok(typeof (page.then) === 'function');
     assert.ok(typeof (page.foo.then) === 'function');
+  });
+
+  test('generates .as', function(assert) {
+    assert.expect(2);
+
+    let page = create({
+      scope: 'span',
+      foo: {
+        baz: 'foobar'
+      }
+    });
+
+    this.adapter.createTemplate(this, page, 'Lorem <span>ipsum</span>');
+
+    let foo = page.foo.as(element => {
+      assert.equal(element.text, 'ipsum');
+    });
+
+    assert.equal(foo.baz, 'foobar');
+  });
+
+  test('generates .as when nested', function(assert) {
+    assert.expect(1);
+
+    let page = create({
+      scope: 'span',
+      foo: {
+        bar: {
+          scope: 'strong'
+        }
+      }
+    });
+
+    this.adapter.createTemplate(this, page, 'Lorem <span>ipsum <strong>dolor</strong></span>');
+
+    page.foo.bar.as(element => {
+      assert.equal(element.text, 'dolor');
+    });
+  });
+
+  test('generates .as in collections', function(assert) {
+    assert.expect(2);
+
+    let page = create({
+      items: collection({
+        itemScope: 'ul li'
+      })
+    });
+
+    this.adapter.createTemplate(this, page, `
+      <ul>
+        <li>foo</li>
+        <li>bar</li>
+      </ul>
+    `);
+
+    page.items(0).as(item => {
+      assert.equal(item.text, 'foo');
+    });
+
+    page.items(1).as(item => {
+      assert.equal(item.text, 'bar');
+    });
   });
 });
