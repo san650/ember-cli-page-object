@@ -282,7 +282,7 @@ function removeDir(dir) {
   // ex., '1.0.3' -> 'v1.0.x'
   var version = 'v' + versionArray[0] + '.' + versionArray[1] + '.x';
 
-  var srcDir  = path.join(__dirname, 'addon');
+  var srcDir  = path.join(__dirname, 'addon/-private');
   var tmpDir  = path.join(__dirname, 'tmp_docs');
   var destDir = path.join(__dirname, 'docs', version, 'api');
 
