@@ -12,7 +12,7 @@
     "build": "ember build",
     "preversion": "git clean -df && npm test",
     "start": "ember server",
-    "test": "ember try:each && npm run nodetest",
+    "test": "ember try:each",
     "docs": "node ./docs",
     "nodetest": "mocha node-tests --recursive"
   },
