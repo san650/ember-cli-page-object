@@ -7,7 +7,7 @@ var emberGenerateDestroy = blueprintHelpers.emberGenerateDestroy;
 
 var expect = require('ember-cli-blueprint-test-helpers/chai').expect;
 
-describe('Acceptance: ember generate and destroy page-object', function() {
+describe('Blueprints: ember generate and destroy page-object', function() {
   setupTestHooks(this);
 
   it('generates a page-object in an ember app', function() {
