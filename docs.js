@@ -282,7 +282,7 @@ function removeDir(dir) {
   // ex., '1.0.3' -> 'v1.0.x'
   var version = 'v' + versionArray[0] + '.' + versionArray[1] + '.x';
 
-  var srcDir  = path.join(__dirname, 'addon/-private');
+  var propertiesDir = path.join(__dirname, 'addon/-private/properties');
   var tmpDir  = path.join(__dirname, 'tmp_docs');
   var destDir = path.join(__dirname, 'docs', version, 'api');
 
@@ -290,7 +290,7 @@ function removeDir(dir) {
   createDir(tmpDir)
   .then(function() {
     // Create the documentation files
-    return writeDocs(srcDir, tmpDir);
+    return writeDocs(propertiesDir, tmpDir);
   })
   .then(function() {
     // Switch to the GitHub Pages branch
