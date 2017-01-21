@@ -1,3 +1,104 @@
+v1.8.x:
+  sections:
+    - title: API reference
+      links:
+      - path: /api/attribute
+        name: attribute
+      - path: /api/click-on-text
+        name: clickOnText
+      - path: /api/clickable
+        name: clickable
+      - path: /api/collection
+        name: collection
+      - path: /api/contains
+        name: contains
+      - path: /api/count
+        name: count
+      - path: /api/create
+        name: create
+      - path: /api/fillable
+        name: fillable
+      - path: /api/has-class
+        name: hasClass
+      - path: /api/is-hidden
+        name: isHidden
+      - path: /api/is-visible
+        name: isVisible
+      - path: /api/is
+        name: is
+      - path: /api/not-has-class
+        name: notHasClass
+      - path: /api/property
+        name: property
+      - path: /api/text
+        name: text
+      - path: /api/triggerable
+        name: triggerable
+      - path: /api/value
+        name: value
+      - path: /api/visitable
+        name: visitable
+
+v1.7.x:
+  sections:
+    - title: API reference
+      links:
+      - path: /api/attribute
+        name: attribute
+      - path: /api/click-on-text
+        name: clickOnText
+      - path: /api/clickable
+        name: clickable
+      - path: /api/collection
+        name: collection
+      - path: /api/contains
+        name: contains
+      - path: /api/count
+        name: count
+      - path: /api/create
+        name: create
+      - path: /api/fillable
+        name: fillable
+      - path: /api/has-class
+        name: hasClass
+      - path: /api/is-hidden
+        name: isHidden
+      - path: /api/is-visible
+        name: isVisible
+      - path: /api/is
+        name: is
+      - path: /api/not-has-class
+        name: notHasClass
+      - path: /api/property
+        name: property
+      - path: /api/text
+        name: text
+      - path: /api/triggerable
+        name: triggerable
+      - path: /api/value
+        name: value
+      - path: /api/visitable
+        name: visitable
+
+v1.6.x:
+  sections:
+    - title: API reference
+      links:
+      - path: /api/create
+        name: Create
+      - path: /api/properties
+        name: Properties
+      - path: /components
+        name: Components
+      - path: /options
+        name: Options
+      - path: /api/helpers
+        name: Helpers
+      - path: /api/context
+        name: Integration Test Context
+      - path: /api/extend
+        name: Extend
+
 v1.5.x:
   sections:
     - title: API reference
