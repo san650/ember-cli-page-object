@@ -1,17 +1,17 @@
 # Ember Page Objects
 
 [![Build Status](https://travis-ci.org/san650/ember-cli-page-object.svg?branch=master)](https://travis-ci.org/san650/ember-cli-page-object)
+[![Ember Observer Score](http://emberobserver.com/badges/ember-cli-page-object.svg)](http://emberobserver.com/addons/ember-cli-page-object)
 ![Latest version](https://img.shields.io/npm/v/ember-cli-page-object.svg)
 
-Represent the screens of your web app as a series of objects. This ember-cli
-addon eases the construction of these objects for your acceptance and
-integration tests.
+Represent the screens of your web app as a series of objects. This ember-cli addon eases the construction of these objects for your acceptance and integration tests.
 
 http://ember-cli-page-object.js.org/
 
 ## What is a Page Object?
 
 An excerpt from the Selenium Wiki
+
 > Within your web app's UI there are areas that your tests interact with. A Page
 > Object simply models these as objects within the test code. This reduces the
 > amount of duplicated code and means that if the UI changes, the fix need only
@@ -20,6 +20,7 @@ An excerpt from the Selenium Wiki
 The pattern was first introduced by the Selenium
 
 You can find more information about this design pattern here:
+
 * [Page Objects - Selenium wiki](https://seleniumhq.github.io/docs/best.html#page_object_models)
 * [PageObject - Martin Fowler](http://martinfowler.com/bliki/PageObject.html)
 
@@ -38,7 +39,7 @@ $ ember install ember-cli-page-object
 Or you can install the NPM package directly.
 
 ```sh
-$ npm install --save-dev ember-cli-page-object@1.1.0
+$ npm install --save-dev ember-cli-page-object
 ```
 
 ## Documentation
@@ -52,8 +53,7 @@ The addon includes the following blueprints
 * `page-object` Creates a new page object
 * `page-object-component` Creates a new component to be used in a page object
 * `page-object-helper` Creates a new helper to be used in a page object
-* `component-test` Creates a new optimized component test with a matching page object component when used with the 
-`--page-object` flag 
+* `component-test` Creates a new optimized component test with a matching page object component when used with the `--page-object` flag
 
 You can create a new page object called `users` using the `generate` command
 
@@ -64,8 +64,7 @@ installing
   create tests/pages/users.js
 ```
 
-To create a new component with an integration test based on a page object component just add the `--page-object` flag 
-to your `generate` command:
+To create a new component with an integration test based on a page object component just add the `--page-object` flag to your `generate` command:
 
 ```js
 $ ember g component my-component --page-object
@@ -78,8 +77,7 @@ installing page-object-component
   create tests/pages/components/my-component.js
 ```
 
-It creates the component itself, a page object component with the same name to run your assertions against, and a
-special component integration test that contains all the necessary setup code to run your tests.
+It creates the component itself, a page object component with the same name to run your assertions against, and a special component integration test that contains all the necessary setup code to run your tests.
 
 ## Development
 
@@ -88,15 +86,16 @@ special component integration test that contains all the necessary setup code to
 ```sh
 $ git clone https://github.com/san650/ember-cli-page-object.git
 $ cd $_
-$ npm install
+$ yarn install # or npm install
 $ bower install
 ```
 
 ### Running Tests
 
-* `npm test` (Runs `ember try:testall` to test your addon against multiple Ember versions)
-* `ember test`
-* `ember test --server`
+```sh
+$ npm test # runs tests against multiple Ember versions and runs node tests
+$ ember test --server # for development
+```
 
 ### Project's health
 
