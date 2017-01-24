@@ -1,5 +1,7 @@
 # Ember Page Objects
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/san650/ember-cli-page-object.svg)](https://greenkeeper.io/)
+
 [![Build Status](https://travis-ci.org/san650/ember-cli-page-object.svg?branch=master)](https://travis-ci.org/san650/ember-cli-page-object)
 [![Ember Observer Score](http://emberobserver.com/badges/ember-cli-page-object.svg)](http://emberobserver.com/addons/ember-cli-page-object)
 ![Latest version](https://img.shields.io/npm/v/ember-cli-page-object.svg)
