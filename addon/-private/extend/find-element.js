@@ -28,7 +28,7 @@ import { getExecutionContext } from '../execution_context';
  * @param {boolean} options.last - Filter by using :last pseudo-class
  * @param {boolean} options.visible - Filter by using :visible pseudo-class
  * @param {boolean} options.multiple - Specify if built selector can match multiple elements.
- * @param {String} options.testContainer - Context where to search elements in the DOM
+ * @param {string} options.testContainer - Context where to search elements in the DOM
  * @return {Object} jQuery object
  *
  * @throws Will throw an error if multiple elements are matched by selector and multiple option is not set

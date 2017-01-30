@@ -28,8 +28,8 @@ import { getExecutionContext } from '../execution_context';
  * @param {boolean} options.last - Filter by using :last pseudo-class
  * @param {boolean} options.visible - Filter by using :visible pseudo-class
  * @param {boolean} options.multiple - Specify if built selector can match multiple elements.
- * @param {String} options.testContainer - Context where to search elements in the DOM
- * @param {String} options.pageObjectKey - Used in the error message when the element is not found
+ * @param {string} options.testContainer - Context where to search elements in the DOM
+ * @param {string} options.pageObjectKey - Used in the error message when the element is not found
  * @return {Object} jQuery object
  *
  * @throws Will throw an error if no element matches selector

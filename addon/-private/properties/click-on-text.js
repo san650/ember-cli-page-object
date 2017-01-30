@@ -75,7 +75,7 @@ import { buildSelector } from './click-on-text/helpers';
  * @param {number} options.at - Reduce the set of matched elements to the one at the specified index
  * @param {boolean} options.visible - Make the action to raise an error if the element is not visible
  * @param {boolean} options.resetScope - Override parent's scope
- * @param {String} options.testContainer - Context where to search elements in the DOM
+ * @param {string} options.testContainer - Context where to search elements in the DOM
  * @return {Descriptor}
  */
 export function clickOnText(selector, userOptions = {}) {

@@ -16,7 +16,7 @@ import { getExecutionContext } from '../execution_context';
  * @param {string} options.scope - Nests provided scope within parent's scope
  * @param {number} options.at - Reduce the set of matched elements to the one at the specified index
  * @param {boolean} options.resetScope - Override parent's scope
- * @param {String} options.testContainer - Context where to search elements in the DOM
+ * @param {string} options.testContainer - Context where to search elements in the DOM
  * @return {Descriptor}
  */
 
@@ -101,7 +101,7 @@ import { getExecutionContext } from '../execution_context';
  * @param {string} options.scope - Nests provided scope within parent's scope
  * @param {number} options.at - Reduce the set of matched elements to the one at the specified index
  * @param {boolean} options.resetScope - Override parent's scope
- * @param {String} options.testContainer - Context where to search elements in the DOM
+ * @param {string} options.testContainer - Context where to search elements in the DOM
  * @return {Descriptor}
  */
 export function fillable(selector, userOptions = {}) {

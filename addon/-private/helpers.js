@@ -237,7 +237,7 @@ export function fullScope(node) {
  * node.
  *
  * @param {Ceibo} node - Node of the tree
- * @param {String} property - Property to look for
+ * @param {string} property - Property to look for
  * @return {?Object} The value of property on closest node to the given node
  */
 export function findClosestValue(node, property) {
