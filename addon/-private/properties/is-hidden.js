@@ -2,7 +2,7 @@ import { assign, every } from '../helpers';
 import { getExecutionContext } from '../execution_context';
 
 /**
- * Validates if an element or set of elements are hidden or exist in the DOM.
+ * Validates if an element or set of elements is hidden or does not exist in the DOM.
  *
  * @example
  *
