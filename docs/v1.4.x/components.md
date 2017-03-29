@@ -55,7 +55,7 @@ andThen(function() {
 
 ## Default attributes
 
-By default, all components define some handy attributes and methods without being explicitely declared.
+By default, all components define some handy attributes and methods without being explicitly declared.
 
 * [isVisible](api/predicates#isvisible)
 * [isHidden](api/predicates#ishidden)
