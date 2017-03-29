@@ -57,14 +57,14 @@ andThen(function() {
 
 By default, all components define some handy attributes and methods without being explicitely declared.
 
-* [click](/docs/v1.6.x/api/properties#clickable)
-* [clickOn](/docs/v1.6.x/api/properties#clickontext)
-* [contains](/docs/v1.6.x/api/properties#contains)
-* [fillIn](/docs/v1.6.x/api/properties#fillable)
-* [isVisible](/docs/v1.6.x/api/properties#isvisible)
-* [isHidden](/docs/v1.6.x/api/properties#ishidden)
-* [select](/docs/v1.6.x/api/properties#selectable)
-* [text](/docs/v1.6.x/api/properties#text)
+* [click](/docs/v1.8.x/api/clickable)
+* [clickOn](/docs/v1.8.x/api/click-on-text)
+* [contains](/docs/v1.8.x/api/contains)
+* [fillIn](/docs/v1.8.x/api/fillable)
+* [isVisible](/docs/v1.8.x/api/is-visible)
+* [isHidden](/docs/v1.8.x/api/is-hidden)
+* [select](/docs/v1.8.x/api/selectable)
+* [text](/docs/v1.8.x/api/text)
 
 <div class="alert alert-warning" role="alert">
   <strong>Note</strong> that these attributes will use the component scope as their selector.
