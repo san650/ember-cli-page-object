@@ -55,7 +55,7 @@ andThen(function() {
 
 ## Default attributes
 
-By default, all components define some handy attributes and methods without being explicitely declared.
+By default, all components define some handy attributes and methods without being explicitly declared.
 
 * [click](/docs/v1.7.x/api/clickable)
 * [clickOn](/docs/v1.7.x/api/click-on-text)
@@ -65,6 +65,7 @@ By default, all components define some handy attributes and methods without bein
 * [isHidden](/docs/v1.7.x/api/is-hidden)
 * [select](/docs/v1.7.x/api/selectable)
 * [text](/docs/v1.7.x/api/text)
+* [value](/docs/v1.7.x/api/value)
 
 <div class="alert alert-warning" role="alert">
   <strong>Note</strong> that these attributes will use the component scope as their selector.
