@@ -16,14 +16,14 @@ Creates a new PageObject.
 
 By default, the resulting PageObject will respond to:
 
-* [click](/docs/v1.6.x/api/properties#clickable)
-* [clickOn](/docs/v1.6.x/api/properties#clickontext)
-* [contains](/docs/v1.6.x/api/properties#contains)
-* [fillIn](/docs/v1.6.x/api/properties#fillable)
-* [isVisible](/docs/v1.6.x/api/properties#isvisible)
-* [isHidden](/docs/v1.6.x/api/properties#ishidden)
-* [select](/docs/v1.6.x/api/properties#selectable)
-* [text](/docs/v1.6.x/api/properties#text)
+* [click](/docs/v1.8.x/api/clickable)
+* [clickOn](/docs/v1.8.x/api/click-on-text)
+* [contains](/docs/v1.8.x/api/contains)
+* [fillIn](/docs/v1.8.x/api/fillable)
+* [isVisible](/docs/v1.8.x/api/is-visible)
+* [isHidden](/docs/v1.8.x/api/is-hidden)
+* [select](/docs/v1.8.x/api/selectable)
+* [text](/docs/v1.8.x/api/text)
 
 `definition` can include a key `context`, which is an
 optional integration test `this` context.
