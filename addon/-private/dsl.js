@@ -6,6 +6,7 @@ import { clickOnText } from './properties/click-on-text';
 import { clickable } from './properties/clickable';
 import { fillable } from './properties/fillable';
 import { value } from './properties/value';
+import { as } from './properties/as';
 
 const thenDescriptor = {
   isDescriptor: true,
@@ -13,11 +14,6 @@ const thenDescriptor = {
     /* global wait */
     return wait().then(...arguments);
   }
-};
-
-const as = function(cb) {
-  cb(this);
-  return this;
 };
 
 const dsl = {
