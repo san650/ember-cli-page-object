@@ -198,7 +198,7 @@ function iteratorMethod() {
  * @param {Object} definition - Collection definition
  * @param {string} definition.scope - Nests provided scope within parent's scope
  * @param {boolean} definition.resetScope - Override parent's scope
- * @param {String} definition.itemScope - CSS selector
+ * @param {string} definition.itemScope - CSS selector
  * @param {Object} definition.item - Item definition
  * @return {Descriptor}
  */

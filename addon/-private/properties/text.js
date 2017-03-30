@@ -83,7 +83,7 @@ function identity(v) {
  * @param {boolean} options.resetScope - Override parent's scope
  * @param {boolean} options.multiple - Return an array of values
  * @param {boolean} options.normalize - Set to `false` to avoid text normalization
- * @param {String} options.testContainer - Context where to search elements in the DOM
+ * @param {string} options.testContainer - Context where to search elements in the DOM
  * @return {Descriptor}
  *
  * @throws Will throw an error if no element matches selector
