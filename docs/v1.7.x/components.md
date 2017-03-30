@@ -55,7 +55,7 @@ andThen(function() {
 
 ## Default attributes
 
-By default, all components define some handy attributes and methods without being explicitely declared.
+By default, all components define some handy attributes and methods without being explicitly declared.
 
 * [click](/docs/v1.6.x/api/properties#clickable)
 * [clickOn](/docs/v1.6.x/api/properties#clickontext)
