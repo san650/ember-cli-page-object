@@ -65,6 +65,7 @@ By default, all components define some handy attributes and methods without bein
 * [isHidden](/docs/v1.6.x/api/properties#ishidden)
 * [select](/docs/v1.6.x/api/properties#selectable)
 * [text](/docs/v1.6.x/api/properties#text)
+* [value](/docs/v1.7.x/api/value)
 
 <div class="alert alert-warning" role="alert">
   <strong>Note</strong> that these attributes will use the component scope as their selector.
