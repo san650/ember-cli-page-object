@@ -11,9 +11,9 @@ var expect = require('ember-cli-blueprint-test-helpers/chai').expect;
 
 var generateFakePackageManifest = require('../helpers/generate-fake-package-manifest');
 
-describe('Acceptance: ember generate and destroy component-test', function() {
+describe('Blueprints: ember generate and destroy component-test', function() {
   setupTestHooks(this);
-  
+
   describe('Run default component-test blueprint', function() {
 
     it('component-test x-foo', function() {

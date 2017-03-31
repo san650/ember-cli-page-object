@@ -1,6 +1,7 @@
 import Ember from 'ember';
 import { fixture } from './acceptance-adapter';
 export { moduleForComponent as moduleForIntegration, test as testForIntegration } from 'ember-qunit';
+import { expectEmberError } from '../../test-helper';
 
 export function IntegrationAdapter(original) {
   this.original = original;
@@ -52,7 +53,9 @@ IntegrationAdapter.prototype = {
   },
 
   throws(assert, block, expected, message) {
-    assert.throws(block, expected, message);
+    Ember.run(() => {
+      expectEmberError(assert, block, expected, message);
+    });
   },
 
   andThen(fn) {
