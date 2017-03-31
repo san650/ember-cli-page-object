@@ -1,5 +1,7 @@
+import Ember from 'ember';
 import { moduleForComponent, test } from 'ember-qunit';
 import { createTemplate } from './test-helper';
+import { expectEmberError } from '../test-helper';
 
 import PageObject, {
   collection,
@@ -16,6 +18,8 @@ import PageObject, {
   isHidden,
   isVisible
 } from 'dummy/tests/page-object';
+
+const { run } = Ember;
 
 const button = function(scope) {
   return {
@@ -157,15 +161,33 @@ test('Queries and actions handle non-existant elements correctly', function(asse
 
   page.render(template);
 
-  assert.throws(() => page.nonExistant.attribute(), message, 'attribute query did not throw an error');
-  assert.throws(() => page.nonExistant.clickOnText('qux'), message, 'clickOnText action did not throw an error');
-  assert.throws(() => page.nonExistant.clickable(), message, 'clickable action did not throw an error');
-  assert.throws(() => page.nonExistant.contains('something'), message, 'contains action did not throw an error');
-  assert.throws(() => page.nonExistant.fillable('baz'), message, 'fillable action did not throw an error');
-  assert.throws(() => page.nonExistant.hasClass, message, 'hasClass query did not throw an error');
-  assert.throws(() => page.nonExistant.notHasClass, message, 'notHasClass query did not throw an error');
-  assert.throws(() => page.nonExistant.text, message, 'text query did not throw an error');
-  assert.throws(() => page.nonExistant.value, message, 'value query did not throw an error');
+  run(() => {
+    assert.throws(() => page.nonExistant.attribute(), message, 'attribute query did not throw an error');
+  });
+  run(() => {
+    expectEmberError(assert, () => page.nonExistant.clickOnText('qux'), message, 'clickOnText action did not throw an error');
+  });
+  run(() => {
+    expectEmberError(assert, () => page.nonExistant.clickable(), message, 'clickable action did not throw an error');
+  });
+  run(() => {
+    assert.throws(() => page.nonExistant.contains('something'), message, 'contains action did not throw an error');
+  });
+  run(() => {
+    expectEmberError(assert, () => page.nonExistant.fillable('baz'), message, 'fillable action did not throw an error');
+  });
+  run(() => {
+    assert.throws(() => page.nonExistant.hasClass, message, 'hasClass query did not throw an error');
+  });
+  run(() => {
+    assert.throws(() => page.nonExistant.notHasClass, message, 'notHasClass query did not throw an error');
+  });
+  run(() => {
+    assert.throws(() => page.nonExistant.text, message, 'text query did not throw an error');
+  });
+  run(() => {
+    assert.throws(() => page.nonExistant.value, message, 'value query did not throw an error');
+  });
 
   assert.equal(page.nonExistant.count, 0);
   assert.equal(page.nonExistant.isHidden, true);
