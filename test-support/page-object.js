@@ -1,4 +1,6 @@
-import { attribute,
+import {
+  alias,
+  attribute,
   clickOnText,
   clickable,
   collection,
@@ -19,6 +21,7 @@ import { attribute,
 } from 'ember-cli-page-object';
 
 export {
+  alias,
   attribute,
   clickOnText,
   clickable,
@@ -41,6 +44,7 @@ export {
 };
 
 export default {
+  alias,
   attribute,
   clickOnText,
   clickable,
