@@ -8,6 +8,7 @@ const TestSupport = require('dummy/tests/page-object');
 const Extend = require('ember-cli-page-object/extend');
 
 const EXPECTED_METHODS = [
+  'alias',
   'attribute',
   'clickOnText',
   'clickable',
