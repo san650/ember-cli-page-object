@@ -33,20 +33,12 @@ import {
  * // checks value of `page.continueButton.text`
  * assert.equal(page.continueText, 'Go ahead!');
  *
- * @example
- *
- * const page = PageObject.create({
- *   clickContinueButton: clickable('button.continue'),
- *   continue: alias('clickContinueButton')
- * });
- *
- * // calls `clickContinueButton`
- * page.continue();
- *
  * @public
  *
  * @param {string} pathToProp - dot-separated path to PageObject property
  * @return {Descriptor}
+ *
+ * @throws Will throw an error if the PageObject does not have the specified property.
  */
 export function alias(pathToProp) {
   return {
@@ -55,7 +47,7 @@ export function alias(pathToProp) {
     get(key) {
       if (!objectHasProperty(this, pathToProp)) {
         throw new Ember.Error(
-          `\`${key}\`:\n  aliased property \`${pathToProp}\` is not defined.`
+          `\`${key}\`:\n PageObject does not contain aliased property \`${pathToProp}\`.`
         );
       }
 

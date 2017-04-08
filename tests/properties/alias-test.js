@@ -128,7 +128,7 @@ moduleForProperty('alias', function(test) {
 
     assert.throws(
       function() { return page.fooAlias; },
-      '`fooAlias`: aliased property `foo` is not defined.'
+      '`fooAlias`: PageObject does not contain aliased property `foo`.'
     );
   });
 
@@ -141,7 +141,7 @@ moduleForProperty('alias', function(test) {
 
     assert.throws(
       function() { return page.fooBarAlias; },
-      '`fooBarAlias`: aliased property `foo.bar` is not defined.'
+      '`fooBarAlias`: PageObject does not contain aliased property `foo.bar`.'
     );
   });
 
