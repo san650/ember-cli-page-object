@@ -1,5 +1,11 @@
 import { moduleForProperty } from '../helpers/properties';
-import { create, alias, clickable, isVisible } from 'ember-cli-page-object';
+import {
+  create,
+  alias,
+  clickable,
+  collection,
+  isVisible
+} from 'ember-cli-page-object';
 
 moduleForProperty('alias', function(test) {
   test('can alias a top-level property', function(assert) {
@@ -33,6 +39,25 @@ moduleForProperty('alias', function(test) {
     page.fooAlias();
 
     return this.adapter.wait();
+  });
+
+  test('can alias a top-level collection', function(assert) {
+    assert.expect(1);
+
+    const page = create({
+      foo: collection({
+        itemScope: 'button'
+      }),
+      fooCollection: alias('foo')
+    });
+
+    this.adapter.createTemplate(
+      this,
+      page,
+      '<button>Button 1</button><button>Button 2</button>'
+    );
+
+    assert.equal(page.fooCollection().count, 2);
   });
 
   test('can alias a nested property', function(assert) {
@@ -76,6 +101,27 @@ moduleForProperty('alias', function(test) {
     return this.adapter.wait();
   });
 
+  test('can alias a nested collection', function(assert) {
+    assert.expect(1);
+
+    const page = create({
+      foo: {
+        bar: collection({
+          itemScope: 'button'
+        })
+      },
+      fooBarCollection: alias('foo.bar')
+    });
+
+    this.adapter.createTemplate(
+      this,
+      page,
+      '<button>Button 1</button><button>Button 2</button>'
+    );
+
+    assert.equal(page.fooBarCollection().count, 2);
+  });
+
   test('can alias an aliased property', function(assert) {
     assert.expect(1);
 
@@ -117,6 +163,30 @@ moduleForProperty('alias', function(test) {
     page.clickFooBar();
 
     return this.adapter.wait();
+  });
+
+  test('can alias an aliased collection', function(assert) {
+    assert.expect(1);
+
+    const page = create({
+      foo: {
+        bar: {
+          baz: collection({
+            itemScope: 'button'
+          })
+        },
+        barBazCollection: alias('bar.baz')
+      },
+      fooBarBazCollection: alias('foo.barBazCollection')
+    });
+
+    this.adapter.createTemplate(
+      this,
+      page,
+      '<button>Button 1</button><button>Button 2</button>'
+    );
+
+    assert.equal(page.fooBarBazCollection().count, 2);
   });
 
   test('throws error if alias targets nonexistent top-level property', function(assert) {

@@ -5,6 +5,7 @@ import { expectEmberError } from '../test-helper';
 
 import PageObject, {
   collection,
+  alias,
   attribute,
   clickOnText,
   clickable,
@@ -62,6 +63,10 @@ const page = PageObject.create({
 
     clickOn: clickOnText()
   },
+
+  clickOnAlias: alias('clickOn', { chainable: true }),
+  clickPlusAlias: alias('operators.plus.click', { chainable: true }),
+  clickEqualsAlias: alias('operators.equals.click', { chainable: true }),
 
   nonExistant: {
     scope: '#non-existant',
@@ -151,6 +156,30 @@ test('Chaining of actions on a component works', function(assert) {
     .clickOn('=');
 
   assert.equal(page.screen.text, '2');
+});
+
+test('Chaining of aliased root actions works', function(assert) {
+  let template = createTemplate();
+
+  page
+    .render(template)
+    .clickOnAlias('1')
+    .clickOnAlias('4');
+
+  assert.equal(page.screen.text, '14');
+});
+
+test('Chaining of aliased component actions works', function(assert) {
+  let template = createTemplate();
+
+  page
+    .render(template)
+    .clickOn('1')
+    .clickPlusAlias()
+    .clickOn('4')
+    .clickEqualsAlias();
+
+  assert.equal(page.screen.text, '5');
 });
 
 test('Queries and actions handle non-existant elements correctly', function(assert) {

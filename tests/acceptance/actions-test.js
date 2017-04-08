@@ -24,10 +24,10 @@ let page = PageObject.create({
   screen: value('.screen input'),
   fillValue: fillable('.screen input'),
 
-  visitCalculator: alias('visit'),
-  clickOnKey: alias('keys.clickOn'),
-  add: alias('keys.sum'),
-  getResult: alias('keys.equal')
+  visitAlias: alias('visit', { chainable: true }),
+  clickKeyAlias: alias('keys.clickOn', { chainable: true }),
+  clickPlusAlias: alias('keys.sum', { chainable: true }),
+  clickEqualAlias: alias('keys.equal', { chainable: true })
 });
 
 test('allows to chain actions', function(assert) {
@@ -56,12 +56,12 @@ test('allows to chain actions', function(assert) {
 
 test('allows to chain aliased actions', function(assert) {
   page
-    .visitCalculator()
-    .clickOnKey('1')
-    .clickOnKey('2')
-    .add()
-    .clickOnKey('3')
-    .getResult();
+    .visitAlias()
+    .clickKeyAlias('1')
+    .clickKeyAlias('2')
+    .clickPlusAlias()
+    .clickKeyAlias('3')
+    .clickEqualAlias();
 
   andThen(function() {
     assert.equal(page.screen, '15');
