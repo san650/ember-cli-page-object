@@ -1,5 +1,6 @@
 import Ember from 'ember';
 
+import { getExecutionContext } from '../execution_context';
 import {
   getProperty,
   objectHasProperty
@@ -58,7 +59,17 @@ export function alias(pathToProp) {
         );
       }
 
-      return getProperty(this, pathToProp);
+      const value = getProperty(this, pathToProp);
+
+      if (typeof value !== 'function') {
+        return value;
+      }
+
+      const executionContext = getExecutionContext(this);
+
+      return function(...args) {
+        return executionContext.runAsync(() => value(...args));
+      };
     }
   };
 }
