@@ -506,4 +506,28 @@ moduleForProperty('collection', function(test) {
 
     assert.deepEqual(actual, expected);
   });
+
+  test('looks for elements within test container specified', function(assert) {
+    assert.expect(2);
+
+    let expectedContext = '#alternate-ember-testing';
+    let page;
+
+    page = create({
+      foo: collection({
+        testContainer: expectedContext,
+        itemScope: 'span'
+      })
+    });
+
+    this.adapter.createTemplate(
+      this,
+      page,
+      '<span>Lorem</span><span>ipsum</span>',
+      { useAlternateContainer: true }
+    );
+
+    assert.equal(page.foo().count, 2);
+    assert.equal(page.foo(0).text, 'Lorem');
+  });
 });
