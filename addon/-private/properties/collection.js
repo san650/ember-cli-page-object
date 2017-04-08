@@ -40,7 +40,17 @@ function generateItem(node, index, definition, key) {
   let filters = merge({}, { scope: definition.scope, at: index });
   let scope = buildSelector({}, definition.itemScope, filters);
 
-  let tree = create(merge({}, definition.item, { scope, resetScope: definition.resetScope }), { parent: node });
+  let tree = create(
+    merge(
+      {
+        testContainer: definition.testContainer
+      },
+      definition.item,
+      {
+        scope,
+        resetScope: definition.resetScope
+      }
+    ), { parent: node });
 
   // Change the key of the root node
   Ceibo.meta(tree).key = `${key}(${index})`;
@@ -209,7 +219,8 @@ export function collection(definition) {
     scope: definition.scope,
     itemScope: definition.itemScope,
     resetScope: definition.resetScope,
-    item: definition.item
+    item: definition.item,
+    testContainer: definition.testContainer
   };
 
   delete definition.item;
