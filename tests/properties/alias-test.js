@@ -76,6 +76,49 @@ moduleForProperty('alias', function(test) {
     return this.adapter.wait();
   });
 
+  test('can alias an aliased property', function(assert) {
+    assert.expect(1);
+
+    const page = create({
+      foo: {
+        bar: {
+          scope: 'button'
+        },
+        isBarVisible: alias('bar.isVisible')
+      },
+      isFooBarVisible: alias('foo.isBarVisible')
+    });
+
+    this.adapter.createTemplate(this, page, '<button>Look at me</button>');
+
+    assert.ok(page.isFooBarVisible);
+  });
+
+  test('can alias an aliased method', function(assert) {
+    assert.expect(1);
+
+    const expectedSelector = 'button';
+    const page = create({
+      foo: {
+        bar: {
+          scope: expectedSelector
+        },
+        clickBar: alias('bar.click')
+      },
+      clickFooBar: alias('foo.clickBar')
+    });
+
+    this.adapter.createTemplate(this, page, '<button>Click me</button>');
+
+    this.adapter.click((actualSelector) => {
+      assert.equal(actualSelector, expectedSelector);
+    });
+
+    page.clickFooBar();
+
+    return this.adapter.wait();
+  });
+
   test('throws error if alias targets nonexistent top-level property', function(assert) {
     assert.expect(1);
 
