@@ -6,9 +6,13 @@ export { test as testForAcceptance } from 'qunit';
 
 let noop = function() {};
 
-export function AcceptanceAdapter() {
+export function AcceptanceAdapter(original) {
+  this.original = original;
+  this.originalPrototype = original.prototype;
+  original.prototype = Object.create(this.originalPrototype);
+  this.spy = original.prototype;
+
   this.originalClick = window.click;
-  this.originalFillIn = window.fillIn;
   this.originalTriggerEvent = window.triggerEvent;
   this.originalVisit = window.visit;
 }
@@ -21,13 +25,7 @@ AcceptanceAdapter.prototype = {
   },
 
   fillIn(fn) {
-    window.fillIn = function(selector, contextOrText, text) {
-      if (text) {
-        fn(selector, contextOrText, text);
-      } else {
-        fn(selector, undefined, contextOrText);
-      }
-    };
+    this.spy.fillIn = fn;
   },
 
   triggerEvent(fn /*selector, container, eventName, eventOptions*/) {
@@ -39,8 +37,8 @@ AcceptanceAdapter.prototype = {
   },
 
   revert() {
+    this.original.prototype = Object.create(this.originalPrototype);
     window.click = this.originalClick;
-    window.fillIn = this.originalFillIn;
     window.triggerEvent = this.originalTriggerEvent;
     window.visit = this.originalVisit;
   },

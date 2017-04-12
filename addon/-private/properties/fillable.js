@@ -1,5 +1,22 @@
 import { assign, buildSelector, findClosestValue } from '../helpers';
 import { getExecutionContext } from '../execution_context';
+import {
+  throwBetterError
+} from '../better-errors';
+
+const CONTENTEDITABLE_IS_FALSE = 'Element cannot be filled because it has `contenteditable="false"`.';
+const UNEDITABLE_CONTENTEDITABLE = '[contenteditable="false"]';
+const EDITABLE_CONTENTEDITABLE = '[contenteditable][contenteditable!="false"]';
+
+export function setFillableElementContent($el, content, { selector, pageObjectNode, pageObjectKey }) {
+  if ($el.is(EDITABLE_CONTENTEDITABLE)) {
+    $el.html(content);
+  } else if ($el.is(UNEDITABLE_CONTENTEDITABLE)) {
+    throwBetterError(pageObjectNode, pageObjectKey, selector, CONTENTEDITABLE_IS_FALSE);
+  } else {
+    $el.val(content);
+  }
+}
 
 /**
  * Alias for `fillable`, which works for inputs and HTML select menus.
@@ -109,13 +126,13 @@ export function fillable(selector, userOptions = {}) {
     isDescriptor: true,
 
     get(key) {
-      return function(textOrClue, text) {
+      return function(contentOrClue, content) {
         let clue;
 
-        if (text === undefined) {
-          text = textOrClue;
+        if (content === undefined) {
+          content = contentOrClue;
         } else {
-          clue = textOrClue;
+          clue = contentOrClue;
         }
 
         let executionContext = getExecutionContext(this);
@@ -126,7 +143,7 @@ export function fillable(selector, userOptions = {}) {
           let container = options.testContainer || findClosestValue(this, 'testContainer');
 
           if (clue) {
-            fullSelector = ['input', 'textarea', 'select']
+            fullSelector = ['input', 'textarea', 'select', '[contenteditable]']
               .map((tag) => [
                 `${fullSelector} ${tag}[data-test="${clue}"]`,
                 `${fullSelector} ${tag}[aria-label="${clue}"]`,
@@ -140,7 +157,7 @@ export function fillable(selector, userOptions = {}) {
 
           context.assertElementExists(fullSelector, options);
 
-          context.fillIn(fullSelector, container, text);
+          context.fillIn(fullSelector, container, options, content);
         });
       };
     }

@@ -3,7 +3,13 @@ import {
   buildSelector,
   findClosestValue
 } from '../helpers';
-import { throwBetterError } from '../better-errors';
+import {
+  setFillableElementContent
+} from '../properties/fillable';
+import {
+  ELEMENT_NOT_FOUND,
+  throwBetterError
+} from '../better-errors';
 
 export default function AcceptanceExecutionContext(pageObjectNode) {
   this.pageObjectNode = pageObjectNode;
@@ -33,13 +39,21 @@ AcceptanceExecutionContext.prototype = {
     click(selector, container);
   },
 
-  fillIn(selector, container, text) {
-    /* global fillIn */
-    if (container) {
-      fillIn(selector, container, text);
-    } else {
-      fillIn(selector, text);
-    }
+  fillIn(selector, container, options, content) {
+    let $el = find(selector, container || findClosestValue(this.pageObjectNode, 'testContainer'));
+
+    /* global focus */
+    focus($el);
+
+    setFillableElementContent($el, content, {
+      selector,
+      pageObjectNode: this.pageObjectNode,
+      pageObjectKey: options.pageObjectKey
+    });
+
+    /* global triggerEvent */
+    triggerEvent(selector, container, 'input');
+    triggerEvent(selector, container, 'change');
   },
 
   triggerEvent(selector, container, eventName, eventOptions) {
@@ -52,7 +66,7 @@ AcceptanceExecutionContext.prototype = {
     let result = find(selector, options.testContainer || findClosestValue(this.pageObjectNode, 'testContainer'));
 
     if (result.length === 0) {
-      throwBetterError(this.pageObjectNode, options.pageObjectKey, selector);
+      throwBetterError(this.pageObjectNode, options.pageObjectKey, selector, ELEMENT_NOT_FOUND);
     }
   },
 
@@ -78,7 +92,7 @@ AcceptanceExecutionContext.prototype = {
     result = find(selector, options.testContainer || findClosestValue(this.pageObjectNode, 'testContainer'));
 
     if (result.length === 0) {
-      throwBetterError(this.pageObjectNode, options.pageObjectKey, selector);
+      throwBetterError(this.pageObjectNode, options.pageObjectKey, selector, ELEMENT_NOT_FOUND);
     }
 
     guardMultiple(result, selector, options.multiple);

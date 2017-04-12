@@ -122,6 +122,21 @@ test('fill in by attribute', function(assert) {
   });
 
   page
+    .fillIn('contenteditable1', 'contenteditable 1')
+    .fillIn('contenteditable2', 'contenteditable 2')
+    .fillIn('contenteditable3', 'contenteditable 3')
+    .fillIn('contenteditable4', 'contenteditable 4')
+    .fillIn('contenteditable5', 'contenteditable 5');
+
+  andThen(function() {
+    assert.equal(find('.contenteditable1-content').html(), 'contenteditable 1');
+    assert.equal(find('.contenteditable2-content').html(), 'contenteditable 2');
+    assert.equal(find('.contenteditable3-content').html(), 'contenteditable 3');
+    assert.equal(find('.contenteditable4-content').html(), 'contenteditable 4');
+    assert.equal(find('.contenteditable5-content').html(), 'contenteditable 5');
+  });
+
+  page
     .fillIn('select1', 'select 1 option 2')
     .fillIn('select2', 'select 2 option 2')
     .fillIn('select3', 'select 3 option 2')

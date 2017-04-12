@@ -4,7 +4,13 @@ import {
   buildSelector,
   findClosestValue
 } from '../helpers';
-import { throwBetterError } from '../better-errors';
+import {
+  setFillableElementContent
+} from '../properties/fillable';
+import {
+  ELEMENT_NOT_FOUND,
+  throwBetterError
+} from '../better-errors';
 
 const { $, run } = Ember;
 
@@ -33,12 +39,17 @@ IntegrationExecutionContext.prototype = {
     this.$(selector, container).click();
   },
 
-  fillIn(selector, container, text) {
-    let element = this.$(selector, container);
+  fillIn(selector, container, options, content) {
+    let $el = this.$(selector, container);
 
-    element.val(text);
-    element.trigger('input');
-    element.change();
+    setFillableElementContent($el, content, {
+      selector,
+      pageObjectNode: this.pageObjectNode,
+      pageObjectKey: options.pageObjectKey
+    });
+
+    $el.trigger('input');
+    $el.change();
   },
 
   $(selector, container) {
@@ -70,7 +81,7 @@ IntegrationExecutionContext.prototype = {
     }
 
     if (result.length === 0) {
-      throwBetterError(this.pageObjectNode, options.pageObjectKey, selector);
+      throwBetterError(this.pageObjectNode, options.pageObjectKey, selector, ELEMENT_NOT_FOUND);
     }
   },
 
@@ -106,7 +117,7 @@ IntegrationExecutionContext.prototype = {
     guardMultiple(result, selector, options.multiple);
 
     if (result.length === 0) {
-      throwBetterError(this.pageObjectNode, options.pageObjectKey, selector);
+      throwBetterError(this.pageObjectNode, options.pageObjectKey, selector, ELEMENT_NOT_FOUND);
     }
 
     return result;
