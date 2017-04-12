@@ -77,7 +77,11 @@ export function value(selector, userOptions = {}) {
         let result;
 
         result = map(elements, function(element) {
-          return element.val();
+          if (element.is('[contenteditable]')) {
+            return element.html();
+          } else {
+            return element.val();
+          }
         });
 
         return options.multiple ? result : result[0];

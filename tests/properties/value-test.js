@@ -12,7 +12,17 @@ moduleForProperty('value', function(test) {
     assert.equal(page.foo, 'Lorem ipsum');
   });
 
-  test('returns empty when the element doesn\'t have value attribute', function(assert) {
+  test('returns the html of the contenteditable', function(assert) {
+    let page = create({
+      foo: value('[contenteditable]')
+    });
+
+    this.adapter.createTemplate(this, page, '<div contenteditable="true"><b>Lorem ipsum</b></div>');
+
+    assert.equal(page.foo, '<b>Lorem ipsum</b>');
+  });
+
+  test('returns empty when the element doesn\'t have value attribute and is not contenteditable', function(assert) {
     let page = create({
       foo: value('input')
     });
