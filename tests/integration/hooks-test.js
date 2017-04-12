@@ -1,5 +1,5 @@
 import { moduleForComponent, test } from 'ember-qunit';
-import { createTemplate } from './test-helper';
+import { createCalculatorTemplate } from './test-helper';
 
 import PageObject from 'dummy/tests/page-object';
 
@@ -33,7 +33,7 @@ test('When set in the `beforeEach()` qunit hook, test\'s `this` context\'s metho
   assert.deepEqual(this, page.context);
   assert.equal(page.context, firstThis);
 
-  this.render(createTemplate());
+  this.render(createCalculatorTemplate());
 
   assert.ok(page.context.$());
   assert.deepEqual(page.context.$(), this.$());
@@ -47,7 +47,7 @@ test('Setting the page\'s context in `beforeEach()` assigns the correct context 
   assert.equal(page.context, secondThis);
   assert.notEqual(page.context, firstThis);
 
-  this.render(createTemplate());
+  this.render(createCalculatorTemplate());
 
   assert.ok(page.context.$());
   assert.deepEqual(page.context.$(), this.$());

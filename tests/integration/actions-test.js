@@ -1,6 +1,9 @@
 import Ember from 'ember';
 import { moduleForComponent, test } from 'ember-qunit';
-import { createTemplate } from './test-helper';
+import {
+  createCalculatorTemplate,
+  createInputsTemplate
+} from './test-helper';
 import { expectEmberError } from '../test-helper';
 
 import PageObject, {
@@ -102,7 +105,7 @@ moduleForComponent('calculating-device', 'Integration | actions', {
 });
 
 test('Actions work when defined inside collections', function(assert) {
-  let template = createTemplate();
+  let template = createCalculatorTemplate();
 
   page
     .render(template)
@@ -113,7 +116,7 @@ test('Actions work when defined inside collections', function(assert) {
 });
 
 test('Chaining of actions inside a collection works', function(assert) {
-  let template = createTemplate();
+  let template = createCalculatorTemplate();
 
   page
     .render(template)
@@ -126,7 +129,7 @@ test('Chaining of actions inside a collection works', function(assert) {
 });
 
 test('Chaining of actions on the root works', function(assert) {
-  let template = createTemplate();
+  let template = createCalculatorTemplate();
 
   page
     .render(template)
@@ -143,7 +146,7 @@ test('Chaining of actions on the root works', function(assert) {
 });
 
 test('Chaining of actions on a component works', function(assert) {
-  let template = createTemplate();
+  let template = createCalculatorTemplate();
 
   page
     .render(template)
@@ -159,7 +162,7 @@ test('Chaining of actions on a component works', function(assert) {
 });
 
 test('Chaining of aliased root actions works', function(assert) {
-  let template = createTemplate();
+  let template = createCalculatorTemplate();
 
   page
     .render(template)
@@ -170,7 +173,7 @@ test('Chaining of aliased root actions works', function(assert) {
 });
 
 test('Chaining of aliased component actions works', function(assert) {
-  let template = createTemplate();
+  let template = createCalculatorTemplate();
 
   page
     .render(template)
@@ -182,11 +185,69 @@ test('Chaining of aliased component actions works', function(assert) {
   assert.equal(page.screen.text, '5');
 });
 
+test('fill in by attribute', function(assert) {
+  let template = createInputsTemplate();
+
+  page.render(template);
+
+  page
+    .fillIn('input1', 'input 1')
+    .fillIn('input2', 'input 2')
+    .fillIn('input3', 'input 3')
+    .fillIn('input4', 'input 4')
+    .fillIn('input5', 'input 5');
+
+  assert.equal(Ember.$('.input1-value').val(), 'input 1');
+  assert.equal(Ember.$('.input2-value').val(), 'input 2');
+  assert.equal(Ember.$('.input3-value').val(), 'input 3');
+  assert.equal(Ember.$('.input4-value').val(), 'input 4');
+  assert.equal(Ember.$('.input5-value').val(), 'input 5');
+
+  page
+    .fillIn('textarea1', 'textarea 1')
+    .fillIn('textarea2', 'textarea 2')
+    .fillIn('textarea3', 'textarea 3')
+    .fillIn('textarea4', 'textarea 4')
+    .fillIn('textarea5', 'textarea 5');
+
+  assert.equal(Ember.$('.textarea1-value').val(), 'textarea 1');
+  assert.equal(Ember.$('.textarea2-value').val(), 'textarea 2');
+  assert.equal(Ember.$('.textarea3-value').val(), 'textarea 3');
+  assert.equal(Ember.$('.textarea4-value').val(), 'textarea 4');
+  assert.equal(Ember.$('.textarea5-value').val(), 'textarea 5');
+
+  page
+    .fillIn('contenteditable1', 'contenteditable 1')
+    .fillIn('contenteditable2', 'contenteditable 2')
+    .fillIn('contenteditable3', 'contenteditable 3')
+    .fillIn('contenteditable4', 'contenteditable 4')
+    .fillIn('contenteditable5', 'contenteditable 5');
+
+  assert.equal(Ember.$('.contenteditable1-content').html(), 'contenteditable 1');
+  assert.equal(Ember.$('.contenteditable2-content').html(), 'contenteditable 2');
+  assert.equal(Ember.$('.contenteditable3-content').html(), 'contenteditable 3');
+  assert.equal(Ember.$('.contenteditable4-content').html(), 'contenteditable 4');
+  assert.equal(Ember.$('.contenteditable5-content').html(), 'contenteditable 5');
+
+  page
+    .fillIn('select1', 'select 1 option 2')
+    .fillIn('select2', 'select 2 option 2')
+    .fillIn('select3', 'select 3 option 2')
+    .fillIn('select4', 'select 4 option 2')
+    .fillIn('select5', 'select 5 option 2');
+
+  assert.equal(Ember.$('.select1-value').val(), 'select 1 option 2');
+  assert.equal(Ember.$('.select2-value').val(), 'select 2 option 2');
+  assert.equal(Ember.$('.select3-value').val(), 'select 3 option 2');
+  assert.equal(Ember.$('.select4-value').val(), 'select 4 option 2');
+  assert.equal(Ember.$('.select5-value').val(), 'select 5 option 2');
+});
+
 test('Queries and actions handle non-existant elements correctly', function(assert) {
   assert.expect(12);
 
   let message = /Element not found./;
-  let template = createTemplate();
+  let template = createCalculatorTemplate();
 
   page.render(template);
 

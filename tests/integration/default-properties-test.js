@@ -1,5 +1,5 @@
 import { moduleForComponent, test } from 'ember-qunit';
-import { createTemplate } from './test-helper';
+import { createCalculatorTemplate } from './test-helper';
 
 import PageObject from 'dummy/tests/page-object';
 
@@ -21,7 +21,7 @@ test('Adds default properties', function(assert) {
   });
 
   page
-    .render(createTemplate())
+    .render(createCalculatorTemplate())
     .clickOn('9')
     .one
     .click();
