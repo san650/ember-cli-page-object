@@ -5,7 +5,7 @@ import {
   findClosestValue
 } from '../helpers';
 import {
-  setFillableElementContent
+  fillElement
 } from '../properties/fillable';
 import {
   ELEMENT_NOT_FOUND,
@@ -42,7 +42,7 @@ IntegrationExecutionContext.prototype = {
   fillIn(selector, container, options, content) {
     let $el = this.$(selector, container);
 
-    setFillableElementContent($el, content, {
+    fillElement($el, content, {
       selector,
       pageObjectNode: this.pageObjectNode,
       pageObjectKey: options.pageObjectKey

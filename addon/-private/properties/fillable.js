@@ -8,7 +8,7 @@ const CONTENTEDITABLE_IS_FALSE = 'Element cannot be filled because it has `conte
 const UNEDITABLE_CONTENTEDITABLE = '[contenteditable="false"]';
 const EDITABLE_CONTENTEDITABLE = '[contenteditable][contenteditable!="false"]';
 
-export function setFillableElementContent($el, content, { selector, pageObjectNode, pageObjectKey }) {
+export function fillElement($el, content, { selector, pageObjectNode, pageObjectKey }) {
   if ($el.is(EDITABLE_CONTENTEDITABLE)) {
     $el.html(content);
   } else if ($el.is(UNEDITABLE_CONTENTEDITABLE)) {

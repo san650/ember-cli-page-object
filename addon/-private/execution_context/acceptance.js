@@ -4,7 +4,7 @@ import {
   findClosestValue
 } from '../helpers';
 import {
-  setFillableElementContent
+  fillElement
 } from '../properties/fillable';
 import {
   ELEMENT_NOT_FOUND,
@@ -45,7 +45,7 @@ AcceptanceExecutionContext.prototype = {
     /* global focus */
     focus($el);
 
-    setFillableElementContent($el, content, {
+    fillElement($el, content, {
       selector,
       pageObjectNode: this.pageObjectNode,
       pageObjectKey: options.pageObjectKey
