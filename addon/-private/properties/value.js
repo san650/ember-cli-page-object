@@ -4,7 +4,9 @@ import { getExecutionContext } from '../execution_context';
 /**
  * @public
  *
- * Returns the value of a matched element, or an array of values of all matched elements.
+ * Returns the value of a matched element, or an array of values of all
+ * matched elements. If a matched element is contenteditable, this helper
+ * will return the html content of the element.
  *
  * @example
  *
@@ -15,6 +17,16 @@ import { getExecutionContext } from '../execution_context';
  * });
  *
  * assert.equal(page.value, 'Lorem ipsum');
+ *
+ * @example
+ *
+ * // <div contenteditable="true"><b>Lorem ipsum</b></div>
+ *
+ * const page = PageObject.create({
+ *   value: PageObject.value('[contenteditable]')
+ * });
+ *
+ * assert.equal(page.value, '<b>Lorem ipsum</b>');
  *
  * @example
  *

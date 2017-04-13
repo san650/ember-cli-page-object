@@ -19,7 +19,8 @@ export function fillElement($el, content, { selector, pageObjectNode, pageObject
 }
 
 /**
- * Alias for `fillable`, which works for inputs and HTML select menus.
+ * Alias for `fillable`, which works for inputs, HTML select menus, and
+ * contenteditable elements.
  *
  * [See `fillable` for usage examples.](#fillable)
  *
@@ -97,11 +98,12 @@ export function fillElement($el, content, { selector, pageObjectNode, pageObject
  * // <input id="name">
  * // <input name="lastname">
  * // <input data-test="email">
- * // <textarea aria-label="address">
+ * // <textarea aria-label="address"></textarea>
  * // <input placeholder="phone">
+ * // <div contenteditable="true" id="bio"></div>
  *
  * const page = create({
- *   fillIn: fillable('input')
+ *   fillIn: fillable('input, textarea, [contenteditable]')
  * });
  *
  * page
@@ -109,7 +111,8 @@ export function fillElement($el, content, { selector, pageObjectNode, pageObject
  *   .fillIn('lastname', 'Doe')
  *   .fillIn('email', 'john@doe')
  *   .fillIn('address', 'A street')
- *   .fillIn('phone', '555-000');
+ *   .fillIn('phone', '555-000')
+ *   .fillIn('bio', 'The story of <b>John Doe</b>');
  *
  * @public
  *
