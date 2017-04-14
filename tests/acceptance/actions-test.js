@@ -5,6 +5,7 @@ import PageObject from '../page-object';
 moduleForAcceptance('Acceptance | actions');
 
 let {
+  alias,
   clickOnText,
   clickable,
   fillable,
@@ -21,7 +22,12 @@ let page = PageObject.create({
   },
 
   screen: value('.screen input'),
-  fillValue: fillable('.screen input')
+  fillValue: fillable('.screen input'),
+
+  visitAlias: alias('visit', { chainable: true }),
+  clickKeyAlias: alias('keys.clickOn', { chainable: true }),
+  clickPlusAlias: alias('keys.sum', { chainable: true }),
+  clickEqualAlias: alias('keys.equal', { chainable: true })
 });
 
 test('allows to chain actions', function(assert) {
@@ -45,6 +51,20 @@ test('allows to chain actions', function(assert) {
 
   andThen(function() {
     assert.equal(page.screen, '456');
+  });
+});
+
+test('allows to chain aliased actions', function(assert) {
+  page
+    .visitAlias()
+    .clickKeyAlias('1')
+    .clickKeyAlias('2')
+    .clickPlusAlias()
+    .clickKeyAlias('3')
+    .clickEqualAlias();
+
+  andThen(function() {
+    assert.equal(page.screen, '15');
   });
 });
 
