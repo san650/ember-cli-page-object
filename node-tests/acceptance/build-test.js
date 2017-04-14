@@ -15,7 +15,9 @@ describe('Acceptance: development build', function() {
   it('generates a development build', function() {
     return app
       .create('dummy', {
-        fixturesPath: 'node-tests/acceptance/fixtures'
+        fixturesPath: 'node-tests/acceptance/fixtures',
+        // FIXME test fails in travis with latest version of ember-data. Seems like a bug in ember-cli-addon-tests
+        emberDataVersion: '2.12.1'
       })
       .then(function() {
         return app.runEmberCommand('build', '-dev')
@@ -26,7 +28,9 @@ describe('Acceptance: development build', function() {
   it('generates a production build', function() {
     return app
       .create('dummy', {
-        fixturesPath: 'node-tests/acceptance/fixtures'
+        fixturesPath: 'node-tests/acceptance/fixtures',
+        // FIXME test fails in travis with latest version of ember-data. Seems like a bug in ember-cli-addon-tests
+        emberDataVersion: '2.12.1'
       })
       .then(function() {
         return app.runEmberCommand('build', '-prod')
