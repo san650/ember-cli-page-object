@@ -5,5 +5,5 @@ export function createCalculatorTemplate() {
 }
 
 export function createInputsTemplate() {
-  return Ember.HTMLBars.compile('{{input-variations}}');
+  return Ember.HTMLBars.compile('{{input-elements}}');
 }
