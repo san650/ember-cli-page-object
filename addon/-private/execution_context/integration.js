@@ -6,7 +6,7 @@ import {
 } from '../helpers';
 import {
   fillElement
-} from '../properties/fillable';
+} from './helpers';
 import {
   ELEMENT_NOT_FOUND,
   throwBetterError
@@ -40,16 +40,16 @@ IntegrationExecutionContext.prototype = {
   },
 
   fillIn(selector, container, options, content) {
-    let $el = this.$(selector, container);
+    let $selection = this.$(selector, container);
 
-    fillElement($el, content, {
+    fillElement($selection, content, {
       selector,
       pageObjectNode: this.pageObjectNode,
       pageObjectKey: options.pageObjectKey
     });
 
-    $el.trigger('input');
-    $el.change();
+    $selection.trigger('input');
+    $selection.change();
   },
 
   $(selector, container) {

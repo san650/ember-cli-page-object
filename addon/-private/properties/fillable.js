@@ -1,22 +1,5 @@
 import { assign, buildSelector, findClosestValue } from '../helpers';
 import { getExecutionContext } from '../execution_context';
-import {
-  throwBetterError
-} from '../better-errors';
-
-const CONTENTEDITABLE_IS_FALSE = 'Element cannot be filled because it has `contenteditable="false"`.';
-const UNEDITABLE_CONTENTEDITABLE = '[contenteditable="false"]';
-const EDITABLE_CONTENTEDITABLE = '[contenteditable][contenteditable!="false"]';
-
-export function fillElement($el, content, { selector, pageObjectNode, pageObjectKey }) {
-  if ($el.is(EDITABLE_CONTENTEDITABLE)) {
-    $el.html(content);
-  } else if ($el.is(UNEDITABLE_CONTENTEDITABLE)) {
-    throwBetterError(pageObjectNode, pageObjectKey, selector, CONTENTEDITABLE_IS_FALSE);
-  } else {
-    $el.val(content);
-  }
-}
 
 /**
  * Alias for `fillable`, which works for inputs, HTML select menus, and

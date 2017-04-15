@@ -5,7 +5,7 @@ import {
 } from '../helpers';
 import {
   fillElement
-} from '../properties/fillable';
+} from './helpers';
 import {
   ELEMENT_NOT_FOUND,
   throwBetterError
@@ -40,12 +40,12 @@ AcceptanceExecutionContext.prototype = {
   },
 
   fillIn(selector, container, options, content) {
-    let $el = find(selector, container || findClosestValue(this.pageObjectNode, 'testContainer'));
+    let $selection = find(selector, container || findClosestValue(this.pageObjectNode, 'testContainer'));
 
     /* global focus */
-    focus($el);
+    focus($selection);
 
-    fillElement($el, content, {
+    fillElement($selection, content, {
       selector,
       pageObjectNode: this.pageObjectNode,
       pageObjectKey: options.pageObjectKey
