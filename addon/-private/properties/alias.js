@@ -1,10 +1,11 @@
-import Ember from 'ember';
-
 import { getExecutionContext } from '../execution_context';
+import { throwBetterError } from '../better-errors';
 import {
   getProperty,
   objectHasProperty
 } from '../helpers';
+
+const ALIASED_PROP_NOT_FOUND = 'PageObject does not contain aliased property';
 
 /**
  * Returns the value of some other property on the PageObject.
@@ -74,9 +75,7 @@ export function alias(pathToProp, options = {}) {
 
     get(key) {
       if (!objectHasProperty(this, pathToProp)) {
-        throw new Ember.Error(
-          `\`${key}\`:\n PageObject does not contain aliased property \`${pathToProp}\`.`
-        );
+        throwBetterError(this, key, `${ALIASED_PROP_NOT_FOUND} \`${pathToProp}\`.`);
       }
 
       const value = getProperty(this, pathToProp);

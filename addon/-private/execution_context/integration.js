@@ -81,7 +81,12 @@ IntegrationExecutionContext.prototype = {
     }
 
     if (result.length === 0) {
-      throwBetterError(this.pageObjectNode, options.pageObjectKey, selector, ELEMENT_NOT_FOUND);
+      throwBetterError(
+        this.pageObjectNode,
+        options.pageObjectKey,
+        ELEMENT_NOT_FOUND,
+        { selector }
+      );
     }
   },
 
@@ -117,7 +122,12 @@ IntegrationExecutionContext.prototype = {
     guardMultiple(result, selector, options.multiple);
 
     if (result.length === 0) {
-      throwBetterError(this.pageObjectNode, options.pageObjectKey, selector, ELEMENT_NOT_FOUND);
+      throwBetterError(
+        this.pageObjectNode,
+        options.pageObjectKey,
+        ELEMENT_NOT_FOUND,
+        { selector }
+      );
     }
 
     return result;

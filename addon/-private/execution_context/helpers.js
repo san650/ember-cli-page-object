@@ -24,8 +24,8 @@ export function fillElement($selection, content, { selector, pageObjectNode, pag
     throwBetterError(
       pageObjectNode,
       pageObjectKey,
-      selector,
-      'Element cannot be filled because it has `contenteditable="false"`.'
+      'Element cannot be filled because it has `contenteditable="false"`.',
+      { selector }
     );
   } else {
     $selection.val(content);
