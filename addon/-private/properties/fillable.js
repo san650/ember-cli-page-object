@@ -2,7 +2,8 @@ import { assign, buildSelector, findClosestValue } from '../helpers';
 import { getExecutionContext } from '../execution_context';
 
 /**
- * Alias for `fillable`, which works for inputs and HTML select menus.
+ * Alias for `fillable`, which works for inputs, HTML select menus, and
+ * contenteditable elements.
  *
  * [See `fillable` for usage examples.](#fillable)
  *
@@ -80,11 +81,12 @@ import { getExecutionContext } from '../execution_context';
  * // <input id="name">
  * // <input name="lastname">
  * // <input data-test="email">
- * // <textarea aria-label="address">
+ * // <textarea aria-label="address"></textarea>
  * // <input placeholder="phone">
+ * // <div contenteditable="true" id="bio"></div>
  *
  * const page = create({
- *   fillIn: fillable('input')
+ *   fillIn: fillable('input, textarea, [contenteditable]')
  * });
  *
  * page
@@ -92,7 +94,8 @@ import { getExecutionContext } from '../execution_context';
  *   .fillIn('lastname', 'Doe')
  *   .fillIn('email', 'john@doe')
  *   .fillIn('address', 'A street')
- *   .fillIn('phone', '555-000');
+ *   .fillIn('phone', '555-000')
+ *   .fillIn('bio', 'The story of <b>John Doe</b>');
  *
  * @public
  *
@@ -109,13 +112,13 @@ export function fillable(selector, userOptions = {}) {
     isDescriptor: true,
 
     get(key) {
-      return function(textOrClue, text) {
+      return function(contentOrClue, content) {
         let clue;
 
-        if (text === undefined) {
-          text = textOrClue;
+        if (content === undefined) {
+          content = contentOrClue;
         } else {
-          clue = textOrClue;
+          clue = contentOrClue;
         }
 
         let executionContext = getExecutionContext(this);
@@ -126,7 +129,7 @@ export function fillable(selector, userOptions = {}) {
           let container = options.testContainer || findClosestValue(this, 'testContainer');
 
           if (clue) {
-            fullSelector = ['input', 'textarea', 'select']
+            fullSelector = ['input', 'textarea', 'select', '[contenteditable]']
               .map((tag) => [
                 `${fullSelector} ${tag}[data-test="${clue}"]`,
                 `${fullSelector} ${tag}[aria-label="${clue}"]`,
@@ -140,7 +143,7 @@ export function fillable(selector, userOptions = {}) {
 
           context.assertElementExists(fullSelector, options);
 
-          context.fillIn(fullSelector, container, text);
+          context.fillIn(fullSelector, container, options, content);
         });
       };
     }

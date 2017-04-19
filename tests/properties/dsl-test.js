@@ -119,8 +119,8 @@ moduleForProperty('dsl', function(test) {
 
     this.adapter.createTemplate(this, page, '<input name="email">');
 
-    this.adapter.fillIn((selector, context, text) => {
-      assert.equal(text, 'lorem ipsum');
+    this.adapter.fillIn((selector, context, options, content) => {
+      assert.equal(content, 'lorem ipsum');
     });
 
     page.foo.fillIn('lorem ipsum');
@@ -139,8 +139,8 @@ moduleForProperty('dsl', function(test) {
 
     this.adapter.createTemplate(this, page, '<input name="email">');
 
-    this.adapter.fillIn((selector, context, text) => {
-      assert.equal(text, 'lorem ipsum');
+    this.adapter.fillIn((selector, context, options, content) => {
+      assert.equal(content, 'lorem ipsum');
     });
 
     page.foo.select('lorem ipsum');

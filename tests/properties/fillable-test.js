@@ -2,7 +2,7 @@ import { moduleForProperty } from '../helpers/properties';
 import { create, fillable, selectable } from 'ember-cli-page-object';
 
 moduleForProperty('fillable', function(test) {
-  test("calls Ember's fillIn helper", function(assert) {
+  test("calls fillIn method belonging to execution context", function(assert) {
     assert.expect(2);
 
     let expectedSelector = 'input';
@@ -13,9 +13,9 @@ moduleForProperty('fillable', function(test) {
       foo: fillable(expectedSelector)
     });
 
-    this.adapter.fillIn((actualSelector, actualContext, actualText) => {
+    this.adapter.fillIn((actualSelector, actualContext, options, actualContent) => {
       assert.equal(actualSelector, expectedSelector);
-      assert.equal(actualText, expectedText);
+      assert.equal(actualContent, expectedText);
     });
 
     this.adapter.createTemplate(this, page, '<input>');
@@ -25,7 +25,7 @@ moduleForProperty('fillable', function(test) {
     return this.adapter.wait();
   });
 
-  test('looks for inputs with data-test="clue" attributes', function(assert) {
+  test('looks for inputs or contenteditables with data-test="clue" attributes', function(assert) {
     let expectedText = 'dummy text';
     let clue = 'clue';
     let page;
@@ -38,25 +38,32 @@ moduleForProperty('fillable', function(test) {
 
     this.adapter.createTemplate(this, page, '<div class="scope"><input data-test="clue"></div>');
 
-    this.adapter.fillIn((actualSelector, actualContext, actualText) => {
-      assert.ok(/.scope input\[data-test="clue"\]/.test(actualSelector));
-      assert.ok(/.scope input\[aria-label="clue"\]/.test(actualSelector));
-      assert.ok(/.scope input\[placeholder="clue"\]/.test(actualSelector));
-      assert.ok(/.scope input\[name="clue"\]/.test(actualSelector));
-      assert.ok(/.scope input#clue/.test(actualSelector));
+    this.adapter.fillIn((actualSelector, actualContext, options, actualContent) => {
+      assert.ok(/\.scope input\[data-test="clue"\]/.test(actualSelector));
+      assert.ok(/\.scope input\[aria-label="clue"\]/.test(actualSelector));
+      assert.ok(/\.scope input\[placeholder="clue"\]/.test(actualSelector));
+      assert.ok(/\.scope input\[name="clue"\]/.test(actualSelector));
+      assert.ok(/\.scope input#clue/.test(actualSelector));
 
-      assert.ok(/.scope textarea\[data-test="clue"\]/.test(actualSelector));
-      assert.ok(/.scope textarea\[aria-label="clue"\]/.test(actualSelector));
-      assert.ok(/.scope textarea\[placeholder="clue"\]/.test(actualSelector));
-      assert.ok(/.scope textarea\[name="clue"\]/.test(actualSelector));
-      assert.ok(/.scope textarea#clue/.test(actualSelector));
+      assert.ok(/\.scope textarea\[data-test="clue"\]/.test(actualSelector));
+      assert.ok(/\.scope textarea\[aria-label="clue"\]/.test(actualSelector));
+      assert.ok(/\.scope textarea\[placeholder="clue"\]/.test(actualSelector));
+      assert.ok(/\.scope textarea\[name="clue"\]/.test(actualSelector));
+      assert.ok(/\.scope textarea#clue/.test(actualSelector));
 
-      assert.ok(/.scope select\[data-test="clue"\]/.test(actualSelector));
-      assert.ok(/.scope select\[aria-label="clue"\]/.test(actualSelector));
-      assert.ok(/.scope select\[placeholder="clue"\]/.test(actualSelector));
-      assert.ok(/.scope select\[name="clue"\]/.test(actualSelector));
-      assert.ok(/.scope select#clue/.test(actualSelector));
-      assert.equal(actualText, expectedText);
+      assert.ok(/\.scope select\[data-test="clue"\]/.test(actualSelector));
+      assert.ok(/\.scope select\[aria-label="clue"\]/.test(actualSelector));
+      assert.ok(/\.scope select\[placeholder="clue"\]/.test(actualSelector));
+      assert.ok(/\.scope select\[name="clue"\]/.test(actualSelector));
+      assert.ok(/\.scope select#clue/.test(actualSelector));
+
+      assert.ok(/\.scope \[contenteditable\]\[data-test="clue"\]/.test(actualSelector));
+      assert.ok(/\.scope \[contenteditable\]\[aria-label="clue"\]/.test(actualSelector));
+      assert.ok(/\.scope \[contenteditable\]\[placeholder="clue"\]/.test(actualSelector));
+      assert.ok(/\.scope \[contenteditable\]\[name="clue"\]/.test(actualSelector));
+      assert.ok(/\.scope \[contenteditable\]#clue/.test(actualSelector));
+
+      assert.equal(actualContent, expectedText);
     });
 
     page.foo(clue, expectedText);
@@ -165,9 +172,9 @@ moduleForProperty('fillable', function(test) {
 
     this.adapter.createTemplate(this, page, '<input>');
 
-    this.adapter.fillIn((actualSelector, actualContext, actualText) => {
+    this.adapter.fillIn((actualSelector, actualContext, options, actualContent) => {
       assert.equal(actualSelector, expectedSelector);
-      assert.equal(actualText, expectedText);
+      assert.equal(actualContent, expectedText);
     });
 
     page.foo(expectedText);
@@ -187,10 +194,10 @@ moduleForProperty('fillable', function(test) {
 
     this.adapter.createTemplate(this, page, '<input>', { useAlternateContainer: true });
 
-    this.adapter.fillIn((actualSelector, actualContext, actualText) => {
+    this.adapter.fillIn((actualSelector, actualContext, options, actualContent) => {
       assert.equal(actualSelector, expectedSelector);
       assert.equal(actualContext, expectedContext);
-      assert.equal(actualText, expectedText);
+      assert.equal(actualContent, expectedText);
     });
 
     page.foo(expectedText);
@@ -211,10 +218,10 @@ moduleForProperty('fillable', function(test) {
 
     this.adapter.createTemplate(this, page, '<input>', { useAlternateContainer: true });
 
-    this.adapter.fillIn((actualSelector, actualContext, actualText) => {
+    this.adapter.fillIn((actualSelector, actualContext, options, actualContent) => {
       assert.equal(actualSelector, expectedSelector);
       assert.equal(actualContext, expectedContext);
-      assert.equal(actualText, expectedText);
+      assert.equal(actualContent, expectedText);
     });
 
     page.foo(expectedText);
@@ -240,5 +247,17 @@ moduleForProperty('fillable', function(test) {
     this.adapter.throws(assert, function() {
       return page.foo.bar.baz.qux('lorem');
     }, /page\.foo\.bar\.baz\.qux\(\)/, 'Element not found');
+  });
+
+  test('raises an error when the element has contenteditable="false"', function(assert) {
+    let page = create({
+      foo: fillable('div')
+    });
+
+    this.adapter.createTemplate(this, page, '<div contenteditable="false">');
+
+    this.adapter.throws(assert, function() {
+      return page.foo('lorem');
+    }, /contenteditable="false"/, 'Element should not be fillable because contenteditable="false"');
   });
 });

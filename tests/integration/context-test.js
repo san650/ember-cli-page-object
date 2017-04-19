@@ -1,5 +1,5 @@
 import { moduleForComponent, test } from 'ember-qunit';
-import { createTemplate } from './test-helper';
+import { createCalculatorTemplate } from './test-helper';
 
 import PageObject from 'dummy/tests/page-object';
 
@@ -26,7 +26,7 @@ test('Test\'s `this.$()` is accessible by the page object', function(assert) {
     context: this
   });
 
-  this.render(createTemplate());
+  this.render(createCalculatorTemplate());
 
   assert.ok(page.context.$());
   assert.deepEqual(page.context.$(), this.$());
@@ -58,7 +58,7 @@ test('`render()` throws an error when no context has been set', function(assert)
   assert.notOk(page.context);
 
   assert.throws(function() {
-    page.render(createTemplate());
+    page.render(createCalculatorTemplate());
   }, function(err) {
     errorMessage = err.message;
 

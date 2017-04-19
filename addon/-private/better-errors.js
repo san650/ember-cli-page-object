@@ -1,7 +1,9 @@
 import Ember from 'ember';
 import Ceibo from 'ceibo';
 
-export function throwBetterError(node, key, selector) {
+export const ELEMENT_NOT_FOUND = 'Element not found.';
+
+export function throwBetterError(node, key, selector, msg) {
   let path = [key];
   let current;
 
@@ -11,11 +13,11 @@ export function throwBetterError(node, key, selector) {
 
   path[0] = 'page';
 
-  let msg = `Element not found.
+  let fullErrorMessage = `${msg}
 
 PageObject: '${path.join('.')}'
   Selector: '${selector}'
 `;
 
-  throw new Ember.Error(msg);
+  throw new Ember.Error(fullErrorMessage);
 }
