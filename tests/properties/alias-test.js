@@ -1,11 +1,11 @@
 import { moduleForProperty } from '../helpers/properties';
 import {
   create,
-  alias,
   clickable,
   collection,
   isVisible
 } from 'ember-cli-page-object';
+import { alias } from 'ember-cli-page-object/macros';
 
 moduleForProperty('alias', function(test) {
   test('can alias a top-level property', function(assert) {

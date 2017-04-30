@@ -1,6 +1,5 @@
 import { create }      from './-private/create';                   export { create };
 
-import { alias }       from './-private/properties/alias';         export { alias };
 import { attribute }   from './-private/properties/attribute';     export { attribute };
 import { clickOnText } from './-private/properties/click-on-text'; export { clickOnText };
 import { clickable }   from './-private/properties/clickable';     export { clickable };
@@ -24,7 +23,6 @@ export { findElementWithAssert } from './-private/extend/find-element-with-asser
 export { buildSelector, getContext } from './-private/helpers';
 
 export default {
-  alias,
   attribute,
   clickOnText,
   clickable,

@@ -12,7 +12,10 @@ const ALIASED_PROP_NOT_FOUND = 'PageObject does not contain aliased property';
  *
  * @example
  *
- * const page = PageObject.create({
+ * import { create } from 'ember-cli-page-object';
+ * import { alias } from 'ember-cli-page-object/macros';
+ *
+ * const page = create({
  *   submitButton: {
  *     scope: '.submit-button'
  *   }
@@ -24,7 +27,10 @@ const ALIASED_PROP_NOT_FOUND = 'PageObject does not contain aliased property';
  *
  * @example
  *
- * const page = PageObject.create({
+ * import { create } from 'ember-cli-page-object';
+ * import { alias } from 'ember-cli-page-object/macros';
+ *
+ * const page = create({
  *   submitButton: {
  *     scope: '.submit-button'
  *   }
@@ -36,7 +42,10 @@ const ALIASED_PROP_NOT_FOUND = 'PageObject does not contain aliased property';
  *
  * @example
  *
- * const page = PageObject.create({
+ * import { create } from 'ember-cli-page-object';
+ * import { alias } from 'ember-cli-page-object/macros';
+ *
+ * const page = create({
  *   form: {
  *     input {
  *       scope: 'input'

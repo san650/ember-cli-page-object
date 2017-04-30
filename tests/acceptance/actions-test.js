@@ -1,11 +1,11 @@
 import { test } from 'qunit';
 import moduleForAcceptance from '../helpers/module-for-acceptance';
 import PageObject from '../page-object';
+import { alias } from 'ember-cli-page-object/macros';
 
 moduleForAcceptance('Acceptance | actions');
 
 let {
-  alias,
   clickOnText,
   clickable,
   fillable,

@@ -5,10 +5,10 @@ import {
   createInputsTemplate
 } from './test-helper';
 import { expectEmberError } from '../test-helper';
+import { alias } from 'ember-cli-page-object/macros';
 
 import PageObject, {
   collection,
-  alias,
   attribute,
   clickOnText,
   clickable,
