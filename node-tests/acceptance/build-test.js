@@ -9,6 +9,11 @@ describe('Acceptance: development build', function() {
   var app;
 
   before(function() {
+    if (process.env.SKIP_ACCEPTANCE === 'true') {
+      this.skip();
+      return;
+    }
+
     app = new AddonTestApp();
   });
 
