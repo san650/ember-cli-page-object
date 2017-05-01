@@ -111,6 +111,7 @@ $ ember test --server # for development
 - Santiago Ferreira (@san650)
 - Juan Manuel Azambuja (@juanazam)
 - Jerad Gallinger (@jeradg)
+- Anna Andresian (@magistrula)
 
 ## License
 
