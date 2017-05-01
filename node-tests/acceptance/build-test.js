@@ -4,11 +4,16 @@ var fs = require('fs');
 var AddonTestApp = require('ember-cli-addon-tests').AddonTestApp;
 
 describe('Acceptance: development build', function() {
-  this.timeout(300000);
+  this.timeout(600000);
 
   var app;
 
   before(function() {
+    if (process.env.SKIP_ACCEPTANCE === 'true') {
+      this.skip();
+      return;
+    }
+
     app = new AddonTestApp();
   });
 
