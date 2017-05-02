@@ -1,4 +1,4 @@
-import { moduleForProperty } from '../helpers/properties';
+import { moduleForProperty } from '../../../helpers/properties';
 import { create, collection } from 'ember-cli-page-object';
 
 moduleForProperty('dsl', function(test) {

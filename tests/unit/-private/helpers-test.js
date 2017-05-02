@@ -6,7 +6,7 @@ import {
   objectHasProperty
 } from 'ember-cli-page-object/-private/helpers';
 
-module('Unit | utils | fullScope');
+module('Unit | helpers | fullScope');
 
 let page = create({
   scope: '.calculator',
@@ -28,7 +28,7 @@ test('calculates full scope for components', function(assert) {
   assert.equal(fullScope(page.keyboard.numbers(0)), '.calculator .keyboard .numbers button:eq(0)');
 });
 
-module('Unit | utils | objectHasProperty');
+module('Unit | helpers | objectHasProperty');
 
 test('returns true when the object contains the property', function(assert) {
   const object = {
@@ -81,7 +81,7 @@ test('returns false when the object does not contain the property', function(ass
   assert.equal(objectHasProperty(object, 'baz.buzz.waldo.banana'), false, 'baz.buzz.waldo.banana');
 });
 
-module('Unit | utils | getProperty');
+module('Unit | helpers | getProperty');
 
 test('returns top-level property', function(assert) {
   const object = {

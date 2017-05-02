@@ -1,4 +1,4 @@
-import { moduleForProperty } from '../helpers/properties';
+import { moduleForProperty } from '../../../helpers/properties';
 import { create, fillable, selectable } from 'ember-cli-page-object';
 
 moduleForProperty('fillable', function(test) {

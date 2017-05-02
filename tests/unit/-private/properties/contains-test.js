@@ -1,4 +1,4 @@
-import { moduleForProperty } from '../helpers/properties';
+import { moduleForProperty } from '../../../helpers/properties';
 import { create, contains } from 'ember-cli-page-object';
 
 moduleForProperty('contains', function(test) {
