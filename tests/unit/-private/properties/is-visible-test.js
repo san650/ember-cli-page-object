@@ -1,4 +1,4 @@
-import { moduleForProperty } from '../helpers/properties';
+import { moduleForProperty } from '../../../helpers/properties';
 import { create, isVisible } from 'ember-cli-page-object';
 
 moduleForProperty('isVisible', function(test) {

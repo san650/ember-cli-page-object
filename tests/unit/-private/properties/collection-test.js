@@ -1,6 +1,6 @@
-import { moduleForProperty } from '../helpers/properties';
+import { moduleForProperty } from '../../../helpers/properties';
 import { create, collection, text, hasClass } from 'ember-cli-page-object';
-import withIteratorSymbolDefined from '../helpers/with-iterator-symbol-defined';
+import withIteratorSymbolDefined from '../../../helpers/with-iterator-symbol-defined';
 
 moduleForProperty('collection', function(test) {
   test('generates a count property', function(assert) {

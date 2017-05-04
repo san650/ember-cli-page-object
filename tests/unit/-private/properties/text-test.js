@@ -1,4 +1,4 @@
-import { moduleForProperty } from '../helpers/properties';
+import { moduleForProperty } from '../../../helpers/properties';
 import { create, text } from 'ember-cli-page-object';
 
 moduleForProperty('text', function(test) {

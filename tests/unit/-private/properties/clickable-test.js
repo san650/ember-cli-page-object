@@ -1,4 +1,4 @@
-import { moduleForProperty } from '../helpers/properties';
+import { moduleForProperty } from '../../../helpers/properties';
 import { create, clickable } from 'ember-cli-page-object';
 
 moduleForProperty('clickable', function(test) {

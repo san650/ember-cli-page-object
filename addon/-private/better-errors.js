@@ -29,5 +29,6 @@ export function throwBetterError(node, key, msg, { selector } = {}) {
     fullErrorMessage = `${fullErrorMessage}\n  Selector: '${selector}'`;
   }
 
+  Ember.Logger.error(fullErrorMessage);
   throw new Ember.Error(fullErrorMessage);
 }
