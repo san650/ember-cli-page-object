@@ -13,7 +13,7 @@ import {
   text,
   value
 } from 'ember-cli-page-object';
-import { none } from 'ember-cli-page-object/macros';
+import { alias, none } from 'ember-cli-page-object/macros';
 
 moduleForProperty('none | handling `attribute` values', function(test) {
 
@@ -758,6 +758,62 @@ moduleForProperty('none | handling properties with { multiple: true }', function
       <input type="checkbox">
       <span></span>
       <span data-active=""></span>
+      <span data-active="false"></span>
+    `);
+
+    assert.ok(page.isPageInactive);
+  });
+});
+
+moduleForProperty('none | handling aliased properties', function(test) {
+  test('returns true if any value is truthy', function(assert) {
+    assert.expect(1);
+
+    const page = create({
+      span: {
+        scope: 'span',
+        activeAttrValue: attribute('data-active')
+      },
+      checkbox: {
+        scope: '[type="checkbox"]',
+        isChecked: is(':checked')
+      },
+
+      isSpanActive: alias('span.activeAttrValue'),
+      isChecked: alias('checkbox.isChecked'),
+
+      isPageInactive: none('isSpanActive', 'isChecked')
+    });
+
+    this.adapter.createTemplate(this, page, `
+      <input type="checkbox" checked>
+      <span data-active="false"></span>
+    `);
+
+    assert.notOk(page.isPageInactive);
+  });
+
+  test('returns false if all values are falsy', function(assert) {
+    assert.expect(1);
+
+    const page = create({
+      span: {
+        scope: 'span',
+        activeAttrValue: attribute('data-active')
+      },
+      checkbox: {
+        scope: '[type="checkbox"]',
+        isChecked: is(':checked')
+      },
+
+      isSpanActive: alias('span.activeAttrValue'),
+      isChecked: alias('checkbox.isChecked'),
+
+      isPageInactive: none('isSpanActive', 'isChecked')
+    });
+
+    this.adapter.createTemplate(this, page, `
+      <input type="checkbox">
       <span data-active="false"></span>
     `);
 

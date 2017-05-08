@@ -1,8 +1,12 @@
+import Ember from 'ember';
+
 import { getExecutionContext } from '../execution_context';
 import { throwBetterError } from '../better-errors';
 import {
   getProperty,
-  objectHasProperty
+  getPropertyInfo,
+  objectHasProperty,
+  registerPropWithCustomFalsyValues
 } from '../helpers';
 
 const ALIASED_PROP_NOT_FOUND = 'PageObject does not contain aliased property';
@@ -81,6 +85,20 @@ const ALIASED_PROP_NOT_FOUND = 'PageObject does not contain aliased property';
 export function alias(pathToProp, options = {}) {
   return {
     isDescriptor: true,
+
+    setup(target, key) {
+      const { propOwner, propKey } = getPropertyInfo(target, pathToProp);
+
+      if (!propOwner || !propOwner._propsWithCustomFalsyValues) {
+        return;
+      }
+
+      const falsyValues = propOwner._propsWithCustomFalsyValues[propKey];
+
+      if (Ember.isPresent(falsyValues)) {
+        registerPropWithCustomFalsyValues(target, key, falsyValues);
+      }
+    },
 
     get(key) {
       if (!objectHasProperty(this, pathToProp)) {

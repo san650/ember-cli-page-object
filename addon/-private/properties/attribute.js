@@ -76,7 +76,7 @@ export function attribute(attributeName, selector, userOptions = {}) {
     isDescriptor: true,
 
     setup(target, key) {
-      const falsyValues = ['false'].concat(userOptions.falsyValues);
+      const falsyValues = ['false'].concat(userOptions.falsyValues || []);
       registerPropWithCustomFalsyValues(target, key, falsyValues);
     },
 

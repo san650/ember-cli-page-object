@@ -45,7 +45,7 @@ function _isFalsy(node, key) {
   const propsWithCustomFalsyValues = node._propsWithCustomFalsyValues || {};
 
   if (propsWithCustomFalsyValues[key]) {
-    const falsyValues = propsWithCustomFalsyValues[key].falsyValues;
+    const falsyValues = propsWithCustomFalsyValues[key];
     return values.every((val) => {
       return !val || Ember.isEmpty(val) || falsyValues.indexOf(val) !== -1;
     });
