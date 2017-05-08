@@ -2,6 +2,7 @@ import Ember from 'ember';
 import Ceibo from 'ceibo';
 
 export const ELEMENT_NOT_FOUND = 'Element not found.';
+export const PROPERTY_NOT_FOUND = 'PageObject does not contain property';
 
 /**
  * Throws an error with a descriptive message.

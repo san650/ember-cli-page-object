@@ -308,4 +308,12 @@ export function getProperty(object, pathToProp) {
   return typeof value === 'function' ? value.bind(propOwner) : value;
 }
 
+export function registerPropWithCustomFalsyValues(node, key, falsyValues) {
+  if (!node.hasOwnProperty('_propsWithCustomFalsyValues')) {
+    Ceibo.defineProperty(node, '_propsWithCustomFalsyValues', {});
+  }
+
+  node._propsWithCustomFalsyValues[key] = { falsyValues };
+}
+
 export const assign = Ember.assign || Ember.merge;
