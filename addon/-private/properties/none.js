@@ -2,6 +2,7 @@ import Ember from 'ember';
 
 import {
   getProperty,
+  getPropertyInfo,
   objectHasProperty
 } from '../helpers';
 import {
@@ -30,8 +31,8 @@ export function none(...pathsToProps) {
   };
 }
 
-function _isFalsy(node, key) {
-  let value = getProperty(node, key);
+function _isFalsy(node, pathToProp) {
+  let value = getProperty(node, pathToProp);
 
   while (typeof value === 'function') {
     value = value();
@@ -42,16 +43,21 @@ function _isFalsy(node, key) {
   }
 
   const values = Array.isArray(value) ? value : [value];
-  const propsWithCustomFalsyValues = node._propsWithCustomFalsyValues || {};
+  const customFalsyValues = _getCustomFalsyValues(node, pathToProp);
 
-  if (propsWithCustomFalsyValues[key]) {
-    const falsyValues = propsWithCustomFalsyValues[key];
-    return values.every((val) => {
-      return !val || Ember.isEmpty(val) || falsyValues.indexOf(val) !== -1;
-    });
+  return values.every(val => _isFalsyOrEmpty(val, customFalsyValues));
+}
+
+function _getCustomFalsyValues(node, pathToProp) {
+  const { propOwner, propKey } = getPropertyInfo(node, pathToProp);
+
+  if (!propOwner || !propOwner._propsWithCustomFalsyValues) {
+    return;
   }
 
-  return values.every((val) => {
-    return !val || Ember.isEmpty(val);
-  });
+  return propOwner._propsWithCustomFalsyValues[propKey];
+}
+
+function _isFalsyOrEmpty(val, customFalsyValues = []) {
+  return !val || Ember.isEmpty(val) || customFalsyValues.indexOf(val) !== -1;
 }

@@ -765,25 +765,27 @@ moduleForProperty('none | handling properties with { multiple: true }', function
   });
 });
 
-moduleForProperty('none | handling aliased properties', function(test) {
-  test('returns true if any value is truthy', function(assert) {
-    assert.expect(1);
+moduleForProperty('none | handling nested properties', function(test) {
 
-    const page = create({
+  const page = create({
+    body: {
       span: {
         scope: 'span',
         activeAttrValue: attribute('data-active')
       },
+    },
+    controls: {
       checkbox: {
         scope: '[type="checkbox"]',
         isChecked: is(':checked')
       },
+    },
 
-      isSpanActive: alias('span.activeAttrValue'),
-      isChecked: alias('checkbox.isChecked'),
+    isPageInactive: none('body.span.activeAttrValue', 'controls.checkbox.isChecked')
+  });
 
-      isPageInactive: none('isSpanActive', 'isChecked')
-    });
+  test('returns true if any value is truthy', function(assert) {
+    assert.expect(1);
 
     this.adapter.createTemplate(this, page, `
       <input type="checkbox" checked>
@@ -796,21 +798,51 @@ moduleForProperty('none | handling aliased properties', function(test) {
   test('returns false if all values are falsy', function(assert) {
     assert.expect(1);
 
-    const page = create({
+    this.adapter.createTemplate(this, page, `
+      <input type="checkbox">
+      <span data-active="false"></span>
+    `);
+
+    assert.ok(page.isPageInactive);
+  });
+});
+
+moduleForProperty('none | handling aliased properties', function(test) {
+
+  const page = create({
+    body: {
       span: {
         scope: 'span',
         activeAttrValue: attribute('data-active')
       },
+    },
+    controls: {
       checkbox: {
         scope: '[type="checkbox"]',
         isChecked: is(':checked')
       },
+      isCheckboxChecked: alias('checkbox.isChecked')
+    },
 
-      isSpanActive: alias('span.activeAttrValue'),
-      isChecked: alias('checkbox.isChecked'),
+    isSpanActive: alias('body.span.activeAttrValue'),
+    isChecked: alias('controls.isCheckboxChecked'),
 
-      isPageInactive: none('isSpanActive', 'isChecked')
-    });
+    isPageInactive: none('isSpanActive', 'isChecked')
+  });
+
+  test('returns true if any value is truthy', function(assert) {
+    assert.expect(1);
+
+    this.adapter.createTemplate(this, page, `
+      <input type="checkbox" checked>
+      <span data-active="false"></span>
+    `);
+
+    assert.notOk(page.isPageInactive);
+  });
+
+  test('returns false if all values are falsy', function(assert) {
+    assert.expect(1);
 
     this.adapter.createTemplate(this, page, `
       <input type="checkbox">
