@@ -99,8 +99,8 @@ export function text(selector, userOptions = {}) {
     isDescriptor: true,
 
     setup(target, key) {
-      if (userOptions.falsyValues) {
-        registerPropWithCustomFalsyValues(target, key, userOptions.falsyValues);
+      if (userOptions.falsy) {
+        registerPropWithCustomFalsyValues(target, key, userOptions.falsy);
       }
     },
 

@@ -61,12 +61,12 @@ moduleForProperty('none | handling `attribute` values', function(test) {
 
     const page = create({
       button1ActiveAttribute: attribute('data-active', '.button-1', {
-        falsyValues: ['no']
+        falsy: ['no']
       }),
       isButton1Inactive: none('button1ActiveAttribute'),
 
       button2ActiveAttribute: attribute('data-active', '.button-2', {
-        falsyValues: ['0']
+        falsy: ['0']
       }),
       isButton2Inactive: none('button2ActiveAttribute'),
 
@@ -154,17 +154,17 @@ moduleForProperty('none | handling `property` values', function(test) {
 
     const page = create({
       input1AutocompleteProp: property('autocomplete', '.input-1', {
-        falsyValues: ['off']
+        falsy: ['off']
       }),
       input1DoesNotAutocomplete: none('input1AutocompleteProp'),
 
       input2AutocompleteProp: property('autocomplete', '.input-2', {
-        falsyValues: ['off']
+        falsy: ['off']
       }),
       input2DoesNotAutocomplete: none('input2AutocompleteProp'),
 
       input3AutocompleteProp: property('autocomplete', '.input-3', {
-        falsyValues: ['off']
+        falsy: ['off']
       }),
       input3DoesNotAutoComplete: none('input3AutocompleteProp')
     });
@@ -255,7 +255,7 @@ moduleForProperty('none | handling `text` values', function(test) {
     assert.expect(1);
 
     const page = create({
-      buttonText: text('button', { falsyValues: ['---'] }),
+      buttonText: text('button', { falsy: ['---'] }),
       isButtonInactive: none('buttonText')
     });
 
@@ -327,7 +327,7 @@ moduleForProperty('none | handling `value` values', function(test) {
     assert.expect(1);
 
     const page = create({
-      inputValue: value('input', { falsyValues: ['---'] }),
+      inputValue: value('input', { falsy: ['---'] }),
       isInputEmpty: none('inputValue')
     });
 
