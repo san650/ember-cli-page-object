@@ -17,310 +17,232 @@ import { alias, none } from 'ember-cli-page-object/macros';
 
 moduleForProperty('none | handling `attribute` values', function(test) {
 
+  const PAGE = create({
+    activeAttrValue: attribute('data-active', 'button'),
+    isButtonInactive: none('activeAttrValue')
+  });
+
   test('treats "true" attribute value as truthy', function(assert) {
     assert.expect(1);
 
-    const page = create({
-      activeAttributeValue: attribute('data-active', 'button'),
-      isButtonInactive: none('activeAttributeValue')
-    });
+    this.adapter.createTemplate(this, PAGE, '<button data-active="true"></button>');
 
-    this.adapter.createTemplate(this, page, '<button data-active="true"></button>');
-
-    assert.notOk(page.isButtonInactive);
-  });
-
-  test('treats any string attribute value other than "false" as truthy', function(assert) {
-    assert.expect(1);
-
-    const page = create({
-      activeAttributeValue: attribute('data-active', 'button'),
-      isButtonInactive: none('activeAttributeValue')
-    });
-
-    this.adapter.createTemplate(this, page, '<button data-active="0"></button>');
-
-    assert.notOk(page.isButtonInactive);
+    assert.notOk(PAGE.isButtonInactive);
   });
 
   test('treats "false" attribute value as falsy', function(assert) {
     assert.expect(1);
 
-    const page = create({
-      activeAttributeValue: attribute('data-active', 'button'),
-      isButtonInactive: none('activeAttributeValue')
-    });
+    this.adapter.createTemplate(this, PAGE, '<button data-active="false"></button>');
 
-    this.adapter.createTemplate(this, page, '<button data-active="false"></button>');
+    assert.ok(PAGE.isButtonInactive);
+  });
 
-    assert.ok(page.isButtonInactive);
+  test('treats any string attribute value other than "false" as truthy', function(assert) {
+    assert.expect(1);
+
+    this.adapter.createTemplate(this, PAGE, '<button data-active="0"></button>');
+
+    assert.notOk(PAGE.isButtonInactive);
   });
 
   test('can handle custom falsy values', function(assert) {
-    assert.expect(6);
+    assert.expect(1);
 
     const page = create({
-      button1ActiveAttribute: attribute('data-active', '.button-1', {
-        falsy: ['no']
-      }),
-      isButton1Inactive: none('button1ActiveAttribute'),
-
-      button2ActiveAttribute: attribute('data-active', '.button-2', {
-        falsy: ['0']
-      }),
-      isButton2Inactive: none('button2ActiveAttribute'),
-
-      button3ActiveAttribute: attribute('data-active', '.button-3'),
-      isButton3Inactive: none('button2ActiveAttribute'),
+      activeAttrValue: attribute('data-active', 'button', { falsy: ['no'] }),
+      isButtonInactive: none('activeAttrValue')
     });
 
     this.adapter.createTemplate(this, page, `
-      <button class="button-1" data-active="no"></button>
-      <button class="button-2" data-active="0"></button>
-      <button class="button-3" data-active="false"></button>
+      <button data-active="no"></button>
     `);
 
-    assert.equal(page.button1ActiveAttribute, 'no');
-    assert.ok(page.isButton1Inactive);
-
-    assert.equal(page.button2ActiveAttribute, '0');
-    assert.ok(page.isButton2Inactive);
-
-    assert.equal(page.button3ActiveAttribute, 'false');
-    assert.ok(page.isButton3Inactive);
+    assert.ok(page.isButtonInactive);
   });
 });
 
 moduleForProperty('none | handling `property` values', function(test) {
 
+  const PAGE = create({
+    isBoxChecked: property('checked', '[type=checkbox]'),
+    isFormEmpty: none('isBoxChecked'),
+
+    autoCompleteProp: property('autocomplete', 'input'),
+    isAutocompleteOff: none('autoCompleteProp')
+  });
+
   test('treats true property value as truthy', function(assert) {
     assert.expect(2);
 
-    const page = create({
-      isBoxChecked: property('checked', '[type=checkbox]'),
-      isFormEmpty: none('isBoxChecked')
-    });
+    this.adapter.createTemplate(this, PAGE, '<input type="checkbox" checked>');
 
-    this.adapter.createTemplate(this, page, '<input type="checkbox" checked=true>');
-
-    assert.equal(page.isBoxChecked, true);
-    assert.notOk(page.isFormEmpty);
+    assert.equal(PAGE.isBoxChecked, true);
+    assert.notOk(PAGE.isFormEmpty);
   });
 
   test('treats false property value as falsy', function(assert) {
     assert.expect(2);
 
-    const page = create({
-      isBoxChecked: property('checked', '[type=checkbox]'),
-      isFormEmpty: none('isBoxChecked')
-    });
+    this.adapter.createTemplate(this, PAGE, '<input type="checkbox">');
 
-    this.adapter.createTemplate(this, page, '<input type="checkbox">');
+    assert.equal(PAGE.isBoxChecked, false);
+    assert.ok(PAGE.isFormEmpty);
+  });
 
-    assert.equal(page.isBoxChecked, false);
-    assert.ok(page.isFormEmpty);
+  test('treats non-empty string property value as truthy', function(assert) {
+    assert.expect(1);
+
+    this.adapter.createTemplate(this, PAGE, '<input type="text" autocomplete="foo">');
+
+    assert.notOk(PAGE.isAutocompleteOff);
   });
 
   test('treats empty string property value as falsy', function(assert) {
-    assert.expect(2);
+    assert.expect(1);
 
-    const page = create({
-      autoCompleteProp: property('autocomplete', 'input'),
-      inputAutoCompletes: none('autoCompleteProp')
-    });
+    this.adapter.createTemplate(this, PAGE, '<input type="text" autocomplete="">');
 
-    this.adapter.createTemplate(this, page, '<input type="text">');
-
-    assert.equal(page.autoCompleteProp, '');
-    assert.ok(page.inputAutoCompletes);
+    assert.ok(PAGE.isAutocompleteOff);
   });
 
   test('treats undefined property value as falsy', function(assert) {
     assert.expect(2);
 
     const page = create({
-      fooProperty: property('foo-made-up-property', '[type=checkbox]'),
-      isFormEmpty: none('fooProperty')
+      fooProp: property('data-foo', '[type=checkbox]'),
+      isCheckboxWithoutFoo: none('fooProp')
     });
 
     this.adapter.createTemplate(this, page, '<input type="checkbox">');
 
     assert.equal(page.fooProperty, undefined);
-    assert.ok(page.isFormEmpty);
+    assert.ok(page.isCheckboxWithoutFoo);
   });
 
-  test('can handle custom falsy property values', function (assert) {
-    assert.expect(6);
+  test('can handle custom falsy values', function (assert) {
+    assert.expect(1);
 
     const page = create({
-      input1AutocompleteProp: property('autocomplete', '.input-1', {
-        falsy: ['off']
-      }),
-      input1DoesNotAutocomplete: none('input1AutocompleteProp'),
-
-      input2AutocompleteProp: property('autocomplete', '.input-2', {
-        falsy: ['off']
-      }),
-      input2DoesNotAutocomplete: none('input2AutocompleteProp'),
-
-      input3AutocompleteProp: property('autocomplete', '.input-3', {
-        falsy: ['off']
-      }),
-      input3DoesNotAutoComplete: none('input3AutocompleteProp')
+      inputAutocompleteProp: property('autocomplete', 'input', { falsy: ['off'] }),
+      isAutocompleteOff: none('inputAutocompleteProp')
     });
 
     this.adapter.createTemplate(this, page, `
-      <input class="input-1" type="text">
-      <input class="input-2" type="text" autocomplete="off">
-      <input class="input-3" type="text" autocomplete="email">
+      <input type="text" autocomplete="off">
     `);
 
-    assert.equal(page.input1AutocompleteProp, '');
-    assert.ok(page.input1DoesNotAutocomplete);
-
-    assert.equal(page.input2AutocompleteProp, 'off');
-    assert.ok(page.input2DoesNotAutocomplete);
-
-    assert.equal(page.input3AutocompleteProp, 'email');
-    assert.notOk(page.input3DoesNotAutoComplete);
+    assert.ok(page.isAutocompleteOff);
   });
 });
 
 moduleForProperty('none | handling `text` values', function(test) {
 
+  const PAGE = create({
+    spanText: text('span'),
+    isSpanEmpty: none('spanText')
+  });
+
   test('treats non-empty text value as truthy', function(assert) {
     assert.expect(1);
 
-    const page = create({
-      buttonText: text('button'),
-      isButtonInactive: none('buttonText')
-    });
+    this.adapter.createTemplate(this, PAGE, '<span>Foo</span>');
 
-    this.adapter.createTemplate(this, page, '<button>Foo</button>');
-
-    assert.notOk(page.isButtonInactive);
+    assert.notOk(PAGE.isSpanEmpty);
   });
 
   test('treats "false" text value as truthy', function(assert) {
     assert.expect(1);
 
-    const page = create({
-      buttonText: text('button'),
-      isButtonInactive: none('buttonText')
-    });
+    this.adapter.createTemplate(this, PAGE, '<span>false</span>');
 
-    this.adapter.createTemplate(this, page, '<button>false</button>');
-
-    assert.notOk(page.isButtonInactive);
-  });
-
-  test('treats white space text value as falsy by default', function(assert) {
-    assert.expect(1);
-
-    const page = create({
-      buttonText: text('button'),
-      isButtonInactive: none('buttonText')
-    });
-
-    this.adapter.createTemplate(this, page, '<button>  </button>');
-    assert.ok(page.isButtonInactive);
-  });
-
-  test('treats white space text value as truthy if { normalize: false } is passed into options', function(assert) {
-    assert.expect(1);
-
-    const page = create({
-      buttonText: text('button', { normalize: false }),
-      isButtonInactive: none('buttonText')
-    });
-
-    this.adapter.createTemplate(this, page, '<button>  </button>');
-    assert.notOk(page.isButtonInactive);
+    assert.notOk(PAGE.isSpanEmpty);
   });
 
   test('treats empty string text value as falsy', function(assert) {
     assert.expect(1);
 
+    this.adapter.createTemplate(this, PAGE, '<span></span>');
+
+    assert.ok(PAGE.isSpanEmpty);
+  });
+
+  test('treats white space text value as falsy by default', function(assert) {
+    assert.expect(1);
+
+    this.adapter.createTemplate(this, PAGE, '<span>  </span>');
+
+    assert.ok(PAGE.isSpanEmpty);
+  });
+
+  test('treats white space text value as truthy with { normalize: false } option', function(assert) {
+    assert.expect(1);
+
     const page = create({
-      buttonText: text('button'),
-      isButtonInactive: none('buttonText')
+      spanText: text('span', { normalize: false }),
+      isSpanEmpty: none('spanText')
     });
 
-    this.adapter.createTemplate(this, page, '<button></button>');
+    this.adapter.createTemplate(this, page, '<span>  </span>');
 
-    assert.ok(page.isButtonInactive);
+    assert.notOk(page.isSpanEmpty);
   });
 
   test('can handle custom falsy values', function(assert) {
     assert.expect(1);
 
     const page = create({
-      buttonText: text('button', { falsy: ['---'] }),
-      isButtonInactive: none('buttonText')
+      spanText: text('span', { falsy: '---' }),
+      isSpanEmpty: none('spanText')
     });
 
-    this.adapter.createTemplate(this, page, '<button>---</button>');
+    this.adapter.createTemplate(this, page, '<span>---</span>');
 
-    assert.ok(page.isButtonInactive);
+    assert.ok(page.isSpanEmpty);
   });
 });
 
 moduleForProperty('none | handling `value` values', function(test) {
 
+  const PAGE = create({
+    inputValue: value('input'),
+    isInputEmpty: none('inputValue')
+  });
+
   test('treats non-empty string value as truthy', function(assert) {
     assert.expect(1);
 
-    const page = create({
-      inputValue: value('input'),
-      isInputEmpty: none('inputValue')
-    });
-
-    this.adapter.createTemplate(this, page, '<input type="text">');
+    this.adapter.createTemplate(this, PAGE, '<input type="text">');
     $('input').val('Lorem');
 
-    assert.notOk(page.isInputEmpty);
+    assert.notOk(PAGE.isInputEmpty);
   });
 
   test('treats "false" value as truthy', function(assert) {
     assert.expect(1);
 
-    const page = create({
-      inputValue: value('input'),
-      isInputEmpty: none('inputValue')
-    });
-
-    this.adapter.createTemplate(this, page, '<input type="text">');
+    this.adapter.createTemplate(this, PAGE, '<input type="text">');
     $('input').val('false');
 
-    assert.notOk(page.isInputEmpty);
+    assert.notOk(PAGE.isInputEmpty);
   });
 
   test('treats white space value as truthy', function(assert) {
     assert.expect(1);
 
-    const page = create({
-      inputValue: value('input'),
-      isInputEmpty: none('inputValue')
-    });
-
-    this.adapter.createTemplate(this, page, '<input type="text">');
+    this.adapter.createTemplate(this, PAGE, '<input type="text">');
     $('input').val('  ');
 
-    assert.notOk(page.isInputEmpty);
+    assert.notOk(PAGE.isInputEmpty);
   });
 
   test('treats empty string value as falsy', function(assert) {
     assert.expect(1);
 
-    const page = create({
-      inputValue: value('input'),
-      isInputEmpty: none('inputValue')
-    });
-
-    this.adapter.createTemplate(this, page, '<input type="text">');
+    this.adapter.createTemplate(this, PAGE, '<input type="text">');
     $('input').val('');
 
-    assert.ok(page.isInputEmpty);
+    assert.ok(PAGE.isInputEmpty);
   });
 
   test('can handle custom falsy values', function(assert) {
@@ -340,63 +262,51 @@ moduleForProperty('none | handling `value` values', function(test) {
 
 moduleForProperty('none | handling `count` values', function(test) {
 
+  const PAGE = create({
+    buttonCount: count('button'),
+    areButtonsAbsent: none('buttonCount')
+  });
+
   test('treates count value > 0 as truthy', function(assert) {
     assert.expect(1);
 
-    const page = create({
-      buttonCount: count('button'),
-      areButtonsAbsent: none('buttonCount')
-    });
+    this.adapter.createTemplate(this, PAGE, '<button></button>');
 
-    this.adapter.createTemplate(this, page, '<button></button>');
-
-    assert.notOk(page.areButtonsAbsent);
+    assert.notOk(PAGE.areButtonsAbsent);
   });
 
   test('treates count value === 0 as falsy', function(assert) {
     assert.expect(1);
 
-    const page = create({
-      buttonCount: count('button'),
-      areButtonsAbsent: none('buttonCount')
-    });
+    this.adapter.createTemplate(this, PAGE, '<div></div>');
 
-    this.adapter.createTemplate(this, page, '<div></div>');
-
-    assert.ok(page.areButtonsAbsent);
+    assert.ok(PAGE.areButtonsAbsent);
   });
 });
 
 moduleForProperty('none | handling `collection` values', function(test) {
 
+  const PAGE = create({
+    spans: collection({
+      itemScope: 'span'
+    }),
+    hasNoSpans: none('spans')
+  });
+
   test('treats empty collection as falsy', function(assert) {
     assert.expect(1);
 
-    const page = create({
-      foo: collection({
-        itemScope: 'span'
-      }),
-      isFooNone: none('foo')
-    });
+    this.adapter.createTemplate(this, PAGE, '<div>Lorem ipsum</div>');
 
-    this.adapter.createTemplate(this, page, '<div>Lorem ipsum</div>');
-
-    assert.ok(page.isFooNone);
+    assert.ok(PAGE.hasNoSpans);
   });
 
   test('treats non-empty collection as truthy', function(assert) {
     assert.expect(1);
 
-    const page = create({
-      foo: collection({
-        itemScope: 'div'
-      }),
-      isFooNone: none('foo')
-    });
+    this.adapter.createTemplate(this, PAGE, '<span>Lorem ipsum</span>');
 
-    this.adapter.createTemplate(this, page, '<div>Lorem ipsum</div>');
-
-    assert.notOk(page.isFooNone);
+    assert.notOk(PAGE.hasNoSpans);
   });
 });
 
@@ -583,15 +493,15 @@ moduleForProperty('none | handling function return values', function(test) {
       bar() {
         return null;
       },
-      isBartNone: none('bar'),
+      isBarNone: none('bar')
     });
 
     assert.ok(page.isFooNone);
-    assert.notOk(page.isBarNone);
+    assert.ok(page.isBarNone);
   });
 
   test('handles a function that returns an array', function(assert) {
-    assert.expect(2);
+    assert.expect(3);
 
     const page = create({
       foo() {
@@ -600,12 +510,37 @@ moduleForProperty('none | handling function return values', function(test) {
       isFooNone: none('foo'),
 
       bar() {
-        return ['lorem'];
+        return ['lorem', false];
       },
-      isBartNone: none('bar'),
+      isBarNone: none('bar'),
+
+      baz() {
+        return [null, undefined, 0, false, ''];
+      },
+      isBazNone: none('baz')
     });
 
     assert.ok(page.isFooNone);
+    assert.notOk(page.isBarNone);
+    assert.ok(page.isBazNone);
+  });
+
+  test('handles a function that returns an object', function(assert) {
+    assert.expect(2);
+
+    const page = create({
+      foo() {
+        return {};
+      },
+      isFooNone: none('foo'),
+
+      bar() {
+        return { hello: 'world' };
+      },
+      isBarNone: none('bar')
+    });
+
+    assert.notOk(page.isFooNone);
     assert.notOk(page.isBarNone);
   });
 
@@ -664,110 +599,87 @@ moduleForProperty('none | handling function return values', function(test) {
   });
 });
 
-moduleForProperty('none | handling multiple properties', function(test) {
+moduleForProperty('none | checking falsiness of multiple properties', function(test) {
+
+  const PAGE = create({
+    isSubmitButtonVisible: isVisible('.submit-button'),
+    labelText: text('label'),
+    areInstructionsShown: {
+      isDescriptor: true,
+      get() {
+        return this.labelText === 'I am the instructions';
+      }
+    },
+    isFormInSubmittedState: none('isSubmitButtonVisible', 'areInstructionsShown')
+  });
+
   test('returns false if all property values are falsy', function(assert) {
     assert.expect(3);
 
-    const page = create({
-      isSubmitButtonVisible: isVisible('.submit-button'),
-      instructionsText: text('label'),
-      areInstructionsShown: {
-        isDescriptor: true,
-        get() {
-          return this.instructionsText === 'Submit your info';
-        }
-      },
-      isFormDisabled: none('isSubmitButtonVisible', 'areInstructionsShown')
-    });
-
-    this.adapter.createTemplate(this, page, `
-      <label>Nothing to do here</label>
+    this.adapter.createTemplate(this, PAGE, `
+      <label>I am not the instructions</label>
       <button class="submit-button" hidden></button>
     `);
 
-    assert.equal(page.areInstructionsShown, false);
-    assert.equal(page.isSubmitButtonVisible, false);
-    assert.ok(page.isFormDisabled);
+    assert.equal(PAGE.areInstructionsShown, false);
+    assert.equal(PAGE.isSubmitButtonVisible, false);
+    assert.ok(PAGE.isFormInSubmittedState);
   });
 
   test('returns true if any property value is truthy', function(assert) {
     assert.expect(3);
 
-    const page = create({
-      isSubmitButtonVisible: isVisible('.submit-button'),
-      instructionsText: text('label'),
-      areInstructionsShown: {
-        isDescriptor: true,
-        get() {
-          return this.instructionsText === 'Submit your info';
-        }
-      },
-      isFormDisabled: none('areInstructionsShown', 'isSubmitButtonVisible')
-    });
-
-    this.adapter.createTemplate(this, page, `
-      <label>Nothing to do here</label>
+    this.adapter.createTemplate(this, PAGE, `
+      <label>I am not the instructions</label>
       <button class="submit-button"></button>
     `);
 
-    assert.equal(page.areInstructionsShown, false);
-    assert.equal(page.isSubmitButtonVisible, true);
-    assert.notOk(page.isFormDisabled);
+    assert.equal(PAGE.areInstructionsShown, false);
+    assert.equal(PAGE.isSubmitButtonVisible, true);
+    assert.notOk(PAGE.isFormInSubmittedState);
   });
 });
 
 moduleForProperty('none | handling properties with { multiple: true }', function(test) {
 
+  const PAGE = create({
+    activeSpanAttrValue: attribute('data-active', 'span', { multiple: true }),
+    spanText: text('span', { multiple: true }),
+    areSpansInactive: none('activeSpanAttrValue', 'spanText')
+  });
+
   test('returns true if any value is truthy', function(assert) {
-    assert.expect(4);
+    assert.expect(3);
 
-    const page = create({
-      activeSpanAttrValue: attribute('data-active', 'span', { multiple: true }),
-      spanText: text('span', { multiple: true }),
-      areBoxesChecked: is(':checked', '[type="checkbox"]', { multiple: true }),
-      isPageInactive: none('activeSpanAttrValue', 'spanText', 'areBoxesChecked')
-    });
-
-    this.adapter.createTemplate(this, page, `
-      <input type="checkbox">
-      <input type="checkbox" checked>
+    this.adapter.createTemplate(this, PAGE, `
       <span>Lorem</span>
       <span data-active=""></span>
       <span data-active="false"></span>
-      <span data-active=""></span>
     `);
 
-    assert.deepEqual(page.activeSpanAttrValue, [undefined, '', 'false', '']);
-    assert.deepEqual(page.spanText, ['Lorem', '', '', '']);
-    assert.equal(page.areBoxesChecked, false);
-    assert.notOk(page.isPageInactive);
+    assert.deepEqual(PAGE.activeSpanAttrValue, [undefined, '', 'false']);
+    assert.deepEqual(PAGE.spanText, ['Lorem', '', '']);
+    assert.notOk(PAGE.areSpansInactive);
   });
 
   test('returns false if all values are falsy', function(assert) {
-    assert.expect(1);
+    assert.expect(3);
 
-    const page = create({
-      activeSpanAttrValue: attribute('data-active', 'span', { multiple: true }),
-      spanText: text('span', { multiple: true }),
-      areBoxesChecked: is(':checked', '[type="checkbox"]', { multiple: true }),
-      isPageInactive: none('activeSpanAttrValue', 'spanText', 'areBoxesChecked')
-    });
-
-    this.adapter.createTemplate(this, page, `
-      <input type="checkbox">
-      <input type="checkbox">
+    this.adapter.createTemplate(this, PAGE, `
       <span></span>
       <span data-active=""></span>
       <span data-active="false"></span>
     `);
 
-    assert.ok(page.isPageInactive);
+    assert.deepEqual(PAGE.activeSpanAttrValue, [undefined, '', 'false']);
+    assert.deepEqual(PAGE.spanText, ['', '', '']);
+    assert.ok(PAGE.areSpansInactive);
   });
 });
 
 moduleForProperty('none | handling nested properties', function(test) {
 
-  const page = create({
+  const PAGE = create({
     body: {
       span: {
         scope: 'span',
@@ -787,29 +699,29 @@ moduleForProperty('none | handling nested properties', function(test) {
   test('returns true if any value is truthy', function(assert) {
     assert.expect(1);
 
-    this.adapter.createTemplate(this, page, `
+    this.adapter.createTemplate(this, PAGE, `
       <input type="checkbox" checked>
       <span data-active="false"></span>
     `);
 
-    assert.notOk(page.isPageInactive);
+    assert.notOk(PAGE.isPageInactive);
   });
 
   test('returns false if all values are falsy', function(assert) {
     assert.expect(1);
 
-    this.adapter.createTemplate(this, page, `
+    this.adapter.createTemplate(this, PAGE, `
       <input type="checkbox">
       <span data-active="false"></span>
     `);
 
-    assert.ok(page.isPageInactive);
+    assert.ok(PAGE.isPageInactive);
   });
 });
 
 moduleForProperty('none | handling aliased properties', function(test) {
 
-  const page = create({
+  const PAGE = create({
     body: {
       span: {
         scope: 'span',
@@ -833,22 +745,22 @@ moduleForProperty('none | handling aliased properties', function(test) {
   test('returns true if any value is truthy', function(assert) {
     assert.expect(1);
 
-    this.adapter.createTemplate(this, page, `
+    this.adapter.createTemplate(this, PAGE, `
       <input type="checkbox" checked>
       <span data-active="false"></span>
     `);
 
-    assert.notOk(page.isPageInactive);
+    assert.notOk(PAGE.isPageInactive);
   });
 
   test('returns false if all values are falsy', function(assert) {
     assert.expect(1);
 
-    this.adapter.createTemplate(this, page, `
+    this.adapter.createTemplate(this, PAGE, `
       <input type="checkbox">
       <span data-active="false"></span>
     `);
 
-    assert.ok(page.isPageInactive);
+    assert.ok(PAGE.isPageInactive);
   });
 });
