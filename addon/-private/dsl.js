@@ -7,12 +7,12 @@ import { clickable } from './properties/clickable';
 import { fillable } from './properties/fillable';
 import { value } from './properties/value';
 import { as } from './properties/as';
+import wait from 'ember-test-helpers/wait';
 
 const thenDescriptor = {
   isDescriptor: true,
   value() {
-    /* global wait */
-    return wait().then(...arguments);
+    return (window.wait || wait)().then(...arguments);
   }
 };
 

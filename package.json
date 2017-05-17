@@ -85,6 +85,7 @@
     "ember-cli-test-info": "^1.0.0",
     "ember-cli-valid-component-name": "^1.0.0",
     "ember-cli-version-checker": "^1.2.0",
+    "ember-test-helpers": "^0.6.3",
     "rsvp": "^3.2.1"
   },
   "ember-addon": {

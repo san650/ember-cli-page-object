@@ -21,8 +21,7 @@ AcceptanceExecutionContext.prototype = {
   },
 
   runAsync(cb) {
-    /* global wait */
-    wait().then(() => {
+    window.wait().then(() => {
       cb(this);
     });
 
