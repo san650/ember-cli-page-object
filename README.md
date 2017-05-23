@@ -105,6 +105,7 @@ $ ember test --server # for development
 [![devDependency Status](https://david-dm.org/san650/ember-cli-page-object/dev-status.svg)](https://david-dm.org/san650/ember-cli-page-object#info=devDependencies)
 [![Codacy Badge](https://api.codacy.com/project/badge/grade/35545e8e8ade48dfa999a3f5e1aa4b3b)](https://www.codacy.com/app/san650/ember-cli-page-object)
 [![Code Climate](https://codeclimate.com/github/san650/ember-cli-page-object/badges/gpa.svg)](https://codeclimate.com/github/san650/ember-cli-page-object)
+[![Coverage Status](https://coveralls.io/repos/github/san650/ember-cli-page-object/badge.svg?branch=master)](https://coveralls.io/github/san650/ember-cli-page-object?branch=master)
 
 ### Maintainers
 
