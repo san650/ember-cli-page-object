@@ -1,4 +1,8 @@
-import { assign, map } from '../helpers';
+import {
+  assign,
+  map,
+  registerPropWithCustomFalsyValues
+} from '../helpers';
 import { getExecutionContext } from '../execution_context';
 
 /**
@@ -56,6 +60,12 @@ import { getExecutionContext } from '../execution_context';
 export function property(propertyName, selector, userOptions = {}) {
   return {
     isDescriptor: true,
+
+    setup(target, key) {
+      if (userOptions.falsy) {
+        registerPropWithCustomFalsyValues(target, key, userOptions.falsy);
+      }
+    },
 
     get(key) {
       let executionContext = getExecutionContext(this);

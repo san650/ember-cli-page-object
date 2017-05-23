@@ -1,4 +1,9 @@
-import { assign, map, normalizeText } from '../helpers';
+import {
+  assign,
+  map,
+  normalizeText,
+  registerPropWithCustomFalsyValues
+} from '../helpers';
 import { getExecutionContext } from '../execution_context';
 
 function identity(v) {
@@ -92,6 +97,12 @@ function identity(v) {
 export function text(selector, userOptions = {}) {
   return {
     isDescriptor: true,
+
+    setup(target, key) {
+      if (userOptions.falsy) {
+        registerPropWithCustomFalsyValues(target, key, userOptions.falsy);
+      }
+    },
 
     get(key) {
       let executionContext = getExecutionContext(this);

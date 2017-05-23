@@ -308,4 +308,29 @@ export function getProperty(object, pathToProp) {
   return typeof value === 'function' ? value.bind(propOwner) : value;
 }
 
+export function getPropertyInfo(object, pathToProp) {
+  const pathSegments = pathToProp.split('.');
+
+  if (pathSegments.length === 1) {
+    return {
+      propOwner: object,
+      propKey: pathToProp
+    };
+  }
+
+  const pathToPropOwner = pathSegments.slice(0, -1).join('.');
+  return {
+    propOwner: get(object, pathToPropOwner),
+    propKey: pathSegments.slice(-1)[0]
+  };
+}
+
+export function registerPropWithCustomFalsyValues(node, key, falsyValues) {
+  if (!node.hasOwnProperty('_propsWithCustomFalsyValues')) {
+    Ceibo.defineProperty(node, '_propsWithCustomFalsyValues', {});
+  }
+
+  node._propsWithCustomFalsyValues[key] = falsyValues;
+}
+
 export const assign = Ember.assign || Ember.merge;
