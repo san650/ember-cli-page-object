@@ -22,23 +22,58 @@ moduleForProperty('triggerable', function(test) {
     return this.adapter.wait();
   });
 
-  test("calls Ember's triggerEvent helper with event options", function(assert) {
-    assert.expect(3);
+  test("calls Ember's triggerEvent helper with static event options", function(assert) {
+    assert.expect(1);
 
-    let expectedSelector = 'span';
     let page = create({
-      foo: triggerable('keypress', expectedSelector, { eventProperties: { keyCode: 13 } })
+      foo: triggerable('keypress', 'span', { eventProperties: { keyCode: 13 } })
     });
 
     this.adapter.createTemplate(this, page, '<span></span>');
 
     this.adapter.triggerEvent((actualSelector, _, event, options) => {
-      assert.equal(actualSelector, expectedSelector);
-      assert.equal(event, 'keypress');
       assert.equal(options.keyCode, 13);
     });
 
     page.foo();
+
+    return this.adapter.wait();
+  });
+
+  test("calls Ember's triggerEvent helper with dynamic event options", function(assert) {
+    assert.expect(1);
+
+    let page = create({
+      foo: triggerable('keypress', 'span')
+    });
+
+    this.adapter.createTemplate(this, page, '<span></span>');
+
+    this.adapter.triggerEvent((actualSelector, _, event, options) => {
+      assert.equal(options.keyCode, 13);
+    });
+
+    page.foo({ keyCode: 13 });
+
+    return this.adapter.wait();
+  });
+
+  test("overrides static event options with dynamic event options", function(assert) {
+    assert.expect(1);
+
+    let page = create({
+      foo: triggerable('keypress', 'span', {
+        eventProperties: { keyCode: 0 }
+      })
+    });
+
+    this.adapter.createTemplate(this, page, '<span></span>');
+
+    this.adapter.triggerEvent((actualSelector, _, event, options) => {
+      assert.equal(options.keyCode, 13);
+    });
+
+    page.foo({ keyCode: 13 });
 
     return this.adapter.wait();
   });
