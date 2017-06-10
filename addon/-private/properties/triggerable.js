@@ -31,6 +31,18 @@ import { getExecutionContext } from '../execution_context';
  *
  * @example
  *
+ * // <input class="name">
+ * // <input class="email">
+ *
+ * const page = PageObject.create({
+ *   keydown: triggerable('keypress', '.name')
+ * });
+ *
+ * // triggers keypress using enter key on element with selector '.name'
+ * page.keydown({ which: 13 });
+ *
+ * @example
+ *
  * // <div class="scope">
  * //   <input class="name">
  * // </div>
@@ -55,7 +67,7 @@ import { getExecutionContext } from '../execution_context';
  *   focus: triggerable('focus', '.name')
  * });
  *
- * // clicks on element with selector '.scope button.continue'
+ * // focuses on element with selector '.scope .name'
  * page.focus();
  *
  * @public
@@ -75,17 +87,19 @@ export function triggerable(event, selector, userOptions = {}) {
     isDescriptor: true,
 
     get(key) {
-      return function() {
-        let executionContext = getExecutionContext(this);
-        let options = assign({ pageObjectKey: `${key}()` }, userOptions);
+      return function(eventProperties = {}) {
+        const executionContext = getExecutionContext(this);
+        const options = assign({ pageObjectKey: `${key}()` }, userOptions);
+        const staticEventProperties = assign({}, options.eventProperties);
 
         return executionContext.runAsync((context) => {
-          let fullSelector = buildSelector(this, selector, options);
-          let container =  options.testContainer || findClosestValue(this, 'testContainer');
+          const fullSelector = buildSelector(this, selector, options);
+          const container =  options.testContainer || findClosestValue(this, 'testContainer');
 
           context.assertElementExists(fullSelector, options);
 
-          context.triggerEvent(fullSelector, container, event, options.eventProperties);
+          const mergedEventProperties = assign(staticEventProperties, eventProperties);
+          context.triggerEvent(fullSelector, container, event, mergedEventProperties);
         });
       };
     }
