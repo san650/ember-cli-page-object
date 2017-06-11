@@ -3,9 +3,13 @@ import {
   create,
   clickable,
   collection,
-  isVisible
+  isVisible,
+  text
 } from 'ember-cli-page-object';
-import { alias } from 'ember-cli-page-object/macros';
+import {
+  alias,
+  descriptor
+} from 'ember-cli-page-object/macros';
 
 moduleForProperty('alias', function(test) {
   test('can alias a top-level property', function(assert) {
@@ -187,6 +191,24 @@ moduleForProperty('alias', function(test) {
     );
 
     assert.equal(page.fooBarBazCollection().count, 2);
+  });
+
+  test('can alias a property created with the `descriptor` macro', function(assert) {
+    assert.expect(1);
+
+    const page = create({
+      form: {
+        buttonText: text('button'),
+        isButtonReady: descriptor(function() {
+          return this.buttonText === 'Ready to Submit!';
+        }),
+      },
+      aliasedIsButtonReady: alias('form.isButtonReady')
+    });
+
+    this.adapter.createTemplate(this, page, '<button>Ready to Submit!</button>');
+
+    assert.ok(page.aliasedIsButtonReady);
   });
 
   test('throws error if alias targets nonexistent top-level property', function(assert) {
