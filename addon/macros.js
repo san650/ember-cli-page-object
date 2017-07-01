@@ -1,2 +1,2 @@
 export { alias } from './-private/properties/alias';
-export { descriptor } from './-private/properties/descriptor';
+export { getter } from './-private/properties/getter';

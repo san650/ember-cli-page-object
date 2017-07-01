@@ -8,7 +8,7 @@ import {
 } from 'ember-cli-page-object';
 import {
   alias,
-  descriptor
+  getter
 } from 'ember-cli-page-object/macros';
 
 moduleForProperty('alias', function(test) {
@@ -193,13 +193,13 @@ moduleForProperty('alias', function(test) {
     assert.equal(page.fooBarBazCollection().count, 2);
   });
 
-  test('can alias a property created with the `descriptor` macro', function(assert) {
+  test('can alias a property created with the `getter` macro', function(assert) {
     assert.expect(1);
 
     const page = create({
       form: {
         buttonText: text('button'),
-        isButtonReady: descriptor(function() {
+        isButtonReady: getter(function() {
           return this.buttonText === 'Ready to Submit!';
         }),
       },

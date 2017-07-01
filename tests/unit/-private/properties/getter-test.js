@@ -4,17 +4,17 @@ import {
   property,
   value
 } from 'ember-cli-page-object';
-import { descriptor } from 'ember-cli-page-object/macros';
+import { getter } from 'ember-cli-page-object/macros';
 
-moduleForProperty('descriptor', function(test) {
+moduleForProperty('getter', function(test) {
   test('returns the result of the passed-in function', function(assert) {
     assert.expect(2);
 
     const page = create({
-      foo: descriptor(function() {
+      foo: getter(function() {
         return 'lorem';
       }),
-      bar: descriptor(function() {
+      bar: getter(function() {
         return 'ipsum';
       })
     });
@@ -23,13 +23,13 @@ moduleForProperty('descriptor', function(test) {
     assert.equal(page.bar, 'ipsum');
   });
 
-  test('executes the passed-in function with the descriptor\'s context for `this`', function (assert) {
+  test('executes the passed-in function with the correct context for `this`', function (assert) {
     assert.expect(1);
 
     const page = create({
       inputValue: value('input'),
       isSubmitButtonDisabled: property('disabled', 'button'),
-      isFormEmpty: descriptor(function() {
+      isFormEmpty: getter(function() {
         return !this.inputValue && this.isSubmitButtonDisabled;
       })
     });
@@ -42,11 +42,11 @@ moduleForProperty('descriptor', function(test) {
     assert.ok(page.isFormEmpty);
   });
 
-  test('calls the passed-in function with the page object property key', function(assert) {
+  test('calls the passed-in function with the property key', function(assert) {
     assert.expect(2);
 
     const page = create({
-      foo: descriptor(function(key) {
+      foo: getter(function(key) {
         assert.equal(key, 'foo');
         return true;
       })
@@ -59,13 +59,13 @@ moduleForProperty('descriptor', function(test) {
     assert.expect(1);
 
     const page = create({
-      foo: descriptor('not a function')
+      foo: getter('not a function')
     });
 
     assert.throws(
       () => page.foo,
       /must be a function/,
-      'Argument passed to descriptor must be a function'
+      'Argument passed to getter must be a function'
     );
   });
 });
