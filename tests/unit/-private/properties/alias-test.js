@@ -3,22 +3,26 @@ import {
   create,
   clickable,
   collection,
-  isVisible
+  isVisible,
+  text
 } from 'ember-cli-page-object';
-import { alias } from 'ember-cli-page-object/macros';
+import {
+  alias,
+  getter
+} from 'ember-cli-page-object/macros';
 
 moduleForProperty('alias', function(test) {
   test('can alias a top-level property', function(assert) {
     assert.expect(1);
 
     const page = create({
-      foo: isVisible('button'),
-      fooAlias: alias('foo')
+      isButtonVisible: isVisible('button'),
+      aliasedIsButtonVisible: alias('isButtonVisible')
     });
 
     this.adapter.createTemplate(this, page, '<button>Look at me</button>');
 
-    assert.ok(page.fooAlias);
+    assert.ok(page.aliasedIsButtonVisible);
   });
 
   test('can alias a top-level method', function(assert) {
@@ -26,8 +30,8 @@ moduleForProperty('alias', function(test) {
 
     const expectedSelector = 'button';
     const page = create({
-      foo: clickable(expectedSelector),
-      fooAlias: alias('foo')
+      clickButton: clickable(expectedSelector),
+      aliasedClickButton: alias('clickButton')
     });
 
     this.adapter.createTemplate(this, page, '<button>Click me</button>');
@@ -36,7 +40,7 @@ moduleForProperty('alias', function(test) {
       assert.equal(actualSelector, expectedSelector);
     });
 
-    page.fooAlias();
+    page.aliasedClickButton();
 
     return this.adapter.wait();
   });
@@ -45,36 +49,35 @@ moduleForProperty('alias', function(test) {
     assert.expect(1);
 
     const page = create({
-      foo: collection({
+      buttons: collection({
         itemScope: 'button'
       }),
-      fooCollection: alias('foo')
+      aliasedButtons: alias('buttons')
     });
 
-    this.adapter.createTemplate(
-      this,
-      page,
-      '<button>Button 1</button><button>Button 2</button>'
-    );
+    this.adapter.createTemplate(this, page, `
+      <button>Button 1</button>
+      <button>Button 2</button>
+    `);
 
-    assert.equal(page.fooCollection().count, 2);
+    assert.equal(page.aliasedButtons().count, 2);
   });
 
   test('can alias a nested property', function(assert) {
     assert.expect(1);
 
     const page = create({
-      foo: {
-        bar: {
+      form: {
+        button: {
           scope: 'button'
         }
       },
-      isFooBarVisible: alias('foo.bar.isVisible')
+      aliasedIsButtonVisible: alias('form.button.isVisible')
     });
 
     this.adapter.createTemplate(this, page, '<button>Look at me</button>');
 
-    assert.ok(page.isFooBarVisible);
+    assert.ok(page.aliasedIsButtonVisible);
   });
 
   test('can alias a nested method', function(assert) {
@@ -82,12 +85,12 @@ moduleForProperty('alias', function(test) {
 
     const expectedSelector = 'button';
     const page = create({
-      foo: {
-        bar: {
+      form: {
+        button: {
           scope: expectedSelector
         }
       },
-      clickFooBar: alias('foo.bar.click')
+      aliasedClickButton: alias('form.button.click')
     });
 
     this.adapter.createTemplate(this, page, '<button>Click me</button>');
@@ -96,7 +99,7 @@ moduleForProperty('alias', function(test) {
       assert.equal(actualSelector, expectedSelector);
     });
 
-    page.clickFooBar();
+    page.aliasedClickButton();
 
     return this.adapter.wait();
   });
@@ -105,12 +108,12 @@ moduleForProperty('alias', function(test) {
     assert.expect(1);
 
     const page = create({
-      foo: {
-        bar: collection({
+      form: {
+        buttons: collection({
           itemScope: 'button'
         })
       },
-      fooBarCollection: alias('foo.bar')
+      aliasedButtons: alias('form.buttons')
     });
 
     this.adapter.createTemplate(
@@ -119,25 +122,25 @@ moduleForProperty('alias', function(test) {
       '<button>Button 1</button><button>Button 2</button>'
     );
 
-    assert.equal(page.fooBarCollection().count, 2);
+    assert.equal(page.aliasedButtons().count, 2);
   });
 
   test('can alias an aliased property', function(assert) {
     assert.expect(1);
 
     const page = create({
-      foo: {
-        bar: {
+      form: {
+        button: {
           scope: 'button'
         },
-        isBarVisible: alias('bar.isVisible')
+        isButtonVisible: alias('button.isVisible')
       },
-      isFooBarVisible: alias('foo.isBarVisible')
+      aliasedIsButtonVisible: alias('form.isButtonVisible')
     });
 
     this.adapter.createTemplate(this, page, '<button>Look at me</button>');
 
-    assert.ok(page.isFooBarVisible);
+    assert.ok(page.aliasedIsButtonVisible);
   });
 
   test('can alias an aliased method', function(assert) {
@@ -145,13 +148,13 @@ moduleForProperty('alias', function(test) {
 
     const expectedSelector = 'button';
     const page = create({
-      foo: {
-        bar: {
+      form: {
+        button: {
           scope: expectedSelector
         },
-        clickBar: alias('bar.click')
+        clickButton: alias('button.click')
       },
-      clickFooBar: alias('foo.clickBar')
+      aliasedClickButton: alias('form.clickButton')
     });
 
     this.adapter.createTemplate(this, page, '<button>Click me</button>');
@@ -160,7 +163,7 @@ moduleForProperty('alias', function(test) {
       assert.equal(actualSelector, expectedSelector);
     });
 
-    page.clickFooBar();
+    page.aliasedClickButton();
 
     return this.adapter.wait();
   });
@@ -169,15 +172,15 @@ moduleForProperty('alias', function(test) {
     assert.expect(1);
 
     const page = create({
-      foo: {
-        bar: {
-          baz: collection({
+      form: {
+        controls: {
+          buttons: collection({
             itemScope: 'button'
           })
         },
-        barBazCollection: alias('bar.baz')
+        buttons: alias('controls.buttons')
       },
-      fooBarBazCollection: alias('foo.barBazCollection')
+      aliasedButtons: alias('form.buttons')
     });
 
     this.adapter.createTemplate(
@@ -186,7 +189,25 @@ moduleForProperty('alias', function(test) {
       '<button>Button 1</button><button>Button 2</button>'
     );
 
-    assert.equal(page.fooBarBazCollection().count, 2);
+    assert.equal(page.aliasedButtons().count, 2);
+  });
+
+  test('can alias a property created with the `getter` macro', function(assert) {
+    assert.expect(1);
+
+    const page = create({
+      form: {
+        buttonText: text('button'),
+        isButtonReady: getter(function() {
+          return this.buttonText === 'Ready to Submit!';
+        }),
+      },
+      aliasedIsButtonReady: alias('form.isButtonReady')
+    });
+
+    this.adapter.createTemplate(this, page, '<button>Ready to Submit!</button>');
+
+    assert.ok(page.aliasedIsButtonReady);
   });
 
   test('throws error if alias targets nonexistent top-level property', function(assert) {
@@ -221,27 +242,27 @@ moduleForProperty('alias', function(test) {
     assert.expect(1);
 
     const page = create({
-      foo: isVisible('button'),
-      fooAlias: alias('foo')
+      isButtonVisible: isVisible('button'),
+      aliasedIsButtonVisible: alias('isButtonVisible')
     });
 
     this.adapter.createTemplate(this, page, '<span>No button here</span>');
 
-    assert.equal(page.fooAlias, false);
+    assert.equal(page.aliasedIsButtonVisible, false);
   });
 
   test('does not throw error if alias targets nested property with falsy value', function(assert) {
     assert.expect(1);
 
     const page = create({
-      foo: {
+      button: {
         scope: 'button'
       },
-      isFooVisible: alias('foo.isVisible')
+      aliasedIsButtonVisible: alias('button.isVisible')
     });
 
     this.adapter.createTemplate(this, page, '<span>No button here</span>');
 
-    assert.equal(page.isFooVisible, false);
+    assert.equal(page.aliasedIsButtonVisible, false);
   });
 });
