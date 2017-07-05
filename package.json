@@ -10,7 +10,6 @@
   },
   "scripts": {
     "build": "ember build",
-    "preversion": "git clean -df && npm test",
     "start": "ember server",
     "test": "ember try:each",
     "docs": "node ./docs",
