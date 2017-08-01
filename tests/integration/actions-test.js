@@ -20,7 +20,8 @@ import PageObject, {
   value,
   count,
   isHidden,
-  isVisible
+  isVisible,
+  exists
 } from 'dummy/tests/page-object';
 
 const { run } = Ember;
@@ -88,7 +89,8 @@ const page = PageObject.create({
     // should not throw an error
     count: count(),
     isHidden: isHidden(),
-    isVisible: isVisible()
+    isVisible: isVisible(),
+    exists: exists()
   }
 });
 
@@ -244,7 +246,7 @@ test('fill in by attribute', function(assert) {
 });
 
 test('Queries and actions handle non-existant elements correctly', function(assert) {
-  assert.expect(12);
+  assert.expect(13);
 
   let message = /Element not found./;
   let template = createCalculatorTemplate();
@@ -282,6 +284,7 @@ test('Queries and actions handle non-existant elements correctly', function(asse
   assert.equal(page.nonExistant.count, 0);
   assert.equal(page.nonExistant.isHidden, true);
   assert.equal(page.nonExistant.isVisible, false);
+  assert.equal(page.nonExistant.exists, false);
 });
 
 moduleForComponent('calculating-device', 'Integration | actions', {
