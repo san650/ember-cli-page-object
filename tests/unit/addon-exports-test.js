@@ -21,6 +21,7 @@ const EXPECTED_METHODS = [
   'is',
   'isHidden',
   'isVisible',
+  'exists',
   'notHasClass',
   'property',
   'selectable',
