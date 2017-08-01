@@ -38,7 +38,7 @@ moduleForProperty('exists', function(test) {
     });
 
     this.adapter.createTemplate(this, page, `
-      <div><span style="display:none">lorem</span></div>
+      <div><span>lorem</span></div>
       <div class="scope"><span>ipsum</span></div>
     `);
 
@@ -53,7 +53,7 @@ moduleForProperty('exists', function(test) {
     });
 
     this.adapter.createTemplate(this, page, `
-      <div><span style="display:none">lorem</span></div>
+      <div><span>lorem</span></div>
       <div class="scope"><span>ipsum</span></div>
     `);
 
@@ -69,7 +69,7 @@ moduleForProperty('exists', function(test) {
 
     this.adapter.createTemplate(this, page, `
       <div><span>lorem</span></div>
-      <div class="scope"><span style="display:none">ipsum</span></div>
+      <div class="scope"><span>ipsum</span></div>
     `);
 
     assert.ok(page.foo);
@@ -90,27 +90,14 @@ moduleForProperty('exists', function(test) {
       /matched more than one element. If this is not an error use { multiple: true }/);
   });
 
-  test('matches multiple elements with multiple: true option, return true if not all elements are visible', function(assert) {
+  test('matches multiple elements with multiple: true option', function(assert) {
     let page = create({
       foo: exists('span', { multiple: true })
     });
 
     this.adapter.createTemplate(this, page, `
       <span>lorem</span>
-      <span style="display:none"> ipsum </span>
-      <span>dolor</span>
-    `);
-
-    assert.ok(page.foo);
-  });
-
-  test('matches multiple elements with multiple: true option, return true if all elements are visible', function(assert) {
-    let page = create({
-      foo: exists('span', { multiple: true })
-    });
-
-    this.adapter.createTemplate(this, page, `
-      <span>lorem</span>
+      <span> ipsum </span>
       <span>dolor</span>
     `);
 
@@ -124,13 +111,12 @@ moduleForProperty('exists', function(test) {
     });
 
     this.adapter.createTemplate(this, page, `
-      <em style="display:none">lorem</em>
-      <em style="display:none">ipsum</em>
-      <em>dolor</em>
+      <em>lorem</em>
+      <em>ipsum</em>
     `);
 
     assert.ok(page.foo);
-    assert.ok(page.bar);
+    assert.ok(!page.bar);
   });
 
   test('looks for elements outside the testing container', function(assert) {
@@ -140,7 +126,7 @@ moduleForProperty('exists', function(test) {
 
     // FIXME the order we call createTemplate here is important! (it shouldn't, that's why there's a FIXME tag)
     this.adapter.createTemplate(this, page, '<span>ipsum</span>', { useAlternateContainer: true });
-    this.adapter.createTemplate(this, page, '<span style="display:none">ipsum</span>');
+    this.adapter.createTemplate(this, page, '<span>ipsum</span>');
 
     assert.ok(page.foo);
   });
@@ -153,7 +139,7 @@ moduleForProperty('exists', function(test) {
 
     // FIXME the order we call createTemplate here is important! (it shouldn't, that's why there's a FIXME tag)
     this.adapter.createTemplate(this, page, '<span>ipsum</span>', { useAlternateContainer: true });
-    this.adapter.createTemplate(this, page, '<span style="display:none">ipsum</span>');
+    this.adapter.createTemplate(this, page, '<span>ipsum</span>');
 
     assert.ok(page.foo);
   });
