@@ -2,9 +2,9 @@ import { findElement } from 'ember-cli-page-object';
 
 /**
  * Validates if an element or set of elements are in the DOM. In most cases,
- * it is preferred to use `exists` instead as it's a slightly stronger
- * guarantee. However, a use case for `exists` is to check the presence of a
- * <meta> tag on the page.
+ * it is preferred to use `isVisible` instead as it provides a slightly
+ * stronger guarantee. However, a use case for `exists` is to check the
+ * presence of a <meta> tag on the page.
  *
  * @example
  *
