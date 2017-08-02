@@ -1,4 +1,5 @@
 import { create }      from './-private/create';                   export { create };
+import { extend }      from './-private/-extend';                  export { extend };
 
 import { attribute }   from './-private/properties/attribute';     export { attribute };
 import { clickOnText } from './-private/properties/click-on-text'; export { clickOnText };
@@ -31,6 +32,7 @@ export default {
   contains,
   count,
   create,
+  extend,
   fillable,
   hasClass,
   is,
