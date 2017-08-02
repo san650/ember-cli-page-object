@@ -13,6 +13,7 @@ import { is }          from './-private/properties/is';            export { is }
 import { isHidden }    from './-private/properties/is-hidden';     export { isHidden };
 import { isVisible }   from './-private/properties/is-visible';    export { isVisible };
 import { exists }      from './-private/properties/exists';        export { exists };
+import { nested }      from './-private/properties/nested';        export { nested };
 import { notHasClass } from './-private/properties/not-has-class'; export { notHasClass };
 import { property }    from './-private/properties/property';      export { property };
 import { text }        from './-private/properties/text';          export { text };
@@ -39,6 +40,7 @@ export default {
   isHidden,
   isVisible,
   exists,
+  nested,
   notHasClass,
   property,
   selectable,
