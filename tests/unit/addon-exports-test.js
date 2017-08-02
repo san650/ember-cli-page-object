@@ -16,6 +16,7 @@ const EXPECTED_METHODS = [
   'contains',
   'count',
   'create',
+  'extend',
   'fillable',
   'hasClass',
   'is',
