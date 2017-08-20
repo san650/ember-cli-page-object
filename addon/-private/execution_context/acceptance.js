@@ -42,11 +42,11 @@ AcceptanceExecutionContext.prototype = {
   },
 
   click(selector, container) {
-    click($(selector, container)[0]);
+    click(this.$(selector, container)[0]);
   },
 
   fillIn(selector, container, options, content) {
-    const [$selection] = $(selector, container || findClosestValue(this.pageObjectNode, 'testContainer'));
+    const [$selection] = this.$(selector, container || findClosestValue(this.pageObjectNode, 'testContainer'));
 
     focus($selection);
 
@@ -61,14 +61,13 @@ AcceptanceExecutionContext.prototype = {
   },
 
   triggerEvent(selector, container, eventName, eventOptions) {
-    const element = $(selector, container);
+    const element = this.$(selector, container);
 
     triggerEvent(element, eventName, eventOptions);
   },
 
   assertElementExists(selector, options) {
-    /* global find */
-    let result = $(selector, options.testContainer || findClosestValue(this.pageObjectNode, 'testContainer'));
+    let result = this.$(selector, options.testContainer || findClosestValue(this.pageObjectNode, 'testContainer'));
 
     if (result.length === 0) {
       throwBetterError(
@@ -83,16 +82,31 @@ AcceptanceExecutionContext.prototype = {
   find(selector, options) {
     selector = buildSelector(this.pageObjectNode, selector, options);
 
-    let result = $(selector, options.testContainer || findClosestValue(this.pageObjectNode, 'testContainer'));
+    let result = this.$(selector, options.testContainer || findClosestValue(this.pageObjectNode, 'testContainer'));
     guardMultiple(result, selector, options.multiple);
 
     return result;
   },
 
+  $(selector, container) {
+    if (container) {
+      return $(selector, container);
+    } else {
+      let testsContainer = this.testContext ?
+        this.testContext._element :
+        '#ember-testing';
+
+      return $(selector, testsContainer);
+    }
+  },
+
   findWithAssert(selector, options) {
+    let container = options.testContainer || findClosestValue(this.pageObjectNode, 'testContainer');
+
     selector = buildSelector(this.pageObjectNode, selector, options);
 
-    let result = $(selector, options.testContainer || findClosestValue(this.pageObjectNode, 'testContainer'));
+    let result = this.$(selector, container);
+
     if (result.length === 0) {
       throwBetterError(
         this.pageObjectNode,

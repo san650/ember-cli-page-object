@@ -45,7 +45,7 @@ IntegrationExecutionContext.prototype = {
   click(selector, container) {
     this.$(selector, container).each((pos, el) => {
       click(el);
-    })
+    });
   },
 
   fillIn(selector, container, options, content) {
@@ -67,7 +67,11 @@ IntegrationExecutionContext.prototype = {
     if (container) {
       return $(selector, container);
     } else {
-      return $(selector, this.testContext._element);
+      let testsContainer = this.testContext ?
+        this.testContext._element :
+        '#ember-testing';
+
+      return $(selector, testsContainer);
     }
   },
 
