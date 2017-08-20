@@ -1,3 +1,12 @@
+import $ from 'jquery';
+
+import {
+  click,
+  focus,
+  triggerEvent,
+  visit
+} from 'ember-native-dom-helpers';
+
 import {
   guardMultiple,
   buildSelector,
@@ -29,19 +38,16 @@ AcceptanceExecutionContext.prototype = {
   },
 
   visit(path) {
-    /* global visit */
     visit(path);
   },
 
   click(selector, container) {
-    /* global click */
-    click(selector, container);
+    click($(selector, container)[0]);
   },
 
   fillIn(selector, container, options, content) {
-    let $selection = find(selector, container || findClosestValue(this.pageObjectNode, 'testContainer'));
+    const [$selection] = $(selector, container || findClosestValue(this.pageObjectNode, 'testContainer'));
 
-    /* global focus */
     focus($selection);
 
     fillElement($selection, content, {
@@ -50,19 +56,19 @@ AcceptanceExecutionContext.prototype = {
       pageObjectKey: options.pageObjectKey
     });
 
-    /* global triggerEvent */
-    triggerEvent(selector, container, 'input');
-    triggerEvent(selector, container, 'change');
+    triggerEvent($selection, 'input');
+    triggerEvent($selection, 'change');
   },
 
   triggerEvent(selector, container, eventName, eventOptions) {
-    /* global triggerEvent */
-    triggerEvent(selector, container, eventName, eventOptions);
+    const element = $(selector, container);
+
+    triggerEvent(element, eventName, eventOptions);
   },
 
   assertElementExists(selector, options) {
     /* global find */
-    let result = find(selector, options.testContainer || findClosestValue(this.pageObjectNode, 'testContainer'));
+    let result = $(selector, options.testContainer || findClosestValue(this.pageObjectNode, 'testContainer'));
 
     if (result.length === 0) {
       throwBetterError(
@@ -75,26 +81,18 @@ AcceptanceExecutionContext.prototype = {
   },
 
   find(selector, options) {
-    let result;
-
     selector = buildSelector(this.pageObjectNode, selector, options);
 
-    /* global find */
-    result = find(selector, options.testContainer || findClosestValue(this.pageObjectNode, 'testContainer'));
-
+    let result = $(selector, options.testContainer || findClosestValue(this.pageObjectNode, 'testContainer'));
     guardMultiple(result, selector, options.multiple);
 
     return result;
   },
 
   findWithAssert(selector, options) {
-    let result;
-
     selector = buildSelector(this.pageObjectNode, selector, options);
 
-    /* global find */
-    result = find(selector, options.testContainer || findClosestValue(this.pageObjectNode, 'testContainer'));
-
+    let result = $(selector, options.testContainer || findClosestValue(this.pageObjectNode, 'testContainer'));
     if (result.length === 0) {
       throwBetterError(
         this.pageObjectNode,

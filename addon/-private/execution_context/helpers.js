@@ -2,6 +2,8 @@ import {
   throwBetterError
 } from '../better-errors';
 
+import $ from 'jquery';
+
 /**
  * @private
  *
@@ -17,7 +19,9 @@ import {
  *
  * @throws Will throw an error if called on a contenteditable element that has `contenteditable="false"`
  */
-export function fillElement($selection, content, { selector, pageObjectNode, pageObjectKey }) {
+export function fillElement(selection, content, { selector, pageObjectNode, pageObjectKey }) {
+  const $selection = $(selection);
+
   if ($selection.is('[contenteditable][contenteditable!="false"]')) {
     $selection.html(content);
   } else if ($selection.is('[contenteditable="false"]')) {

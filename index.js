@@ -11,6 +11,9 @@ module.exports = {
           enabled: this._shouldIncludeFiles(),
           import: ['index.js']
         };
+      },
+      jquery: {
+        import: ['dist/jquery.js'],
       }
     }
   },

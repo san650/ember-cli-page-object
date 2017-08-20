@@ -1,4 +1,11 @@
 import Ember from 'ember';
+import $ from 'jquery';
+
+import {
+  click,
+  triggerEvent
+} from 'ember-native-dom-helpers';
+
 import {
   guardMultiple,
   buildSelector,
@@ -12,7 +19,7 @@ import {
   throwBetterError
 } from '../better-errors';
 
-const { $, run } = Ember;
+const { run } = Ember;
 
 export default function IntegrationExecutionContext(pageObjectNode, testContext) {
   this.pageObjectNode = pageObjectNode;
@@ -36,7 +43,9 @@ IntegrationExecutionContext.prototype = {
   visit: $.noop,
 
   click(selector, container) {
-    this.$(selector, container).click();
+    this.$(selector, container).each((pos, el) => {
+      click(el);
+    })
   },
 
   fillIn(selector, container, options, content) {
@@ -48,37 +57,30 @@ IntegrationExecutionContext.prototype = {
       pageObjectKey: options.pageObjectKey
     });
 
-    $selection.trigger('input');
-    $selection.change();
+    $selection.each((pos, el) => {
+      triggerEvent(el, 'input');
+      triggerEvent(el, 'change');
+    });
   },
 
   $(selector, container) {
     if (container) {
       return $(selector, container);
     } else {
-      return this.testContext.$(selector);
+      return $(selector, this.testContext._element);
     }
   },
 
   triggerEvent(selector, container, eventName, eventOptions) {
     let event = $.Event(eventName, eventOptions);
 
-    if (container) {
-      $(selector, container).trigger(event);
-    } else {
-      this.testContext.$(selector).trigger(event);
-    }
+    this.$(selector, container).trigger(event);
   },
 
   assertElementExists(selector, options) {
-    let result;
     let container = options.testContainer || findClosestValue(this.pageObjectNode, 'testContainer');
 
-    if (container) {
-      result = $(selector, container);
-    } else {
-      result = this.testContext.$(selector);
-    }
+    let result = this.$(selector, container);
 
     if (result.length === 0) {
       throwBetterError(
@@ -91,16 +93,11 @@ IntegrationExecutionContext.prototype = {
   },
 
   find(selector, options) {
-    let result;
     let container = options.testContainer || findClosestValue(this.pageObjectNode, 'testContainer');
 
     selector = buildSelector(this.pageObjectNode, selector, options);
 
-    if (container) {
-      result = $(selector, container);
-    } else {
-      result = this.testContext.$(selector);
-    }
+    let result = this.$(selector, container);
 
     guardMultiple(result, selector, options.multiple);
 
@@ -108,16 +105,11 @@ IntegrationExecutionContext.prototype = {
   },
 
   findWithAssert(selector, options) {
-    let result;
     let container = options.testContainer || findClosestValue(this.pageObjectNode, 'testContainer');
 
     selector = buildSelector(this.pageObjectNode, selector, options);
 
-    if (container) {
-      result = $(selector, container);
-    } else {
-      result = this.testContext.$(selector);
-    }
+    let result = this.$(selector, container);
 
     guardMultiple(result, selector, options.multiple);
 
