@@ -3,37 +3,37 @@ import { create, triggerable } from 'ember-cli-page-object';
 
 moduleForProperty('triggerable', function(test) {
   test("calls Ember's triggerEvent helper with proper args", function(assert) {
-    assert.expect(2);
+    assert.expect(1);
 
-    let expectedSelector = 'span';
+    let expectedSelector = 'input';
     let page = create({
       foo: triggerable('focus', expectedSelector)
     });
 
-    this.adapter.createTemplate(this, page, '<span></span>');
+    this.adapter.createTemplate(this, page, '<input />');
 
-    this.adapter.triggerEvent((actualSelector, _, event) => {
-      assert.equal(actualSelector, expectedSelector);
-      assert.equal(event, 'focus');
+    return this.adapter.andThen(() => {
+      // debugger
+      this.adapter.$(expectedSelector).on('focus', () => {
+        // debugger;
+        assert.ok(1);
+      });
+      page.foo();
+
+      return this.adapter.wait();
     });
-
-    page.foo();
-
-    return this.adapter.wait();
   });
 
   test("calls Ember's triggerEvent helper with static event options", function(assert) {
     assert.expect(1);
 
     let page = create({
-      foo: triggerable('keypress', 'span', { eventProperties: { keyCode: 13 } })
+      foo: triggerable('keypress', 'input', { eventProperties: { keyCode: 13 } })
     });
 
-    this.adapter.createTemplate(this, page, '<span></span>');
+    this.adapter.createTemplate(this, page, '<input />');
 
-    this.adapter.triggerEvent((actualSelector, _, event, options) => {
-      assert.equal(options.keyCode, 13);
-    });
+    this.adapter.$('input').on('keypress', (e) => assert.equal(e.keyCode, 13));
 
     page.foo();
 
@@ -44,14 +44,12 @@ moduleForProperty('triggerable', function(test) {
     assert.expect(1);
 
     let page = create({
-      foo: triggerable('keypress', 'span')
+      foo: triggerable('keypress', 'input')
     });
 
-    this.adapter.createTemplate(this, page, '<span></span>');
+    this.adapter.createTemplate(this, page, '<input />');
 
-    this.adapter.triggerEvent((actualSelector, _, event, options) => {
-      assert.equal(options.keyCode, 13);
-    });
+    this.adapter.$('input').on('keypress', (e) => assert.equal(e.keyCode, 13));
 
     page.foo({ keyCode: 13 });
 
@@ -62,16 +60,14 @@ moduleForProperty('triggerable', function(test) {
     assert.expect(1);
 
     let page = create({
-      foo: triggerable('keypress', 'span', {
+      foo: triggerable('keypress', 'input', {
         eventProperties: { keyCode: 0 }
       })
     });
 
-    this.adapter.createTemplate(this, page, '<span></span>');
+    this.adapter.createTemplate(this, page, '<input />');
 
-    this.adapter.triggerEvent((actualSelector, _, event, options) => {
-      assert.equal(options.keyCode, 13);
-    });
+    this.adapter.$('input').on('keypress', (e) => assert.equal(e.keyCode, 13));
 
     page.foo({ keyCode: 13 });
 
@@ -82,15 +78,12 @@ moduleForProperty('triggerable', function(test) {
     assert.expect(1);
 
     let page = create({
-      foo: triggerable('focus', 'span', { scope: '.scope' })
+      foo: triggerable('focus', 'input', { scope: '.scope' })
     });
 
-    this.adapter.createTemplate(this, page, '<div class="scope"><span></span></div>');
+    this.adapter.createTemplate(this, page, '<div class="scope"><input/></div>');
 
-    this.adapter.triggerEvent((actualSelector) => {
-      assert.equal(actualSelector, '.scope span');
-    });
-
+    this.adapter.$('.scope input').on('focus', () => assert.ok(1));
     page.foo();
 
     return this.adapter.wait();
@@ -102,13 +95,12 @@ moduleForProperty('triggerable', function(test) {
     let page = create({
       scope: '.scope',
 
-      foo: triggerable('focus', 'span')
+      foo: triggerable('focus', 'input')
     });
 
-    this.adapter.createTemplate(this, page, '<div class="scope"><span></span></div>');
-    this.adapter.triggerEvent((actualSelector) => {
-      assert.equal(actualSelector, '.scope span');
-    });
+    this.adapter.createTemplate(this, page, '<div class="scope"><input /></div>');
+
+    this.adapter.$('.scope input').on('focus', () => assert.ok(1));
 
     page.foo();
 
@@ -120,14 +112,12 @@ moduleForProperty('triggerable', function(test) {
 
     let page = create({
       scope: '.scope',
-      foo: triggerable('focus', 'span', { resetScope: true })
+      foo: triggerable('focus', 'input', { resetScope: true })
     });
 
-    this.adapter.createTemplate(this, page, '<span></span>');
+    this.adapter.createTemplate(this, page, '<input></input>');
 
-    this.adapter.triggerEvent((actualSelector) => {
-      assert.equal(actualSelector, 'span');
-    });
+    this.adapter.$('input').on('focus', () => assert.ok(1));
 
     page.foo();
 
@@ -138,11 +128,10 @@ moduleForProperty('triggerable', function(test) {
     assert.expect(1);
 
     let page = create({
-      foo: triggerable('focus', 'span')
+      foo: triggerable('focus', 'input')
     });
 
-    this.adapter.createTemplate(this, page, '<span></span>');
-    this.adapter.triggerEvent(() => {});
+    this.adapter.createTemplate(this, page, '<input/>');
 
     assert.equal(page.foo(), page);
   });
@@ -150,16 +139,14 @@ moduleForProperty('triggerable', function(test) {
   test('finds element by index', function(assert) {
     assert.expect(1);
 
-    let expectedSelector = 'span:eq(3)';
+    let expectedSelector = 'input:eq(3)';
     let page = create({
-      foo: triggerable('focus', 'span', { at: 3 })
+      foo: triggerable('focus', 'input', { at: 3 })
     });
 
-    this.adapter.createTemplate(this, page, '<span></span><span></span><span></span><span></span>');
-    this.adapter.triggerEvent((actualSelector) => {
-      assert.equal(actualSelector, expectedSelector);
-    });
+    this.adapter.createTemplate(this, page, '<input /><input /><input /><input />');
 
+    this.adapter.$(expectedSelector).on('focus', () => assert.ok(1));
     page.foo();
 
     return this.adapter.wait();
@@ -170,13 +157,12 @@ moduleForProperty('triggerable', function(test) {
 
     let expectedContext = '#alternate-ember-testing';
     let page = create({
-      foo: triggerable('focus', 'span', { testContainer: expectedContext })
+      foo: triggerable('focus', 'input', { testContainer: expectedContext })
     });
 
-    this.adapter.createTemplate(this, page, '<span></span>', { useAlternateContainer: true });
-    this.adapter.triggerEvent((_, actualContext) => {
-      assert.equal(actualContext, expectedContext);
-    });
+    this.adapter.createTemplate(this, page, '<input />', { useAlternateContainer: true });
+
+    this.adapter.$('input', expectedContext).on('focus', () => assert.ok(1));
 
     page.foo();
 
@@ -189,13 +175,12 @@ moduleForProperty('triggerable', function(test) {
     let expectedContext = '#alternate-ember-testing';
     let page = create({
       testContainer: expectedContext,
-      foo: triggerable('focus', 'span')
+      foo: triggerable('focus', 'input')
     });
 
-    this.adapter.createTemplate(this, page, '<span></span>', { useAlternateContainer: true });
-    this.adapter.triggerEvent((_, actualContext) => {
-      assert.equal(actualContext, expectedContext);
-    });
+    this.adapter.createTemplate(this, page, '<input />', { useAlternateContainer: true });
+
+    this.adapter.$('input', expectedContext).on('focus', () => assert.ok(1));
 
     page.foo();
 

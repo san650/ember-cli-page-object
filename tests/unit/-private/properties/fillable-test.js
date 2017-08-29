@@ -3,7 +3,7 @@ import { create, fillable, selectable } from 'ember-cli-page-object';
 
 moduleForProperty('fillable', function(test) {
   test("calls fillIn method belonging to execution context", function(assert) {
-    assert.expect(2);
+    assert.expect(1);
 
     let expectedSelector = 'input';
     let expectedText = 'dummy text';
@@ -13,62 +13,77 @@ moduleForProperty('fillable', function(test) {
       foo: fillable(expectedSelector)
     });
 
-    this.adapter.fillIn((actualSelector, actualContext, options, actualContent) => {
-      assert.equal(actualSelector, expectedSelector);
-      assert.equal(actualContent, expectedText);
-    });
-
     this.adapter.createTemplate(this, page, '<input>');
 
     page.foo(expectedText);
 
-    return this.adapter.wait();
+    return this.adapter.andThen(() => {
+      assert.equal(this.adapter.$(expectedSelector).val(), expectedText);
+    });
   });
 
-  test('looks for inputs or contenteditables with data-test="clue" attributes', function(assert) {
-    let expectedText = 'dummy text';
-    let clue = 'clue';
-    let page;
+  const targetAttributes = ['data-test', 'aria-label', 'placeholder', 'name', 'id'];
 
-    page = create({
-      scope: '.scope',
+  const formControlTemplates = [
+    '<input data-test="clue" />',
+    '<input aria-label="clue" />',
+    '<input placeholder="clue" />',
+    '<input name="clue" />',
+    '<input id="clue" />',
 
-      foo: fillable()
+    '<textarea data-test="clue"></textarea>',
+    '<textarea aria-label="clue"></textarea>',
+    '<textarea placeholder="clue"></textarea>',
+    '<textarea name="clue"></textarea>',
+    '<textarea id="clue"></textarea>',
+
+    '<select data-test="clue"><option></option><option>dummy text</option></select>',
+    '<select aria-label="clue"><option></option><option>dummy text</option></select>',
+    '<select placeholder="clue"><option></option><option>dummy text</option></select>',
+    '<select name="clue"><option></option><option>dummy text</option></select>',
+    '<select id="clue"><option></option><option>dummy text</option></select>',
+  ];
+
+  formControlTemplates.forEach(template => {
+    let gtPos = template.indexOf('=');
+    let name = template.substr(1, gtPos - 1);
+    const [tagName, attrName] = name.split(' ');
+
+    test(`looks for ${tagName} with ${attrName}`, function(assert) {
+      let expectedText = 'dummy text';
+      let clue = 'clue';
+      let page = create({
+        scope: '.scope',
+        foo: fillable()
+      });
+
+      this.adapter.createTemplate(this, page, `<div class="scope">${template}</div>`);
+
+      page.foo(clue, expectedText);
+
+      return this.adapter.andThen(() => {
+        assert.equal(this.adapter.$(`${tagName}[${attrName}="${clue}"]`).val(), expectedText);
+      });
     });
+  });
 
-    this.adapter.createTemplate(this, page, '<div class="scope"><input data-test="clue"></div>');
+  targetAttributes.forEach(attrName => {
+    test(`looks for [contenteditable] with ${attrName}`, function(assert) {
+      let expectedText = 'dummy text';
+      let clue = 'clue';
+      let page = create({
+        scope: '.scope',
+        foo: fillable()
+      });
 
-    this.adapter.fillIn((actualSelector, actualContext, options, actualContent) => {
-      assert.ok(/\.scope input\[data-test="clue"\]/.test(actualSelector));
-      assert.ok(/\.scope input\[aria-label="clue"\]/.test(actualSelector));
-      assert.ok(/\.scope input\[placeholder="clue"\]/.test(actualSelector));
-      assert.ok(/\.scope input\[name="clue"\]/.test(actualSelector));
-      assert.ok(/\.scope input#clue/.test(actualSelector));
+      this.adapter.createTemplate(this, page, `<div class="scope"><div contenteditable ${attrName}="clue"></div></div>`);
 
-      assert.ok(/\.scope textarea\[data-test="clue"\]/.test(actualSelector));
-      assert.ok(/\.scope textarea\[aria-label="clue"\]/.test(actualSelector));
-      assert.ok(/\.scope textarea\[placeholder="clue"\]/.test(actualSelector));
-      assert.ok(/\.scope textarea\[name="clue"\]/.test(actualSelector));
-      assert.ok(/\.scope textarea#clue/.test(actualSelector));
+      page.foo(clue, expectedText);
 
-      assert.ok(/\.scope select\[data-test="clue"\]/.test(actualSelector));
-      assert.ok(/\.scope select\[aria-label="clue"\]/.test(actualSelector));
-      assert.ok(/\.scope select\[placeholder="clue"\]/.test(actualSelector));
-      assert.ok(/\.scope select\[name="clue"\]/.test(actualSelector));
-      assert.ok(/\.scope select#clue/.test(actualSelector));
-
-      assert.ok(/\.scope \[contenteditable\]\[data-test="clue"\]/.test(actualSelector));
-      assert.ok(/\.scope \[contenteditable\]\[aria-label="clue"\]/.test(actualSelector));
-      assert.ok(/\.scope \[contenteditable\]\[placeholder="clue"\]/.test(actualSelector));
-      assert.ok(/\.scope \[contenteditable\]\[name="clue"\]/.test(actualSelector));
-      assert.ok(/\.scope \[contenteditable\]#clue/.test(actualSelector));
-
-      assert.equal(actualContent, expectedText);
+      return this.adapter.andThen(() => {
+        assert.equal(this.adapter.$(`div[${attrName}="${clue}"]`).html(), expectedText);
+      });
     });
-
-    page.foo(clue, expectedText);
-
-    return this.adapter.wait();
   });
 
   test('looks for elements inside the scope', function(assert) {
@@ -80,13 +95,11 @@ moduleForProperty('fillable', function(test) {
 
     this.adapter.createTemplate(this, page, '<div class="scope"><input></div>');
 
-    this.adapter.fillIn((actualSelector) => {
-      assert.equal(actualSelector, '.scope input');
-    });
-
     page.foo('dummy text');
 
-    return this.adapter.wait();
+    return this.adapter.andThen(() => {
+      assert.equal(this.adapter.$('.scope input').val(), 'dummy text');
+    });
   });
 
   test("looks for elements inside page's scope", function(assert) {
@@ -98,15 +111,13 @@ moduleForProperty('fillable', function(test) {
       foo: fillable('input')
     });
 
-    this.adapter.fillIn((actualSelector) => {
-      assert.equal(actualSelector, '.scope input');
-    });
-
     this.adapter.createTemplate(this, page, '<div class="scope"><input></div>');
 
     page.foo('dummy text');
 
-    return this.adapter.wait();
+    return this.adapter.andThen(() => {
+      assert.equal(this.adapter.$('.scope input').val(), 'dummy text');
+    });
   });
 
   test('resets scope', function(assert) {
@@ -117,15 +128,13 @@ moduleForProperty('fillable', function(test) {
       foo: fillable('input', { resetScope: true })
     });
 
-    this.adapter.fillIn((actualSelector) => {
-      assert.equal(actualSelector, 'input');
-    });
-
     this.adapter.createTemplate(this, page, '<input>');
 
     page.foo('dummy text');
 
-    return this.adapter.wait();
+    return this.adapter.andThen(() => {
+      assert.equal(this.adapter.$('input').val(), 'dummy text');
+    });
   });
 
   test('returns target object', function(assert) {
@@ -134,8 +143,6 @@ moduleForProperty('fillable', function(test) {
     let page = create({
       foo: fillable('input')
     });
-
-    this.adapter.fillIn(() => {});
 
     this.adapter.createTemplate(this, page, '<input>');
 
@@ -150,19 +157,17 @@ moduleForProperty('fillable', function(test) {
       foo: fillable('input', { at: 3 })
     });
 
-    this.adapter.fillIn((actualSelector) => {
-      assert.equal(actualSelector, expectedSelector);
-    });
-
     this.adapter.createTemplate(this, page, '<input><input><input><input>');
 
-    page.foo();
+    page.foo('dummy text');
 
-    return this.adapter.wait();
+    return this.adapter.andThen(() => {
+      assert.equal(this.adapter.$(expectedSelector).val(), 'dummy text');
+    });
   });
 
   test('is aliased to selectable', function(assert) {
-    assert.expect(2);
+    assert.expect(1);
 
     let expectedSelector = 'input';
     let expectedText = 'dummy text';
@@ -172,18 +177,15 @@ moduleForProperty('fillable', function(test) {
 
     this.adapter.createTemplate(this, page, '<input>');
 
-    this.adapter.fillIn((actualSelector, actualContext, options, actualContent) => {
-      assert.equal(actualSelector, expectedSelector);
-      assert.equal(actualContent, expectedText);
-    });
-
     page.foo(expectedText);
 
-    return this.adapter.wait();
+    return this.adapter.andThen(() => {
+      assert.equal(this.adapter.$(expectedSelector).val(), expectedText);
+    });
   });
 
   test('looks for elements outside the testing container', function(assert) {
-    assert.expect(3);
+    assert.expect(1);
 
     let expectedContext = '#alternate-ember-testing';
     let expectedSelector = 'input';
@@ -194,19 +196,15 @@ moduleForProperty('fillable', function(test) {
 
     this.adapter.createTemplate(this, page, '<input>', { useAlternateContainer: true });
 
-    this.adapter.fillIn((actualSelector, actualContext, options, actualContent) => {
-      assert.equal(actualSelector, expectedSelector);
-      assert.equal(actualContext, expectedContext);
-      assert.equal(actualContent, expectedText);
-    });
-
     page.foo(expectedText);
 
-    return this.adapter.wait();
+    return this.adapter.andThen(() => {
+      assert.equal(this.adapter.$(expectedSelector, expectedContext).val(), expectedText);
+    });
   });
 
   test('looks for elements within test container specified at node level', function(assert) {
-    assert.expect(3);
+    assert.expect(1);
 
     let expectedContext = '#alternate-ember-testing';
     let expectedSelector = 'input';
@@ -218,15 +216,11 @@ moduleForProperty('fillable', function(test) {
 
     this.adapter.createTemplate(this, page, '<input>', { useAlternateContainer: true });
 
-    this.adapter.fillIn((actualSelector, actualContext, options, actualContent) => {
-      assert.equal(actualSelector, expectedSelector);
-      assert.equal(actualContext, expectedContext);
-      assert.equal(actualContent, expectedText);
-    });
-
     page.foo(expectedText);
 
-    return this.adapter.wait();
+    return this.adapter.andThen(() => {
+      assert.equal(this.adapter.$(expectedSelector, expectedContext).val(), expectedText);
+    });
   });
 
   test("raises an error when the element doesn't exist", function(assert) {

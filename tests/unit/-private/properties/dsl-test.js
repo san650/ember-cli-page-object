@@ -50,13 +50,15 @@ moduleForProperty('dsl', function(test) {
 
     this.adapter.createTemplate(this, page, '<button>dummy text</button>');
 
-    this.adapter.click(() => {
-      assert.ok(true, 'click called');
+    return this.adapter.andThen(() => {
+      // text nodes don't support click events
+      // instead we check that click on text content propagates to the parent button
+      this.adapter.$('button').one('click', () => assert.ok(1));
+
+      page.foo.clickOn('dummy text');
+
+      return this.adapter.wait();
     });
-
-    page.foo.clickOn('dummy text');
-
-    return this.adapter.wait();
   });
 
   test('generates .click', function(assert) {
@@ -70,13 +72,13 @@ moduleForProperty('dsl', function(test) {
 
     this.adapter.createTemplate(this, page, '<button>dummy text</button>');
 
-    this.adapter.click(() => {
-      assert.ok(true, 'click called');
+    return this.adapter.andThen(() => {
+      this.adapter.$('button').one('click', () => assert.ok(1));
+
+      page.foo.click();
+
+      return this.adapter.wait();
     });
-
-    page.foo.click();
-
-    return this.adapter.wait();
   });
 
   test('generates .contains', function(assert) {
@@ -119,13 +121,11 @@ moduleForProperty('dsl', function(test) {
 
     this.adapter.createTemplate(this, page, '<input name="email">');
 
-    this.adapter.fillIn((selector, context, options, content) => {
-      assert.equal(content, 'lorem ipsum');
-    });
-
     page.foo.fillIn('lorem ipsum');
 
-    return this.adapter.wait();
+    return this.adapter.andThen(() => {
+      assert.equal(this.adapter.$('input').val(), 'lorem ipsum');
+    });
   });
 
   test('generates .select', function(assert) {
@@ -139,13 +139,11 @@ moduleForProperty('dsl', function(test) {
 
     this.adapter.createTemplate(this, page, '<input name="email">');
 
-    this.adapter.fillIn((selector, context, options, content) => {
-      assert.equal(content, 'lorem ipsum');
-    });
-
     page.foo.select('lorem ipsum');
 
-    return this.adapter.wait();
+    return this.adapter.andThen(() => {
+      assert.equal(this.adapter.$('input').val(), 'lorem ipsum');
+    });
   });
 
   test('generates .value', function(assert) {

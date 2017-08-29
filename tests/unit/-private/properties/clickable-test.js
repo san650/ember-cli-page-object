@@ -6,21 +6,18 @@ moduleForProperty('clickable', function(test) {
     assert.expect(1);
 
     let expectedSelector = 'button';
-    let page;
-
-    page = create({
+    let page = create({
       foo: clickable(expectedSelector)
     });
 
     this.adapter.createTemplate(this, page, '<button>Click me</button>');
 
-    this.adapter.click((actualSelector) => {
-      assert.equal(actualSelector, expectedSelector);
+    this.adapter.andThen(() => {
+      this.adapter.$(expectedSelector).one('click', () => assert.ok(1));
+      page.foo();
+
+      return this.adapter.wait();
     });
-
-    page.foo();
-
-    return this.adapter.wait();
   });
 
   test('looks for elements inside the scope', function(assert) {
@@ -35,13 +32,12 @@ moduleForProperty('clickable', function(test) {
 
     this.adapter.createTemplate(this, page, '<div class="scope"><span>Click me</span></div>');
 
-    this.adapter.click((actualSelector) => {
-      assert.equal(actualSelector, expectedSelector);
+    this.adapter.andThen(() => {
+      this.adapter.$(expectedSelector).one('click', () => assert.ok(1));
+      page.foo();
+
+      return this.adapter.wait();
     });
-
-    page.foo();
-
-    return this.adapter.wait();
   });
 
   test("looks for elements inside page's scope", function(assert) {
@@ -58,13 +54,12 @@ moduleForProperty('clickable', function(test) {
 
     this.adapter.createTemplate(this, page, '<div class="scope"><span>Click me</span></div>');
 
-    this.adapter.click((actualSelector) => {
-      assert.equal(actualSelector, expectedSelector);
+    return this.adapter.andThen(() => {
+      this.adapter.$(expectedSelector).one('click', () => assert.ok(1));
+      page.foo();
+
+      return this.adapter.wait();
     });
-
-    page.foo();
-
-    return this.adapter.wait();
   });
 
   test('resets scope', function(assert) {
@@ -80,27 +75,22 @@ moduleForProperty('clickable', function(test) {
 
     this.adapter.createTemplate(this, page, '<span>Click me</span>');
 
-    this.adapter.click((actualSelector) => {
-      assert.equal(actualSelector, expectedSelector);
+    return this.adapter.andThen(() => {
+      this.adapter.$(expectedSelector).one('click', () => assert.ok(1));
+      page.foo();
+
+      return this.adapter.wait();
     });
-
-    page.foo();
-
-    return this.adapter.wait();
   });
 
   test('returns target object', function(assert) {
     assert.expect(1);
 
-    let page;
-
-    page = create({
+    let page = create({
       foo: clickable('span')
     });
 
     this.adapter.createTemplate(this, page, '<span>Click me</span>');
-
-    this.adapter.click(function() {});
 
     assert.equal(page.foo(), page);
   });
@@ -109,21 +99,18 @@ moduleForProperty('clickable', function(test) {
     assert.expect(1);
 
     let expectedSelector = 'span:eq(3)';
-    let page;
-
-    page = create({
+    let page = create({
       foo: clickable('span', { at: 3 })
-    });
-
-    this.adapter.click((actualSelector) => {
-      assert.equal(actualSelector, expectedSelector);
     });
 
     this.adapter.createTemplate(this, page, '<span></span><span></span><span>Click me</span><span></span>');
 
-    page.foo();
+    return this.adapter.andThen(() => {
+      this.adapter.$(expectedSelector).one('click', () => assert.ok(1));
+      page.foo();
 
-    return this.adapter.wait();
+      return this.adapter.wait();
+    });
   });
 
   test('looks for elements outside the testing container', function(assert) {
@@ -138,13 +125,12 @@ moduleForProperty('clickable', function(test) {
 
     this.adapter.createTemplate(this, page, '<span>Click me</span>', { useAlternateContainer: true });
 
-    this.adapter.click((_, actualContext) => {
-      assert.equal(actualContext, expectedContext);
+    return this.adapter.andThen(() => {
+      this.adapter.$('span', expectedContext).one('click', () => assert.ok(1));
+      page.foo();
+
+      return this.adapter.wait();
     });
-
-    page.foo();
-
-    return this.adapter.wait();
   });
 
   test('looks for elements within test container specified at node level', function(assert) {
@@ -160,13 +146,12 @@ moduleForProperty('clickable', function(test) {
 
     this.adapter.createTemplate(this, page, '<span>Click me</span>', { useAlternateContainer: true });
 
-    this.adapter.click((_, actualContext) => {
-      assert.equal(actualContext, expectedContext);
+    return this.adapter.andThen(() => {
+      this.adapter.$('span', expectedContext).one('click', () => assert.ok(1));
+      page.foo();
+
+      return this.adapter.wait();
     });
-
-    page.foo();
-
-    return this.adapter.wait();
   });
 
   test("raises an error when the element doesn't exist", function(assert) {
@@ -200,13 +185,12 @@ moduleForProperty('clickable', function(test) {
 
     this.adapter.createTemplate(this, page, '<span style="display:none">Click me</span>');
 
-    this.adapter.click(() => {
-      assert.ok(true, 'Element is clicked');
+    return this.adapter.andThen(() => {
+      this.adapter.$('span').one('click', () => assert.ok(1));
+      page.foo();
+
+      return this.adapter.wait();
     });
-
-    page.foo();
-
-    return this.adapter.wait();
   });
 
   test('raises an error when the element is not visible and `visible` is true', function(assert) {

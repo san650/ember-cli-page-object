@@ -36,8 +36,8 @@ moduleForProperty('alias', function(test) {
 
     this.adapter.createTemplate(this, page, '<button>Click me</button>');
 
-    this.adapter.click((actualSelector) => {
-      assert.equal(actualSelector, expectedSelector);
+    this.adapter.$('button').on('click', function() {
+      assert.ok(true);
     });
 
     page.aliasedClickButton();
@@ -95,8 +95,8 @@ moduleForProperty('alias', function(test) {
 
     this.adapter.createTemplate(this, page, '<button>Click me</button>');
 
-    this.adapter.click((actualSelector) => {
-      assert.equal(actualSelector, expectedSelector);
+    this.adapter.$('button').on('click', function() {
+      assert.ok(true);
     });
 
     page.aliasedClickButton();
@@ -159,8 +159,8 @@ moduleForProperty('alias', function(test) {
 
     this.adapter.createTemplate(this, page, '<button>Click me</button>');
 
-    this.adapter.click((actualSelector) => {
-      assert.equal(actualSelector, expectedSelector);
+    this.adapter.$('button').on('click', function() {
+      assert.ok(true);
     });
 
     page.aliasedClickButton();

@@ -1,8 +1,9 @@
-import Ember from 'ember';
 import startApp from '../start-app';
 import { module as qunitModule } from 'qunit';
 
 export { test as testForAcceptance } from 'qunit';
+
+import Ember from 'ember';
 
 let noop = function() {};
 
@@ -20,16 +21,8 @@ export function AcceptanceAdapter(original) {
 AcceptanceAdapter.prototype = {
   name: 'acceptance',
 
-  click(fn) {
-    window.click = fn;
-  },
-
-  fillIn(fn) {
-    this.spy.fillIn = fn;
-  },
-
-  triggerEvent(fn /*selector, container, eventName, eventOptions*/) {
-    window.triggerEvent = fn;
+  $(selector, isAlternative) {
+    return Ember.$(selector, isAlternative ? '#alternate-ember-testing' : '#ember-testing');
   },
 
   visit(fn) {
@@ -38,8 +31,6 @@ AcceptanceAdapter.prototype = {
 
   revert() {
     this.original.prototype = Object.create(this.originalPrototype);
-    window.click = this.originalClick;
-    window.triggerEvent = this.originalTriggerEvent;
     window.visit = this.originalVisit;
   },
 
@@ -51,6 +42,10 @@ AcceptanceAdapter.prototype = {
     }
 
     fixture(template, options);
+  },
+
+  find() {
+    return this.original.find(...arguments);
   },
 
   throws(assert, block, expected, message) {
