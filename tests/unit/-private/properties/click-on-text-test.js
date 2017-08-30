@@ -234,6 +234,22 @@ moduleForProperty('clickOnText', function(test) {
     }, /page\.foo\.bar\.baz\.qux/, 'Element not found');
   });
 
+  test("doesn't raise an error when the element is not visible and `visible` is not set", function (assert) {
+    assert.expect(1);
+
+    let page = create({
+      foo: clickOnText('button')
+    });
+
+    this.adapter.createTemplate(this, page, '<button style="display:none">Click me</button>');
+
+    this.adapter.$('button').on('click', () => assert.ok(1));
+
+    page.foo('Click me');
+
+    return this.adapter.wait();
+  });
+
   test('raises an error when the element is not visible and `visible` is true', function(assert) {
     assert.expect(1);
 
