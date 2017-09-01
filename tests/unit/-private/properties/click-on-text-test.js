@@ -234,7 +234,7 @@ moduleForProperty('clickOnText', function(test) {
     }, /page\.foo\.bar\.baz\.qux/, 'Element not found');
   });
 
-  test("doesn't raise an error when the element is not visible and `visible` is not set", function (assert) {
+  test("doesn't raise an error when the element is not visible and `visible` is not set", function(assert) {
     assert.expect(1);
 
     let page = create({
