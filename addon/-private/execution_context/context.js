@@ -67,7 +67,7 @@ ExecutionContext.prototype = {
   },
 
   triggerEvent(selector, container, eventName, eventOptions) {
-    const element = this.$(selector, container);
+    const [element] = this.$(selector, container);
 
     triggerEvent(element, eventName, eventOptions);
   },
