@@ -12,8 +12,11 @@ module.exports = {
           import: ['index.js']
         };
       },
-      jquery: {
-        import: ['dist/jquery.js'],
+      jquery: function() {
+        return {
+          enabled: this._shouldIncludeFiles(),
+          import: ['dist/jquery.js'],
+        }
       }
     }
   },
