@@ -15,7 +15,8 @@ module.exports = {
       jquery: function() {
         return {
           enabled: this._shouldIncludeFiles(),
-          import: ['dist/jquery.js'],
+          vendor: ['dist/jquery.js'],
+          destDir: 'ecpo-jquery'
         }
       }
     }
@@ -28,6 +29,12 @@ module.exports = {
     }
 
     this.app = app;
+
+    if (this._shouldIncludeFiles()) {
+      this.import('vendor/ecpo-jquery/dist/jquery.js', {
+        prepend: true
+      });
+    }
 
     this._super.included.apply(this, arguments);
   },
