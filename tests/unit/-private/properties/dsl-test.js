@@ -41,7 +41,7 @@ moduleForProperty('dsl', function(test) {
     assert.ok(page.foo.isPresent, 'component is rendered in DOM');
   });
 
-  ['isVisible', 'isHidden', 'isPresent', 'clickOn', 'click', 'contains', 'text', 'fillIn', 'select', 'value'].forEach((prop) => {
+  ['click', 'clickOn', 'contains', 'fillIn', 'isHidden', 'isPresent', 'isVisible', 'select', 'text', 'value'].forEach((prop) => {
     test(`does not override .${prop}`, function(assert) {
       let page = create({
         [prop]: 'foo bar'

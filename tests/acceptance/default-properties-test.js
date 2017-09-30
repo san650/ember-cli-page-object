@@ -50,23 +50,23 @@ test('Adds default properties', function(assert) {
 test('Overrides default properties', function(assert) {
   let page = PageObject.create({
     dummy: {
-      isPresent() {
-        return 'isPresent';
-      },
-      isHidden() {
-        return 'isHidden';
-      },
-      isVisible() {
-        return 'isVisible';
+      click() {
+        return 'click';
       },
       clickOn() {
         return 'clickOn';
       },
-      click() {
-        return 'click';
-      },
       contains() {
         return 'contains';
+      },
+      isHidden() {
+        return 'isHidden';
+      },
+      isPresent() {
+        return 'isPresent';
+      },
+      isVisible() {
+        return 'isVisible';
       },
       text() {
         return 'text';
@@ -75,12 +75,12 @@ test('Overrides default properties', function(assert) {
   });
 
   andThen(function() {
-    assert.equal(page.dummy.isPresent(), 'isPresent');
-    assert.equal(page.dummy.isHidden(), 'isHidden');
-    assert.equal(page.dummy.isVisible(), 'isVisible');
-    assert.equal(page.dummy.clickOn(), 'clickOn');
     assert.equal(page.dummy.click(), 'click');
+    assert.equal(page.dummy.clickOn(), 'clickOn');
     assert.equal(page.dummy.contains(), 'contains');
+    assert.equal(page.dummy.isHidden(), 'isHidden');
+    assert.equal(page.dummy.isPresent(), 'isPresent');
+    assert.equal(page.dummy.isVisible(), 'isVisible');
     assert.equal(page.dummy.text(), 'text');
   });
 });
