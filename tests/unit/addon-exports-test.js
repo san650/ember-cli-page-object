@@ -40,7 +40,8 @@ const HELPER_METHODS = [
 const EXTEND_METHODS = HELPER_METHODS.concat('registerExecutionContext');
 
 const EXPECTED_MACROS = [
-  'alias'
+  'alias',
+  'getter'
 ];
 
 EXPECTED_METHODS.forEach((method) => {
