@@ -31,9 +31,8 @@ module.exports = {
     this.app = app;
 
     if (this._shouldIncludeFiles()) {
-      this.import('vendor/ecpo-jquery/dist/jquery.js', {
-        prepend: true
-      });
+      this.import('vendor/shims/-jquery.js', { prepend: true });
+      this.import('vendor/ecpo-jquery/dist/jquery.js', { prepend: true });
     }
 
     this._super.included.apply(this, arguments);

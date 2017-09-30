@@ -1,7 +1,7 @@
 import { assign } from '../helpers';
 import { getExecutionContext } from '../execution_context';
 
-import $ from 'jquery';
+import $ from '-jquery';
 
 function fillInDynamicSegments(path, params) {
   return path.split('/').map(function(segment) {
