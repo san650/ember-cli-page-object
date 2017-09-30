@@ -18,7 +18,7 @@ function buildObject(node, blueprintKey, blueprint, defaultBuilder) {
  * By default, the resulting PageObject will respond to:
  *
  * - **Actions**: click, clickOn, fillIn, select
- * - **Predicates**: contains, isHidden, isVisible
+ * - **Predicates**: contains, isHidden, isPresent, isVisible
  * - **Queries**: text
  *
  * `definition` can include a key `context`, which is an
@@ -55,6 +55,7 @@ function buildObject(node, blueprintKey, blueprint, defaultBuilder) {
  *
  * assert.equal(page.text, 'My super text');
  * assert.ok(page.contains('super'));
+ * assert.ok(page.isPresent);
  * assert.ok(page.isVisible);
  * assert.notOk(page.isHidden);
  * assert.equal(page.value, 'my input value');

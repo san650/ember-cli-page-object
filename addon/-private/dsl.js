@@ -1,6 +1,7 @@
 import { text } from './properties/text';
 import { isVisible } from './properties/is-visible';
 import { isHidden } from './properties/is-hidden';
+import { isPresent } from './properties/is-present';
 import { contains } from './properties/contains';
 import { clickOnText } from './properties/click-on-text';
 import { clickable } from './properties/clickable';
@@ -20,6 +21,7 @@ const dsl = {
   contains: contains(),
   isHidden: isHidden(),
   isVisible: isVisible(),
+  isPresent: isPresent(),
   text: text(),
   value: value(),
   clickOn: clickOnText(),

@@ -28,7 +28,20 @@ moduleForProperty('dsl', function(test) {
     assert.ok(page.foo.isHidden, 'component is hidden');
   });
 
-  ['isVisible', 'isHidden', 'clickOn', 'click', 'contains', 'text', 'fillIn', 'select', 'value'].forEach((prop) => {
+  test('generates .isPresent', function(assert) {
+    let page = create({
+      scope: 'span',
+      foo: {
+      }
+    });
+
+    this.adapter.createTemplate(this, page, 'Lorem <span>ipsum</span>');
+
+    assert.ok(page.isPresent, 'page is rendered in DOM');
+    assert.ok(page.foo.isPresent, 'component is rendered in DOM');
+  });
+
+  ['isVisible', 'isHidden', 'isPresent', 'clickOn', 'click', 'contains', 'text', 'fillIn', 'select', 'value'].forEach((prop) => {
     test(`does not override .${prop}`, function(assert) {
       let page = create({
         [prop]: 'foo bar'
