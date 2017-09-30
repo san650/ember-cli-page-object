@@ -71,7 +71,7 @@ import { findElement } from 'ember-cli-page-object';
  *
  * @throws Will throw an error if multiple elements are matched by selector and multiple option is not set
  */
-export function exists(selector, options) {
+export function isPresent(selector, options) {
   return {
     isDescriptor: true,
     get() {
