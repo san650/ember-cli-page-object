@@ -1,7 +1,8 @@
-import Ember from 'ember';
 import { fixture } from './acceptance-adapter';
 export { moduleForComponent as moduleForIntegration, test as testForIntegration } from 'ember-qunit';
 import { expectEmberError } from '../../test-helper';
+
+import Ember from 'ember';
 
 export function IntegrationAdapter(original) {
   this.original = original;
@@ -14,16 +15,8 @@ export function IntegrationAdapter(original) {
 IntegrationAdapter.prototype = {
   name: 'integration',
 
-  click(fn) {
-    this.spy.click = fn;
-  },
-
-  fillIn(fn) {
-    this.spy.fillIn = fn;
-  },
-
-  triggerEvent(fn) {
-    this.spy.triggerEvent = fn;
+  $(selector, isAlternative) {
+    return Ember.$(selector, isAlternative ? '#alternate-ember-testing' : '#ember-testing');
   },
 
   revert() {
@@ -56,6 +49,10 @@ IntegrationAdapter.prototype = {
     Ember.run(() => {
       expectEmberError(assert, block, expected, message);
     });
+  },
+
+  find() {
+    return this.original.find(...arguments);
   },
 
   andThen(fn) {
