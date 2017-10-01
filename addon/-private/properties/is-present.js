@@ -1,20 +1,26 @@
 import { findElement } from 'ember-cli-page-object';
 
 /**
- * Validates if an element or set of elements are in the DOM. In most cases,
- * it is preferred to use `isVisible` instead as it provides a slightly
- * stronger guarantee. However, a use case for `exists` is to check the
- * presence of a <meta> tag on the page.
+ * Validates if any element matching the target selector is rendered in the DOM.
+ *
+ * `isPresent` vs. `isVisible`:
+ *   - Both validate that an element matching the target selector can be found in the DOM
+ *   - `isVisible` additionally validates that all matching elements are visible
+ *
+ * Some uses cases for `isPresent` over `isVisible`:
+ *   - To check for the presence of a tag that is never visible in the DOM (e.g., <meta>).
+ *   - To validate that, even though an element may not currently be visible, it is still in the DOM.
+ *   - To validate that an element has not merely been hidden but has in fact been removed from the DOM.
  *
  * @example
  *
  * // Lorem <span>ipsum</span>
  *
  * const page = PageObject.create({
- *   spanExists: PageObject.exists('span')
+ *   spanIsPresent: PageObject.isPresent('span')
  * });
  *
- * assert.ok(page.spanExists);
+ * assert.ok(page.spanIsPresent);
  *
  * @example
  *
@@ -22,10 +28,10 @@ import { findElement } from 'ember-cli-page-object';
  * // <span style="display:none">dolor</span>
  *
  * const page = PageObject.create({
- *   spansExist: PageObject.exists('span', { multiple: true })
+ *   spanIsPresent: PageObject.isPresent('span', { multiple: true })
  * });
  *
- * assert.ok(page.spansExist);
+ * assert.ok(page.spanIsPresent);
  *
  * @example
  *
@@ -34,7 +40,7 @@ import { findElement } from 'ember-cli-page-object';
  * // </head>
  *
  * const page = PageObject.create({
- *   notIndexed: PageObject.exists(`meta[name='robots'][content='noindex']`, {
+ *   notIndexed: PageObject.isPresent(`meta[name='robots'][content='noindex']`, {
  *     testContainer: 'head'
  *   })
  * });
@@ -46,11 +52,11 @@ import { findElement } from 'ember-cli-page-object';
  * // Lorem <strong>ipsum</strong>
  *
  * const page = PageObject.create({
- *   spanExists: PageObject.exists('span')
+ *   spanIsPresent: PageObject.isPresent('span')
  * });
  *
  * // returns false when element doesn't exist in DOM
- * assert.notOk(page.spanExists);
+ * assert.notOk(page.spanIsPresent);
  *
  * @public
  *
@@ -65,7 +71,7 @@ import { findElement } from 'ember-cli-page-object';
  *
  * @throws Will throw an error if multiple elements are matched by selector and multiple option is not set
  */
-export function exists(selector, options) {
+export function isPresent(selector, options) {
   return {
     isDescriptor: true,
     get() {

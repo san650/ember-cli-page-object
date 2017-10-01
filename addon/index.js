@@ -10,8 +10,8 @@ import { fillable }    from './-private/properties/fillable';      export { fill
 import { hasClass }    from './-private/properties/has-class';     export { hasClass };
 import { is }          from './-private/properties/is';            export { is };
 import { isHidden }    from './-private/properties/is-hidden';     export { isHidden };
+import { isPresent }   from './-private/properties/is-present';    export { isPresent };
 import { isVisible }   from './-private/properties/is-visible';    export { isVisible };
-import { exists }      from './-private/properties/exists';        export { exists };
 import { notHasClass } from './-private/properties/not-has-class'; export { notHasClass };
 import { property }    from './-private/properties/property';      export { property };
 import { text }        from './-private/properties/text';          export { text };
@@ -35,8 +35,8 @@ export default {
   hasClass,
   is,
   isHidden,
+  isPresent,
   isVisible,
-  exists,
   notHasClass,
   property,
   selectable,
