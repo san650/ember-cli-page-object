@@ -18,7 +18,7 @@ const ALIASED_PROP_NOT_FOUND = 'PageObject does not contain aliased property';
  * const page = create({
  *   submitButton: {
  *     scope: '.submit-button'
- *   }
+ *   },
  *   submit: alias('submitButton.click')
  * });
  *
@@ -33,7 +33,7 @@ const ALIASED_PROP_NOT_FOUND = 'PageObject does not contain aliased property';
  * const page = create({
  *   submitButton: {
  *     scope: '.submit-button'
- *   }
+ *   },
  *   isSubmitButtonVisible: alias('submitButton.isVisible')
  * });
  *
@@ -47,7 +47,7 @@ const ALIASED_PROP_NOT_FOUND = 'PageObject does not contain aliased property';
  *
  * const page = create({
  *   form: {
- *     input {
+ *     input: {
  *       scope: 'input'
  *     },
  *     submitButton: {
@@ -62,7 +62,6 @@ const ALIASED_PROP_NOT_FOUND = 'PageObject does not contain aliased property';
  * // and causes both methods to return `page` (instead of `page.form.input`
  * // and `page.form.submitButton` respectively) so that the aliased methods
  * // can be chained off `page`.
- *
  * page
  *   .fillFormInput('foo')
  *   .submitForm();
