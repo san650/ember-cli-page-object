@@ -70,6 +70,7 @@ const page = PageObject.create({
 
 assert.equal(page.text, 'My super text');
 assert.ok(page.contains('super'));
+assert.ok(page.isPresent);
 assert.ok(page.isVisible);
 assert.notOk(page.isHidden);
 assert.equal(page.value, 'my input value');
