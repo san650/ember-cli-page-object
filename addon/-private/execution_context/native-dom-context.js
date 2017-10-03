@@ -2,7 +2,8 @@ import $ from '-jquery';
 
 import {
   click,
-  triggerEvent
+  triggerEvent,
+  keyEvent
 } from 'ember-native-dom-helpers';
 
 import {
@@ -17,6 +18,8 @@ import {
   ELEMENT_NOT_FOUND,
   throwBetterError
 } from '../better-errors';
+
+const KEYBOARD_EVENT_TYPES = ['keydown', 'keypress', 'keyup'];
 
 export default function ExecutionContext(pageObjectNode, testContext) {
   this.pageObjectNode = pageObjectNode;
@@ -67,7 +70,19 @@ ExecutionContext.prototype = {
   triggerEvent(selector, container, eventName, eventOptions) {
     const element = this.$(selector, container)[0];
 
-    triggerEvent(element, eventName, eventOptions);
+    // `keyCode` is a deprecated property.
+    // @see: https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/keyCode
+    // Due to this deprecation `ember-native-dom-helpers` doesn't accept `keyCode` as a `KeyboardEvent` option.
+    if (typeof eventOptions.key === 'undefined' && typeof eventOptions.keyCode !== 'undefined') {
+      eventOptions.key = eventOptions.keyCode.toString();
+      delete eventOptions.keyCode;
+    }
+
+    if (KEYBOARD_EVENT_TYPES.indexOf(eventName) > -1) {
+      keyEvent(element, eventName, eventOptions.key, eventOptions);
+    } else {
+      triggerEvent(element, eventName, eventOptions);
+    }
   },
 
   assertElementExists(selector, options) {
