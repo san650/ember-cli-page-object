@@ -1,8 +1,9 @@
 (function() {
+  var jq = self['$'].noConflict();
+
   function vendorModule() {
     'use strict';
 
-    var jq = self['$'].noConflict();
     return { 'default': jq };
   }
 
