@@ -35,7 +35,7 @@ moduleForProperty('property', function(test) {
 
     this.adapter.createTemplate(this, page, `
       <div><input></div>
-      <div class="scope"><input checked></div>
+      <div class="scope"><input type="checkbox" checked></div>
       <div><input></div>
     `);
 
@@ -51,7 +51,7 @@ moduleForProperty('property', function(test) {
 
     this.adapter.createTemplate(this, page, `
       <div><input></div>
-      <div class="scope"><input checked></div>
+      <div class="scope"><input type="checkbox" checked /></div>
       <div><input></div>
     `);
 
@@ -67,7 +67,7 @@ moduleForProperty('property', function(test) {
 
     this.adapter.createTemplate(this, page, `
       <div class="scope"></div>
-      <div><input checked></div>
+      <div><input type="checkbox" checked /></div>
     `);
 
     assert.ok(page.foo);
@@ -95,8 +95,8 @@ moduleForProperty('property', function(test) {
     });
 
     this.adapter.createTemplate(this, page, `
-      <input checked>
-      <input checked>
+      <input type="checkbox" checked>
+      <input type="checkbox" checked>
     `);
 
     assert.throws(() => page.foo,
@@ -109,8 +109,8 @@ moduleForProperty('property', function(test) {
     });
 
     this.adapter.createTemplate(this, page, `
-      <input input="checkbox" checked>
-      <input input="checkbox" >
+      <input type="checkbox" checked>
+      <input type="checkbox" >
     `);
 
     assert.deepEqual(page.foo, [true, false]);
@@ -123,7 +123,7 @@ moduleForProperty('property', function(test) {
 
     this.adapter.createTemplate(this, page, `
       <input>
-      <input checked>
+      <input type="checkbox" checked>
     `);
 
     assert.ok(page.foo);
@@ -134,7 +134,7 @@ moduleForProperty('property', function(test) {
       foo: property('checked', ':input', { testContainer: '#alternate-ember-testing' })
     });
 
-    this.adapter.createTemplate(this, page, '<input checked>', { useAlternateContainer: true });
+    this.adapter.createTemplate(this, page, '<input type="checkbox" checked>', { useAlternateContainer: true });
 
     assert.ok(page.foo);
   });
@@ -145,7 +145,7 @@ moduleForProperty('property', function(test) {
       foo: property('checked', ':input')
     });
 
-    this.adapter.createTemplate(this, page, '<input checked>', { useAlternateContainer: true });
+    this.adapter.createTemplate(this, page, '<input type="checkbox" checked>', { useAlternateContainer: true });
 
     assert.ok(page.foo);
   });
