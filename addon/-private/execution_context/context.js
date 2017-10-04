@@ -37,12 +37,12 @@ ExecutionContext.prototype = {
   visit: visit,
 
   click(selector, container) {
-    const [el] = this.$(selector, container);
+    const el = this.$(selector, container)[0];
     click(el);
   },
 
   fillIn(selector, container, options, content) {
-    let [el] = this.$(selector, container);
+    let el = this.$(selector, container)[0];
 
     fillElement(el, content, {
       selector,
@@ -67,7 +67,7 @@ ExecutionContext.prototype = {
   },
 
   triggerEvent(selector, container, eventName, eventOptions) {
-    const [element] = this.$(selector, container);
+    const element = this.$(selector, container)[0];
 
     // `keyCode` is a deprecated property.
     // @see: https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/keyCode
