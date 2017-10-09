@@ -2,8 +2,7 @@ import $ from '-jquery';
 
 import {
   click,
-  triggerEvent,
-  visit
+  triggerEvent
 } from 'ember-native-dom-helpers';
 
 import {
@@ -33,9 +32,6 @@ ExecutionContext.prototype = {
     throw new Error('not implemented');
   },
 
-  // Do nothing in integration test
-  visit: visit,
-
   click(selector, container) {
     const el = this.$(selector, container)[0];
     click(el);
@@ -58,6 +54,8 @@ ExecutionContext.prototype = {
     if (container) {
       return $(selector, container);
     } else {
+      // @todo: we should fixed usage of private `_element`
+      // after https://github.com/emberjs/ember-test-helpers/issues/184 is resolved
       let testsContainer = this.testContext ?
         this.testContext._element :
         '#ember-testing';

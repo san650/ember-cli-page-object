@@ -3,18 +3,18 @@ export { findElementWithAssert } from './-private/extend/find-element-with-asser
 export { buildSelector, getContext, fullScope } from './-private/helpers';
 import { register as registerExecutionContext } from './-private/execution_context';
 
-import IntegrationNativeContext from './-private/execution_context/integration-native';
-import AcceptanceNativeContext from './-private/execution_context/acceptance-native';
-import IntegrationClassicContext from './-private/execution_context/integration';
-import AcceptanceClassicContext from './-private/execution_context/acceptance';
+import IntegrationNativeDOMContext from './-private/execution_context/integration-native-dom';
+import AcceptanceNativeDOMContext from './-private/execution_context/acceptance-native-dom';
+import IntegrationEmberContext from './-private/execution_context/integration';
+import AcceptanceEmberContext from './-private/execution_context/acceptance';
 
 function useNativeDOMHelpers(flag = true) {
   if (flag) {
-    registerExecutionContext('integration', IntegrationNativeContext);
-    registerExecutionContext('acceptance', AcceptanceNativeContext);
+    registerExecutionContext('integration', IntegrationNativeDOMContext);
+    registerExecutionContext('acceptance', AcceptanceNativeDOMContext);
   } else {
-    registerExecutionContext('integration', IntegrationClassicContext);
-    registerExecutionContext('acceptance', AcceptanceClassicContext);
+    registerExecutionContext('integration', IntegrationEmberContext);
+    registerExecutionContext('acceptance', AcceptanceEmberContext);
   }
 }
 

@@ -1,4 +1,4 @@
-import ExecutionContext from './context';
+import ExecutionContext from './native-dom-context';
 
 import Ember from 'ember';
 const { run } = Ember;

@@ -21,9 +21,7 @@ export function moduleForProperty(name, cbOrOptions, cb) {
       beforeEach() {
         useNativeDOMHelpers(_useNativeDOMHelpers);
 
-        // if (!_useNativeDOMHelpers) {
-          this.adapter = new AcceptanceAdapter(AcceptanceExecutionContext);
-        // }
+        this.adapter = new AcceptanceAdapter(AcceptanceExecutionContext);
       },
 
       afterEach() {
@@ -42,9 +40,8 @@ export function moduleForProperty(name, cbOrOptions, cb) {
       integration: true,
       beforeEach() {
         useNativeDOMHelpers(_useNativeDOMHelpers);
-        // if (!_useNativeDOMHelpers) {
-          this.adapter = new IntegrationAdapter(IntegrationExecutionContext);
-        // }
+
+        this.adapter = new IntegrationAdapter(IntegrationExecutionContext);
       },
       afterEach() {
         useNativeDOMHelpers(false);

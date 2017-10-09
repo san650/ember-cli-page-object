@@ -32,7 +32,6 @@ IntegrationExecutionContext.prototype = {
     return this.pageObjectNode;
   },
 
-  // Do nothing in integration test
   visit() {
     throw new Error('visit is not supported in integration mode');
   },
