@@ -51,10 +51,6 @@ IntegrationAdapter.prototype = {
     });
   },
 
-  find() {
-    return this.original.find(...arguments);
-  },
-
   andThen(fn) {
     fn();
   },

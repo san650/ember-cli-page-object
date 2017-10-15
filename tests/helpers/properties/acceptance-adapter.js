@@ -44,10 +44,6 @@ AcceptanceAdapter.prototype = {
     fixture(template, options);
   },
 
-  find() {
-    return this.original.find(...arguments);
-  },
-
   throws(assert, block, expected, message) {
     let done = assert.async();
 
