@@ -2,7 +2,8 @@ import $ from '-jquery';
 
 import {
   click,
-  triggerEvent
+  triggerEvent,
+  keyEvent
 } from 'ember-native-dom-helpers';
 
 import {
@@ -17,6 +18,8 @@ import {
   ELEMENT_NOT_FOUND,
   throwBetterError
 } from '../better-errors';
+
+const KEYBOARD_EVENT_TYPES = ['keydown', 'keypress', 'keyup'];
 
 export default function ExecutionContext(pageObjectNode, testContext) {
   this.pageObjectNode = pageObjectNode;
@@ -75,7 +78,11 @@ ExecutionContext.prototype = {
       delete eventOptions.keyCode;
     }
 
-    triggerEvent(element, eventName, eventOptions);
+    if (KEYBOARD_EVENT_TYPES.indexOf(eventName) > -1) {
+      keyEvent(element, eventName, eventOptions.key, eventOptions);
+    } else {
+      triggerEvent(element, eventName, eventOptions);
+    }
   },
 
   assertElementExists(selector, options) {
