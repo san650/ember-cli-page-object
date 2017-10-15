@@ -109,8 +109,9 @@ moduleForComponent('calculating-device', 'Integration | actions', {
 test('Actions work when defined inside collections', function(assert) {
   let template = createCalculatorTemplate();
 
+  this.render(template);
+
   page
-    .render(template)
     .numbers(0)
     .click();
 
@@ -120,8 +121,9 @@ test('Actions work when defined inside collections', function(assert) {
 test('Chaining of actions inside a collection works', function(assert) {
   let template = createCalculatorTemplate();
 
+  this.render(template);
+
   page
-    .render(template)
     .numbers()
     .clickOn('1')
     .clickOn('2')
@@ -133,8 +135,9 @@ test('Chaining of actions inside a collection works', function(assert) {
 test('Chaining of actions on the root works', function(assert) {
   let template = createCalculatorTemplate();
 
+  this.render(template)
+
   page
-    .render(template)
     .clickOn('1')
     .clickOn('+')
     .clickOn('4')
@@ -150,8 +153,9 @@ test('Chaining of actions on the root works', function(assert) {
 test('Chaining of actions on a component works', function(assert) {
   let template = createCalculatorTemplate();
 
+  this.render(template)
+
   page
-    .render(template)
     .calculator
     .clickOn('1')
     .clickOn('+')
@@ -166,8 +170,9 @@ test('Chaining of actions on a component works', function(assert) {
 test('Chaining of aliased root actions works', function(assert) {
   let template = createCalculatorTemplate();
 
+  this.render(template)
+
   page
-    .render(template)
     .clickOnAlias('1')
     .clickOnAlias('4');
 
@@ -177,8 +182,9 @@ test('Chaining of aliased root actions works', function(assert) {
 test('Chaining of aliased component actions works', function(assert) {
   let template = createCalculatorTemplate();
 
+  this.render(template)
+
   page
-    .render(template)
     .clickOn('1')
     .clickPlusAlias()
     .clickOn('4')
@@ -190,7 +196,7 @@ test('Chaining of aliased component actions works', function(assert) {
 test('fill in by attribute', function(assert) {
   let template = createInputsTemplate();
 
-  page.render(template);
+  this.render(template);
 
   page
     .fillIn('input1', 'input 1')
@@ -251,7 +257,7 @@ test('Queries and actions handle non-existant elements correctly', function(asse
   let message = /Element not found./;
   let template = createCalculatorTemplate();
 
-  page.render(template);
+  this.render(template);
 
   run(() => {
     assert.throws(() => page.nonExistant.attribute(), message, 'attribute query did not throw an error');
