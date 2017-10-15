@@ -4,6 +4,7 @@ import { module as qunitModule } from 'qunit';
 export { test as testForAcceptance } from 'qunit';
 
 import Ember from 'ember';
+const { $ } = Ember;
 
 let noop = function() {};
 
@@ -30,6 +31,7 @@ AcceptanceAdapter.prototype = {
     template = template || '';
 
     if (!(test && page)) {
+      // eslint-disable-next-line no-console
       console.error('Missing parameters in adapter.createTemplate(testContext, pageObject, templateString)');
     }
 
@@ -49,7 +51,7 @@ AcceptanceAdapter.prototype = {
   },
 
   wait() {
-    return wait();
+    return window.wait();
   }
 };
 
