@@ -13,9 +13,7 @@ moduleForProperty('triggerable', function(test) {
     this.adapter.createTemplate(this, page, '<input />');
 
     return this.adapter.andThen(() => {
-      // debugger
       this.adapter.$(expectedSelector).on('focus', () => {
-        // debugger;
         assert.ok(1);
       });
       page.foo();
