@@ -7,7 +7,7 @@ import Ember from 'ember';
 
 let noop = function() {};
 
-export function AcceptanceAdapter(original) {
+export function AcceptanceAdapter(context, original) {
   this.original = original;
   this.originalPrototype = original.prototype;
   original.prototype = Object.create(this.originalPrototype);
