@@ -9,6 +9,8 @@ export default function IntegrationExecutionContext(pageObjectNode, testContext)
 
 IntegrationExecutionContext.prototype = Object.create(ExecutionContext.prototype);
 
+IntegrationExecutionContext.prototype.visit = function() {};
+
 IntegrationExecutionContext.prototype.runAsync = function(cb) {
   run(() => {
     cb(this);

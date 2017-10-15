@@ -32,9 +32,7 @@ IntegrationExecutionContext.prototype = {
     return this.pageObjectNode;
   },
 
-  visit() {
-    throw new Error('visit is not supported in integration mode');
-  },
+  visit() {},
 
   click(selector, container) {
     this.$(selector, container).click();
