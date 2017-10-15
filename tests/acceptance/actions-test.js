@@ -80,7 +80,7 @@ test('action chains act like a promise', function(assert) {
       assert.equal(page.screen, '12');
     });
 
-  return wait();
+  return window.wait();
 });
 
 test('fill in by attribute', function(assert) {

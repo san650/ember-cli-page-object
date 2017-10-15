@@ -24,7 +24,7 @@ import PageObject, {
   isVisible
 } from 'dummy/tests/page-object';
 
-const { run } = Ember;
+const { run, $ } = Ember;
 
 const button = function(scope) {
   return {
