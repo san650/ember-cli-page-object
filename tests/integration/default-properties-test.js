@@ -20,8 +20,9 @@ test('Adds default properties', function(assert) {
     }
   });
 
+  this.render(createCalculatorTemplate());
+
   page
-    .render(createCalculatorTemplate())
     .clickOn('9')
     .one
     .click();
