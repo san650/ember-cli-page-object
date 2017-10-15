@@ -3,6 +3,7 @@ import resolver from './helpers/resolver';
 import {
   setResolver
 } from 'ember-qunit';
+import { start } from 'ember-cli-qunit';
 
 setResolver(resolver);
 
@@ -43,3 +44,5 @@ export function expectEmberError(assert, callback, matcher, message) {
     assert.throws(callback, matcher, message);
   }
 }
+
+start();
