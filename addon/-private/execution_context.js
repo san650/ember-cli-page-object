@@ -1,10 +1,10 @@
 import { getContext } from './helpers';
-import AcceptanceExecutionContext from './execution_context/acceptance';
-import IntegrationExecutionContext from './execution_context/integration';
+import AcceptanceEmberExecutionContext from './execution_context/acceptance';
+import IntegrationEmberExecutionContext from './execution_context/integration';
 
 const executioncontexts = {
-  acceptance: AcceptanceExecutionContext,
-  integration: IntegrationExecutionContext
+  acceptance: AcceptanceEmberExecutionContext,
+  integration: IntegrationEmberExecutionContext
 };
 
 /*

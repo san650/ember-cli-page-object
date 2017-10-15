@@ -1,8 +1,7 @@
-import Ember from 'ember';
 import { assign } from '../helpers';
 import { getExecutionContext } from '../execution_context';
 
-const { $ } = Ember;
+import $ from '-jquery';
 
 function fillInDynamicSegments(path, params) {
   return path.split('/').map(function(segment) {

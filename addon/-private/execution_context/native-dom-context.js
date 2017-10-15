@@ -1,4 +1,11 @@
-import Ember from 'ember';
+import $ from '-jquery';
+
+import {
+  click,
+  triggerEvent,
+  keyEvent
+} from 'ember-native-dom-helpers';
+
 import {
   guardMultiple,
   buildSelector,
@@ -12,72 +19,76 @@ import {
   throwBetterError
 } from '../better-errors';
 
-const { $, run } = Ember;
+const KEYBOARD_EVENT_TYPES = ['keydown', 'keypress', 'keyup'];
 
-export default function IntegrationExecutionContext(pageObjectNode, testContext) {
+export default function ExecutionContext(pageObjectNode, testContext) {
   this.pageObjectNode = pageObjectNode;
   this.testContext = testContext;
 }
 
-IntegrationExecutionContext.prototype = {
+ExecutionContext.prototype = {
   run(cb) {
     return cb(this);
   },
 
-  runAsync(cb) {
-    run(() => {
-      cb(this);
-    });
-
-    return this.pageObjectNode;
+  runAsync() {
+    throw new Error('not implemented');
   },
 
-  visit() {},
-
   click(selector, container) {
-    this.$(selector, container).click();
+    const el = this.$(selector, container)[0];
+    click(el);
   },
 
   fillIn(selector, container, options, content) {
-    let $selection = this.$(selector, container);
+    let el = this.$(selector, container)[0];
 
-    fillElement($selection, content, {
+    fillElement(el, content, {
       selector,
       pageObjectNode: this.pageObjectNode,
       pageObjectKey: options.pageObjectKey
     });
 
-    $selection.trigger('input');
-    $selection.change();
+    triggerEvent(el, 'input');
+    triggerEvent(el, 'change');
   },
 
   $(selector, container) {
     if (container) {
       return $(selector, container);
     } else {
-      return this.testContext.$(selector);
+      // @todo: we should fixed usage of private `_element`
+      // after https://github.com/emberjs/ember-test-helpers/issues/184 is resolved
+      let testsContainer = this.testContext ?
+        this.testContext._element :
+        '#ember-testing';
+
+      return $(selector, testsContainer);
     }
   },
 
   triggerEvent(selector, container, eventName, eventOptions) {
-    let event = $.Event(eventName, eventOptions);
+    const element = this.$(selector, container)[0];
 
-    if (container) {
-      $(selector, container).trigger(event);
+    // `keyCode` is a deprecated property.
+    // @see: https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/keyCode
+    // Due to this deprecation `ember-native-dom-helpers` doesn't accept `keyCode` as a `KeyboardEvent` option.
+    if (typeof eventOptions.key === 'undefined' && typeof eventOptions.keyCode !== 'undefined') {
+      eventOptions.key = eventOptions.keyCode.toString();
+      delete eventOptions.keyCode;
+    }
+
+    if (KEYBOARD_EVENT_TYPES.indexOf(eventName) > -1) {
+      keyEvent(element, eventName, eventOptions.key, eventOptions);
     } else {
-      this.testContext.$(selector).trigger(event);
+      triggerEvent(element, eventName, eventOptions);
     }
   },
 
   assertElementExists(selector, options) {
-    let result;
     let container = options.testContainer || findClosestValue(this.pageObjectNode, 'testContainer');
 
-    if (container) {
-      result = $(selector, container);
-    } else {
-      result = this.testContext.$(selector);
-    }
+    let result = this.$(selector, container);
 
     if (result.length === 0) {
       throwBetterError(
@@ -90,16 +101,11 @@ IntegrationExecutionContext.prototype = {
   },
 
   find(selector, options) {
-    let result;
     let container = options.testContainer || findClosestValue(this.pageObjectNode, 'testContainer');
 
     selector = buildSelector(this.pageObjectNode, selector, options);
 
-    if (container) {
-      result = $(selector, container);
-    } else {
-      result = this.testContext.$(selector);
-    }
+    let result = this.$(selector, container);
 
     guardMultiple(result, selector, options.multiple);
 
@@ -107,18 +113,11 @@ IntegrationExecutionContext.prototype = {
   },
 
   findWithAssert(selector, options) {
-    let result;
     let container = options.testContainer || findClosestValue(this.pageObjectNode, 'testContainer');
 
     selector = buildSelector(this.pageObjectNode, selector, options);
 
-    if (container) {
-      result = $(selector, container);
-    } else {
-      result = this.testContext.$(selector);
-    }
-
-    guardMultiple(result, selector, options.multiple);
+    let result = this.$(selector, container);
 
     if (result.length === 0) {
       throwBetterError(
@@ -129,6 +128,9 @@ IntegrationExecutionContext.prototype = {
       );
     }
 
+    guardMultiple(result, selector, options.multiple);
+
     return result;
   }
 };
+

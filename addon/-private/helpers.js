@@ -1,7 +1,9 @@
 import Ember from 'ember';
 import Ceibo from 'ceibo';
 
-const { $, assert, get, isPresent } = Ember;
+const { assert, get, isPresent } = Ember;
+
+import $ from '-jquery';
 
 class Selector {
   constructor(node, scope, selector, filters) {
