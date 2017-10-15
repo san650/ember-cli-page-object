@@ -55,7 +55,7 @@
     "ember-ajax": "^3.0.0",
     "ember-cli": "~2.16.2",
     "ember-cli-addon-tests": "^0.4.2",
-    "ember-cli-blueprint-test-helpers": "0.13.0",
+    "ember-cli-blueprint-test-helpers": "^0.18.2",
     "ember-cli-code-coverage": "0.3.12",
     "ember-cli-dependency-checker": "^2.0.0",
     "ember-cli-doc-server": "1.1.0",
