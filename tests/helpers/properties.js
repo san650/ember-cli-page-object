@@ -10,7 +10,7 @@ export function moduleForProperty(name, cbOrOptions, cb) {
   // Generate acceptance tests
   moduleForAcceptance(`Acceptance mode | Property | ${name}`, {
     beforeEach() {
-      this.adapter = new AcceptanceAdapter(AcceptanceExecutionContext);
+      this.adapter = new AcceptanceAdapter(this, AcceptanceExecutionContext);
     },
 
     afterEach() {
@@ -27,7 +27,7 @@ export function moduleForProperty(name, cbOrOptions, cb) {
   moduleForIntegration('html-render', `Integration mode | Property | ${name}`, {
     integration: true,
     beforeEach() {
-      this.adapter = new IntegrationAdapter(IntegrationExecutionContext);
+      this.adapter = new IntegrationAdapter(this, IntegrationExecutionContext);
     },
     afterEach() {
       this.adapter.revert();

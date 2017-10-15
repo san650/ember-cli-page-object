@@ -1,3 +1,4 @@
+/* global Symbol */
 import Ember from 'ember';
 import { buildSelector, assign as mergeFunction } from '../helpers';
 import { create } from '../create';
