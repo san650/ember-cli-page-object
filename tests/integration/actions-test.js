@@ -4,7 +4,7 @@ import {
   createCalculatorTemplate,
   createInputsTemplate
 } from './test-helper';
-import { expectEmberError } from '../test-helper';
+import expectEmberError from '../expect-ember-error';
 import { alias } from 'ember-cli-page-object/macros';
 
 import PageObject, {

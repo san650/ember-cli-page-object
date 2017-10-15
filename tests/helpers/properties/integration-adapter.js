@@ -1,6 +1,6 @@
 import { fixture } from './acceptance-adapter';
 export { moduleForComponent as moduleForIntegration, test as testForIntegration } from 'ember-qunit';
-import { expectEmberError } from '../../test-helper';
+import expectEmberError from '../../expect-ember-error';
 
 import Ember from 'ember';
 
