@@ -7,14 +7,7 @@ import Ember from 'ember';
 
 let noop = function() {};
 
-export function AcceptanceAdapter(original) {
-  this.original = original;
-  this.originalPrototype = original.prototype;
-  original.prototype = Object.create(this.originalPrototype);
-  this.spy = original.prototype;
-
-  this.originalClick = window.click;
-  this.originalTriggerEvent = window.triggerEvent;
+export function AcceptanceAdapter() {
   this.originalVisit = window.visit;
 }
 
@@ -30,7 +23,6 @@ AcceptanceAdapter.prototype = {
   },
 
   revert() {
-    this.original.prototype = Object.create(this.originalPrototype);
     window.visit = this.originalVisit;
   },
 
@@ -42,10 +34,6 @@ AcceptanceAdapter.prototype = {
     }
 
     fixture(template, options);
-  },
-
-  find() {
-    return this.original.find(...arguments);
   },
 
   throws(assert, block, expected, message) {

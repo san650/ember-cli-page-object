@@ -1,5 +1,3 @@
-import AcceptanceExecutionContext from 'ember-cli-page-object/-private/execution_context/acceptance';
-import IntegrationExecutionContext from 'ember-cli-page-object/-private/execution_context/integration';
 import { AcceptanceAdapter, moduleForAcceptance, testForAcceptance } from './properties/acceptance-adapter';
 import { IntegrationAdapter, moduleForIntegration, testForIntegration } from './properties/integration-adapter';
 
@@ -10,7 +8,7 @@ export function moduleForProperty(name, cbOrOptions, cb) {
   // Generate acceptance tests
   moduleForAcceptance(`Acceptance mode | Property | ${name}`, {
     beforeEach() {
-      this.adapter = new AcceptanceAdapter(AcceptanceExecutionContext);
+      this.adapter = new AcceptanceAdapter();
     },
 
     afterEach() {
@@ -27,8 +25,9 @@ export function moduleForProperty(name, cbOrOptions, cb) {
   moduleForIntegration('html-render', `Integration mode | Property | ${name}`, {
     integration: true,
     beforeEach() {
-      this.adapter = new IntegrationAdapter(IntegrationExecutionContext);
+      this.adapter = new IntegrationAdapter();
     },
+
     afterEach() {
       this.adapter.revert();
     }

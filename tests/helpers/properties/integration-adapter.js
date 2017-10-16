@@ -4,13 +4,7 @@ import { expectEmberError } from '../../test-helper';
 
 import Ember from 'ember';
 
-export function IntegrationAdapter(original) {
-  this.original = original;
-  this.originalPrototype = original.prototype;
-
-  original.prototype = Object.create(this.originalPrototype);
-  this.spy = original.prototype;
-}
+export function IntegrationAdapter() {}
 
 IntegrationAdapter.prototype = {
   name: 'integration',
@@ -19,9 +13,7 @@ IntegrationAdapter.prototype = {
     return Ember.$(selector, isAlternative ? '#alternate-ember-testing' : '#ember-testing');
   },
 
-  revert() {
-    this.original.prototype = Object.create(this.originalPrototype);
-  },
+  revert() {},
 
   createTemplate(test, page, template, options) {
     template = template || '';
@@ -49,10 +41,6 @@ IntegrationAdapter.prototype = {
     Ember.run(() => {
       expectEmberError(assert, block, expected, message);
     });
-  },
-
-  find() {
-    return this.original.find(...arguments);
   },
 
   andThen(fn) {
