@@ -14,6 +14,8 @@ v1.12.x:
           name: Components
         - path: /extend
           name: Extend page objects
+        - path: /native-dom
+          name: Native DOM Helpers
 
     - title: API reference
       links:
