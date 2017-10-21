@@ -19,6 +19,14 @@ let page = create({
 
       itemScope: 'button'
     })
+  },
+
+  group: {
+    scope: '.part-1, .part-2',
+
+    group: {
+      scope: '.part-a, .part-b'
+    }
   }
 });
 
@@ -26,6 +34,9 @@ test('calculates full scope for components', function(assert) {
   assert.equal(fullScope(page), '.calculator');
   assert.equal(fullScope(page.keyboard), '.calculator .keyboard');
   assert.equal(fullScope(page.keyboard.numbers(0)), '.calculator .keyboard .numbers button:eq(0)');
+
+  assert.equal(fullScope(page.group), '.calculator .part-1, .calculator .part-2');
+  assert.equal(fullScope(page.group.group), '.calculator .part-1 .part-a, .calculator .part-1 .part-b, .calculator .part-2 .part-a, .calculator .part-2 .part-b');
 });
 
 module('Unit | helpers | objectHasProperty');
