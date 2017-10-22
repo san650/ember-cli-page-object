@@ -60,7 +60,7 @@ class Selector {
     scopes.reverse();
     scopes.push(targetScope);
 
-    return $.trim(scopes.join(' '));
+    return $.trim(fullSelector(scopes));
   }
 
   getScopes(node) {
@@ -71,11 +71,15 @@ class Selector {
     }
 
     if (!node.resetScope && Ceibo.parent(node)) {
-      scopes = scopes.concat(this.calculateScope(Ceibo.parent(node)));
+      scopes = scopes.concat(this.getScopes(Ceibo.parent(node)));
     }
 
     return scopes;
   }
+}
+
+function splitSelector(selector) {
+  return selector.split(/\s*,\s*/); // naive impl
 }
 
 export function guardMultiple(items, selector, supportMultiple) {
@@ -216,6 +220,30 @@ function getAllValuesForProperty(node, property) {
   return values;
 }
 
+function fullSelector(scopes) {
+  let permutations = (function perm(nodes) {
+    let first = nodes[0];
+
+    if (nodes.length === 1) {
+      return first;
+    }
+    else {
+      let collect = [];
+      let rest = perm(nodes.slice(1));
+
+      for (let left in first) {
+        for (let right in rest) {
+          collect.push(`${first[left]} ${rest[right]}`);
+        }
+      }
+
+      return collect;
+    }
+  })(scopes.map(splitSelector));
+
+  return permutations.join(', ');
+}
+
 /**
  * @public
  *
@@ -225,9 +253,7 @@ function getAllValuesForProperty(node, property) {
  * @return {?Object} Full scope of node
  */
 export function fullScope(node) {
-  let scopes = getAllValuesForProperty(node, 'scope');
-
-  return scopes.reverse().join(' ');
+  return fullSelector(getAllValuesForProperty(node, 'scope').reverse());
 }
 
 /**
