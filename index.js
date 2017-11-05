@@ -31,11 +31,34 @@ module.exports = {
     this.app = app;
 
     if (this._shouldIncludeFiles()) {
-      this.import('vendor/shims/-jquery.js', { prepend: true });
-      this.import('vendor/ecpo-jquery/dist/jquery.js', { prepend: true });
+      this.importJquery();
     }
 
     this._super.included.apply(this, arguments);
+  },
+
+  /*
+   * Import an amd '-jquery' shim which is used by ember-cli-page-object internally
+   * 
+   * We don't want ember-cli-page-object's jquery ocassionaly leak into a real application.
+   * The following combo of shims supposed to isolate `ember-cli-page-object`'s `jquery` 
+   * from the rest of application and expose internal version via amd module.
+   */
+  importJquery: function() {
+    // jquery itself is included in the very beggining of vendor.js.
+    // At this point we don't have `define()` defined so we can't create an amd shim here.
+    //
+    // However we have to store reference to jquery and dispose it from the window
+    // in order to prevent its leakage to the application.
+    this.import('vendor/shims/ecpo-jquery-global.js', {
+      prepend: true
+    });
+    this.import('vendor/ecpo-jquery/dist/jquery.js', {
+      prepend: true
+    });
+
+    // finally define an amd shim for our internal jquery version
+    this.import('vendor/shims/ecpo-jquery.js');
   },
 
   treeFor: function(/*name*/) {
