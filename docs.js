@@ -293,8 +293,17 @@ function removeDir(dir) {
     return writeDocs(propertiesDir, tmpDir);
   })
   .then(function() {
+    return execCmd('git branch');
+  })
+  .then(function(branches) {
+    const branch = 'gh-pages';
+
     // Switch to the GitHub Pages branch
-    return execCmd('git checkout gh-pages');
+    if (branches.includes(branch)) {
+      return execCmd(`git checkout ${branch}`);
+    } else {
+      return execCmd(`git checkout -b ${branch}`);
+    }
   })
   .then(function() {
     // Delete the existing destination directory

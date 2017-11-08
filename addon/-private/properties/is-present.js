@@ -8,7 +8,7 @@ import { findElement } from 'ember-cli-page-object';
  *   - `isVisible` additionally validates that all matching elements are visible
  *
  * Some uses cases for `isPresent` over `isVisible`:
- *   - To check for the presence of a tag that is never visible in the DOM (e.g., <meta>).
+ *   - To check for the presence of a tag that is never visible in the DOM (e.g. `<meta>`).
  *   - To validate that, even though an element may not currently be visible, it is still in the DOM.
  *   - To validate that an element has not merely been hidden but has in fact been removed from the DOM.
  *
