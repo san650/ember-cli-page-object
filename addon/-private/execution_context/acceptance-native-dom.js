@@ -1,4 +1,5 @@
 import ExecutionContext from './native-dom-context';
+import wait from 'ember-test-helpers/wait';
 
 import {
   visit
@@ -15,7 +16,7 @@ AcceptanceExecutionContext.prototype.visit = function() {
 };
 
 AcceptanceExecutionContext.prototype.runAsync = function(cb) {
-  window.wait().then(() => {
+  (window.wait || wait)().then(() => {
     cb(this);
   });
 
