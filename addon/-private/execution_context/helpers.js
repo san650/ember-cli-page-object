@@ -2,6 +2,8 @@ import {
   throwBetterError
 } from '../better-errors';
 
+import $ from '-jquery';
+
 /**
  * @private
  *
