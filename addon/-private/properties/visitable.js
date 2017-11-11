@@ -1,4 +1,3 @@
-import Ember from 'ember';
 import { assign } from '../helpers';
 import { getExecutionContext } from '../execution_context';
 
