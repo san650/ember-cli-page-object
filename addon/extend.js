@@ -3,19 +3,19 @@ export { findElementWithAssert } from './-private/extend/find-element-with-asser
 export { buildSelector, getContext, fullScope } from './-private/helpers';
 import { register as registerExecutionContext } from './-private/execution_context';
 
-import IntegrationNativeDOMContext from './-private/execution_context/integration-native-dom';
-import AcceptanceNativeDOMContext from './-private/execution_context/acceptance-native-dom';
+import IntegrationNativeEventsContext from './-private/execution_context/integration-native-events';
+import AcceptanceNativeEventsContext from './-private/execution_context/acceptance-native-events';
 import IntegrationEmberContext from './-private/execution_context/integration';
 import AcceptanceEmberContext from './-private/execution_context/acceptance';
 
-function useNativeDOMHelpers(flag = true) {
+function useNativeEvents(flag = true) {
   if (flag) {
-    registerExecutionContext('integration', IntegrationNativeDOMContext);
-    registerExecutionContext('acceptance', AcceptanceNativeDOMContext);
+    registerExecutionContext('integration', IntegrationNativeEventsContext);
+    registerExecutionContext('acceptance', AcceptanceNativeEventsContext);
   } else {
     registerExecutionContext('integration', IntegrationEmberContext);
     registerExecutionContext('acceptance', AcceptanceEmberContext);
   }
 }
 
-export { registerExecutionContext, useNativeDOMHelpers };
+export { registerExecutionContext, useNativeEvents };

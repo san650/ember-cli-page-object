@@ -2,29 +2,29 @@ import { AcceptanceAdapter, moduleForAcceptance, testForAcceptance } from './pro
 
 import { IntegrationAdapter, moduleForIntegration, testForIntegration } from './properties/integration-adapter';
 
-import { useNativeDOMHelpers } from 'ember-cli-page-object/extend';
+import { useNativeEvents } from 'ember-cli-page-object/extend';
 
 export function moduleForProperty(name, cbOrOptions, cb) {
   let options = cb ? cbOrOptions : {};
   cb = cb || cbOrOptions;
 
-  [true, false].forEach(_useNativeDOMHelpers => {
+  [true, false].forEach(_useNativeEvents => {
     // Generate acceptance tests
 
     let moduleNamePrefix = 'Acceptance mode ';
-    if (_useNativeDOMHelpers) {
-      moduleNamePrefix += ' [native-dom-helpers]';
+    if (_useNativeEvents) {
+      moduleNamePrefix += '[native-events]';
     }
 
     moduleForAcceptance(`${moduleNamePrefix} | Property | ${name}`, {
       beforeEach() {
-        useNativeDOMHelpers(_useNativeDOMHelpers);
+        useNativeEvents(_useNativeEvents);
 
         this.adapter = new AcceptanceAdapter(this);
       },
 
       afterEach() {
-        useNativeDOMHelpers(false);
+        useNativeEvents(false);
         this.adapter.revert();
       }
     });
@@ -38,12 +38,12 @@ export function moduleForProperty(name, cbOrOptions, cb) {
     moduleForIntegration('html-render', `Integration mode | Property | ${name}`, {
       integration: true,
       beforeEach() {
-        useNativeDOMHelpers(_useNativeDOMHelpers);
+        useNativeEvents(_useNativeEvents);
 
         this.adapter = new IntegrationAdapter(this);
       },
       afterEach() {
-        useNativeDOMHelpers(false);
+        useNativeEvents(false);
         this.adapter.revert();
       }
     });
