@@ -15,13 +15,8 @@ module.exports = {
     }
   },
 
-  included: function(app) {
-    // see: https://github.com/ember-cli/ember-cli/issues/3718
-    if (typeof app.import !== 'function' && app.app) {
-      app = app.app;
-    }
-
-    this.app = app;
+  included: function() {
+    this.app = this._findHost();
 
     this._super.included.apply(this, arguments);
   },
@@ -36,5 +31,16 @@ module.exports = {
 
   _shouldIncludeFiles: function() {
     return !!this.app.tests;
+  },
+
+  _findHost() {
+    let current = this;
+    let app;
+
+    do {
+      app = current.app || app;
+    } while (current.parent.parent && (current = current.parent));
+
+    return app;
   }
 };
