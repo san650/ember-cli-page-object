@@ -1,10 +1,13 @@
 import { fixture } from './acceptance-adapter';
 export { moduleForComponent as moduleForIntegration, test as testForIntegration } from 'ember-qunit';
-import { expectEmberError } from '../../test-helper';
+import expectEmberError from '../../expect-ember-error';
+import hbs from 'htmlbars-inline-precompile';
 
 import Ember from 'ember';
 
-export function IntegrationAdapter() {}
+export function IntegrationAdapter(context) {
+  this.context = context;
+}
 
 IntegrationAdapter.prototype = {
   name: 'integration',
@@ -19,6 +22,7 @@ IntegrationAdapter.prototype = {
     template = template || '';
 
     if (!(test && page)) {
+      // eslint-disable-next-line no-console
       console.error('Missing parameters in adapter.createTemplate(testContext, pageObject, templateString)');
     }
 
@@ -31,10 +35,9 @@ IntegrationAdapter.prototype = {
       test.set('raw', template);
     }
 
-    let compiledTemplate = Ember.HTMLBars.compile('{{html-render html=raw}}');
-
     page.setContext(test);
-    page.render(compiledTemplate);
+
+    this.context.render(hbs`{{html-render html=raw}}`);
   },
 
   throws(assert, block, expected, message) {

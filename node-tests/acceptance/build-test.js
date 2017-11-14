@@ -1,5 +1,4 @@
 var assert = require('assert');
-var RSVP = require('rsvp');
 var fs = require('fs');
 var AddonTestApp = require('ember-cli-addon-tests').AddonTestApp;
 

@@ -1,8 +1,3 @@
- /*jshint -W079 */
-/* jshint node: true */
-/* jshint expr: true */
-/* global describe, afterEach, it */
-
 // Test borrowed from ember-cli-mirage
 
 var expect = require('chai').expect;
@@ -42,7 +37,7 @@ describe('Addon', function() {
         expect(addonTree._inputNodes.length).to.not.equal(0);
       });
     });
-  };
+  }
 
   describe('#treeFor addon', function() {
     treeForTests('addon');

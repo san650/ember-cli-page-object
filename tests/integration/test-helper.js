@@ -1,9 +1,9 @@
-import Ember from 'ember';
+import hbs from 'htmlbars-inline-precompile';
 
 export function createCalculatorTemplate() {
-  return Ember.HTMLBars.compile('{{calculating-device}}');
+  return hbs`{{calculating-device}}`;
 }
 
 export function createInputsTemplate() {
-  return Ember.HTMLBars.compile('{{input-elements}}');
+  return hbs`{{input-elements}}`;
 }

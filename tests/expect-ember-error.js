@@ -1,12 +1,5 @@
+
 import Ember from 'ember';
-import resolver from './helpers/resolver';
-import {
-  setResolver
-} from 'ember-qunit';
-import { start } from 'ember-cli-qunit';
-
-setResolver(resolver);
-
 
 // ember@2.11.3 introduces a (breaking?) change in how the errors are propagated
 // in backburner which causes some test that were previously working, to fail.
@@ -22,7 +15,7 @@ function useHack() {
   return (major === 2 && minor >= 11) || major > 2;
 }
 
-export function expectEmberError(assert, callback, matcher, message) {
+export default function expectEmberError(assert, callback, matcher, message) {
   if (useHack()) {
     let origTestAdapter = Ember.Test.adapter;
     let testError;
@@ -44,5 +37,3 @@ export function expectEmberError(assert, callback, matcher, message) {
     assert.throws(callback, matcher, message);
   }
 }
-
-start();
