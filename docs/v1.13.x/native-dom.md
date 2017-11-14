@@ -25,4 +25,28 @@ import { useNativeDOMHelpers } from 'ember-cli-page-object/extend';
 useNativeDOMHelpers();
 ```
 
+## Migration from jQuery events to native DOM events
+
+### Ember built-in event handlers
+
+If you have defined event handler hooks in your components, like that:
+
+```js
+export default Component.extend({
+    doubleClick() {
+        set(this, "doubleClicked", true);
+        return true;
+    }
+})
+```
+
+It won't work out of the box with native events mode. 
+It happens because by default Ember's event dispatcher handles events via jquery.
+
+In order to fix this you should replace default event dispatcher with `ember-native-dom-event-dispatcher`:
+
+```sh
+npm i --save-dev ember-native-dom-event-dispatcher
+```
+
 {% endraw %}
