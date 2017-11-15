@@ -32,8 +32,7 @@ IntegrationExecutionContext.prototype = {
     return this.pageObjectNode;
   },
 
-  // Do nothing in integration test
-  visit: $.noop,
+  visit() {},
 
   click(selector, container) {
     this.$(selector, container).click();

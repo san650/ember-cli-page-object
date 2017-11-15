@@ -37,14 +37,16 @@
     "ember-cli-babel": "^6.6.0",
     "ember-cli-get-component-path-option": "^1.0.0",
     "ember-cli-is-package-missing": "^1.0.0",
-    "ember-cli-node-assets": "^0.1.2",
+    "ember-cli-node-assets": "^0.2.2",
     "ember-cli-normalize-entity-name": "^1.0.0",
     "ember-cli-path-utils": "^1.0.0",
     "ember-cli-string-utils": "^1.0.0",
     "ember-cli-test-info": "^1.0.0",
     "ember-cli-valid-component-name": "^1.0.0",
     "ember-cli-version-checker": "^1.2.0",
+    "ember-native-dom-helpers": "^0.5.3",
     "ember-test-helpers": "^0.6.3",
+    "jquery": "^3.2.1",
     "rsvp": "^3.2.1"
   },
   "devDependencies": {
