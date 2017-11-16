@@ -81,4 +81,21 @@ moduleForProperty('visitable', { acceptanceOnly: true }, function(test) {
 
     page.foo({ user_id: 1, another_id: 0, hello: 'world', lorem: 'ipsum' });
   });
+
+  test('fills in encoded dynamic segments', function(assert) {
+    assert.expect(1);
+
+    let page;
+
+    window.visit = function(actualRoute) {
+      assert.equal(actualRoute, '/users/a%2Fuser/comments/1');
+    };
+
+    page = create({
+      foo: visitable('/users/:user_id/comments/:comment_id'),
+    });
+
+    page.foo({ user_id: 'a/user', comment_id: 1 });
+
+  });
 });
