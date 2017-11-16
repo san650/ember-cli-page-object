@@ -18,7 +18,7 @@ function fillInDynamicSegments(path, params) {
       // Remove dynamic segment key from params
       delete params[key];
 
-      return value;
+      return encodeURIComponent(value);
     }
 
     return segment;
