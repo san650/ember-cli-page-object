@@ -1,7 +1,7 @@
 ---
 language: node_js
 node_js:
-  - "4"
+  - "8"
 
 sudo: false
 
@@ -11,9 +11,10 @@ cache:
 
 env:
   - EMBER_TRY_SCENARIO=node-tests SKIP_ACCEPTANCE=true
-  - EMBER_TRY_SCENARIO=ember-1.12
-  - EMBER_TRY_SCENARIO=ember-1.13
   - EMBER_TRY_SCENARIO=ember-lts-2.4
+  - EMBER_TRY_SCENARIO=ember-lts-2.8
+  - EMBER_TRY_SCENARIO=ember-lts-2.12
+  - EMBER_TRY_SCENARIO=ember-lts-2.16
   - EMBER_TRY_SCENARIO=ember-release COVERAGE=true # Only log coverage from release
   - EMBER_TRY_SCENARIO=ember-beta
   - EMBER_TRY_SCENARIO=ember-canary
@@ -26,6 +27,7 @@ matrix:
 before_install:
   - npm config set spin false
   - npm install -g bower phantomjs-prebuilt
+  - npm --version
   - bower --version
   - phantomjs --version
 
