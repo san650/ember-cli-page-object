@@ -39,7 +39,7 @@
     "ember-native-dom-helpers": "^0.5.3",
     "ember-test-helpers": "^0.6.3",
     "jquery": "^3.2.1",
-    "rsvp": "^3.2.1"
+    "rsvp": "^4.7.0"
   },
   "devDependencies": {
     "broccoli-asset-rev": "^2.4.5",
