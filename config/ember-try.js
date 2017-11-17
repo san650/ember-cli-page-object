@@ -1,28 +1,7 @@
 /*jshint node:true*/
 module.exports = {
+  useYarn: true,
   scenarios: [
-    {
-      name: 'ember-1.12',
-      bower: {
-        dependencies: {
-          'ember': '~1.12.0'
-        },
-        resolutions: {
-          'ember': '~1.12.0'
-        }
-      }
-    },
-    {
-      name: 'ember-1.13',
-      bower: {
-        dependencies: {
-          'ember': '~1.13.0'
-        },
-        resolutions: {
-          'ember': '~1.13.0'
-        }
-      }
-    },
     {
       name: 'ember-lts-2.4',
       bower: {
@@ -42,6 +21,17 @@ module.exports = {
         },
         resolutions: {
           'ember': 'lts-2-8'
+        }
+      }
+    },
+    {
+      name: 'ember-lts-2.12',
+      bower: {
+        dependencies: {
+          'ember': 'components/ember#2.12.2'
+        },
+        resolutions: {
+          'ember': '2.12.2'
         }
       }
     },
