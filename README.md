@@ -53,7 +53,6 @@ The addon includes the following blueprints
 * `page-object` Creates a new page object
 * `page-object-component` Creates a new component to be used in a page object
 * `page-object-helper` Creates a new helper to be used in a page object
-* `component-test` Creates a new optimized component test with a matching page object component when used with the `--page-object` flag
 
 You can create a new page object called `users` using the `generate` command
 
@@ -63,21 +62,6 @@ $ ember generate page-object users
 installing
   create tests/pages/users.js
 ```
-
-To create a new component with an integration test based on a page object component just add the `--page-object` flag to your `generate` command:
-
-```js
-$ ember g component my-component --page-object
-installing component
-  create app/components/my-component.js
-  create app/templates/components/my-component.hbs
-installing component-test
-  create tests/integration/components/my-component-test.js
-installing page-object-component
-  create tests/pages/components/my-component.js
-```
-
-It creates the component itself, a page object component with the same name to run your assertions against, and a special component integration test that contains all the necessary setup code to run your tests.
 
 ## Development
 
