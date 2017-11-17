@@ -43,7 +43,7 @@
   },
   "devDependencies": {
     "broccoli-asset-rev": "^2.4.5",
-    "chai": "^3.5.0",
+    "chai": "^4.1.2",
     "coveralls": "^2.13.1",
     "documentation": "^3.0.4",
     "ember-ajax": "^3.0.0",
