@@ -1,19 +1,22 @@
 ---
 language: node_js
 node_js:
-  - "4"
+  - "8"
+
+addons:
+  chrome: stable
 
 sudo: false
 
 cache:
-  directories:
-    - node_modules
+  yarn: true
 
 env:
-  - EMBER_TRY_SCENARIO=node-tests SKIP_ACCEPTANCE=true
-  - EMBER_TRY_SCENARIO=ember-1.12
-  - EMBER_TRY_SCENARIO=ember-1.13
+  - EMBER_TRY_SCENARIO=node-tests
   - EMBER_TRY_SCENARIO=ember-lts-2.4
+  - EMBER_TRY_SCENARIO=ember-lts-2.8
+  - EMBER_TRY_SCENARIO=ember-lts-2.12
+  - EMBER_TRY_SCENARIO=ember-lts-2.16
   - EMBER_TRY_SCENARIO=ember-release COVERAGE=true # Only log coverage from release
   - EMBER_TRY_SCENARIO=ember-beta
   - EMBER_TRY_SCENARIO=ember-canary
@@ -24,19 +27,15 @@ matrix:
     - env: EMBER_TRY_SCENARIO=ember-canary
 
 before_install:
-  - npm config set spin false
-  - npm install -g bower phantomjs-prebuilt
+  - npm install -g bower
   - bower --version
-  - phantomjs --version
 
 install:
-  - npm install
   - bower install
+  - yarn install --no-lockfile
 
 script:
-  # Usually, it's ok to finish the test scenario without reverting
-  #  to the addon's original dependency state, skipping "cleanup".
-  - ember try:one $EMBER_TRY_SCENARIO test --skip-cleanup
+  - node_modules/.bin/ember try:one $EMBER_TRY_SCENARIO test --skip-cleanup
 
 after_success:
-  - cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js
+  - if [ -f ./coverage/lcov.info ]; then cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js; fi

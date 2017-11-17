@@ -35,28 +35,20 @@
   "dependencies": {
     "ceibo": "~2.0.0",
     "ember-cli-babel": "^6.6.0",
-    "ember-cli-get-component-path-option": "^1.0.0",
-    "ember-cli-is-package-missing": "^1.0.0",
     "ember-cli-node-assets": "^0.2.2",
-    "ember-cli-normalize-entity-name": "^1.0.0",
-    "ember-cli-path-utils": "^1.0.0",
-    "ember-cli-string-utils": "^1.0.0",
-    "ember-cli-test-info": "^1.0.0",
-    "ember-cli-valid-component-name": "^1.0.0",
-    "ember-cli-version-checker": "^1.2.0",
     "ember-native-dom-helpers": "^0.5.3",
     "ember-test-helpers": "^0.6.3",
     "jquery": "^3.2.1",
-    "rsvp": "^3.2.1"
+    "rsvp": "^4.7.0"
   },
   "devDependencies": {
     "broccoli-asset-rev": "^2.4.5",
-    "chai": "^3.5.0",
-    "coveralls": "^2.13.1",
-    "documentation": "^3.0.4",
+    "chai": "^4.1.2",
+    "coveralls": "^3.0.0",
+    "documentation": "^5.3.3",
     "ember-ajax": "^3.0.0",
     "ember-cli": "~2.16.2",
-    "ember-cli-addon-tests": "^0.4.2",
+    "ember-cli-addon-tests": "^0.11.0",
     "ember-cli-blueprint-test-helpers": "^0.18.2",
     "ember-cli-code-coverage": "^0.4.2",
     "ember-cli-dependency-checker": "^2.0.0",
@@ -71,18 +63,15 @@
     "ember-disable-prototype-extensions": "^1.1.2",
     "ember-export-application-global": "^2.0.0",
     "ember-load-initializers": "^1.0.0",
-    "ember-qunit-nice-errors": "1.1.1",
+    "ember-qunit-nice-errors": "^1.1.2",
     "ember-qunit-source-map": "1.1.0",
     "ember-resolver": "^4.0.0",
-    "glob": "^5.0.13",
+    "glob": "^7.1.2",
     "loader.js": "^4.2.3",
     "mkdirp": "^0.5.1",
-    "mocha": "^2.5.3",
-    "mocha-only-detector": "0.0.2",
+    "mocha": "^4.0.1",
     "ncp": "^2.0.0",
-    "rimraf": "^2.5.2",
-    "sync-exec": "^0.6.2",
-    "testdouble": "^3.2.6"
+    "rimraf": "^2.5.2"
   },
   "engines": {
     "node": "^4.5 || 6.* || >= 7.*"
@@ -90,10 +79,6 @@
   "homepage": "http://ember-cli-page-object.js.org",
   "bugs": "https://github.com/san650/ember-cli-page-object/issues",
   "ember-addon": {
-    "configPath": "tests/dummy/config",
-    "after": [
-      "ember-cli-legacy-blueprints",
-      "ember-source"
-    ]
+    "configPath": "tests/dummy/config"
   }
 }

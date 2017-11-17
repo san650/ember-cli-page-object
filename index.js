@@ -34,9 +34,9 @@ module.exports = {
 
   /*
    * Import an amd '-jquery' shim which is used by ember-cli-page-object internally
-   * 
+   *
    * We don't want ember-cli-page-object's jquery ocassionaly leak into a real application.
-   * The following combo of shims supposed to isolate `ember-cli-page-object`'s `jquery` 
+   * The following combo of shims supposed to isolate `ember-cli-page-object`'s `jquery`
    * from the rest of application and expose internal version via amd module.
    */
   importJquery: function() {
@@ -65,7 +65,10 @@ module.exports = {
   },
 
   _shouldIncludeFiles: function() {
-    return !!this.app.tests;
+    // TODO: In order to make the addon work in EmberTwiddle, we cannot use // the `tests` prop til
+    // https://github.com/joostdevries/twiddle-backend/pull/28 is merged.
+    // return !!this.app.tests;
+    return this.app.env !== 'production';
   },
 
   _findHost() {
