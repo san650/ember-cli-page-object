@@ -8,8 +8,8 @@
  */
 
 var fs = require('fs');
+var cp = require('child_process')
 var path = require('path');
-var execSync = require('sync-exec');
 var ncp = require('ncp');
 var mkdirp = require('mkdirp');
 var rimraf = require('rimraf');
@@ -26,15 +26,11 @@ function execCmd(command) {
     var result;
 
     console.log('> ' + command + '\n');
-
-    result = execSync(command);
-
-    if (result.status !== 0) {
-      reject(new Error(result.stderr));
-    } else if (result.stdout) {
-      resolve(result.stdout);
-    } else {
-      resolve();
+    try {
+      result = cp.execSync(command);
+      resolve(result.toString());
+    } catch(error) {
+      reject(error);
     }
   });
 }
