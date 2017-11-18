@@ -99,6 +99,10 @@ moduleForProperty('collection', function(test) {
 
     assert.deepEqual(page.foo().filter((i) => i.isSpecial).map((i) => i.text), ['Lorem']);
     assert.deepEqual(page.foo().filterBy('isSpecial').map((i) => i.text), ['Lorem']);
+
+    assert.deepEqual(page.foo().find((i) => i.isSpecial).text, 'Lorem');
+    assert.deepEqual(page.foo().findBy('isSpecial').text, 'Lorem');
+
     let textArray = [];
     page.foo().forEach((i) => {
       textArray.push(i.text);
