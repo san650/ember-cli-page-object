@@ -14,6 +14,8 @@ v1.12.x:
           name: Components
         - path: /extend
           name: Extend page objects
+        - path: /native-events
+          name: Native Events Mode
 
     - title: API reference
       links:
