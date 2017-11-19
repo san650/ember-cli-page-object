@@ -1,12 +1,21 @@
-// Define an amd '-jquery' shim which is used by ember-cli-page-object internally
+// Define an amd module called "-jquery" 
+// which exposes jQuery bundeled with ember-cli-page-object.
+//
+// This mode is used when we deal with `jquery`-less apps.
 (function() {
-  var jquery = window.__ecpoJQuery__;
-  delete window.__ecpoJQuery__;
+  // prevent jquery provided by ember-cli-page-object
+  // to be set to `Ember.$` by Ember. 
+  var jq = self['$'].noConflict();
+  delete self['jQuery'];
 
   function vendorModule() {
     'use strict';
 
-    return { 'default': jquery };
+    if (!jq) {
+      throw new Error('Unable to find jQuery');
+    }
+
+    return { 'default': jq };
   }
 
   define('-jquery', [], vendorModule);
