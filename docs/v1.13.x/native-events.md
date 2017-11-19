@@ -27,6 +27,9 @@ useNativeEvents();
 
 ## Migration from jQuery events to native DOM events
 
+It's impossible to listen for an jquery-triggered event in a native DOM mode and vise versa.
+That means if you want to use a native-events mode in your test suite you have to get rid of jquery first.
+
 ### Ember built-in event handlers
 
 If you have defined event handler hooks in your components, like that:
