@@ -1,5 +1,6 @@
-// Define an amd module called "-jquery" 
-// which exposes jQuery bundeled with ember-cli-page-object.
+// Define an amd module called "-jquery".
+// It expects that we have already imported our own version of jQuery
+// which is going to be used in ember-cli-page-oject internally.
 //
 // This mode is used when we deal with `jquery`-less apps.
 (function() {
