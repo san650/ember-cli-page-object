@@ -1,18 +1,20 @@
 
 import Ember from 'ember';
 
-// ember@2.11.3 introduces a (breaking?) change in how the errors are propagated
+// ember@2.11.3 introduces a breaking change in how the errors are propagated
 // in backburner which causes some test that were previously working, to fail.
 //
 // See https://github.com/emberjs/ember.js/pull/14898#issuecomment-285510703
 
-// We need to use this hack to test with >= 2.11
+// Starting from ember@2.17 this regression has been fixed
+//
+// See https://github.com/emberjs/ember.js/pull/15871
 function useHack() {
   var [major, minor] = Ember.VERSION.split('.');
   major = Number(major);
   minor = Number(minor);
 
-  return (major === 2 && minor >= 11) || major > 2;
+  return (major === 2 && minor >= 11 && minor < 17);
 }
 
 export default function expectEmberError(assert, callback, matcher, message) {
