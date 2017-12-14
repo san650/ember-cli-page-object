@@ -50,7 +50,7 @@ module.exports = {
     // https://github.com/joostdevries/twiddle-backend/pull/28 is merged.
     // return !!this.app.tests;
 
-    if('EMBER_CLI_FASTBOOT' in process.env) {
+    if(process.env && process.env.EMBER_CLI_FASTBOOT) {
       return false;
     } else {
       return this.app.env !== 'production';
