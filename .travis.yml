@@ -26,6 +26,10 @@ matrix:
   allow_failures:
     - env: EMBER_TRY_SCENARIO=ember-canary
 
+branches:
+  only:
+    - "master"
+
 before_install:
   - npm install -g bower
   - bower --version
