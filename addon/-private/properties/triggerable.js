@@ -11,18 +11,6 @@ import { getExecutionContext } from '../execution_context';
  * // <input class="email">
  *
  * const page = PageObject.create({
- *   focus: triggerable('focus', '.name')
- * });
- *
- * // focuses on element with selector '.name'
- * page.focus();
- *
- * @example
- *
- * // <input class="name">
- * // <input class="email">
- *
- * const page = PageObject.create({
  *   enter: triggerable('keypress', '.name', { eventProperties: { keyCode: 13 } })
  * });
  *
@@ -49,11 +37,11 @@ import { getExecutionContext } from '../execution_context';
  * // <input class="email">
  *
  * const page = PageObject.create({
- *   focus: triggerable('focus', '.name', { scope: '.scope' })
+ *   keydown: triggerable('keypress', '.name', { scope: '.scope' })
  * });
  *
- * // focuses on element with selector '.scope .name'
- * page.focus();
+ * // triggers keypress using enter key on element with selector '.name'
+ * page.keydown({ which: 13 });
  *
  * @example
  *
@@ -64,11 +52,11 @@ import { getExecutionContext } from '../execution_context';
  *
  * const page = PageObject.create({
  *   scope: '.scope',
- *   focus: triggerable('focus', '.name')
+ *   keydown: triggerable('keypress', '.name')
  * });
  *
- * // focuses on element with selector '.scope .name'
- * page.focus();
+ * // triggers keypress using enter key on element with selector '.name'
+ * page.keydown({ which: 13 });
  *
  * @public
  *

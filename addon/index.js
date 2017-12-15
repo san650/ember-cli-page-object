@@ -1,12 +1,14 @@
 import { create }      from './-private/create';                   export { create };
 
 import { attribute }   from './-private/properties/attribute';     export { attribute };
+import { blurrable }   from './-private/properties/blurrable';     export { blurrable };
 import { clickOnText } from './-private/properties/click-on-text'; export { clickOnText };
 import { clickable }   from './-private/properties/clickable';     export { clickable };
 import { collection }  from './-private/properties/collection';    export { collection };
 import { contains }    from './-private/properties/contains';      export { contains };
 import { count }       from './-private/properties/count';         export { count };
 import { fillable }    from './-private/properties/fillable';      export { fillable }; export const selectable = fillable;
+import { focusable }   from './-private/properties/focusable';     export { focusable };
 import { hasClass }    from './-private/properties/has-class';     export { hasClass };
 import { is }          from './-private/properties/is';            export { is };
 import { isHidden }    from './-private/properties/is-hidden';     export { isHidden };
@@ -25,6 +27,7 @@ export { buildSelector, getContext } from './-private/helpers';
 
 export default {
   attribute,
+  blurrable,
   clickOnText,
   clickable,
   collection,
@@ -32,6 +35,7 @@ export default {
   count,
   create,
   fillable,
+  focusable,
   hasClass,
   is,
   isHidden,

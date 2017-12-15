@@ -36,3 +36,34 @@ export function fillElement(selection, content, { selector, pageObjectNode, page
     $selection.val(content);
   }
 }
+
+/**
+ * @private
+ *
+ * Given an element, asserts that element is focusable/blurable
+ *
+ * @param {Element} element - the element to check
+ */
+export function assertFocusable(selection, { selector, pageObjectNode, pageObjectKey }) {
+  let $selection = $(selection);
+
+  let error;
+
+  if ($selection.is(':hidden')) {
+    error = 'hidden';
+  } else if ($selection.is(':disabled')) {
+    error = 'disabled';
+  } else if (!$selection.is(':input, select, a[href], area[href], iframe, [contenteditable], [tabindex]')) {
+    error = 'not a link, input, form selection, contenteditable, iframe, or an element with tabindex';
+  }
+
+  if (error) {
+    throwBetterError(
+      pageObjectNode,
+      pageObjectKey,
+      `Selection is not focusable because it is ${error}`, {
+        selector
+      }
+    );
+  }
+}

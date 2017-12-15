@@ -5,7 +5,8 @@ import {
   findClosestValue
 } from '../helpers';
 import {
-  fillElement
+  fillElement,
+  assertFocusable
 } from './helpers';
 import {
   ELEMENT_NOT_FOUND,
@@ -67,6 +68,30 @@ IntegrationExecutionContext.prototype = {
     } else {
       this.testContext.$(selector).trigger(event);
     }
+  },
+
+  focus(selector, options) {
+    let $selection = this.findWithAssert(selector, options);
+
+    assertFocusable($selection[0], {
+      selector,
+      pageObjectNode: this.pageObjectNode,
+      pageObjectKey: options.pageObjectKey
+    });
+
+    $selection.focus();
+  },
+
+  blur(selector, options) {
+    let $selection = this.findWithAssert(selector, options);
+
+    assertFocusable($selection[0], {
+      selector,
+      pageObjectNode: this.pageObjectNode,
+      pageObjectKey: options.pageObjectKey
+    });
+
+    $selection.blur();
   },
 
   assertElementExists(selector, options) {
