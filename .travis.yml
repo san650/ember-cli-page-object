@@ -7,19 +7,24 @@ addons:
   chrome: stable
 
 sudo: false
+dist: trusty
 
 cache:
   yarn: true
 
 env:
-  - EMBER_TRY_SCENARIO=node-tests
-  - EMBER_TRY_SCENARIO=ember-lts-2.4
-  - EMBER_TRY_SCENARIO=ember-lts-2.8
-  - EMBER_TRY_SCENARIO=ember-lts-2.12
-  - EMBER_TRY_SCENARIO=ember-lts-2.16
-  - EMBER_TRY_SCENARIO=ember-release COVERAGE=true # Only log coverage from release
-  - EMBER_TRY_SCENARIO=ember-beta
-  - EMBER_TRY_SCENARIO=ember-canary
+  global:
+    # See https://git.io/vdao3 for details.
+    - JOBS=1
+  matrix:
+    - EMBER_TRY_SCENARIO=node-tests
+    - EMBER_TRY_SCENARIO=ember-lts-2.4
+    - EMBER_TRY_SCENARIO=ember-lts-2.8
+    - EMBER_TRY_SCENARIO=ember-lts-2.12
+    - EMBER_TRY_SCENARIO=ember-lts-2.16
+    - EMBER_TRY_SCENARIO=ember-release COVERAGE=true # Only log coverage from release
+    - EMBER_TRY_SCENARIO=ember-beta
+    - EMBER_TRY_SCENARIO=ember-canary
 
 matrix:
   fast_finish: true
@@ -33,13 +38,18 @@ branches:
 before_install:
   - npm install -g bower
   - bower --version
+  - npm config set spin false
+  - npm install -g npm@4
+  - npm --version
 
 install:
   - bower install
   - yarn install --no-lockfile
 
 script:
-  - node_modules/.bin/ember try:one $EMBER_TRY_SCENARIO test --skip-cleanup
+  # Usually, it's ok to finish the test scenario without reverting
+  #  to the addon's original dependency state, skipping "cleanup".
+  - node_modules/.bin/ember try:one $EMBER_TRY_SCENARIO --skip-cleanup
 
 after_success:
   - if [ -f ./coverage/lcov.info ]; then cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js; fi
