@@ -2,7 +2,7 @@ import { moduleForProperty } from '../../../helpers/properties';
 import { create, text } from 'ember-cli-page-object';
 
 moduleForProperty('create', function(test, adapter) {
-  test('creates new page object', function(assert) {
+  test('creates new page object', async function(assert) {
     let page = create({
       foo: 'a value',
       bar: {
@@ -10,44 +10,38 @@ moduleForProperty('create', function(test, adapter) {
       }
     });
 
-    this.adapter.createTemplate(this, page);
+    await this.adapter.createTemplate(this, page);
 
     assert.equal(page.foo, 'a value');
     assert.equal(page.bar.baz, 'another value');
   });
 
-  if (adapter === 'acceptance') {
-    test('generates default visit helper', function(assert) {
+  if (adapter === 'acceptance' || adapter === 'application') {
+    test('generates default visit helper', async function(assert) {
       assert.expect(1);
 
-      let page = create('/foo');
+      let page = create('/html-render');
 
-      this.adapter.createTemplate(this, page);
+      await this.adapter.createTemplate(this, page);
 
-      this.adapter.visit((path) => {
-        assert.equal(path, '/foo');
-      });
-
-      page.visit();
+      await page.visit();
+      assert.equal(this.adapter.currentURL(), '/html-render');
     });
 
-    test('generates default visit helper plus a definition', function(assert) {
+    test('generates default visit helper plus a definition', async function(assert) {
       assert.expect(2);
 
-      let page = create('/foo', { foo: text('span') });
+      let page = create('/html-render', { foo: text('span') });
 
-      this.adapter.createTemplate(this, page, '<span>dummy text</span>');
+      await this.adapter.createTemplate(this, page, '<span>dummy text</span>');
 
-      this.adapter.visit((path) => {
-        assert.equal(path, '/foo');
-      });
-
-      page.visit();
+      await page.visit();
+      assert.equal(this.adapter.currentURL(), '/html-render');
       assert.equal(page.foo, 'dummy text');
     });
   }
 
-  test('resets scope', function(assert) {
+  test('resets scope', async function(assert) {
     let page = create({
       scope: '.invalid-scope',
 
@@ -58,7 +52,7 @@ moduleForProperty('create', function(test, adapter) {
       }
     });
 
-    this.adapter.createTemplate(this, page, `
+    await this.adapter.createTemplate(this, page, `
       <div>
         <span class="scope">Lorem</span>
       </div>
@@ -67,7 +61,7 @@ moduleForProperty('create', function(test, adapter) {
     assert.equal(page.foo.bar, 'Lorem');
   });
 
-  test('does not mutate definition object', function(assert) {
+  test('does not mutate definition object', async function(assert) {
     let prop = text('.baz');
     let expected = {
       context: '.a-context',
@@ -90,15 +84,15 @@ moduleForProperty('create', function(test, adapter) {
 
     let page = create(actual);
 
-    this.adapter.createTemplate(this, page);
+    await this.adapter.createTemplate(this, page);
 
     assert.deepEqual(actual, expected);
   });
 
-  test('generates a default scope', function(assert) {
+  test('generates a default scope', async function(assert) {
     let page = create({});
 
-    this.adapter.createTemplate(this, page, '<p>Lorem ipsum</p>');
+    await this.adapter.createTemplate(this, page, '<p>Lorem ipsum</p>');
 
     assert.ok(page.contains('ipsum'));
   });

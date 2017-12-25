@@ -25,28 +25,30 @@ export function moduleForProperty(name, cbOrOptions, cb) {
 
       afterEach() {
         useNativeEvents(false);
-        this.adapter.revert();
       }
     });
     cb(testForAcceptance, 'acceptance');
 
-    if (options.acceptanceOnly) {
-      return;
-    }
-
     // Generate integration tests
-    moduleForIntegration('html-render', `Integration mode | Property | ${name}`, {
-      integration: true,
-      beforeEach() {
-        useNativeEvents(_useNativeEvents);
 
-        this.adapter = new IntegrationAdapter(this);
-      },
-      afterEach() {
-        useNativeEvents(false);
-        this.adapter.revert();
+    if (!options.needsVisit) {
+      moduleNamePrefix = 'Integration mode ';
+      if (_useNativeEvents) {
+        moduleNamePrefix += '[native-events]';
       }
-    });
-    cb(testForIntegration, 'integration');
+
+      moduleForIntegration('html-render', `${moduleNamePrefix} | Property | ${name}`, {
+        integration: true,
+        beforeEach() {
+          useNativeEvents(_useNativeEvents);
+
+          this.adapter = new IntegrationAdapter(this);
+        },
+        afterEach() {
+          useNativeEvents(false);
+        }
+      });
+      cb(testForIntegration, 'integration');
+    }
   });
 }
