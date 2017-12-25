@@ -60,7 +60,7 @@ IntegrationExecutionContext.prototype = {
     }
   },
 
-  triggerEvent(selector, container, eventName, eventOptions) {
+  triggerEvent(selector, container, options, eventName, eventOptions) {
     let event = $.Event(eventName, eventOptions);
 
     if (container) {

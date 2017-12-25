@@ -2,7 +2,7 @@ import { moduleForProperty } from '../../../helpers/properties';
 import { create, focusable } from 'ember-cli-page-object';
 
 moduleForProperty('focusable', function(test) {
-  test('calls focus with proper args', function(assert) {
+  test('calls focus with proper args', async function(assert) {
     assert.expect(1);
 
     let expectedSelector = 'input';
@@ -10,19 +10,15 @@ moduleForProperty('focusable', function(test) {
       foo: focusable(expectedSelector)
     });
 
-    this.adapter.createTemplate(this, page, '<input />');
+    await this.adapter.createTemplate(this, page, '<input />');
 
-    return this.adapter.andThen(() => {
-      this.adapter.$(expectedSelector).on('focus', () => {
-        assert.ok(1);
-      });
-      page.foo();
-
-      return this.adapter.wait();
+    this.adapter.$(expectedSelector).on('focus', () => {
+      assert.ok(1);
     });
+    await this.adapter.await(page.foo());
   });
 
-  test('actually focuses the element', function(assert) {
+  test('actually focuses the element', async function(assert) {
     assert.expect(2);
 
     let expectedSelector = 'input';
@@ -30,37 +26,31 @@ moduleForProperty('focusable', function(test) {
       foo: focusable(expectedSelector)
     });
 
-    this.adapter.createTemplate(this, page, '<input />');
+    await this.adapter.createTemplate(this, page, '<input />');
 
-    return this.adapter.andThen(() => {
-      let $element = this.adapter.$(expectedSelector);
+    let $element = this.adapter.$(expectedSelector);
 
-      $element.on('focus', () => {
-        assert.ok(1, 'focussed');
-        assert.equal(document.activeElement, $element[0]);
-      });
-      page.foo();
-
-      return this.adapter.wait();
+    $element.on('focus', () => {
+      assert.ok(1, 'focussed');
+      assert.equal(document.activeElement, $element[0]);
     });
+    await this.adapter.await(page.foo());
   });
 
-  test('looks for elements inside the scope', function(assert) {
+  test('looks for elements inside the scope', async function(assert) {
     assert.expect(1);
 
     let page = create({
       foo: focusable('input', { scope: '.scope' })
     });
 
-    this.adapter.createTemplate(this, page, '<div class="scope"><input/></div>');
+    await this.adapter.createTemplate(this, page, '<div class="scope"><input/></div>');
 
     this.adapter.$('.scope input').on('focus', () => assert.ok(1));
-    page.foo();
-
-    return this.adapter.wait();
+    await this.adapter.await(page.foo());
   });
 
-  test("looks for elements inside page's scope", function(assert) {
+  test("looks for elements inside page's scope", async function(assert) {
     assert.expect(1);
 
     let page = create({
@@ -69,16 +59,14 @@ moduleForProperty('focusable', function(test) {
       foo: focusable('input')
     });
 
-    this.adapter.createTemplate(this, page, '<div class="scope"><input /></div>');
+    await this.adapter.createTemplate(this, page, '<div class="scope"><input /></div>');
 
     this.adapter.$('.scope input').on('focus', () => assert.ok(1));
 
-    page.foo();
-
-    return this.adapter.wait();
+    await this.adapter.await(page.foo());
   });
 
-  test('resets scope', function(assert) {
+  test('resets scope', async function(assert) {
     assert.expect(1);
 
     let page = create({
@@ -86,30 +74,28 @@ moduleForProperty('focusable', function(test) {
       foo: focusable('input', { resetScope: true })
     });
 
-    this.adapter.createTemplate(this, page, '<input/>');
+    await this.adapter.createTemplate(this, page, '<input/>');
 
     this.adapter.$('input').on('focus', () => assert.ok(1));
 
-    page.foo();
-
-    return this.adapter.wait();
+    await this.adapter.await(page.foo());
   });
 
-  test('returns target object', function(assert) {
+  test('returns target object', async function(assert) {
     assert.expect(1);
 
     let page = create({
       foo: focusable('input')
     });
 
-    this.adapter.createTemplate(this, page, '<input/>');
+    await this.adapter.createTemplate(this, page, '<input/>');
 
     this.adapter.$('input');
 
     assert.equal(page.foo(), page);
   });
 
-  test('finds element by index', function(assert) {
+  test('finds element by index', async function(assert) {
     assert.expect(1);
 
     let expectedSelector = 'input:eq(3)';
@@ -117,15 +103,13 @@ moduleForProperty('focusable', function(test) {
       foo: focusable('input', { at: 3 })
     });
 
-    this.adapter.createTemplate(this, page, '<input /><input /><input /><input />');
+    await this.adapter.createTemplate(this, page, '<input /><input /><input /><input />');
 
     this.adapter.$(expectedSelector).on('focus', () => assert.ok(1));
-    page.foo();
-
-    return this.adapter.wait();
+    await this.adapter.await(page.foo());
   });
 
-  test('looks for elements outside the testing container', function(assert) {
+  test('looks for elements outside the testing container', async function(assert) {
     assert.expect(1);
 
     let expectedContext = '#alternate-ember-testing';
@@ -133,16 +117,14 @@ moduleForProperty('focusable', function(test) {
       foo: focusable('input', { testContainer: expectedContext })
     });
 
-    this.adapter.createTemplate(this, page, '<input />', { useAlternateContainer: true });
+    await this.adapter.createTemplate(this, page, '<input />', { useAlternateContainer: true });
 
     this.adapter.$('input', expectedContext).on('focus', () => assert.ok(1));
 
-    page.foo();
-
-    return this.adapter.wait();
+    await this.adapter.await(page.foo());
   });
 
-  test('looks for elements within test container specified at node level', function(assert) {
+  test('looks for elements within test container specified at node level', async function(assert) {
     assert.expect(1);
 
     let expectedContext = '#alternate-ember-testing';
@@ -151,16 +133,14 @@ moduleForProperty('focusable', function(test) {
       foo: focusable('input')
     });
 
-    this.adapter.createTemplate(this, page, '<input />', { useAlternateContainer: true });
+    await this.adapter.createTemplate(this, page, '<input />', { useAlternateContainer: true });
 
     this.adapter.$('input', expectedContext).on('focus', () => assert.ok(1));
 
-    page.foo();
-
-    return this.adapter.wait();
+    await this.adapter.await(page.foo());
   });
 
-  test("raises an error when the element doesn't exist", function(assert) {
+  test("raises an error when the element doesn't exist", async function(assert) {
     assert.expect(1);
 
     let page = create({
@@ -173,14 +153,14 @@ moduleForProperty('focusable', function(test) {
       }
     });
 
-    this.adapter.createTemplate(this, page);
+    await this.adapter.createTemplate(this, page);
 
     this.adapter.throws(assert, function() {
       return page.foo.bar.baz.qux();
     }, /page\.foo\.bar\.baz\.qux/, 'Element not found');
   });
 
-  test('Does not raise error when focussing focusable elements', function(assert) {
+  test('Does not raise error when focussing focusable elements', async function(assert) {
     assert.expect(0);
 
     let page = create({
@@ -199,7 +179,7 @@ moduleForProperty('focusable', function(test) {
       }
     });
 
-    this.adapter.createTemplate(this, page, `
+    await this.adapter.createTemplate(this, page, `
       <input/>
       <a href="foo"></a>
       <area href="foo"></a>
@@ -220,7 +200,7 @@ moduleForProperty('focusable', function(test) {
     page.foo.bar.tabindex();
   });
 
-  test('raises an error when the element is not focusable', function(assert) {
+  test('raises an error when the element is not focusable', async function(assert) {
     assert.expect(4);
 
     let page = create({
@@ -234,7 +214,7 @@ moduleForProperty('focusable', function(test) {
       }
     });
 
-    this.adapter.createTemplate(this, page, `
+    await this.adapter.createTemplate(this, page, `
       <span></span>
       <input disabled=true/>
       <button style="display: none;"></button>

@@ -32,6 +32,7 @@ AcceptanceExecutionContext.prototype = {
   visit(path) {
     /* global visit */
     visit(path);
+    return this.pageObjectNode;
   },
 
   click(selector, container) {
@@ -56,7 +57,7 @@ AcceptanceExecutionContext.prototype = {
     triggerEvent(selector, container, 'change');
   },
 
-  triggerEvent(selector, container, eventName, eventOptions) {
+  triggerEvent(selector, container, options, eventName, eventOptions) {
     /* global triggerEvent */
     triggerEvent(selector, container, eventName, eventOptions);
   },

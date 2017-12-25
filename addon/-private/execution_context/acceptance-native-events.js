@@ -12,7 +12,8 @@ export default function AcceptanceNativeEventsExecutionContext(pageObjectNode) {
 AcceptanceNativeEventsExecutionContext.prototype = Object.create(ExecutionContext.prototype);
 
 AcceptanceNativeEventsExecutionContext.prototype.visit = function() {
-  return visit(...arguments);
+  visit(...arguments);
+  return this.pageObjectNode;
 };
 
 AcceptanceNativeEventsExecutionContext.prototype.runAsync = function(cb) {
@@ -22,4 +23,3 @@ AcceptanceNativeEventsExecutionContext.prototype.runAsync = function(cb) {
 
   return this.pageObjectNode;
 };
-

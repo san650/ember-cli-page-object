@@ -23,7 +23,7 @@ moduleForProperty('getter', function(test) {
     assert.equal(page.bar, 'ipsum');
   });
 
-  test('executes the passed-in function with the correct context for `this`', function (assert) {
+  test('executes the passed-in function with the correct context for `this`', async function (assert) {
     assert.expect(1);
 
     const page = create({
@@ -34,7 +34,7 @@ moduleForProperty('getter', function(test) {
       })
     });
 
-    this.adapter.createTemplate(this, page, `
+    await this.adapter.createTemplate(this, page, `
       <input value="">
       <button disabled="true">Submit</button>
     `);
