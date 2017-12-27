@@ -2,70 +2,70 @@ import { moduleForProperty } from '../../../helpers/properties';
 import { create, text } from 'ember-cli-page-object';
 
 moduleForProperty('text', function(test) {
-  test('returns the inner text of the element', function(assert) {
+  test('returns the inner text of the element', async function(assert) {
     let page = create({
       foo: text('span')
     });
 
-    this.adapter.createTemplate(this, page, 'Hello <span>world!</span>');
+    await this.adapter.createTemplate(this, page, 'Hello <span>world!</span>');
 
     assert.equal(page.foo, 'world!');
   });
 
-  test('removes white spaces from the beginning and end of the text', function(assert) {
+  test('removes white spaces from the beginning and end of the text', async function(assert) {
 
     let page = create({
       foo: text('span')
     });
 
-    this.adapter.createTemplate(this, page, '<span>  awesome!  </span>');
+    await this.adapter.createTemplate(this, page, '<span>  awesome!  </span>');
 
     assert.equal(page.foo, 'awesome!');
   });
 
-  test('normalizes inner text of the element containing newlines', function(assert) {
+  test('normalizes inner text of the element containing newlines', async function(assert) {
     let page = create({
       foo: text('span')
     });
 
-    this.adapter.createTemplate(this, page, ['<span>', 'Hello', 'multi-line', 'world!', '</span>'].join('\n'));
+    await this.adapter.createTemplate(this, page, ['<span>', 'Hello', 'multi-line', 'world!', '</span>'].join('\n'));
 
     assert.equal(page.foo, 'Hello multi-line world!');
   });
 
-  test('avoid text normalization if normalize:false', function(assert) {
+  test('avoid text normalization if normalize:false', async function(assert) {
     let denormalizedText = [' \n ', 'Hello', 'multi-line', 'world! ', '\t', '\n'].join('\n');
 
     let page = create({
       foo: text('span', { normalize: false })
     });
 
-    this.adapter.createTemplate(this, page, `<span>${denormalizedText}</span>`);
+    await this.adapter.createTemplate(this, page, `<span>${denormalizedText}</span>`);
 
     assert.equal(page.foo, denormalizedText);
   });
 
-  test('converts &nbsp; characters into standard whitespace characters', function(assert) {
+  test('converts &nbsp; characters into standard whitespace characters', async function(assert) {
     let page = create({
       foo: text('span')
     });
 
-    this.adapter.createTemplate(this, page, '<span>This&nbsp;is&nbsp;awesome.</span>');
+    await this.adapter.createTemplate(this, page, '<span>This&nbsp;is&nbsp;awesome.</span>');
 
     assert.equal(page.foo, 'This is awesome.');
   });
 
-  test("returns empty text when the element doesn't have text", function(assert) {
+  test("returns empty text when the element doesn't have text", async function(assert) {
     let page = create({
       foo: text('span')
     });
 
-    this.adapter.createTemplate(this, page, '<span />');
+    await this.adapter.createTemplate(this, page, '<span />');
 
     assert.equal(page.foo, '');
   });
 
-  test("raises an error when the element doesn't exist", function(assert) {
+  test("raises an error when the element doesn't exist", async function(assert) {
     let page = create({
       foo: {
         bar: {
@@ -76,17 +76,17 @@ moduleForProperty('text', function(test) {
       }
     });
 
-    this.adapter.createTemplate(this, page);
+    await this.adapter.createTemplate(this, page);
 
     assert.throws(() => page.foo.bar.baz.qux, /page\.foo\.bar\.baz\.qux/);
   });
 
-  test('looks for elements inside the scope', function(assert) {
+  test('looks for elements inside the scope', async function(assert) {
     let page = create({
       foo: text('span', { scope: '.scope' })
     });
 
-    this.adapter.createTemplate(this, page, `
+    await this.adapter.createTemplate(this, page, `
       <div><span>lorem</span></div>
       <div class="scope"><span>ipsum</span></div>
       <div><span>dolor</span></div>
@@ -95,14 +95,14 @@ moduleForProperty('text', function(test) {
     assert.equal(page.foo, 'ipsum');
   });
 
-  test("looks for elements inside page's scope", function(assert) {
+  test("looks for elements inside page's scope", async function(assert) {
     let page = create({
       scope: '.scope',
 
       foo: text('span')
     });
 
-    this.adapter.createTemplate(this, page, `
+    await this.adapter.createTemplate(this, page, `
       <div><span>lorem</span></div>
       <div class="scope"><span>ipsum</span></div>
       <div><span>dolor</span></div>
@@ -111,14 +111,14 @@ moduleForProperty('text', function(test) {
     assert.equal(page.foo, 'ipsum');
   });
 
-  test('resets scope', function(assert) {
+  test('resets scope', async function(assert) {
     let page = create({
       scope: '.scope',
 
       foo: text('span', { at: 0, resetScope: true })
     });
 
-    this.adapter.createTemplate(this, page, `
+    await this.adapter.createTemplate(this, page, `
       <div><span>lorem</span></div>
       <div class="scope"><span> ipsum </span></div>
       <div><span>dolor</span></div>
@@ -127,12 +127,12 @@ moduleForProperty('text', function(test) {
     assert.equal(page.foo, 'lorem');
   });
 
-  test('finds element by index', function(assert) {
+  test('finds element by index', async function(assert) {
     let page = create({
       foo: text('span', { at: 1 })
     });
 
-    this.adapter.createTemplate(this, page, `
+    await this.adapter.createTemplate(this, page, `
       <span>lorem</span>
       <span>ipsum</span>
       <span>dolor</span>
@@ -141,7 +141,7 @@ moduleForProperty('text', function(test) {
     assert.equal(page.foo, 'ipsum');
   });
 
-  test('finds element without using a selector', function(assert) {
+  test('finds element without using a selector', async function(assert) {
     let page = create({
       scope: 'p',
 
@@ -154,18 +154,18 @@ moduleForProperty('text', function(test) {
       }
     });
 
-    this.adapter.createTemplate(this, page, '<p>Hello <span>world!</span></p>');
+    await this.adapter.createTemplate(this, page, '<p>Hello <span>world!</span></p>');
 
     assert.equal(page.foo, 'Hello world!');
     assert.equal(page.bar.baz, 'world!');
   });
 
-  test('throws error if selector matches more than one element', function(assert) {
+  test('throws error if selector matches more than one element', async function(assert) {
     let page = create({
       foo: text('span')
     });
 
-    this.adapter.createTemplate(this, page, `
+    await this.adapter.createTemplate(this, page, `
       <span>lorem</span>
       <span> ipsum </span>
       <span>dolor</span>
@@ -175,12 +175,12 @@ moduleForProperty('text', function(test) {
       /matched more than one element. If this is not an error use { multiple: true }/);
   });
 
-  test('returns multiple values', function(assert) {
+  test('returns multiple values', async function(assert) {
     let page = create({
       foo: text('li', { multiple: true })
     });
 
-    this.adapter.createTemplate(this, page, `
+    await this.adapter.createTemplate(this, page, `
       <ul>
         <li>lorem</li>
         <li> ipsum </li>
@@ -191,23 +191,23 @@ moduleForProperty('text', function(test) {
     assert.deepEqual(page.foo, ['lorem', 'ipsum', 'dolor']);
   });
 
-  test('looks for elements outside the testing container', function(assert) {
+  test('looks for elements outside the testing container', async function(assert) {
     let page = create({
       foo: text('h1', { testContainer: '#alternate-ember-testing' })
     });
 
-    this.adapter.createTemplate(this, page, '<h1>lorem ipsum</h1>', { useAlternateContainer: true });
+    await this.adapter.createTemplate(this, page, '<h1>lorem ipsum</h1>', { useAlternateContainer: true });
 
     assert.equal(page.foo, 'lorem ipsum');
   });
 
-  test('looks for elements within test container specified at node level', function(assert) {
+  test('looks for elements within test container specified at node level', async function(assert) {
     let page = create({
       testContainer: '#alternate-ember-testing',
       foo: text('h1')
     });
 
-    this.adapter.createTemplate(this, page, '<h1>lorem ipsum</h1>', { useAlternateContainer: true });
+    await this.adapter.createTemplate(this, page, '<h1>lorem ipsum</h1>', { useAlternateContainer: true });
 
     assert.equal(page.foo, 'lorem ipsum');
   });

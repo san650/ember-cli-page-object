@@ -9,6 +9,8 @@ const Router = Ember.Router.extend({
 Router.map(function() {
   this.route('calculator');
   this.route('inputs');
+  this.route('html-render');
+  this.route('dynamic', { path: '/users/:user_id/comments/:comment_id' });
 });
 
 export default Router;

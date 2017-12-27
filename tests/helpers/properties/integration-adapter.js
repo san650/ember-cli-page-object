@@ -1,4 +1,3 @@
-import { fixture } from './acceptance-adapter';
 export { moduleForComponent as moduleForIntegration, test as testForIntegration } from 'ember-qunit';
 import expectEmberError from '../../expect-ember-error';
 import hbs from 'htmlbars-inline-precompile';
@@ -16,8 +15,6 @@ IntegrationAdapter.prototype = {
     return Ember.$(selector, isAlternative ? '#alternate-ember-testing' : '#ember-testing');
   },
 
-  revert() {},
-
   createTemplate(test, page, template, options) {
     template = template || '';
 
@@ -29,7 +26,7 @@ IntegrationAdapter.prototype = {
     if (options && options.useAlternateContainer) {
       // The idea is to render the HTML outside the testing container so we
       // render an empty component
-      fixture(template, options);
+      Ember.$('#alternate-ember-testing').html(template);
       test.set('raw', '');
     } else {
       test.set('raw', template);
@@ -46,9 +43,5 @@ IntegrationAdapter.prototype = {
     });
   },
 
-  andThen(fn) {
-    fn();
-  },
-
-  wait() {}
+  await() {}
 };

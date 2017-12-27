@@ -1,8 +1,8 @@
 import { moduleForProperty } from '../../../helpers/properties';
 import { create, clickOnText } from 'ember-cli-page-object';
 
-moduleForProperty('clickOnText', function(test) {
-  test('calls click helper', function(assert) {
+moduleForProperty('clickOnText', function(test, adapter) {
+  test('calls click helper', async function(assert) {
     assert.expect(2);
 
     let page = create({
@@ -10,34 +10,27 @@ moduleForProperty('clickOnText', function(test) {
       bar: clickOnText('button')
     });
 
-    this.adapter.createTemplate(this, page, `
+    await this.adapter.createTemplate(this, page, `
       <fieldset>
         <button>Lorem</button>
         <button>Ipsum</button>
       </fieldset>
     `);
 
-    this.adapter.andThen(() => {
-      this.adapter.$('fieldset :contains("Lorem"):last').one('click', function() {
-        assert.ok(true);
-      });
-
-      page.foo('Lorem');
-
-      return this.adapter.wait();
+    this.adapter.$('fieldset :contains("Lorem"):last').one('click', function() {
+      assert.ok(true);
     });
 
-    this.adapter.andThen(() => {
-      this.adapter.$('button:contains("Lorem")').one('click', function() {
-        assert.ok(true);
-      });
-      page.bar('Lorem');
+    await this.adapter.await(page.foo('Lorem'));
 
-      return this.adapter.wait();
+    this.adapter.$('button:contains("Lorem")').one('click', function() {
+      assert.ok(true);
     });
+
+    await this.adapter.await(page.bar('Lorem'));
   });
 
-  test('looks for elements inside the scope', function(assert) {
+  test('looks for elements inside the scope', async function(assert) {
     assert.expect(2);
 
     let page = create({
@@ -45,7 +38,7 @@ moduleForProperty('clickOnText', function(test) {
       bar: clickOnText('button', { scope: '.scope' })
     });
 
-    this.adapter.createTemplate(this, page, `
+    await this.adapter.createTemplate(this, page, `
       <div class="scope">
         <fieldset>
           <button>Lorem</button>
@@ -54,24 +47,16 @@ moduleForProperty('clickOnText', function(test) {
       </div>
     `);
 
-    this.adapter.andThen(() => {
-      this.adapter.$('.scope fieldset :contains("Lorem"):last').one('click', () => assert.ok(1));
-      page.foo('Lorem');
+    this.adapter.$('.scope fieldset :contains("Lorem"):last').one('click', () => assert.ok(1));
 
-      return this.adapter.wait();
-    });
+    await this.adapter.await(page.foo('Lorem'));
 
-    this.adapter.andThen(() => {
-      this.adapter.$('.scope button:contains("Lorem")').one('click', () => assert.ok(1));
-      page.bar('Lorem');
+    this.adapter.$('.scope button:contains("Lorem")').one('click', () => assert.ok(1));
 
-      return this.adapter.wait();
-    });
-
-    return this.adapter.wait();
+    await this.adapter.await(page.bar('Lorem'));
   });
 
-  test("looks for elements inside page's scope", function(assert) {
+  test("looks for elements inside page's scope", async function(assert) {
     assert.expect(2);
 
     let page = create({
@@ -80,7 +65,7 @@ moduleForProperty('clickOnText', function(test) {
       bar: clickOnText('button')
     });
 
-    this.adapter.createTemplate(this, page, `
+    await this.adapter.createTemplate(this, page, `
       <div class="scope">
         <fieldset>
           <button>Lorem</button>
@@ -89,22 +74,16 @@ moduleForProperty('clickOnText', function(test) {
       </div>
     `);
 
-    this.adapter.andThen(() => {
-      this.adapter.$('.scope fieldset :contains("Lorem"):last').one('click', () => assert.ok(1));
-      page.foo('Lorem');
+    this.adapter.$('.scope fieldset :contains("Lorem"):last').one('click', () => assert.ok(1));
 
-      return this.adapter.wait();
-    });
+    await this.adapter.await(page.foo('Lorem'));
 
-    this.adapter.andThen(() => {
-      this.adapter.$('.scope button:contains("Lorem")').one('click', () => assert.ok(1));
-      page.bar('Lorem');
+    this.adapter.$('.scope button:contains("Lorem")').one('click', () => assert.ok(1));
 
-      return this.adapter.wait();
-    });
+    await this.adapter.await(page.bar('Lorem'));
   });
 
-  test('resets scope', function(assert) {
+  test('resets scope', async function(assert) {
     assert.expect(2);
 
     let page = create({
@@ -113,42 +92,41 @@ moduleForProperty('clickOnText', function(test) {
       bar: clickOnText('button', { resetScope: true })
     });
 
-    this.adapter.createTemplate(this, page, `
+    await this.adapter.createTemplate(this, page, `
       <fieldset>
         <button>Lorem</button>
         <button>Ipsum</button>
       </fieldset>
     `);
 
-    this.adapter.andThen(() => {
-      this.adapter.$('fieldset :contains("Lorem"):last').one('click', () => assert.ok(1));
-      page.foo('Lorem');
-    });
+    this.adapter.$('fieldset :contains("Lorem"):last').one('click', () => assert.ok(1));
 
-    this.adapter.andThen(() => {
-      this.adapter.$('button:contains("Lorem")').one('click', () => assert.ok(1));
-      page.bar('Lorem');
-      return this.adapter.wait();
-    });
+    await this.adapter.await(page.foo('Lorem'));
+
+    this.adapter.$('button:contains("Lorem")').one('click', () => assert.ok(1));
+
+    await this.adapter.await(page.bar('Lorem'));
   });
 
-  test('returns target object', function(assert) {
-    assert.expect(1);
+  if (adapter === 'acceptance' || adapter === 'integration') {
+    test('returns target object', async function(assert) {
+      assert.expect(1);
 
-    let page;
+      let page;
 
-    page = create({
-      dummy: 'value',
+      page = create({
+        dummy: 'value',
 
-      foo: clickOnText()
-    });
+        foo: clickOnText()
+      });
 
-    this.adapter.createTemplate(this, page, '<button>dummy text</button>');
+      await this.adapter.createTemplate(this, page, '<button>dummy text</button>');
 
-    assert.equal(page.foo('dummy text'), page);
-  });
+      assert.equal(page.foo('dummy text'), page);
+    });    
+  }
 
-  test('finds element by index', function(assert) {
+  test('finds element by index', async function(assert) {
     assert.expect(2);
 
     let page = create({
@@ -156,7 +134,7 @@ moduleForProperty('clickOnText', function(test) {
       bar: clickOnText('button', { at: 2 })
     });
 
-    this.adapter.createTemplate(this, page, `
+    await this.adapter.createTemplate(this, page, `
       <fieldset>
         <button>Lorem</button>
         <button>Lorem</button>
@@ -165,18 +143,16 @@ moduleForProperty('clickOnText', function(test) {
       </fieldset>
     `);
 
-    this.adapter.andThen(() => {
-      this.adapter.$('fieldset :contains("Lorem"):eq(2)').one('click', () => assert.ok(1));
-      page.foo('Lorem');
-    });
+    this.adapter.$('fieldset :contains("Lorem"):eq(2)').one('click', () => assert.ok(1));
 
-    this.adapter.andThen(() => {
-      this.adapter.$('button:contains("Lorem"):eq(2)').one('click', () => assert.ok(1));
-      page.bar('Lorem');
-    });
+    await this.adapter.await(page.foo('Lorem'));
+
+    this.adapter.$('button:contains("Lorem"):eq(2)').one('click', () => assert.ok(1));
+
+    await this.adapter.await(page.bar('Lorem'));
   });
 
-  test('looks for elements outside the testing container', function(assert) {
+  test('looks for elements outside the testing container', async function(assert) {
     assert.expect(1);
 
     let expectedContext = '#alternate-ember-testing';
@@ -186,15 +162,14 @@ moduleForProperty('clickOnText', function(test) {
       foo: clickOnText('button', { testContainer: expectedContext })
     });
 
-    this.adapter.createTemplate(this, page, '<button>Lorem</button>', { useAlternateContainer: true });
+    await this.adapter.createTemplate(this, page, '<button>Lorem</button>', { useAlternateContainer: true });
 
-    this.adapter.andThen(() => {
-      this.adapter.$('button', true).one('click', () => assert.ok(1));
-      page.foo('Lorem');
-    });
+    this.adapter.$('button', true).one('click', () => assert.ok(1));
+
+    await this.adapter.await(page.foo('Lorem'));
   });
 
-  test('looks for elements within test container specified at node level', function(assert) {
+  test('looks for elements within test container specified at node level', async function(assert) {
     assert.expect(1);
 
     let expectedContext = '#alternate-ember-testing';
@@ -203,18 +178,15 @@ moduleForProperty('clickOnText', function(test) {
       foo: clickOnText('button')
     });
 
-    this.adapter.createTemplate(this, page, '<button>Lorem</button>', { useAlternateContainer: true });
-    this.adapter.createTemplate(this, page, '<button>Lorem</button>');
+    await this.adapter.createTemplate(this, page, '<button>Lorem</button>', { useAlternateContainer: true });
+    await this.adapter.createTemplate(this, page, '<button>Lorem</button>');
 
-    this.adapter.andThen(() => {
-      this.adapter.$('button', true).one('click', () => assert.ok(1));
-      page.foo('Lorem');
+    this.adapter.$('button', true).one('click', () => assert.ok(1));
 
-      return this.adapter.wait();
-    });
+    await this.adapter.await(page.foo('Lorem'));
   });
 
-  test("raises an error when the element doesn't exist", function(assert) {
+  test("raises an error when the element doesn't exist", async function(assert) {
     assert.expect(1);
 
     let page = create({
@@ -227,39 +199,37 @@ moduleForProperty('clickOnText', function(test) {
       }
     });
 
-    this.adapter.createTemplate(this, page);
+    await this.adapter.createTemplate(this, page);
 
-    this.adapter.throws(assert, function() {
+    await this.adapter.throws(assert, function() {
       return page.foo.bar.baz.qux('Lorem');
     }, /page\.foo\.bar\.baz\.qux/, 'Element not found');
   });
 
-  test("doesn't raise an error when the element is not visible and `visible` is not set", function(assert) {
+  test("doesn't raise an error when the element is not visible and `visible` is not set", async function(assert) {
     assert.expect(1);
 
     let page = create({
       foo: clickOnText('button')
     });
 
-    this.adapter.createTemplate(this, page, '<button style="display:none">Click me</button>');
+    await this.adapter.createTemplate(this, page, '<button style="display:none">Click me</button>');
 
     this.adapter.$('button').on('click', () => assert.ok(1));
 
-    page.foo('Click me');
-
-    return this.adapter.wait();
+    await this.adapter.await(page.foo('Click me'));
   });
 
-  test('raises an error when the element is not visible and `visible` is true', function(assert) {
+  test('raises an error when the element is not visible and `visible` is true', async function(assert) {
     assert.expect(1);
 
     let page = create({
       foo: clickOnText('button', { visible: true })
     });
 
-    this.adapter.createTemplate(this, page, '<button style="display:none">Click me</button>');
+    await this.adapter.createTemplate(this, page, '<button style="display:none">Click me</button>');
 
-    this.adapter.throws(assert, function() {
+    await this.adapter.throws(assert, function() {
       return page.foo('Click me');
     }, /page\.foo/, 'Element not found');
   });

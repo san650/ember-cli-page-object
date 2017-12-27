@@ -1,4 +1,3 @@
-import { getExecutionContext } from '../execution_context';
 import { throwBetterError } from '../better-errors';
 import {
   getProperty,
@@ -92,10 +91,11 @@ export function alias(pathToProp, options = {}) {
         return value;
       }
 
-      const executionContext = getExecutionContext(this);
+      const _this = this;
 
       return function(...args) {
-        return executionContext.runAsync(() => value(...args));
+        value(...args);
+        return _this;
       };
     }
   };
