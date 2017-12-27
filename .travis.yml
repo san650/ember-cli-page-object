@@ -36,14 +36,11 @@ branches:
     - "master"
 
 before_install:
-  - npm install -g bower
-  - bower --version
   - npm config set spin false
   - npm install -g npm@4
   - npm --version
 
 install:
-  - bower install
   - yarn install --no-lockfile
 
 script:
