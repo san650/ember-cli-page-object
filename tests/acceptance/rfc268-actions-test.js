@@ -31,49 +31,31 @@ module('Acceptance | actions [rfc268]', function(hooks) {
     clickEqualAlias: alias('keys.equal', { chainable: true })
   });
 
-  test('allows to chain actions', async function(assert) {
-    await page
-      .visit()
-      .keys
-      .clickOn('1')
-      .clickOn('2')
-      .sum()
-      .clickOn('3')
-      .equal();
+  test('allows sequences of actions', async function(assert) {
+    await page.visit();
+    await page.keys.clickOn('1');
+    await page.keys.clickOn('2');
+    await page.keys.sum();
+    await page.keys.clickOn('3');
+    await page.keys.equal();
 
     assert.equal(page.screen, '15');
 
-    await page
-      .fillValue('45')
-      .keys
-      .clickOn('6');
+    await page.fillValue('45');
+    await page.keys.clickOn('6');
 
     assert.equal(page.screen, '456');
   });
 
-  test('allows to chain aliased actions', async function(assert) {
-    await page
-      .visitAlias()
-      .clickKeyAlias('1')
-      .clickKeyAlias('2')
-      .clickPlusAlias()
-      .clickKeyAlias('3')
-      .clickEqualAlias();
+  test('allows sequences of aliased actions', async function(assert) {
+    await page.visitAlias();
+    await page.clickKeyAlias('1');
+    await page.clickKeyAlias('2');
+    await page.clickPlusAlias();
+    await page.clickKeyAlias('3');
+    await page.clickEqualAlias();
 
     assert.equal(page.screen, '15');
-  });
-
-  test('action chains act like a promise', async function(assert) {
-    assert.expect(1);
-
-    await page
-      .visit()
-      .keys
-      .clickOn('1')
-      .clickOn('2')
-      .then(function() {
-        assert.equal(page.screen, '12');
-      });
   });
 
   test('fill in by attribute', async function(assert) {

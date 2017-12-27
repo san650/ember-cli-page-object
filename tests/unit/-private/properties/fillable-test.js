@@ -1,7 +1,7 @@
 import { moduleForProperty } from '../../../helpers/properties';
 import { create, fillable, selectable } from 'ember-cli-page-object';
 
-moduleForProperty('fillable', function(test) {
+moduleForProperty('fillable', function(test, adapter) {
   test("calls fillIn method belonging to execution context", async function(assert) {
     assert.expect(1);
 
@@ -125,17 +125,19 @@ moduleForProperty('fillable', function(test) {
     assert.equal(this.adapter.$('input').val(), 'dummy text');
   });
 
-  test('returns target object', async function(assert) {
-    assert.expect(1);
+  if (adapter === 'acceptance' || adapter === 'integration') {
+    test('returns target object', async function(assert) {
+      assert.expect(1);
 
-    let page = create({
-      foo: fillable('input')
+      let page = create({
+        foo: fillable('input')
+      });
+
+      await this.adapter.createTemplate(this, page, '<input>');
+
+      assert.equal(page.foo(), page);
     });
-
-    await this.adapter.createTemplate(this, page, '<input>');
-
-    assert.equal(page.foo(), page);
-  });
+  }
 
   test('finds element by index', async function(assert) {
     assert.expect(1);

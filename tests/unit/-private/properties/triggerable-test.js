@@ -1,7 +1,7 @@
 import { moduleForProperty } from '../../../helpers/properties';
 import { create, triggerable } from 'ember-cli-page-object';
 
-moduleForProperty('triggerable', function(test) {
+moduleForProperty('triggerable', function(test, adapter) {
   test("calls Ember's triggerEvent helper with proper args", async function(assert) {
     assert.expect(1);
 
@@ -107,17 +107,19 @@ moduleForProperty('triggerable', function(test) {
     await this.adapter.await(page.foo());
   });
 
-  test('returns target object', async function(assert) {
-    assert.expect(1);
+  if (adapter === 'acceptance' || adapter === 'integration') {
+    test('returns target object', async function(assert) {
+      assert.expect(1);
 
-    let page = create({
-      foo: triggerable('focus', 'input')
+      let page = create({
+        foo: triggerable('focus', 'input')
+      });
+
+      await this.adapter.createTemplate(this, page, '<input/>');
+
+      assert.equal(page.foo(), page);
     });
-
-    await this.adapter.createTemplate(this, page, '<input/>');
-
-    assert.equal(page.foo(), page);
-  });
+  }
 
   test('finds element by index', async function(assert) {
     assert.expect(1);

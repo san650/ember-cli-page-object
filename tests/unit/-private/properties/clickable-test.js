@@ -1,7 +1,7 @@
 import { moduleForProperty } from '../../../helpers/properties';
 import { create, clickable } from 'ember-cli-page-object';
 
-moduleForProperty('clickable', function(test) {
+moduleForProperty('clickable', function(test, adapter) {
   test('calls click helper', async function(assert) {
     assert.expect(1);
 
@@ -71,17 +71,19 @@ moduleForProperty('clickable', function(test) {
     await this.adapter.await(page.foo());
   });
 
-  test('returns target object', async function(assert) {
-    assert.expect(1);
+  if (adapter === 'acceptance' || adapter === 'integration') {
+    test('returns target object', async function(assert) {
+      assert.expect(1);
 
-    let page = create({
-      foo: clickable('span')
+      let page = create({
+        foo: clickable('span')
+      });
+
+      await this.adapter.createTemplate(this, page, '<span>Click me</span>');
+
+      assert.equal(page.foo(), page);
     });
-
-    await this.adapter.createTemplate(this, page, '<span>Click me</span>');
-
-    assert.equal(page.foo(), page);
-  });
+  }
 
   test('finds element by index', async function(assert) {
     assert.expect(1);
