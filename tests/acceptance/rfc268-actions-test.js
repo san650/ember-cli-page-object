@@ -1,5 +1,6 @@
 import { module, test } from 'qunit';
 import { setupApplicationTest } from 'ember-qunit';
+import { settled, waitUntil } from '@ember/test-helpers';
 import PageObject from '../page-object';
 import { alias } from 'ember-cli-page-object/macros';
 
@@ -10,6 +11,7 @@ module('Acceptance | actions [rfc268]', function(hooks) {
     clickOnText,
     clickable,
     fillable,
+    isVisible,
     value,
     visitable
   } = PageObject;
@@ -19,11 +21,13 @@ module('Acceptance | actions [rfc268]', function(hooks) {
     keys: {
       clickOn: clickOnText('.numbers'),
       sum: clickable('button', { scope: '.operators', at: 0 }),
-      equal: clickable('button', { scope: '.operators', at: 2 })
+      equal: clickable('button', { scope: '.operators', at: 2 }),
+      asyncEqual: clickable('button', { scope: '.operators', at: 3 })
     },
 
     screen: value('.screen input'),
     fillValue: fillable('.screen input'),
+    isLoading: isVisible('.loading'),
 
     visitAlias: alias('visit', { chainable: true }),
     clickKeyAlias: alias('keys.clickOn', { chainable: true }),
@@ -60,6 +64,38 @@ module('Acceptance | actions [rfc268]', function(hooks) {
       .clickKeyAlias('3')
       .clickEqualAlias();
 
+    assert.equal(page.screen, '15');
+  });
+
+  test('allows testing loading behavior using returned promise', async function(assert) {
+    await page.visit();
+    await page.keys.clickOn('1');
+    await page.keys.clickOn('2');
+    await page.keys.sum();
+    await page.keys.clickOn('3');
+    let promise = page.keys.asyncEqual();
+
+    await waitUntil(() => page.isLoading);
+
+    await promise;
+
+    assert.notOk(page.isLoading);
+    assert.equal(page.screen, '15');
+  });
+
+  test('allows testing loading behavior using settled()', async function(assert) {
+    await page.visit();
+    await page.keys.clickOn('1');
+    await page.keys.clickOn('2');
+    await page.keys.sum();
+    await page.keys.clickOn('3');
+    page.keys.asyncEqual();
+
+    await waitUntil(() => page.isLoading);
+
+    await settled();
+
+    assert.notOk(page.isLoading);
     assert.equal(page.screen, '15');
   });
 
