@@ -108,7 +108,7 @@ moduleForProperty('clickOnText', function(test) {
     await this.adapter.await(page.bar('Lorem'));
   });
 
-  test('returns target object', async function(assert) {
+  test('returns chainable object', async function(assert) {
     assert.expect(1);
 
     let page;
@@ -121,7 +121,9 @@ moduleForProperty('clickOnText', function(test) {
 
     await this.adapter.createTemplate(this, page, '<button>dummy text</button>');
 
-    assert.equal(page.foo('dummy text'), page);
+    let ret = page.foo('dummy text');
+    assert.ok(ret.foo);
+    await this.adapter.await(ret);
   });
 
   test('finds element by index', async function(assert) {

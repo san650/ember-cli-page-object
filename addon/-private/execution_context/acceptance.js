@@ -26,13 +26,16 @@ AcceptanceExecutionContext.prototype = {
       cb(this);
     });
 
+    return this.chainable();
+  },
+
+  chainable() {
     return this.pageObjectNode;
   },
 
   visit(path) {
     /* global visit */
     visit(path);
-    return this.pageObjectNode;
   },
 
   click(selector, container) {

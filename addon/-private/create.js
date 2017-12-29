@@ -4,12 +4,57 @@ import { assign } from './helpers';
 import { visitable } from './properties/visitable';
 import dsl from './dsl';
 
+//
+// When running RFC268 tests, we have to play some tricks to support chaining.
+// RFC268 helpers don't wait for things to settle by defaut, but return a
+// promise that will resolve when everything settles. So this means
+//
+// page.clickOn('.foo');
+// page.clickOn('.bar');
+//
+// will not wait after either of the clicks, whereas
+//
+// await page.clickOn('.foo');
+// await page.clickOn('.bar');
+//
+// will wait after each of them. However, to preserve chaining behavior,
+//
+// page
+//   .clickOn('.foo')
+//   .clickOn('.bar');
+//
+// would need to wait between the clicks. However, if `clickOn()` just returned
+// `page` this would be impossible because then it would be exactly the same as
+// the first example, which must not wait between clicks.
+//
+// So the solution is to return something other than `page` from,
+// `page.clickOn('.foo')`, but something that behaves just like `page` except
+// waits for things to settle before invoking any async methods.
+//
+// To accomplish this, when building our Ceibo tree, we build a mirror copy of
+// it (the "chained tree") where the nodes have an extra property,
+// `_chained: true`. Anytime a chainable method is invoked, instead of returning
+// the node whose method was invoked, we can return its mirror node in the
+// chained tree. Then, anytime an async method is invoked on that node (meaning
+// we are in a chaining scenario), the execution context can recognize it as a
+// chained node and wait before invoking the target method.
+//
+
 // See https://github.com/san650/ceibo#examples for more info on how Ceibo
 // builders work.
+
+// This builder builds the primary tree
 function buildObject(node, blueprintKey, blueprint, defaultBuilder) {
   blueprint = assign(assign({}, dsl), blueprint);
 
   return defaultBuilder(node, blueprintKey, blueprint, defaultBuilder);
+}
+
+// This builder builds the chained tree
+function buildChainObject(node, blueprintKey, blueprint, defaultBuilder) {
+  blueprint = assign({ _chained: true }, blueprint);
+
+  return buildObject(node, blueprintKey, blueprint, defaultBuilder);
 }
 
 /**
@@ -121,6 +166,22 @@ export function create(definitionOrUrl, definitionOrOptions, optionsOrNothing) {
   let { context } = definition;
   delete definition.context;
 
+  // Build the chained tree
+  let chainedBuilder = {
+    object: buildChainObject
+  };
+  let chainedTree = Ceibo.create(definition, assign({ builder: chainedBuilder }, options));
+
+  // Attach it to the root in the definition of the primary tree
+  definition._chainedTree = {
+    isDescriptor: true,
+
+    get() {
+      return chainedTree;
+    }
+  };
+
+  // Build the primary tree
   let builder = {
     object: buildObject
   };

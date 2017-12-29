@@ -26,7 +26,7 @@ moduleForProperty('visitable', { needsVisit: true }, function(test) {
     assert.equal(this.adapter.currentURL(), '/users/5/comments/1')
   });
 
-  test("raises an exception if params aren't given for all dynamic segments", function(assert) {
+  test("raises an exception if params aren't given for all dynamic segments", async function(assert) {
     assert.expect(1);
 
     let page;
@@ -36,7 +36,7 @@ moduleForProperty('visitable', { needsVisit: true }, function(test) {
         foo: visitable('/users/:user_id')
       });
 
-      page.foo();
+      await this.adapter.await(page.foo());
     } catch(e) {
       assert.equal(e.message, "Missing parameter for 'user_id'");
     }

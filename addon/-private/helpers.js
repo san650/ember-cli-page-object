@@ -174,14 +174,14 @@ export function map(jqArray, cb) {
 }
 
 /**
- * @private
+ * @public
  *
  * Return the root of a node's tree
  *
  * @param {Ceibo} node - Node of the tree
  * @return {Ceibo} node - Root node of the tree
  */
-function getRoot(node) {
+export function getRoot(node) {
   let parent = Ceibo.parent(node);
   let root = node;
 

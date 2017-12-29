@@ -38,6 +38,10 @@ ExecutionContext.prototype = {
     throw new Error('not implemented');
   },
 
+  chainable() {
+    return this.pageObjectNode;
+  },
+
   click(selector, container) {
     const el = this.$(selector, container)[0];
     click(el);

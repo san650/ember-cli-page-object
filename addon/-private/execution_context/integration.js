@@ -30,6 +30,10 @@ IntegrationExecutionContext.prototype = {
       cb(this);
     });
 
+    return this.chainable();
+  },
+
+  chainable() {
     return this.pageObjectNode;
   },
 

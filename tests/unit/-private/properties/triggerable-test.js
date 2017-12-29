@@ -107,7 +107,7 @@ moduleForProperty('triggerable', function(test) {
     await this.adapter.await(page.foo());
   });
 
-  test('returns target object', async function(assert) {
+  test('returns chainable object', async function(assert) {
     assert.expect(1);
 
     let page = create({
@@ -116,7 +116,9 @@ moduleForProperty('triggerable', function(test) {
 
     await this.adapter.createTemplate(this, page, '<input/>');
 
-    assert.equal(page.foo(), page);
+    let ret = page.foo();
+    assert.ok(ret.foo);
+    await this.adapter.await(ret);
   });
 
   test('finds element by index', async function(assert) {

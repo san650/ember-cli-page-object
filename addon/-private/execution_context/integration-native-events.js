@@ -16,6 +16,6 @@ IntegrationNativeEventsExecutionContext.prototype.runAsync = function(cb) {
     cb(this);
   });
 
-  return this.pageObjectNode;
+  return this.chainable();
 };
 

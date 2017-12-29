@@ -43,6 +43,22 @@ moduleForProperty('alias', function(test) {
     await this.adapter.await(page.aliasedClickButton());
   });
 
+  test('returns chainable object from top-level method', async function(assert) {
+    assert.expect(1);
+
+    const page = create({
+      clickButton: clickable('button'),
+      aliasedClickButton: alias('clickButton', { chainable: true })
+    });
+
+    await this.adapter.createTemplate(this, page, '<button>Click me</button>');
+
+    let ret = page.aliasedClickButton();
+    assert.ok(ret.clickButton);
+
+    await this.adapter.await(ret);
+  });
+
   test('can alias a top-level collection', async function(assert) {
     assert.expect(1);
 
@@ -98,6 +114,26 @@ moduleForProperty('alias', function(test) {
     });
 
     await this.adapter.await(page.aliasedClickButton());
+  });
+
+  test('returns chainable object from nested method', async function(assert) {
+    assert.expect(1);
+
+    const page = create({
+      form: {
+        button: {
+          scope: 'button'
+        }
+      },
+      aliasedClickButton: alias('form.button.click', { chainable: true })
+    });
+
+    await this.adapter.createTemplate(this, page, '<button>Click me</button>');
+
+    let ret = page.aliasedClickButton();
+    assert.ok(ret.form.button);
+
+    await this.adapter.await(ret);
   });
 
   test('can alias a nested collection', async function(assert) {
@@ -160,6 +196,27 @@ moduleForProperty('alias', function(test) {
     });
 
     await this.adapter.await(page.aliasedClickButton());
+  });
+
+  test('returns chainable object from aliased method', async function(assert) {
+    assert.expect(1);
+
+    const page = create({
+      form: {
+        button: {
+          scope: 'button'
+        },
+        clickButton: alias('button.click')
+      },
+      aliasedClickButton: alias('form.clickButton', { chainable: true })
+    });
+
+    await this.adapter.createTemplate(this, page, '<button>Click me</button>');
+
+    let ret = page.aliasedClickButton();
+    assert.ok(ret.form.button);
+
+    await this.adapter.await(ret);
   });
 
   test('can alias an aliased collection', async function(assert) {
