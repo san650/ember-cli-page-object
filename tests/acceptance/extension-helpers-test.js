@@ -1,6 +1,11 @@
 import { test } from 'qunit';
 import moduleForAcceptance from '../helpers/module-for-acceptance';
-import { create, findElement, findElementWithAssert, visitable } from 'ember-cli-page-object';
+import {
+  create,
+  findElement,
+  findElementWithAssert,
+  visitable
+} from 'ember-cli-page-object';
 
 moduleForAcceptance('Acceptance | extends');
 

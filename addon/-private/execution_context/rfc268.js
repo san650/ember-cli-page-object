@@ -1,4 +1,5 @@
-import Ember from 'ember';
+import $ from '-jquery';
+import { resolve } from 'rsvp';
 import {
   guardMultiple,
   buildSelector,
@@ -17,8 +18,6 @@ import {
   throwBetterError
 } from '../better-errors';
 import Ceibo from 'ceibo';
-
-const { $, RSVP: { resolve } } = Ember;
 
 export default function ExecutionContext(pageObjectNode) {
   this.pageObjectNode = pageObjectNode;

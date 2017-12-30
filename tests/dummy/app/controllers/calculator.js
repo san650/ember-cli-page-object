@@ -1,8 +1,8 @@
-import Ember from 'ember';
+import { later } from '@ember/runloop';
+import Controller from '@ember/controller';
+import { computed as c } from '@ember/object';
 
-let c = Ember.computed;
-
-export default Ember.Controller.extend({
+export default Controller.extend({
   init() {
     this.setProperties({
       result: '',
@@ -51,7 +51,7 @@ export default Ember.Controller.extend({
 
       if (asyncOp) {
         this.set('loading', true);
-        Ember.run.later(() => {
+        later(() => {
           this.set('loading', false);
           exec();
         }, 50);

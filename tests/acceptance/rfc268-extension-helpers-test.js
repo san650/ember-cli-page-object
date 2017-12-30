@@ -1,6 +1,11 @@
 import { module, test } from 'qunit';
 import { setupApplicationTest } from 'ember-qunit';
-import { create, findElement, findElementWithAssert, visitable } from 'ember-cli-page-object';
+import {
+  create,
+  findElement,
+  findElementWithAssert,
+  visitable
+} from 'ember-cli-page-object';
 
 module('Acceptance | extends [rfc268]', function(hooks) {
   setupApplicationTest(hooks);

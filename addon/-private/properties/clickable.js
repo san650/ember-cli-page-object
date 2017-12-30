@@ -1,4 +1,8 @@
-import { assign, buildSelector, findClosestValue } from '../helpers';
+import {
+  assign,
+  buildSelector,
+  findClosestValue
+} from '../helpers';
 import { getExecutionContext } from '../execution_context';
 
 /**

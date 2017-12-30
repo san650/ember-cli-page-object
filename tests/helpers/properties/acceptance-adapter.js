@@ -1,10 +1,9 @@
+import $ from 'jquery';
+import { run } from '@ember/runloop';
 import startApp from '../start-app';
 import { module as qunitModule } from 'qunit';
 
 export { test as testForAcceptance } from 'qunit';
-
-import Ember from 'ember';
-const { $, run } = Ember;
 
 let noop = function() {};
 
@@ -16,7 +15,7 @@ AcceptanceAdapter.prototype = {
   name: 'acceptance',
 
   $(selector, isAlternative) {
-    return Ember.$(selector, isAlternative ? '#alternate-ember-testing' : '#ember-testing');
+    return $(selector, isAlternative ? '#alternate-ember-testing' : '#ember-testing');
   },
 
   async createTemplate(test, page, template, { useAlternateContainer } = {}) {
@@ -65,7 +64,7 @@ export function moduleForAcceptance(name, options = {}) {
     afterEach() {
       afterEach.call(this);
 
-      Ember.run(this.application, 'destroy');
+      run(this.application, 'destroy');
 
       // Cleanup DOM
       $('#alternate-ember-testing').html('');

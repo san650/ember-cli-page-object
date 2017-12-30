@@ -1,8 +1,11 @@
-import Ember from 'ember';
+//import { assign, merge } from '@ember/polyfills';
+export { assign } from '@ember/polyfills';
+import { A } from '@ember/array';
+import { assert } from '@ember/debug';
+import { get } from '@ember/object';
+import { isPresent } from '@ember/utils';
 import Ceibo from 'ceibo';
 import { deprecate } from '@ember/application/deprecations';
-
-const { assert, get, isPresent } = Ember;
 
 import $ from '-jquery';
 
@@ -160,7 +163,7 @@ export function normalizeText(text) {
 export function every(jqArray, cb) {
   let arr = jqArray.get();
 
-  return Ember.A(arr).every(function(element) {
+  return A(arr).every(function(element) {
     return cb($(element));
   });
 }
@@ -168,7 +171,7 @@ export function every(jqArray, cb) {
 export function map(jqArray, cb) {
   let arr = jqArray.get();
 
-  return Ember.A(arr).map(function(element) {
+  return A(arr).map(function(element) {
     return cb($(element));
   });
 }
@@ -216,8 +219,8 @@ function getAllValuesForProperty(node, property) {
   let iterator = node;
   let values = [];
 
-  while (Ember.isPresent(iterator)) {
-    if (Ember.isPresent(iterator[property])) {
+  while (isPresent(iterator)) {
+    if (isPresent(iterator[property])) {
       values.push(iterator[property]);
     }
 
@@ -319,4 +322,4 @@ export function getProperty(object, pathToProp) {
   return typeof value === 'function' ? value.bind(propOwner) : value;
 }
 
-export const assign = Ember.assign || Ember.merge;
+//export const assign = assign || merge;

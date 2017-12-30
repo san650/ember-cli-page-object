@@ -1,8 +1,7 @@
-import Ember from 'ember';
+import Component from '@ember/component';
+import { computed as c } from '@ember/object';
 
-let c = Ember.computed;
-
-export default Ember.Component.extend({
+export default Component.extend({
   result: '',
   op: '',
 

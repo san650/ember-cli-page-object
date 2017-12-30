@@ -1,5 +1,8 @@
 import Ember from 'ember';
+import EmberError from '@ember/error';
 import Ceibo from 'ceibo';
+
+const { Logger } = Ember;
 
 export const ELEMENT_NOT_FOUND = 'Element not found.';
 
@@ -29,6 +32,6 @@ export function throwBetterError(node, key, msg, { selector } = {}) {
     fullErrorMessage = `${fullErrorMessage}\n  Selector: '${selector}'`;
   }
 
-  Ember.Logger.error(fullErrorMessage);
-  throw new Ember.Error(fullErrorMessage);
+  Logger.error(fullErrorMessage);
+  throw new EmberError(fullErrorMessage);
 }

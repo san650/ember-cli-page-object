@@ -1,4 +1,5 @@
-import Ember from 'ember';
+import $ from '-jquery';
+import { run } from '@ember/runloop';
 import {
   guardMultiple,
   buildSelector,
@@ -12,8 +13,6 @@ import {
   ELEMENT_NOT_FOUND,
   throwBetterError
 } from '../better-errors';
-
-const { $, run } = Ember;
 
 export default function IntegrationExecutionContext(pageObjectNode, testContext) {
   this.pageObjectNode = pageObjectNode;

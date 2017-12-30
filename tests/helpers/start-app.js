@@ -1,8 +1,7 @@
-import Ember from 'ember';
+import { run } from '@ember/runloop';
+import { merge } from '@ember/polyfills';
 import Application from '../../app';
 import config from '../../config/environment';
-
-const merge = Ember.assign || Ember.merge;
 
 export default function startApp(attrs) {
   let application;
@@ -11,7 +10,7 @@ export default function startApp(attrs) {
   attributes.autoboot = true;
   attributes = merge(attributes, attrs); // use defaults, but you can override;
 
-  Ember.run(() => {
+  run(() => {
     application = Application.create(attributes);
     application.setupForTesting();
     application.injectTestHelpers();

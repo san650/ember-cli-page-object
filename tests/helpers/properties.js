@@ -1,10 +1,21 @@
-import { AcceptanceAdapter, moduleForAcceptance, testForAcceptance } from './properties/acceptance-adapter';
+import {
+  AcceptanceAdapter,
+  moduleForAcceptance,
+  testForAcceptance
+} from './properties/acceptance-adapter';
 
-import { IntegrationAdapter, moduleForIntegration, testForIntegration } from './properties/integration-adapter';
+import {
+  IntegrationAdapter,
+  moduleForIntegration,
+  testForIntegration
+} from './properties/integration-adapter';
 
 import ApplicationAdapter from './properties/application-adapter';
 import RenderingAdapter from './properties/rendering-adapter';
-import { setupRenderingTest, setupApplicationTest } from 'ember-qunit'
+import {
+  setupRenderingTest,
+  setupApplicationTest
+} from 'ember-qunit'
 import { module, test } from 'qunit';
 
 import { useNativeEvents } from 'ember-cli-page-object/extend';
