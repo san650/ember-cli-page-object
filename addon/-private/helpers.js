@@ -1,4 +1,3 @@
-//import { assign, merge } from '@ember/polyfills';
 export { assign } from '@ember/polyfills';
 import { A } from '@ember/array';
 import { assert } from '@ember/debug';
@@ -321,5 +320,3 @@ export function getProperty(object, pathToProp) {
 
   return typeof value === 'function' ? value.bind(propOwner) : value;
 }
-
-//export const assign = assign || merge;

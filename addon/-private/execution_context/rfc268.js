@@ -12,7 +12,7 @@ import {
   click,
   fillIn,
   triggerEvent
-} from '@ember/test-helpers';
+} from '../compatibility';
 import {
   ELEMENT_NOT_FOUND,
   throwBetterError
