@@ -1,8 +1,10 @@
 import { as } from './properties/as';
+import { blurrable } from './properties/blurrable';
 import { clickable } from './properties/clickable';
 import { clickOnText } from './properties/click-on-text';
 import { contains } from './properties/contains';
 import { fillable } from './properties/fillable';
+import { focusable } from './properties/focusable';
 import { isHidden } from './properties/is-hidden';
 import { isPresent } from './properties/is-present';
 import { isVisible } from './properties/is-visible';
@@ -19,10 +21,12 @@ const thenDescriptor = {
 
 const dsl = {
   as,
+  blur: blurrable(),
   click: clickable(),
   clickOn: clickOnText(),
   contains: contains(),
   fillIn: fillable(),
+  focus: focusable(),
   isHidden: isHidden(),
   isPresent: isPresent(),
   isVisible: isVisible(),

@@ -41,7 +41,7 @@ moduleForProperty('dsl', function(test) {
     assert.ok(page.foo.isPresent, 'component is rendered in DOM');
   });
 
-  ['click', 'clickOn', 'contains', 'fillIn', 'isHidden', 'isPresent', 'isVisible', 'select', 'text', 'value'].forEach((prop) => {
+  ['blur', 'click', 'clickOn', 'contains', 'fillIn', 'focus', 'isHidden', 'isPresent', 'isVisible', 'select', 'text', 'value'].forEach((prop) => {
     test(`does not override .${prop}`, function(assert) {
       let page = create({
         [prop]: 'foo bar'
@@ -50,6 +50,26 @@ moduleForProperty('dsl', function(test) {
       this.adapter.createTemplate(this, page);
 
       assert.equal(page[prop], 'foo bar');
+    });
+  });
+
+  test('generates .blur', function(assert) {
+    assert.expect(1);
+
+    let page = create({
+      foo: {
+        scope: 'button'
+      }
+    });
+
+    this.adapter.createTemplate(this, page, '<button>dummy text</button>');
+
+    return this.adapter.andThen(() => {
+      this.adapter.$('button').focus().on('blur', () => assert.ok(1));
+
+      page.foo.blur();
+
+      return this.adapter.wait();
     });
   });
 
@@ -138,6 +158,26 @@ moduleForProperty('dsl', function(test) {
 
     return this.adapter.andThen(() => {
       assert.equal(this.adapter.$('input').val(), 'lorem ipsum');
+    });
+  });
+
+  test('generates .focus', function(assert) {
+    assert.expect(1);
+
+    let page = create({
+      foo: {
+        scope: 'button'
+      }
+    });
+
+    this.adapter.createTemplate(this, page, '<button>dummy text</button>');
+
+    return this.adapter.andThen(() => {
+      this.adapter.$('button').on('focus', () => assert.ok(1));
+
+      page.foo.focus();
+
+      return this.adapter.wait();
     });
   });
 

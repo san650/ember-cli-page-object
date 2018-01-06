@@ -3,7 +3,9 @@ import $ from '-jquery';
 import {
   click,
   triggerEvent,
-  keyEvent
+  keyEvent,
+  focus,
+  blur
 } from 'ember-native-dom-helpers';
 
 import {
@@ -12,7 +14,8 @@ import {
   findClosestValue
 } from '../helpers';
 import {
-  fillElement
+  fillElement,
+  assertFocusable
 } from './helpers';
 import {
   ELEMENT_NOT_FOUND,
@@ -85,6 +88,30 @@ ExecutionContext.prototype = {
     } else {
       triggerEvent(element, eventName, eventOptions);
     }
+  },
+
+  focus(selector, options) {
+    const element = this.findWithAssert(selector, options)[0];
+
+    assertFocusable(element, {
+      selector,
+      pageObjectNode: this.pageObjectNode,
+      pageObjectKey: options.pageObjectKey
+    });
+
+    focus(element);
+  },
+
+  blur(selector, options) {
+    const element = this.findWithAssert(selector, options)[0];
+
+    assertFocusable(element, {
+      selector,
+      pageObjectNode: this.pageObjectNode,
+      pageObjectKey: options.pageObjectKey
+    });
+
+    blur(element);
   },
 
   assertElementExists(selector, options) {
