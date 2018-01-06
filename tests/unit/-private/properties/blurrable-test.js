@@ -178,7 +178,7 @@ moduleForProperty('blurrable', function(test) {
     }, /page\.foo\.bar\.baz\.qux/, 'Element not found');
   });
 
-  test('Does not assert on focusable elements', function(assert) {
+  test('Does not raise error when blurring focusable elements', function(assert) {
     assert.expect(0);
 
     let page = create({
