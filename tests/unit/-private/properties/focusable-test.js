@@ -206,7 +206,7 @@ moduleForProperty('focusable', function(test) {
       <iframe></iframe>
       <select></select>
       <button></button>
-      <div contenteditable=true></div>
+      <div contenteditable></div>
       <div tabindex=-1></div>
     `);
 
@@ -221,14 +221,15 @@ moduleForProperty('focusable', function(test) {
   });
 
   test('raises an error when the element is not focusable', function(assert) {
-    assert.expect(3);
+    assert.expect(4);
 
     let page = create({
       foo: {
         bar: {
           baz: focusable('span'),
           qux: focusable('input'),
-          quux: focusable('button')
+          quux: focusable('button'),
+          quuz: focusable('[contenteditable]')
         }
       }
     });
@@ -237,6 +238,7 @@ moduleForProperty('focusable', function(test) {
       <span></span>
       <input disabled=true/>
       <button style="display: none;"></button>
+      <div contenteditable="false"></div>
     `);
 
     this.adapter.throws(assert, function() {
@@ -250,5 +252,9 @@ moduleForProperty('focusable', function(test) {
     this.adapter.throws(assert, function() {
       return page.foo.bar.quux();
     }, /page\.foo\.bar\.quux/, 'Element is not focusable because it is hidden');
+
+    this.adapter.throws(assert, function() {
+      return page.foo.bar.quuz();
+    }, /page\.foo\.bar\.quuz/, 'Element is not focusable because it is contenteditable="false"');
   });
 });

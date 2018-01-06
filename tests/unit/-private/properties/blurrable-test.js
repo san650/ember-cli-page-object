@@ -204,7 +204,7 @@ moduleForProperty('blurrable', function(test) {
       <iframe></iframe>
       <select></select>
       <button></button>
-      <div contenteditable=true></div>
+      <div contenteditable></div>
       <div tabindex=-1></div>
     `);
 
@@ -220,19 +220,25 @@ moduleForProperty('blurrable', function(test) {
   });
 
   test('raises an error when the element is not focusable', function(assert) {
-    assert.expect(3);
+    assert.expect(4);
 
     let page = create({
       foo: {
         bar: {
           baz: blurrable('span'),
           qux: blurrable('input'),
-          quux: blurrable('button')
+          quux: blurrable('button'),
+          quuz: blurrable('[contenteditable]')
         }
       }
     });
 
-    this.adapter.createTemplate(this, page, '<span></span><input disabled=true/><button style="display: none;"></button>');
+    this.adapter.createTemplate(this, page, `
+      <span></span>
+      <input disabled=true/>
+      <button style="display: none;"></button>
+      <div contenteditable="false"></div>
+    `);
 
     this.adapter.throws(assert, function() {
       return page.foo.bar.baz();
@@ -245,5 +251,9 @@ moduleForProperty('blurrable', function(test) {
     this.adapter.throws(assert, function() {
       return page.foo.bar.quux();
     }, /page\.foo\.bar\.quux/, 'Element is not focusable because it is hidden');
+
+    this.adapter.throws(assert, function() {
+      return page.foo.bar.quuz();
+    }, /page\.foo\.bar\.quuz/, 'Element is not focusable because it is contenteditable="false"');
   });
 });
