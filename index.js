@@ -49,7 +49,12 @@ module.exports = {
     // TODO: In order to make the addon work in EmberTwiddle, we cannot use // the `tests` prop til
     // https://github.com/joostdevries/twiddle-backend/pull/28 is merged.
     // return !!this.app.tests;
-    return this.app.env !== 'production';
+
+    if(process.env && process.env.EMBER_CLI_FASTBOOT) {
+      return false;
+    } else {
+      return this.app.env !== 'production';
+    }
   },
 
   _findHost() {
