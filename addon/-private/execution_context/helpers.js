@@ -55,7 +55,7 @@ export function assertFocusable(element, { selector, pageObjectNode, pageObjectK
     error = 'disabled';
   } else if ($element.is('[contenteditable="false"]')) {
     error = 'contenteditable="false"';
-  } else if (!$element.is(':input, select, a[href], area[href], iframe, [contenteditable], [tabindex]')) {
+  } else if (!$element.is(':input, a[href], area[href], iframe, [contenteditable], [tabindex]')) {
     error = 'not a link, input, form element, contenteditable, iframe, or an element with tabindex';
   }
 
