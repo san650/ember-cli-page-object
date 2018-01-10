@@ -1,7 +1,7 @@
 import { moduleForProperty } from '../../../helpers/properties';
 import { create, blurrable } from 'ember-cli-page-object';
 
-moduleForProperty('blurrable', function(test) {
+moduleForProperty('blurrable', function(test, adapter) {
   test('calls blur with proper args', async function(assert) {
     assert.expect(1);
 
@@ -81,7 +81,7 @@ moduleForProperty('blurrable', function(test) {
     await this.adapter.await(page.foo());
   });
 
-  test('returns target object', async function(assert) {
+  test('returns chainable object', async function(assert) {
     assert.expect(1);
 
     let page = create({
@@ -92,7 +92,7 @@ moduleForProperty('blurrable', function(test) {
 
     this.adapter.$('input').focus();
 
-    assert.equal(page.foo(), page);
+    assert.ok(page.foo);
   });
 
   test('finds element by index', async function(assert) {
@@ -155,55 +155,55 @@ moduleForProperty('blurrable', function(test) {
 
     await this.adapter.createTemplate(this, page);
 
-    this.adapter.throws(assert, function() {
+    await this.adapter.throws(assert, function() {
       return page.foo.bar.baz.qux();
     }, /page\.foo\.bar\.baz\.qux/, 'Element not found');
   });
 
-  test('Does not raise error when blurring focusable elements', async function(assert) {
-    assert.expect(0);
+  if (adapter === 'integration' || adapter === 'acceptance') {
+    test('Does not raise error when blurring focusable elements', async function(assert) {
+      assert.expect(0);
 
-    let page = create({
-      foo: {
-        bar: {
-          input: blurrable('input'),
-          select: blurrable('select'),
-          a: blurrable('a'),
-          area: blurrable('area'),
-          iframe: blurrable('iframe'),
-          button: blurrable('button'),
-          contentEditable: blurrable('[contenteditable]'),
-          tabindex: blurrable('[tabindex]'),
+      let page = create({
+        foo: {
+          bar: {
+            input: blurrable('input'),
+            select: blurrable('select'),
+            a: blurrable('a'),
+            area: blurrable('area'),
+            iframe: blurrable('iframe'),
+            button: blurrable('button'),
+            contentEditable: blurrable('[contenteditable]'),
+            tabindex: blurrable('[tabindex]'),
 
+          }
         }
-      }
+      });
+
+      await this.adapter.createTemplate(this, page, `
+        <input/>
+        <a href="foo"></a>
+        <area href="foo"></a>
+        <iframe></iframe>
+        <select></select>
+        <button></button>
+        <div contenteditable></div>
+        <div tabindex=-1></div>
+      `);
+
+
+      page.foo.bar.input();
+      page.foo.bar.select();
+      page.foo.bar.a();
+      page.foo.bar.area();
+      page.foo.bar.iframe();
+      page.foo.bar.button()
+      page.foo.bar.contentEditable();
+      page.foo.bar.tabindex();
     });
-
-    await this.adapter.createTemplate(this, page, `
-      <input/>
-      <a href="foo"></a>
-      <area href="foo"></a>
-      <iframe></iframe>
-      <select></select>
-      <button></button>
-      <div contenteditable></div>
-      <div tabindex=-1></div>
-    `);
-
-
-    page.foo.bar.input();
-    page.foo.bar.select();
-    page.foo.bar.a();
-    page.foo.bar.area();
-    page.foo.bar.iframe();
-    page.foo.bar.button()
-    page.foo.bar.contentEditable();
-    page.foo.bar.tabindex();
-  });
+  }
 
   test('raises an error when the element is not focusable', async function(assert) {
-    assert.expect(4);
-
     let page = create({
       foo: {
         bar: {
@@ -222,19 +222,21 @@ moduleForProperty('blurrable', function(test) {
       <div contenteditable="false"></div>
     `);
 
-    this.adapter.throws(assert, function() {
+    await this.adapter.throws(assert, function() {
       return page.foo.bar.baz();
     }, /page\.foo\.bar\.baz/, 'Element is not focusable because it is not a link');
 
-    this.adapter.throws(assert, function() {
-      return page.foo.bar.qux();
-    }, /page\.foo\.bar\.qux/, 'Element is not focusable because it is disabled');
+    if (adapter === 'acceptance' || adapter === 'integration') {
+      await this.adapter.throws(assert, function() {
+        return page.foo.bar.qux();
+      }, /page\.foo\.bar\.qux/, 'Element is not focusable because it is disabled');
 
-    this.adapter.throws(assert, function() {
-      return page.foo.bar.quux();
-    }, /page\.foo\.bar\.quux/, 'Element is not focusable because it is hidden');
+      await this.adapter.throws(assert, function() {
+        return page.foo.bar.quux();
+      }, /page\.foo\.bar\.quux/, 'Element is not focusable because it is hidden');
+    }
 
-    this.adapter.throws(assert, function() {
+    await this.adapter.throws(assert, function() {
       return page.foo.bar.quuz();
     }, /page\.foo\.bar\.quuz/, 'Element is not focusable because it is contenteditable="false"');
   });

@@ -220,7 +220,7 @@ moduleForProperty('fillable', function(test) {
 
     await this.adapter.createTemplate(this, page);
 
-    await this.adapter.throws(assert, function() {
+    this.adapter.throws(assert, function() {
       return page.foo.bar.baz.qux('lorem');
     }, /page\.foo\.bar\.baz\.qux\(\)/, 'Element not found');
   });

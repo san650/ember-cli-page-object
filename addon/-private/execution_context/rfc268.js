@@ -11,7 +11,9 @@ import {
   visit,
   click,
   fillIn,
-  triggerEvent
+  triggerEvent,
+  focus,
+  blur
 } from '../compatibility';
 import {
   ELEMENT_NOT_FOUND,
@@ -98,6 +100,16 @@ ExecutionContext.prototype = {
     }
 
     return this.invokeHelper(selector, options, triggerEvent, eventName, eventOptions);
+  },
+
+  focus(selector, options) {
+    selector = buildSelector(this.pageObjectNode, selector, options);
+    return this.invokeHelper(selector, options, focus);
+  },
+
+  blur(selector, options) {
+    selector = buildSelector(this.pageObjectNode, selector, options);
+    return this.invokeHelper(selector, options, blur);
   },
 
   assertElementExists(selector, options) {

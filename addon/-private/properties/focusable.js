@@ -66,7 +66,7 @@ export function focusable(selector, userOptions = {}) {
         const options = assign({ pageObjectKey: `${key}()` }, userOptions);
 
         return executionContext.runAsync((context) => {
-          context.focus(selector, options);
+          return context.focus(selector, options);
         });
       };
     }
