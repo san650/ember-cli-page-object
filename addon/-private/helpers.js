@@ -1,5 +1,6 @@
 import Ember from 'ember';
 import Ceibo from 'ceibo';
+import { deprecate } from '@ember/application/deprecations';
 
 const { assert, get, isPresent } = Ember;
 
@@ -32,6 +33,13 @@ class Selector {
       // testing container.
       selector = ':first';
     }
+
+    deprecate(
+      'Usage of comma separated selectors is deprecated', selector.indexOf(',') === -1, {
+        "id": "ember-cli-page-object.comma-separated-selectors",
+        "until": "2.0.0",
+      }
+    );
 
     return selector;
   }

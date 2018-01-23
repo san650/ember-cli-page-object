@@ -63,6 +63,7 @@
     "ember-disable-prototype-extensions": "^1.1.2",
     "ember-export-application-global": "^2.0.0",
     "ember-load-initializers": "^1.0.0",
+    "ember-qunit-assert-helpers": "^0.2.1",
     "ember-qunit-nice-errors": "^1.1.2",
     "ember-qunit-source-map": "1.1.0",
     "ember-resolver": "^4.0.0",
