@@ -22,7 +22,7 @@ import PageObject, {
   isHidden,
   isPresent,
   isVisible
-} from 'dummy/tests/page-object';
+} from 'ember-cli-page-object';
 
 const { run, $ } = Ember;
 
