@@ -1,3 +1,5 @@
+import { deprecate } from '@ember/application/deprecations';
+
 /**
  * @public
  *
@@ -17,6 +19,11 @@
  * @return {PageObject} - the page object
  */
 export function render(template) {
+  deprecate('PageObject.render() is deprecated. Please use "htmlbars-inline-precompile" instead.', false, {
+    id: 'ember-cli-page-object.page-render',
+    until: '2.0.0'
+  });
+
   if (!this.context) {
     let message = 'You must set a context on the page object before calling calling `render()`';
     let error = new Error(message);
