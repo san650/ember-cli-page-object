@@ -2,6 +2,10 @@
 import Ember from 'ember';
 import { buildSelector, assign } from '../../helpers';
 import { create } from '../../create';
+import {
+  ELEMENT_NOT_FOUND,
+  throwBetterError
+} from '../../better-errors';
 import { count } from '../count';
 import Ceibo from 'ceibo';
 
@@ -42,7 +46,18 @@ export class Collection {
       this._items[index] = tree;
     }
 
-    return this._items[index];
+    let itemPage = this._items[index];
+
+    if (index > this.length - 1) {
+      throwBetterError(
+        itemPage,
+        null,
+        ELEMENT_NOT_FOUND,
+        { selector: itemPage.scope }
+      );
+    }
+
+    return itemPage;
   }
 
   filter(...args) {

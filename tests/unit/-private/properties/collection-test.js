@@ -214,7 +214,7 @@ moduleForProperty('collection', function(test) {
 
     this.adapter.createTemplate(this, page);
 
-    assert.throws(() => page.foo.bar.objectAt(1).baz.qux, /page\.foo\.bar\[1\]\.baz\.qux/);
+    assert.throws(() => page.foo.bar.objectAt(1).baz.qux, /page\.foo\.bar\[1\]/);
   });
 
   test('iterates over scoped items with a for loop', function(assert) {
