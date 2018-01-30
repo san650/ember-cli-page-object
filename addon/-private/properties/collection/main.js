@@ -30,8 +30,10 @@ export class Collection {
   }
 
   objectAt(index) {
+    let { key } = this;
+
     if (typeof this._items[index] === 'undefined') {
-      let { definition, parent, key } = this;
+      let { definition, parent } = this;
       let scope = buildSelector({}, definition.scope, { at: index });
 
       let finalizedDefinition = assign({}, definition);
@@ -50,8 +52,8 @@ export class Collection {
 
     if (index > this.length - 1) {
       throwBetterError(
-        itemPage,
-        null,
+        this.parent,
+        `${key}.objectAt(${index})`,
         ELEMENT_NOT_FOUND,
         { selector: itemPage.scope }
       );
