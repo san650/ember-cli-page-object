@@ -81,4 +81,5 @@ export { buildSelector, findElementWithAssert, findElement, getContext, fullScop
 deprecate(`Importing from "test-support" is now deprecated. Just import directly from the "ember-cli-page-object" module instead.`, false, {
   id: 'ember-cli-page-object.import-from-test-support',
   until: "2.0.0",
+  url: "https://gist.github.com/san650/17174e4b7b1fd80b049a47eb456a7cdc#file-import-from-test-support-js"
 })
