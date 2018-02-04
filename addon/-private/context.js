@@ -21,7 +21,8 @@ import { deprecate } from '@ember/application/deprecations';
 export function render(template) {
   deprecate('PageObject.render() is deprecated. Please use "htmlbars-inline-precompile" instead.', false, {
     id: 'ember-cli-page-object.page-render',
-    until: '2.0.0'
+    until: '2.0.0',
+    url: 'https://gist.github.com/san650/17174e4b7b1fd80b049a47eb456a7cdc#file-page-render-js',
   });
 
   if (!this.context) {
