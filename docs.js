@@ -41,7 +41,7 @@ function execCmd(command) {
  * @returns {Promise} (resolves {string}) A promise that resolves with the Markdown text representation
  */
 function parseSourceFile(filePath) {
-  return execCmd('node ./node_modules/documentation/bin/documentation "' + filePath + '" --format "md" --github --shallow');
+  return execCmd('node ./node_modules/documentation/bin/documentation build "' + filePath + '" -f md --shallow');
 }
 
 /* Takes Markdown and adds yml frontmatter and a table of contents, and adds 1 to
