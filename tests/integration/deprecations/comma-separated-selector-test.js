@@ -1,7 +1,7 @@
 import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
 
-import PageObject from 'dummy/tests/page-object';
+import { create, text } from 'dummy/tests/page-object';
 
 // In the old ember testing API we have a `render` method available
 // only in the `moduleForComponent` test helper. Unfortunatelly it requires
@@ -11,8 +11,21 @@ moduleForComponent('calculating-device', 'Integration | comma separated selector
   integration: true
 });
 
+test(`doesn't throw a deprecation if no comma`, function(assert) {
+  let page = create({
+    context: this,
+    scope: '.A'
+  });
+
+  this.render(hbs`<div class="B"></div>`);
+
+  page.isVisible;
+
+  assert.expectNoDeprecation();
+});
+
 test('usage of comma-separated selector in the scope leads to a deprecation', function(assert) {
-  let page = PageObject.create({
+  let page = create({
     context: this,
     scope: '.A, .B'
   });
@@ -25,9 +38,9 @@ test('usage of comma-separated selector in the scope leads to a deprecation', fu
 });
 
 test('usage of comma-separated selector in the property leads to a deprecation', function(assert) {
-  let page = PageObject.create({
+  let page = create({
     context: this,
-    text: PageObject.text('.A, .B')
+    text: text('.A, .B')
   });
 
   this.render(hbs`<div class="A"></div>`);
@@ -38,9 +51,9 @@ test('usage of comma-separated selector in the property leads to a deprecation',
 });
 
 test('usage of comma-separated selector in the property\'s custom scope leads to a deprecation', function(assert) {
-  let page = PageObject.create({
+  let page = create({
     context: this,
-    text: PageObject.text('.root', {
+    text: text('.root', {
       scope: '.A, .B'
     })
   });
@@ -55,10 +68,10 @@ test('usage of comma-separated selector in the property\'s custom scope leads to
 });
 
 test('don\'t show deprecation when selector doesn\'t use comma-separated selectors', function(assert) {
-  let page = PageObject.create({
+  let page = create({
     context: this,
     scope: '.root',
-    propText: PageObject.text('.A', {
+    propText: text('.A', {
       scope: '.B'
     })
   });
