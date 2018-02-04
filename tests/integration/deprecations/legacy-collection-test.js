@@ -27,3 +27,12 @@ test("doesn't show a deprecation warning when first parameter is a string", func
 
   assert.expectNoDeprecation();
 });
+
+test('shows a warning on invalid legacy collection definitions', function(assert) {
+  assert.expectWarning(function() {
+    create({
+      foo: collection({
+      })
+    });
+  }, 'Legacy page object collection definition is invalid. Please, make sure you include a `itemScope` selector.');
+});

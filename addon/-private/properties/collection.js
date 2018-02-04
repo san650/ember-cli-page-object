@@ -1,4 +1,5 @@
 import { deprecate } from '@ember/application/deprecations';
+import { warn } from '@ember/debug';
 
 import { collection as mainCollection } from './collection/main';
 import { collection as legacyCollection } from './collection/legacy';
@@ -122,6 +123,14 @@ export function collection(scopeOrDefinition, definitionOrNothing) {
     until: '2.0.0',
     url: 'https://gist.github.com/san650/17174e4b7b1fd80b049a47eb456a7cdc#file-old-collection-api-js',
   });
+
+  warn(
+    'Legacy page object collection definition is invalid. Please, make sure you include a `itemScope` selector.',
+    scopeOrDefinition.itemScope,
+    {
+      id: 'ember-cli-page-object.legacy-collection-missing-item-scope'
+    }
+  );
 
   return legacyCollection(scopeOrDefinition);
 }
