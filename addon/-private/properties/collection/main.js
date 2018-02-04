@@ -10,15 +10,16 @@ import { count } from '../count';
 import Ceibo from 'ceibo';
 
 export class Collection {
-  constructor(definition, parent, key) {
-    this.definition = definition;
+  constructor(scope, definition, parent, key) {
+    this.scope = scope;
+    this.definition = definition || {};
     this.parent = parent;
     this.key = key;
 
     this._itemCounter = create({
-      count: count(definition.scope, {
-        resetScope: definition.resetScope,
-        testContainer: definition.testContainer
+      count: count(scope, {
+        resetScope: this.definition.resetScope,
+        testContainer: this.definition.testContainer
       })
     }, { parent });
 
@@ -33,12 +34,12 @@ export class Collection {
     let { key } = this;
 
     if (typeof this._items[index] === 'undefined') {
-      let { definition, parent } = this;
-      let scope = buildSelector({}, definition.scope, { at: index });
+      let { scope, definition, parent } = this;
+      let itemScope = buildSelector({}, scope, { at: index });
 
       let finalizedDefinition = assign({}, definition);
 
-      finalizedDefinition.scope = scope;
+      finalizedDefinition.scope = itemScope;
 
       let tree = create(finalizedDefinition, { parent });
 
@@ -105,7 +106,7 @@ if (typeof (Symbol) !== 'undefined' && Symbol.iterator) {
   }
 }
 
-export function collection(definition) {
+export function collection(scope, definition) {
   let descriptor = {
     isDescriptor: true,
 
@@ -113,7 +114,7 @@ export function collection(definition) {
       // Set the value on the descriptor so that it will be picked up and applied by Ceibo.
       // This does mutate the descriptor, but because `setup` is always called before the
       // value is assigned we are guaranteed to get a new, unique Collection instance each time.
-      descriptor.value = new Collection(definition, node, key);
+      descriptor.value = new Collection(scope, definition, node, key);
     }
   };
 

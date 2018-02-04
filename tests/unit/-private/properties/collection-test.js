@@ -5,9 +5,7 @@ import withIteratorSymbolDefined from '../../../helpers/with-iterator-symbol-def
 moduleForProperty('collection', function(test) {
   test('generates a length property', function(assert) {
     let page = create({
-      foo: collection({
-        scope: 'span'
-      })
+      foo: collection('span')
     });
 
     this.adapter.createTemplate(this, page, `
@@ -20,9 +18,7 @@ moduleForProperty('collection', function(test) {
 
   test('Works with zero length', function(assert) {
     let page = create({
-      foo: collection({
-        scope: 'span'
-      })
+      foo: collection('span')
     });
 
     this.adapter.createTemplate(this, page, `
@@ -35,8 +31,7 @@ moduleForProperty('collection', function(test) {
 
   test('returns an item', function(assert) {
     let page = create({
-      foo: collection({
-        scope: 'span',
+      foo: collection('span', {
         text: text()
       })
     });
@@ -52,8 +47,7 @@ moduleForProperty('collection', function(test) {
 
   test('collects an array of items', function(assert) {
     let page = create({
-      foo: collection({
-        scope: 'span',
+      foo: collection('span', {
         text: text()
       })
     });
@@ -76,8 +70,7 @@ moduleForProperty('collection', function(test) {
 
   test('produces an iterator for items', function(assert) {
     let page = create({
-      foo: collection({
-        scope: 'span',
+      foo: collection('span', {
         text: text()
       })
     });
@@ -101,8 +94,7 @@ moduleForProperty('collection', function(test) {
     let page = create({
       scope: '.scope',
 
-      foo: collection({
-        scope: 'span',
+      foo: collection('span', {
         text: text()
       })
     });
@@ -123,8 +115,7 @@ moduleForProperty('collection', function(test) {
     let page = create({
       scope: '.scope',
 
-      foo: collection({
-        scope: 'li',
+      foo: collection('li', {
         bar: {
           scope: '.another-scope',
 
@@ -163,9 +154,8 @@ moduleForProperty('collection', function(test) {
     let page = create({
       scope: 'div',
 
-      foo: collection({
+      foo: collection('span', {
         resetScope: true,
-        scope: 'span',
         text: text()
       })
     });
@@ -184,10 +174,8 @@ moduleForProperty('collection', function(test) {
     let page = create({
       scope: '.scope',
 
-      foo: collection({
-        scope: 'span',
-        bar: collection({
-          scope: 'em',
+      foo: collection('span', {
+        bar: collection('em', {
           text: text()
         })
       })
@@ -204,7 +192,7 @@ moduleForProperty('collection', function(test) {
   test("throws an error when the item's element doesn't exist", function(assert) {
     let page = create({
       foo: {
-        bar: collection({
+        bar: collection('span', {
           baz: {
             qux: text('span')
           }
@@ -220,8 +208,7 @@ moduleForProperty('collection', function(test) {
   test('iterates over scoped items with a for loop', function(assert) {
     let page = create({
       scope: 'div',
-      foo: collection({
-        scope: 'span',
+      foo: collection('span', {
         text: text()
       })
     });
@@ -246,8 +233,7 @@ moduleForProperty('collection', function(test) {
   test('iterates over scoped items with a for of loop', function(assert) {
     let page = create({
       scope: 'div',
-      foo: collection({
-        scope: 'span',
+      foo: collection('span', {
         text: text()
       })
     });
@@ -274,8 +260,7 @@ moduleForProperty('collection', function(test) {
     let page = create({
       scope: 'div',
 
-      foo: collection({
-        scope: 'span',
+      foo: collection('span', {
         text: text()
       })
     });
@@ -300,7 +285,6 @@ moduleForProperty('collection', function(test) {
     let prop = text('.baz');
 
     let expected = {
-      scope: '.another-scope',
       bar: prop,
       baz: {
         qux: prop
@@ -308,7 +292,6 @@ moduleForProperty('collection', function(test) {
     };
 
     let actual = {
-      scope: '.another-scope',
       bar: prop,
       baz: {
         qux: prop
@@ -316,7 +299,7 @@ moduleForProperty('collection', function(test) {
     };
 
     let page = create({
-      foo: collection(actual)
+      foo: collection('.another-scope', actual)
     });
 
     this.adapter.createTemplate(this, page);
@@ -331,9 +314,8 @@ moduleForProperty('collection', function(test) {
     let page;
 
     page = create({
-      foo: collection({
+      foo: collection('span', {
         testContainer: expectedContext,
-        scope: 'span'
       })
     });
 
@@ -350,8 +332,7 @@ moduleForProperty('collection', function(test) {
 
   test('objectAt returns an item', function(assert) {
     let page = create({
-      foo: collection({
-        scope: 'span',
+      foo: collection('span', {
         text: text()
       })
     });
@@ -367,8 +348,7 @@ moduleForProperty('collection', function(test) {
 
   test('forEach works correctly', function(assert) {
     let page = create({
-      foo: collection({
-        scope: 'span',
+      foo: collection('span', {
         text: text()
       })
     });
@@ -388,8 +368,7 @@ moduleForProperty('collection', function(test) {
 
   test('map works correctly', function(assert) {
     let page = create({
-      foo: collection({
-        scope: 'span',
+      foo: collection('span', {
         text: text()
       })
     });
@@ -404,8 +383,7 @@ moduleForProperty('collection', function(test) {
 
   test('mapBy works correctly', function(assert) {
     let page = create({
-      foo: collection({
-        scope: 'span',
+      foo: collection('span', {
         text: text()
       })
     });
@@ -420,8 +398,7 @@ moduleForProperty('collection', function(test) {
 
   test('filter works correctly', function(assert) {
     let page = create({
-      foo: collection({
-        scope: 'span',
+      foo: collection('span', {
         isSpecial: hasClass('special'),
         text: text()
       })
@@ -438,8 +415,7 @@ moduleForProperty('collection', function(test) {
 
   test('filterBy works correctly', function(assert) {
     let page = create({
-      foo: collection({
-        scope: 'span',
+      foo: collection('span', {
         isSpecial: hasClass('special'),
         text: text()
       })

@@ -36,8 +36,7 @@ import { collection as legacyCollection } from './collection/legacy';
  * // </table>
  *
  * const page = PageObject.create({
- *   users: collection({
- *     scope: 'table tr',
+ *   users: collection('table tr', {
  *     firstName: text('td', { at: 0 }),
  *     lastName: text('td', { at: 1 })
  *   })
@@ -72,8 +71,7 @@ import { collection as legacyCollection } from './collection/legacy';
  * const page = PageObject.create({
  *   scope: '.admins',
  *
- *   users: collection({
- *     scope: 'table tr',
+ *   users: collection('table tr', {
  *     firstName: text('td', { at: 0 }),
  *     lastName: text('td', { at: 1 })
  *   })
@@ -100,8 +98,7 @@ import { collection as legacyCollection } from './collection/legacy';
  * const page = PageObject.create({
  *   scope: 'table',
  *
- *   users: PageObject.collection({
- *     scope: 'tr',
+ *   users: PageObject.collection('tr', {
  *     firstName: text('td', { at: 0 }),
  *     lastName: text('td', { at: 1 }),
  *   })
@@ -110,44 +107,21 @@ import { collection as legacyCollection } from './collection/legacy';
  * let john = page.users.filter((item) => item.firstName === 'John' )[0];
  * assert.equal(john.lastName, 'Doe');
  *
- * @param {Object} definition - Collection definition
+ * @param {String} scopeOrDefinition - Selector to define the items of the collection
+ * @param {Object} [definitionOrNothing] - Object with the definition of item properties
  * @return {Descriptor}
  */
-export function collection(definition) {
-  if (useLegacyAPI(definition)) {
-    deprecate('You are currently using the legacy collection API, check the documentation to see how to upgrade to the new API.', false, {
-      id: 'ember-cli-page-object.old-collection-api',
-      until: '2.0.0',
-      url: 'https://gist.github.com/san650/17174e4b7b1fd80b049a47eb456a7cdc#file-old-collection-api-js',
-    });
+export function collection(scopeOrDefinition, definitionOrNothing) {
 
-    return legacyCollection(definition);
-  } else {
-    return mainCollection(definition);
+  if (typeof scopeOrDefinition === 'string') {
+    return mainCollection(scopeOrDefinition, definitionOrNothing);
   }
-}
 
-function useLegacyAPI(definition) {
-  // We test the use of `itemScope` attribute to guess that the users are using
-  // the legacy API.
-  //
-  // Also, there's a common mistake in page objects created in the wild that
-  // don't define the `itemScope` attribute but they do implement the `items`
-  // object.
-  //
-  //     var page = create({
-  //       foo: collection({
-  //         scope: '.foo',
-  //         item: {
-  //           text: text('p')
-  //         }
-  //       })
-  //     });
-  //
-  // Although this doesn't make any sense and doesn't work in legacy
-  // collections definitions, using the new collection API in this cases break
-  // tests suites. For that reason we use the legacy definition and print a
-  // deprecation warning.
-  return ('itemScope' in definition) ||
-    ('scope' in definition && 'item' in definition);
+  deprecate('You are currently using the legacy collection API, check the documentation to see how to upgrade to the new API.', false, {
+    id: 'ember-cli-page-object.old-collection-api',
+    until: '2.0.0',
+    url: 'https://gist.github.com/san650/17174e4b7b1fd80b049a47eb456a7cdc#file-old-collection-api-js',
+  });
+
+  return legacyCollection(scopeOrDefinition);
 }
