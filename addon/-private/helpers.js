@@ -35,9 +35,10 @@ class Selector {
     }
 
     deprecate(
-      'Usage of comma separated selectors is deprecated', selector.indexOf(',') === -1, {
+      'Usage of comma separated selectors is deprecated in ember-cli-page-object', selector.indexOf(',') === -1, {
         "id": "ember-cli-page-object.comma-separated-selectors",
         "until": "2.0.0",
+        "url": "https://gist.github.com/san650/17174e4b7b1fd80b049a47eb456a7cdc#file-comma-separated-selectors-js",
       }
     );
 

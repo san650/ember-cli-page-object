@@ -21,7 +21,7 @@ test('usage of comma-separated selector in the scope leads to a deprecation', fu
 
   page.isVisible;
 
-  assert.expectDeprecation('Usage of comma separated selectors is deprecated');
+  assert.expectDeprecation('Usage of comma separated selectors is deprecated in ember-cli-page-object');
 });
 
 test('usage of comma-separated selector in the property leads to a deprecation', function(assert) {
@@ -34,7 +34,7 @@ test('usage of comma-separated selector in the property leads to a deprecation',
 
   page.text;
 
-  assert.expectDeprecation('Usage of comma separated selectors is deprecated');
+  assert.expectDeprecation('Usage of comma separated selectors is deprecated in ember-cli-page-object');
 });
 
 test('usage of comma-separated selector in the property\'s custom scope leads to a deprecation', function(assert) {
@@ -51,5 +51,25 @@ test('usage of comma-separated selector in the property\'s custom scope leads to
 
   page.text;
 
-  assert.expectDeprecation('Usage of comma separated selectors is deprecated');
+  assert.expectDeprecation('Usage of comma separated selectors is deprecated in ember-cli-page-object');
+});
+
+test('don\'t show deprecation when selector doesn\'t use comma-separated selectors', function(assert) {
+  let page = PageObject.create({
+    context: this,
+    scope: '.root',
+    propText: PageObject.text('.A', {
+      scope: '.B'
+    })
+  });
+
+  this.render(hbs`<div class="root">
+    <div class="B">
+      <div class="A"></div>
+    </div>
+  </div>`);
+
+  page.text;
+
+  assert.expectNoDeprecation();
 });
