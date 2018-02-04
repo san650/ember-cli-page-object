@@ -7,7 +7,7 @@ import PageObject from 'dummy/tests/page-object';
 // only in the `moduleForComponent` test helper. Unfortunatelly it requires
 // some component name to be passed as a first argument. That's why we pass
 // a `calculating-device` here despite the fact that we don't actually need it.
-moduleForComponent('calculating-device', 'Integration | comma separated selectors', {
+moduleForComponent('calculating-device', 'Deprecation | comma separated selectors', {
   integration: true
 });
 

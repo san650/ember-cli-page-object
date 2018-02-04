@@ -114,14 +114,40 @@ import { collection as legacyCollection } from './collection/legacy';
  * @return {Descriptor}
  */
 export function collection(definition) {
-  if ('itemScope' in definition) {
+  if (useLegacyAPI(definition)) {
     deprecate('You are currently using the legacy collection API, check the documentation to see how to upgrade to the new API.', false, {
       id: 'ember-cli-page-object.old-collection-api',
-      until: '2.0.0'
+      until: '2.0.0',
+      url: 'https://gist.github.com/san650/17174e4b7b1fd80b049a47eb456a7cdc#file-old-collection-api-js',
     });
 
     return legacyCollection(definition);
   } else {
     return mainCollection(definition);
   }
+}
+
+function useLegacyAPI(definition) {
+  // We test the use of `itemScope` attribute to guess that the users are using
+  // the legacy API.
+  //
+  // Also, there's a common mistake in page objects created in the wild that
+  // don't define the `itemScope` attribute but they do implement the `items`
+  // object.
+  //
+  //     var page = create({
+  //       foo: collection({
+  //         scope: '.foo',
+  //         item: {
+  //           text: text('p')
+  //         }
+  //       })
+  //     });
+  //
+  // Although this doesn't make any sense and doesn't work in legacy
+  // collections definitions, using the new collection API in this cases break
+  // tests suites. For that reason we use the legacy definition and print a
+  // deprecation warning.
+  return ('itemScope' in definition) ||
+    ('scope' in definition && 'item' in definition);
 }
