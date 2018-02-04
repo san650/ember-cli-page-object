@@ -106,6 +106,22 @@ if (typeof (Symbol) !== 'undefined' && Symbol.iterator) {
   }
 }
 
+function proxyIt(instance) {
+  return new window.Proxy(instance, {
+    get: function(target, name) {
+      if (typeof(name) === 'number' || typeof(name) === 'string') {
+        let index = parseInt(name, 10);
+
+        if (!isNaN(index)) {
+          return target.objectAt(index);
+        }
+      }
+
+      return target[name];
+    }
+  });
+}
+
 export function collection(scope, definition) {
   let descriptor = {
     isDescriptor: true,
@@ -115,6 +131,10 @@ export function collection(scope, definition) {
       // This does mutate the descriptor, but because `setup` is always called before the
       // value is assigned we are guaranteed to get a new, unique Collection instance each time.
       descriptor.value = new Collection(scope, definition, node, key);
+
+      if (window.Proxy) {
+        descriptor.value = proxyIt(descriptor.value);
+      }
     }
   };
 

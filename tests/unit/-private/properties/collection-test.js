@@ -429,4 +429,18 @@ moduleForProperty('collection', function(test) {
     assert.deepEqual(page.foo.filterBy('isSpecial').map((i) => i.text), ['Lorem']);
     assert.deepEqual(page.foo.filterBy('isFoo').map((i) => i.text), []);
   });
+
+  test('uses array accessor', function(assert) {
+    let page = create({
+      foo: collection('span')
+    });
+
+    this.adapter.createTemplate(this, page, `
+      <span>Lorem</span>
+      <span>Ipsum</span>
+    `);
+
+    assert.equal(page.foo[0].text, 'Lorem');
+    assert.equal(page.foo[1].text, 'Ipsum');
+  });
 });
