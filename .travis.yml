@@ -20,6 +20,8 @@ env:
   - EMBER_TRY_SCENARIO=ember-release COVERAGE=true # Only log coverage from release
   - EMBER_TRY_SCENARIO=ember-beta
   - EMBER_TRY_SCENARIO=ember-canary
+  - EMBER_TRY_SCENARIO=with-ember-test-helpers
+  - EMBER_TRY_SCENARIO=with-@ember/test-helpers
 
 matrix:
   fast_finish: true
