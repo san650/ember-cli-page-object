@@ -1,7 +1,7 @@
 import { moduleForComponent, test } from 'ember-qunit';
 import { createCalculatorTemplate } from './test-helper';
 
-import PageObject from 'dummy/tests/page-object';
+import PageObject from 'ember-cli-page-object';
 
 moduleForComponent('calculating-device', 'Integration | context', {
   integration: true

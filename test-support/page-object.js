@@ -1,3 +1,5 @@
+import { deprecate } from '@ember/application/deprecations';
+
 import {
   alias,
   attribute,
@@ -75,3 +77,8 @@ export default {
 };
 
 export { buildSelector, findElementWithAssert, findElement, getContext, fullScope } from 'ember-cli-page-object';
+
+deprecate(`Importing from "test-support" is now deprecated. Just import directly from the "ember-cli-page-object" module instead.`, false, {
+  id: 'ember-cli-page-object.import-from-test-support',
+  until: "2.0.0",
+})
