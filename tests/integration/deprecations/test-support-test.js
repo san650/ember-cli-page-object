@@ -12,5 +12,5 @@ test('import from test-support leads to the deprecation', function(assert) {
 
   require('dummy/tests/page-object');
 
-  assert.expectDeprecation(`Importing from "test-support" is now deprecated. Just import directly from the "ember-cli-page-object" module instead.`);
+  assert.expectDeprecation(`Importing from "test-support" is now deprecated. Please import directly from the "ember-cli-page-object" module instead.`);
 })
