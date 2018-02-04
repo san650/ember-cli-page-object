@@ -1,4 +1,5 @@
 import { deprecate } from '@ember/application/deprecations';
+import { warn } from '@ember/debug';
 
 import { collection as mainCollection } from './collection/main';
 import { collection as legacyCollection } from './collection/legacy';
@@ -36,8 +37,7 @@ import { collection as legacyCollection } from './collection/legacy';
  * // </table>
  *
  * const page = PageObject.create({
- *   users: collection({
- *     scope: 'table tr',
+ *   users: collection('table tr', {
  *     firstName: text('td', { at: 0 }),
  *     lastName: text('td', { at: 1 })
  *   })
@@ -72,8 +72,7 @@ import { collection as legacyCollection } from './collection/legacy';
  * const page = PageObject.create({
  *   scope: '.admins',
  *
- *   users: collection({
- *     scope: 'table tr',
+ *   users: collection('table tr', {
  *     firstName: text('td', { at: 0 }),
  *     lastName: text('td', { at: 1 })
  *   })
@@ -100,8 +99,7 @@ import { collection as legacyCollection } from './collection/legacy';
  * const page = PageObject.create({
  *   scope: 'table',
  *
- *   users: PageObject.collection({
- *     scope: 'tr',
+ *   users: PageObject.collection('tr', {
  *     firstName: text('td', { at: 0 }),
  *     lastName: text('td', { at: 1 }),
  *   })
@@ -110,18 +108,29 @@ import { collection as legacyCollection } from './collection/legacy';
  * let john = page.users.filter((item) => item.firstName === 'John' )[0];
  * assert.equal(john.lastName, 'Doe');
  *
- * @param {Object} definition - Collection definition
+ * @param {String} scopeOrDefinition - Selector to define the items of the collection
+ * @param {Object} [definitionOrNothing] - Object with the definition of item properties
  * @return {Descriptor}
  */
-export function collection(definition) {
-  if ('itemScope' in definition) {
-    deprecate('You are currently using the legacy collection API, check the documentation to see how to upgrade to the new API.', false, {
-      id: 'ember-cli-page-object.old-collection-api',
-      until: '2.0.0'
-    });
+export function collection(scopeOrDefinition, definitionOrNothing) {
 
-    return legacyCollection(definition);
-  } else {
-    return mainCollection(definition);
+  if (typeof scopeOrDefinition === 'string') {
+    return mainCollection(scopeOrDefinition, definitionOrNothing);
   }
+
+  deprecate('You are currently using the legacy collection API, check the documentation to see how to upgrade to the new API.', false, {
+    id: 'ember-cli-page-object.old-collection-api',
+    until: '2.0.0',
+    url: 'https://gist.github.com/san650/17174e4b7b1fd80b049a47eb456a7cdc#file-old-collection-api-js',
+  });
+
+  warn(
+    'Legacy page object collection definition is invalid. Please, make sure you include a `itemScope` selector.',
+    scopeOrDefinition.itemScope,
+    {
+      id: 'ember-cli-page-object.legacy-collection-missing-item-scope'
+    }
+  );
+
+  return legacyCollection(scopeOrDefinition);
 }

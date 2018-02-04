@@ -36,17 +36,12 @@ const button = function(scope) {
 };
 
 const page = PageObject.create({
-  numbers: collection({
-    scope: '.numbers',
-    itemScope: 'button',
-
-    item: {
-      click: clickable(),
-      text: text()
-    },
-
-    clickOn: clickOnText()
+  numbers: collection('.numbers button', {
+    click: clickable(),
+    text: text()
   }),
+
+  clickOnNumber: clickOnText('.numbers'),
 
   operators: {
     scope: '.operators',
@@ -112,22 +107,22 @@ test('Actions work when defined inside collections', function(assert) {
   this.render(template);
 
   page
-    .numbers(0)
+    .numbers
+    .objectAt(0)
     .click();
 
   assert.equal(page.screen.text, '1');
 });
 
-test('Chaining of actions inside a collection works', function(assert) {
+test('Chaining of custom actions works', function(assert) {
   let template = createCalculatorTemplate();
 
   this.render(template);
 
   page
-    .numbers()
-    .clickOn('1')
-    .clickOn('2')
-    .clickOn('3');
+    .clickOnNumber('1')
+    .clickOnNumber('2')
+    .clickOnNumber('3');
 
   assert.equal(page.screen.text, '123');
 });
