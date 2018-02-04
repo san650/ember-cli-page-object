@@ -92,6 +92,38 @@ module.exports = {
       }
     },
     {
+      name: 'with-ember-test-helpers',
+      bower: {
+        dependencies: {
+          'ember': 'components/ember#release'
+        },
+        resolutions: {
+          'ember': 'release'
+        }
+      },
+      npm: {
+        devDependencies: {
+          'ember-cli-qunit': '4.0.0'
+        }
+      }
+    },
+    {
+      name: 'with-@ember/test-helpers',
+      bower: {
+        dependencies: {
+          'ember': 'components/ember#release'
+        },
+        resolutions: {
+          'ember': 'release'
+        }
+      },
+      npm: {
+        devDependencies: {
+          'ember-cli-qunit': '4.3.0'
+        }
+      }
+    },
+    {
       name: 'node-tests',
       command: 'npm run nodetest',
       bower: {

@@ -1,5 +1,5 @@
 import ExecutionContext from './native-events-context';
-import wait from 'ember-test-helpers/wait';
+import { wait } from '../compatibility';
 
 import {
   visit

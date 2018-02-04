@@ -10,7 +10,7 @@ import { isPresent } from './properties/is-present';
 import { isVisible } from './properties/is-visible';
 import { text } from './properties/text';
 import { value } from './properties/value';
-import wait from 'ember-test-helpers/wait';
+import { wait } from './compatibility';
 
 const thenDescriptor = {
   isDescriptor: true,
