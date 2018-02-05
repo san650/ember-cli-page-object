@@ -10,6 +10,9 @@ import { collection as legacyCollection } from './collection/legacy';
  * Creates a enumerable that represents a collection of items. The collection is zero-indexed
  * and has the following public methods and properties:
  *
+ * IMPORTANT: You can use Array accessors only on browsers that support Proxy.
+ *            See https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy#Browser_compatibility
+ *
  * - `length` - The number of items in the collection.
  * - `objectAt()` - Returns the page for the item at the specified index.
  * - `filter()` - Filters the items in the array and returns the ones which match the predicate function.
@@ -107,6 +110,26 @@ import { collection as legacyCollection } from './collection/legacy';
  *
  * let john = page.users.filter((item) => item.firstName === 'John' )[0];
  * assert.equal(john.lastName, 'Doe');
+ *
+ * @example if the browser you run tests supports Proxy, you can use array accessors to access elements by index
+ *
+ * // <table>
+ * //   <tr>
+ * //       <td>Mary<td>
+ * //   </tr>
+ * //   <tr>
+ * //     <td>John<td>
+ * //   </tr>
+ * // </table>
+ *
+ * const page = PageObject.create({
+ *   users: PageObject.collection('tr')
+ * });
+ *
+ * // This only works on browsers that support `Proxy`
+ * assert.equal(page.users[0].text, 'Mary');
+ * assert.equal(page.users[1].text, 'John');
+ *
  *
  * @param {String} scopeOrDefinition - Selector to define the items of the collection
  * @param {Object} [definitionOrNothing] - Object with the definition of item properties
