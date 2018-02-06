@@ -189,22 +189,6 @@ moduleForProperty('collection', function(test) {
     assert.equal(page.foo.objectAt(0).bar.objectAt(0).text, 'Ipsum');
   });
 
-  test("throws an error when the item's element doesn't exist", function(assert) {
-    let page = create({
-      foo: {
-        bar: collection('span', {
-          baz: {
-            qux: text('span')
-          }
-        })
-      }
-    });
-
-    this.adapter.createTemplate(this, page);
-
-    assert.throws(() => page.foo.bar.objectAt(1).baz.qux, /page\.foo\.bar\.objectAt\(1\)/);
-  });
-
   test('iterates over scoped items with a for loop', function(assert) {
     let page = create({
       scope: 'div',
