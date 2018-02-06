@@ -1,7 +1,11 @@
 import Rfc268Adapter from './rfc268-adapter';
 import hbs from 'htmlbars-inline-precompile';
 import $ from 'jquery';
-import { render } from '@ember/test-helpers';
+import require from 'require';
+
+function render(...args) {
+  return require('@ember/test-helpers').render(...args);
+}
 
 export default function RenderingAdapter(hooks) {
   Rfc268Adapter.call(this, hooks);

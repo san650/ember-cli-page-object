@@ -1,7 +1,15 @@
 import $ from 'jquery';
 import Rfc268Adapter from './rfc268-adapter';
-import { visit, currentURL } from '@ember/test-helpers';
+import require from 'require';
 import { run } from '@ember/runloop';
+
+function visit(...args) {
+  return require('@ember/test-helpers').visit(...args);
+}
+
+function currentURL(...args) {
+  return require('@ember/test-helpers').currentURL(...args);
+}
 
 export default function ApplicationAdapter(hooks) {
   Rfc268Adapter.call(this, hooks);
