@@ -31,8 +31,8 @@ ExecutionContext.prototype = {
   },
 
   runAsync(cb) {
-    let isChained = Boolean(this.pageObjectNode._chained);
     let root = getRoot(this.pageObjectNode);
+    let isChained = !root._chainedTree;
 
     if (isChained) {
       // Already chained, so our root is the root of the chained tree, and we
@@ -53,7 +53,8 @@ ExecutionContext.prototype = {
     // which our method was invoked, we find and return our node's mirror in the
     // chained tree so calls to it can be recognized as chained calls, and
     // trigger the chained-call waiting behavior.
-    let isChained = Boolean(this.pageObjectNode._chained);
+    let root = getRoot(this.pageObjectNode);
+    let isChained = !root._chainedTree;
 
     if (isChained) {
       // Already chained, so our node is in the chained tree
@@ -72,8 +73,26 @@ ExecutionContext.prototype = {
       // The path will end with the root's key, 'root', so shift that back off
       path.shift();
 
-      node = getRoot(this.pageObjectNode)._chainedTree;
-      path.forEach((key) => node = node[key]);
+      node = root._chainedTree;
+      path.forEach((key) => {
+        // Normally an item's key is just its property name, but collection
+        // items' keys also include their index. Collection item keys look like
+        // `foo[2]` and legacy collection item keys look like `foo(2)`.
+        let match;
+        if ((match = /\[(\d+)\]$/.exec(key))) {
+          // This is a collection item
+          let [ indexStr, index ] = match;
+          let name = key.slice(0, -indexStr.length);
+          node = node[name].objectAt(parseInt(index, 10));
+        } else if ((match = /\((\d+)\)$/.exec(key))) {
+          // This is a legacy collection item
+          let [ indexStr, index ] = match;
+          let name = key.slice(0, -indexStr.length);
+          node = node[name](parseInt(index, 10));
+        } else {
+          node = node[key];
+        }
+      });
       return node;
     }
   },

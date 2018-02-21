@@ -13,6 +13,7 @@ if (require.has('@ember/test-helpers')) {
     let {
       clickOnText,
       clickable,
+      collection,
       fillable,
       isVisible,
       value,
@@ -35,7 +36,79 @@ if (require.has('@ember/test-helpers')) {
       visitAlias: alias('visit', { chainable: true }),
       clickKeyAlias: alias('keys.clickOn', { chainable: true }),
       clickPlusAlias: alias('keys.sum', { chainable: true }),
-      clickEqualAlias: alias('keys.equal', { chainable: true })
+      clickEqualAlias: alias('keys.equal', { chainable: true }),
+
+      // Collections for accessing keys
+      numbers: collection('.numbers button'),
+      operators: collection('.operators button'),
+
+      // Legacy collections for accessing keys
+      legacyNumbers: collection({
+        itemScope: '.numbers button'
+      }),
+      legacyOperators: collection({
+        itemScope: '.operators button'
+      }),
+
+      // Nested collection for accessing keys
+      keyGroup: collection('.keyboard > div', {
+        keys: collection('button')
+      }),
+
+      // Nested legacy collections for accessing keys
+      legacyKeyGroup: collection({
+        itemScope: '.keyboard > div',
+
+        item: {
+          keys: collection({
+            itemScope: 'button'
+          })
+        }
+      })
+    });
+
+    test('works inside collections', async function(assert) {
+      await page.visit();
+      await page.numbers.objectAt(0).click();
+      await page.numbers.objectAt(1).click();
+      await page.operators.objectAt(0).click();
+      await page.numbers.objectAt(2).click();
+      await page.operators.objectAt(3).click();
+
+      assert.equal(page.screen, '15');
+    });
+
+    test('works inside legacy collections', async function(assert) {
+      await page.visit();
+      await page.legacyNumbers(0).click();
+      await page.legacyNumbers(1).click();
+      await page.legacyOperators(0).click();
+      await page.legacyNumbers(2).click();
+      await page.legacyOperators(3).click();
+
+      assert.equal(page.screen, '15');
+    });
+
+    test('works inside nested collections', async function(assert) {
+      await page.visit();
+      await page.keyGroup.objectAt(0).keys.objectAt(0).click();
+      await page.keyGroup.objectAt(0).keys.objectAt(1).click();
+      await page.keyGroup.objectAt(1).keys.objectAt(0).click();
+      await page.keyGroup.objectAt(0).keys.objectAt(2).click();
+      await page.keyGroup.objectAt(1).keys.objectAt(3).click();
+
+      assert.equal(page.screen, '15');
+    });
+
+    test('works inside nested legacy collections', async function(assert) {
+      await page.visit();
+      await page.legacyKeyGroup(0).keys(0).click();
+      await page.legacyKeyGroup(0).keys(1).click();
+      await page.legacyKeyGroup(1).keys(0).click();
+      await page.legacyKeyGroup(0).keys(2).click();
+      await page.legacyKeyGroup(1).keys(3).click();
+
+      assert.equal(page.screen, '15');
     });
 
     test('allows to chain actions', async function(assert) {
@@ -68,6 +141,48 @@ if (require.has('@ember/test-helpers')) {
         .clickEqualAlias();
 
       assert.equal(page.screen, '15');
+    });
+
+    test('allows to chain inside collections', async function(assert) {
+      await page.visit();
+      await page
+        .numbers.objectAt(0)
+        .click()
+        .click();
+
+      assert.equal(page.screen, '11');
+    });
+
+    test('allows to chain inside legacy collections', async function(assert) {
+      await page.visit();
+      await page
+        .legacyNumbers(0)
+        .click()
+        .click();
+
+      assert.equal(page.screen, '11');
+    });
+
+    test('allows to chain inside nested collections', async function(assert) {
+      await page.visit();
+      await page
+        .keyGroup.objectAt(0)
+        .keys.objectAt(0)
+        .click()
+        .click();
+
+      assert.equal(page.screen, '11');
+    });
+
+    test('allows to chain inside nested legacy collections', async function(assert) {
+      await page.visit();
+      await page
+        .legacyKeyGroup(0)
+        .keys(0)
+        .click()
+        .click();
+
+      assert.equal(page.screen, '11');
     });
 
     test('allows testing loading behavior using returned promise', async function(assert) {
@@ -171,5 +286,5 @@ if (require.has('@ember/test-helpers')) {
       assert.dom('.select4-value').hasValue('select 4 option 2');
       assert.dom('.select5-value').hasValue('select 5 option 2');
     });
-  });  
+  });
 }

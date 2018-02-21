@@ -32,12 +32,11 @@ import dsl from './dsl';
 // waits for things to settle before invoking any async methods.
 //
 // To accomplish this, when building our Ceibo tree, we build a mirror copy of
-// it (the "chained tree") where the nodes have an extra property,
-// `_chained: true`. Anytime a chainable method is invoked, instead of returning
-// the node whose method was invoked, we can return its mirror node in the
-// chained tree. Then, anytime an async method is invoked on that node (meaning
-// we are in a chaining scenario), the execution context can recognize it as a
-// chained node and wait before invoking the target method.
+// it (the "chained tree"). Anytime a chainable method is invoked, instead of
+// returning the node whose method was invoked, we can return its mirror node in
+// the chained tree. Then, anytime an async method is invoked on that node
+// (meaning we are in a chaining scenario), the execution context can recognize
+// it as a chained node and wait before invoking the target method.
 //
 
 // See https://github.com/san650/ceibo#examples for more info on how Ceibo
@@ -52,7 +51,7 @@ function buildObject(node, blueprintKey, blueprint, defaultBuilder) {
 
 // This builder builds the chained tree
 function buildChainObject(node, blueprintKey, blueprint, defaultBuilder) {
-  blueprint = assign({ _chained: true }, blueprint);
+  blueprint = assign({}, blueprint);
 
   return buildObject(node, blueprintKey, blueprint, defaultBuilder);
 }
