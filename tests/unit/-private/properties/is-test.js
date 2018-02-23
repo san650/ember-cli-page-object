@@ -2,34 +2,34 @@ import { moduleForProperty } from '../../../helpers/properties';
 import { create, is } from 'ember-cli-page-object';
 
 moduleForProperty('is', function(test) {
-  test('returns is value', function(assert) {
+  test('returns is value', async function(assert) {
     let page = create({
       foo: is(':checked', ':input')
     });
 
-    this.adapter.createTemplate(this, page, '<input type="checkbox" checked>');
+    await this.adapter.createTemplate(this, page, '<input type="checkbox" checked>');
 
     assert.equal(page.foo, true);
   });
 
-  test("raises an error when the element doesn't exist", function(assert) {
+  test("raises an error when the element doesn't exist", async function(assert) {
     let page = create({
       foo: {
         checked: is(':checked', ':input')
       }
     });
 
-    this.adapter.createTemplate(this, page);
+    await this.adapter.createTemplate(this, page);
 
     assert.throws(() => page.foo.checked, /page\.foo\.checked/);
   });
 
-  test('looks for elements inside the scope', function(assert) {
+  test('looks for elements inside the scope', async function(assert) {
     let page = create({
       foo: is(':checked', ':input', { scope: '.scope' })
     });
 
-    this.adapter.createTemplate(this, page, `
+    await this.adapter.createTemplate(this, page, `
       <div><input></div>
       <div class="scope"><input type="checkbox" checked></div>
       <div><input></div>
@@ -38,14 +38,14 @@ moduleForProperty('is', function(test) {
     assert.equal(page.foo, true);
   });
 
-  test("looks for elements inside page's scope", function(assert) {
+  test("looks for elements inside page's scope", async function(assert) {
     let page = create({
       scope: '.scope',
 
       foo: is(':checked', ':input')
     });
 
-    this.adapter.createTemplate(this, page, `
+    await this.adapter.createTemplate(this, page, `
       <div><input></div>
       <div class="scope"><input type="checkbox" checked></div>
       <div><input></div>
@@ -54,14 +54,14 @@ moduleForProperty('is', function(test) {
     assert.equal(page.foo, true);
   });
 
-  test('resets scope', function(assert) {
+  test('resets scope', async function(assert) {
     let page = create({
       scope: '.scope',
 
       foo: is(':checked', ':input', { resetScope: true })
     });
 
-    this.adapter.createTemplate(this, page, `
+    await this.adapter.createTemplate(this, page, `
       <div class="scope"></div>
       <div><input type="checkbox" checked></div>
     `);
@@ -69,7 +69,7 @@ moduleForProperty('is', function(test) {
     assert.ok(page.foo);
   });
 
-  test("raises an error when the element doesn't exist", function(assert) {
+  test("raises an error when the element doesn't exist", async function(assert) {
     let page = create({
       foo: {
         bar: {
@@ -80,17 +80,17 @@ moduleForProperty('is', function(test) {
       }
     });
 
-    this.adapter.createTemplate(this, page);
+    await this.adapter.createTemplate(this, page);
 
     assert.throws(() => page.foo.bar.baz.qux, /page\.foo\.bar\.baz\.qux/);
   });
 
-  test('throws error if selector matches more than one element', function(assert) {
+  test('throws error if selector matches more than one element', async function(assert) {
     let page = create({
       foo: is(':checked', ':input')
     });
 
-    this.adapter.createTemplate(this, page, `
+    await this.adapter.createTemplate(this, page, `
       <input type="checkbox" checked>
       <input type="checkbox" checked>
     `);
@@ -99,13 +99,13 @@ moduleForProperty('is', function(test) {
       /matched more than one element. If this is not an error use { multiple: true }/);
   });
 
-  test('matches multiple elements', function(assert) {
+  test('matches multiple elements', async function(assert) {
     let page = create({
       foo: is(':checked', 'input.foo', { multiple: true }),
       bar: is(':checked', 'input.bar', { multiple: true })
     });
 
-    this.adapter.createTemplate(this, page, `
+    await this.adapter.createTemplate(this, page, `
       <input class="foo" type="checkbox" checked>
       <input class="foo" type="checkbox" checked="checked">
       <input class="foo" type="checkbox" checked=true>
@@ -117,12 +117,12 @@ moduleForProperty('is', function(test) {
     assert.equal(page.bar, false);
   });
 
-  test('finds element by index', function(assert) {
+  test('finds element by index', async function(assert) {
     let page = create({
       foo: is(':checked', ':input', { at: 1 })
     });
 
-    this.adapter.createTemplate(this, page, `
+    await this.adapter.createTemplate(this, page, `
       <input>
       <input type="checkbox" checked>
     `);
@@ -130,23 +130,23 @@ moduleForProperty('is', function(test) {
     assert.ok(page.foo);
   });
 
-  test('looks for elements outside the testing container', function(assert) {
+  test('looks for elements outside the testing container', async function(assert) {
     let page = create({
       foo: is('.foo', 'h1', { testContainer: '#alternate-ember-testing' })
     });
 
-    this.adapter.createTemplate(this, page, '<h1 class="foo">lorem ipsum</h1>', { useAlternateContainer: true });
+    await this.adapter.createTemplate(this, page, '<h1 class="foo">lorem ipsum</h1>', { useAlternateContainer: true });
 
     assert.equal(page.foo, true);
   });
 
-  test('looks for elements within test container specified at node level', function(assert) {
+  test('looks for elements within test container specified at node level', async function(assert) {
     let page = create({
       testContainer: '#alternate-ember-testing',
       foo: is('.foo', 'h1')
     });
 
-    this.adapter.createTemplate(this, page, '<h1 class="foo">lorem ipsum</h1>', { useAlternateContainer: true });
+    await this.adapter.createTemplate(this, page, '<h1 class="foo">lorem ipsum</h1>', { useAlternateContainer: true });
 
     assert.equal(page.foo, true);
   });

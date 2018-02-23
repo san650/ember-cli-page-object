@@ -93,7 +93,7 @@ export function clickOnText(selector, userOptions = {}) {
 
           context.assertElementExists(fullSelector, options);
 
-          context.click(fullSelector, container);
+          return context.click(fullSelector, container, options);
         });
       };
     }

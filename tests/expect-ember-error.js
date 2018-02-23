@@ -1,4 +1,5 @@
 
+import { run } from '@ember/runloop';
 import Ember from 'ember';
 
 // ember@2.11.3 introduces a breaking change in how the errors are propagated
@@ -27,9 +28,9 @@ export default function expectEmberError(assert, callback, matcher, message) {
       }
     });
 
-    Ember.run(() => { Ember.Test.adapter = TestAdapter.create(); });
+    run(() => { Ember.Test.adapter = TestAdapter.create(); });
     callback();
-    Ember.run(() => {
+    run(() => {
       Ember.Test.adapter.destroy();
     });
     Ember.Test.adapter = origTestAdapter;

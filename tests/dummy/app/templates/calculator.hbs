@@ -4,6 +4,11 @@
     <div class="result">
       {{result}}
     </div>
+    {{#if loading}}
+      <div class="loading">
+        loading...
+      </div>
+    {{/if}}
   </div>
   <div class="keyboard">
     <div class="numbers">
@@ -22,6 +27,7 @@
       <button {{action 'keyPress' '+'}}>+</button>
       <button {{action 'keyPress' '-'}}>-</button>
       <button {{action 'keyPress' '='}}>=</button>
+      <button {{action 'keyPress' '=' true}}>async=</button>
     </div>
   </div>
 </div>

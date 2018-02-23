@@ -66,7 +66,7 @@ export function blurrable(selector, userOptions = {}) {
         const options = assign({ pageObjectKey: `${key}()` }, userOptions);
 
         return executionContext.runAsync((context) => {
-          context.blur(selector, options);
+          return context.blur(selector, options);
         });
       };
     }

@@ -1,33 +1,24 @@
+import $ from 'jquery';
+import { run } from '@ember/runloop';
 import startApp from '../start-app';
 import { module as qunitModule } from 'qunit';
 
 export { test as testForAcceptance } from 'qunit';
 
-import Ember from 'ember';
-const { $ } = Ember;
-
 let noop = function() {};
 
-export function AcceptanceAdapter() {
-  this.originalVisit = window.visit;
+export function AcceptanceAdapter(testContext) {
+  this.testContext = testContext;
 }
 
 AcceptanceAdapter.prototype = {
   name: 'acceptance',
 
   $(selector, isAlternative) {
-    return Ember.$(selector, isAlternative ? '#alternate-ember-testing' : '#ember-testing');
+    return $(selector, isAlternative ? '#alternate-ember-testing' : '#ember-testing');
   },
 
-  visit(fn) {
-    window.visit = fn;
-  },
-
-  revert() {
-    window.visit = this.originalVisit;
-  },
-
-  createTemplate(test, page, template, options) {
+  async createTemplate(test, page, template, { useAlternateContainer } = {}) {
     template = template || '';
 
     if (!(test && page)) {
@@ -35,7 +26,16 @@ AcceptanceAdapter.prototype = {
       console.error('Missing parameters in adapter.createTemplate(testContext, pageObject, templateString)');
     }
 
-    fixture(template, options);
+    if (useAlternateContainer) {
+      $('#alternate-ember-testing').html(template);
+    } else {
+      await window.visit('/html-render');
+      run(() => this.testContext.application.__container__.lookup('controller:html-render').set('html', template));
+    }
+  },
+
+  currentURL() {
+    return window.currentURL();
   },
 
   throws(assert, block, expected, message) {
@@ -46,22 +46,10 @@ AcceptanceAdapter.prototype = {
     }).finally(done);
   },
 
-  andThen(fn) {
-    andThen(fn);
-  },
-
-  wait() {
-    return window.wait();
+  async await() {
+    await window.wait();
   }
 };
-
-export function fixture(str, options = {}) {
-  if (options.useAlternateContainer) {
-    $('#alternate-ember-testing').html(str);
-  } else {
-    $('#ember-testing').html(`<section>${str}</section>`);
-  }
-}
 
 export function moduleForAcceptance(name, options = {}) {
   let beforeEach = options.beforeEach || noop;
@@ -76,10 +64,9 @@ export function moduleForAcceptance(name, options = {}) {
     afterEach() {
       afterEach.call(this);
 
-      Ember.run(this.application, 'destroy');
+      run(this.application, 'destroy');
 
       // Cleanup DOM
-      $('#ember-testing').html('');
       $('#alternate-ember-testing').html('');
     }
   });

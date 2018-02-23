@@ -1,9 +1,9 @@
-import { getExecutionContext } from '../execution_context';
 import { throwBetterError } from '../better-errors';
 import {
   getProperty,
   objectHasProperty
 } from '../helpers';
+import { getExecutionContext } from '../execution_context';
 
 const ALIASED_PROP_NOT_FOUND = 'PageObject does not contain aliased property';
 
@@ -92,10 +92,12 @@ export function alias(pathToProp, options = {}) {
         return value;
       }
 
-      const executionContext = getExecutionContext(this);
-
       return function(...args) {
-        return executionContext.runAsync(() => value(...args));
+        // We can't just return value(...args) here because if the alias points
+        // to a property on a child node, then the return value would be that
+        // child node rather than this node.
+        value(...args);
+        return getExecutionContext(this).chainable();
       };
     }
   };

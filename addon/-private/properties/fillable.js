@@ -1,4 +1,8 @@
-import { assign, buildSelector, findClosestValue } from '../helpers';
+import {
+  assign,
+  buildSelector,
+  findClosestValue
+} from '../helpers';
 import { getExecutionContext } from '../execution_context';
 
 /**
@@ -143,7 +147,7 @@ export function fillable(selector, userOptions = {}) {
 
           context.assertElementExists(fullSelector, options);
 
-          context.fillIn(fullSelector, container, options, content);
+          return context.fillIn(fullSelector, container, options, content);
         });
       };
     }

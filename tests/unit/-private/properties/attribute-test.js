@@ -2,27 +2,27 @@ import { moduleForProperty } from '../../../helpers/properties';
 import { create, attribute } from 'ember-cli-page-object';
 
 moduleForProperty('attribute', function(test) {
-  test('returns attribute value', function(assert) {
+  test('returns attribute value', async function(assert) {
     let page = create({
       foo: attribute('placeholder', ':input')
     });
 
-    this.adapter.createTemplate(this, page, '<input placeholder="a value">');
+    await this.adapter.createTemplate(this, page, '<input placeholder="a value">');
 
     assert.equal(page.foo, 'a value');
   });
 
-  test("returns null when attribute doesn't exist", function(assert) {
+  test("returns null when attribute doesn't exist", async function(assert) {
     let page = create({
       foo: attribute('placeholder', ':input')
     });
 
-    this.adapter.createTemplate(this, page, '<input>');
+    await this.adapter.createTemplate(this, page, '<input>');
 
     assert.equal(page.foo, null);
   });
 
-  test("raises an error when the element doesn't exist", function(assert) {
+  test("raises an error when the element doesn't exist", async function(assert) {
     let page = create({
       foo: {
         bar: {
@@ -33,17 +33,17 @@ moduleForProperty('attribute', function(test) {
       }
     });
 
-    this.adapter.createTemplate(this, page);
+    await this.adapter.createTemplate(this, page);
 
     assert.throws(() => page.foo.bar.baz.qux, /page\.foo\.bar\.baz\.qux/);
   });
 
-  test('looks for elements inside the scope', function(assert) {
+  test('looks for elements inside the scope', async function(assert) {
     let page = create({
       foo: attribute('placeholder', ':input', { scope: '.scope' })
     });
 
-    this.adapter.createTemplate(this, page, `
+    await this.adapter.createTemplate(this, page, `
       <div><input></div>
       <div class="scope"><input placeholder="a value"></div>
       <div><input></div>
@@ -52,14 +52,14 @@ moduleForProperty('attribute', function(test) {
     assert.equal(page.foo, 'a value');
   });
 
-  test("looks for elements inside page's scope", function(assert) {
+  test("looks for elements inside page's scope", async function(assert) {
     let page = create({
       scope: '.scope',
 
       foo: attribute('placeholder', ':input')
     });
 
-    this.adapter.createTemplate(this, page, `
+    await this.adapter.createTemplate(this, page, `
       <div><input></div>
       <div class="scope"><input placeholder="a value"></div>
       <div><input></div>
@@ -68,14 +68,14 @@ moduleForProperty('attribute', function(test) {
     assert.equal(page.foo, 'a value');
   });
 
-  test('resets scope', function(assert) {
+  test('resets scope', async function(assert) {
     let page = create({
       scope: '.scope',
 
       foo: attribute('placeholder', ':input', { resetScope: true })
     });
 
-    this.adapter.createTemplate(this, page, `
+    await this.adapter.createTemplate(this, page, `
       <div class="scope"></div>
       <div><input placeholder="a value"></div>
     `);
@@ -83,12 +83,12 @@ moduleForProperty('attribute', function(test) {
     assert.equal(page.foo, 'a value');
   });
 
-  test('throws error if selector matches more than one element', function(assert) {
+  test('throws error if selector matches more than one element', async function(assert) {
     let page = create({
       foo: attribute('placeholder', ':input')
     });
 
-    this.adapter.createTemplate(this, page, `
+    await this.adapter.createTemplate(this, page, `
       <input placeholder="a value">
       <input placeholder="other value">
     `);
@@ -97,12 +97,12 @@ moduleForProperty('attribute', function(test) {
       /matched more than one element. If this is not an error use { multiple: true }/);
   });
 
-  test('returns multiple values', function(assert) {
+  test('returns multiple values', async function(assert) {
     let page = create({
       foo: attribute('placeholder', ':input', { multiple: true })
     });
 
-    this.adapter.createTemplate(this, page, `
+    await this.adapter.createTemplate(this, page, `
       <input placeholder="a value">
       <input placeholder="other value">
     `);
@@ -110,12 +110,12 @@ moduleForProperty('attribute', function(test) {
     assert.deepEqual(page.foo, ['a value', 'other value']);
   });
 
-  test('finds element by index', function(assert) {
+  test('finds element by index', async function(assert) {
     let page = create({
       foo: attribute('placeholder', ':input', { at: 1 })
     });
 
-    this.adapter.createTemplate(this, page, `
+    await this.adapter.createTemplate(this, page, `
       <input>
       <input placeholder="a value">
     `);
@@ -123,12 +123,12 @@ moduleForProperty('attribute', function(test) {
     assert.equal(page.foo, 'a value');
   });
 
-  test('looks for elements outside the testing container', function(assert) {
+  test('looks for elements outside the testing container', async function(assert) {
     let page = create({
       foo: attribute('placeholder', ':input', { testContainer: '#alternate-ember-testing' })
     });
 
-    this.adapter.createTemplate(this, page, '<input placeholder="a value">', { useAlternateContainer: true });
+    await this.adapter.createTemplate(this, page, '<input placeholder="a value">', { useAlternateContainer: true });
 
     assert.equal(page.foo, 'a value');
   });

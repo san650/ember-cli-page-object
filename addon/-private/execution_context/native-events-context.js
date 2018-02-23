@@ -38,6 +38,10 @@ ExecutionContext.prototype = {
     throw new Error('not implemented');
   },
 
+  chainable() {
+    return this.pageObjectNode;
+  },
+
   click(selector, container) {
     const el = this.$(selector, container)[0];
     click(el);
@@ -72,7 +76,7 @@ ExecutionContext.prototype = {
     }
   },
 
-  triggerEvent(selector, container, eventName, eventOptions) {
+  triggerEvent(selector, container, options, eventName, eventOptions) {
     const element = this.$(selector, container)[0];
 
     // `keyCode` is a deprecated property.

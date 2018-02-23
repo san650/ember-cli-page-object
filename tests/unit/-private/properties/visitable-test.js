@@ -1,40 +1,32 @@
 import { moduleForProperty } from '../../../helpers/properties';
 import { create, visitable } from 'ember-cli-page-object';
 
-moduleForProperty('visitable', { acceptanceOnly: true }, function(test) {
-  test("calls Ember's visit helper", function(assert) {
+moduleForProperty('visitable', { needsVisit: true }, function(test) {
+  test("calls Ember's visit helper", async function(assert) {
     assert.expect(1);
 
-    let expectedRoute = '/dummy-page';
-
-    window.visit = function(actualRoute) {
-      assert.equal(actualRoute, expectedRoute);
-    };
+    let expectedRoute = '/html-render';
 
     let page = create({
       foo: visitable(expectedRoute)
     });
 
-    page.foo();
+    await this.adapter.await(page.foo());
+    assert.equal(this.adapter.currentURL(), expectedRoute);
   });
 
-  test('fills in dynamic segments', function(assert) {
+  test('fills in dynamic segments', async function(assert) {
     assert.expect(1);
 
-    let page;
-
-    window.visit = function(actualRoute) {
-      assert.equal(actualRoute, '/users/5/comments/1');
-    };
-
-    page = create({
+    let page = create({
       foo: visitable('/users/:user_id/comments/:comment_id')
     });
 
-    page.foo({ user_id: 5, comment_id: 1 });
+    await this.adapter.await(page.foo({ user_id: 5, comment_id: 1 }));
+    assert.equal(this.adapter.currentURL(), '/users/5/comments/1')
   });
 
-  test("raises an exception if params aren't given for all dynamic segments", function(assert) {
+  test("raises an exception if params aren't given for all dynamic segments", async function(assert) {
     assert.expect(1);
 
     let page;
@@ -44,58 +36,42 @@ moduleForProperty('visitable', { acceptanceOnly: true }, function(test) {
         foo: visitable('/users/:user_id')
       });
 
-      page.foo();
+      await this.adapter.await(page.foo());
     } catch(e) {
       assert.equal(e.message, "Missing parameter for 'user_id'");
     }
   });
 
-  test('appends query params to the path', function(assert) {
+  test('appends query params to the path', async function(assert) {
     assert.expect(1);
 
-    let page;
-
-    window.visit = function(actualRoute) {
-      assert.equal(actualRoute, '/dummy-page?hello=world&lorem=ipsum');
-    };
-
-    page = create({
-      foo: visitable('/dummy-page')
+    let page = create({
+      foo: visitable('/html-render')
     });
 
-    page.foo({ hello: 'world', lorem: 'ipsum' });
+    await this.adapter.await(page.foo({ hello: 'world', lorem: 'ipsum' }));
+    assert.equal(this.adapter.currentURL(), '/html-render?hello=world&lorem=ipsum')
   });
 
-  test('accepts both dynamic segments and query params', function(assert) {
+  test('accepts both dynamic segments and query params', async function(assert) {
     assert.expect(1);
 
-    let page;
-
-    window.visit = function(actualRoute) {
-      assert.equal(actualRoute, '/users/1/0?hello=world&lorem=ipsum');
-    };
-
-    page = create({
-      foo: visitable('/users/:user_id/:another_id')
+    let page = create({
+      foo: visitable('/users/:user_id/comments/:comment_id')
     });
 
-    page.foo({ user_id: 1, another_id: 0, hello: 'world', lorem: 'ipsum' });
+    await this.adapter.await(page.foo({ user_id: 5, comment_id: 1, hello: 'world', lorem: 'ipsum' }));
+    assert.equal(this.adapter.currentURL(), '/users/5/comments/1?hello=world&lorem=ipsum');
   });
 
-  test('fills in encoded dynamic segments', function(assert) {
+  test('fills in encoded dynamic segments', async function(assert) {
     assert.expect(1);
 
-    let page;
-
-    window.visit = function(actualRoute) {
-      assert.equal(actualRoute, '/users/a%2Fuser/comments/1');
-    };
-
-    page = create({
-      foo: visitable('/users/:user_id/comments/:comment_id'),
+    let page = create({
+      foo: visitable('/users/:user_id/comments/:comment_id')
     });
 
-    page.foo({ user_id: 'a/user', comment_id: 1 });
-
+    await this.adapter.await(page.foo({ user_id: 'a/user', comment_id: 1 }));
+    assert.equal(this.adapter.currentURL(), '/users/a%2Fuser/comments/1');
   });
 });

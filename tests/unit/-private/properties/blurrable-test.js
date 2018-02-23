@@ -1,8 +1,8 @@
 import { moduleForProperty } from '../../../helpers/properties';
 import { create, blurrable } from 'ember-cli-page-object';
 
-moduleForProperty('blurrable', function(test) {
-  test('calls blur with proper args', function(assert) {
+moduleForProperty('blurrable', function(test, adapter) {
+  test('calls blur with proper args', async function(assert) {
     assert.expect(1);
 
     let expectedSelector = 'input';
@@ -10,19 +10,16 @@ moduleForProperty('blurrable', function(test) {
       foo: blurrable(expectedSelector)
     });
 
-    this.adapter.createTemplate(this, page, '<input />');
+    await this.adapter.createTemplate(this, page, '<input />');
 
-    return this.adapter.andThen(() => {
-      this.adapter.$(expectedSelector).focus().on('blur', () => {
-        assert.ok(1);
-      });
-      page.foo();
-
-      return this.adapter.wait();
+    this.adapter.$(expectedSelector).focus().on('blur', () => {
+      assert.ok(1);
     });
+
+    await this.adapter.await(page.foo());
   });
 
-  test('actually blurs the element', function(assert) {
+  test('actually blurs the element', async function(assert) {
     assert.expect(2);
 
     let expectedSelector = 'input';
@@ -30,35 +27,30 @@ moduleForProperty('blurrable', function(test) {
       foo: blurrable(expectedSelector)
     });
 
-    this.adapter.createTemplate(this, page, '<input />');
+    await this.adapter.createTemplate(this, page, '<input />');
 
-    return this.adapter.andThen(() => {
-      this.adapter.$(expectedSelector).focus().on('blur', () => {
-        assert.ok(1, 'blurred');
-        assert.equal(document.activeElement, document.body);
-      });
-      page.foo();
-
-      return this.adapter.wait();
+    this.adapter.$(expectedSelector).focus().on('blur', () => {
+      assert.ok(1, 'blurred');
+      assert.equal(document.activeElement, document.body);
     });
+
+    await this.adapter.await(page.foo());
   });
 
-  test('looks for elements inside the scope', function(assert) {
+  test('looks for elements inside the scope', async function(assert) {
     assert.expect(1);
 
     let page = create({
       foo: blurrable('input', { scope: '.scope' })
     });
 
-    this.adapter.createTemplate(this, page, '<div class="scope"><input/></div>');
+    await this.adapter.createTemplate(this, page, '<div class="scope"><input/></div>');
 
     this.adapter.$('.scope input').focus().on('blur', () => assert.ok(1));
-    page.foo();
-
-    return this.adapter.wait();
+    await this.adapter.await(page.foo());
   });
 
-  test("looks for elements inside page's scope", function(assert) {
+  test("looks for elements inside page's scope", async function(assert) {
     assert.expect(1);
 
     let page = create({
@@ -67,16 +59,14 @@ moduleForProperty('blurrable', function(test) {
       foo: blurrable('input')
     });
 
-    this.adapter.createTemplate(this, page, '<div class="scope"><input /></div>');
+    await this.adapter.createTemplate(this, page, '<div class="scope"><input /></div>');
 
     this.adapter.$('.scope input').focus().on('blur', () => assert.ok(1));
 
-    page.foo();
-
-    return this.adapter.wait();
+    await this.adapter.await(page.foo());
   });
 
-  test('resets scope', function(assert) {
+  test('resets scope', async function(assert) {
     assert.expect(1);
 
     let page = create({
@@ -84,30 +74,28 @@ moduleForProperty('blurrable', function(test) {
       foo: blurrable('input', { resetScope: true })
     });
 
-    this.adapter.createTemplate(this, page, '<input/>');
+    await this.adapter.createTemplate(this, page, '<input/>');
 
     this.adapter.$('input').focus().on('blur', () => assert.ok(1));
 
-    page.foo();
-
-    return this.adapter.wait();
+    await this.adapter.await(page.foo());
   });
 
-  test('returns target object', function(assert) {
+  test('returns chainable object', async function(assert) {
     assert.expect(1);
 
     let page = create({
       foo: blurrable('input')
     });
 
-    this.adapter.createTemplate(this, page, '<input/>');
+    await this.adapter.createTemplate(this, page, '<input/>');
 
     this.adapter.$('input').focus();
 
-    assert.equal(page.foo(), page);
+    assert.ok(page.foo);
   });
 
-  test('finds element by index', function(assert) {
+  test('finds element by index', async function(assert) {
     assert.expect(1);
 
     let expectedSelector = 'input:eq(3)';
@@ -115,15 +103,13 @@ moduleForProperty('blurrable', function(test) {
       foo: blurrable('input', { at: 3 })
     });
 
-    this.adapter.createTemplate(this, page, '<input /><input /><input /><input />');
+    await this.adapter.createTemplate(this, page, '<input /><input /><input /><input />');
 
     this.adapter.$(expectedSelector).focus().on('blur', () => assert.ok(1));
-    page.foo();
-
-    return this.adapter.wait();
+    await this.adapter.await(page.foo());
   });
 
-  test('looks for elements outside the testing container', function(assert) {
+  test('looks for elements outside the testing container', async function(assert) {
     assert.expect(1);
 
     let expectedContext = '#alternate-ember-testing';
@@ -131,16 +117,14 @@ moduleForProperty('blurrable', function(test) {
       foo: blurrable('input', { testContainer: expectedContext })
     });
 
-    this.adapter.createTemplate(this, page, '<input />', { useAlternateContainer: true });
+    await this.adapter.createTemplate(this, page, '<input />', { useAlternateContainer: true });
 
     this.adapter.$('input', expectedContext).focus().on('blur', () => assert.ok(1));
 
-    page.foo();
-
-    return this.adapter.wait();
+    await this.adapter.await(page.foo());
   });
 
-  test('looks for elements within test container specified at node level', function(assert) {
+  test('looks for elements within test container specified at node level', async function(assert) {
     assert.expect(1);
 
     let expectedContext = '#alternate-ember-testing';
@@ -149,16 +133,14 @@ moduleForProperty('blurrable', function(test) {
       foo: blurrable('input')
     });
 
-    this.adapter.createTemplate(this, page, '<input />', { useAlternateContainer: true });
+    await this.adapter.createTemplate(this, page, '<input />', { useAlternateContainer: true });
 
     this.adapter.$('input', expectedContext).focus().on('blur', () => assert.ok(1));
 
-    page.foo();
-
-    return this.adapter.wait();
+    await this.adapter.await(page.foo());
   });
 
-  test("raises an error when the element doesn't exist", function(assert) {
+  test("raises an error when the element doesn't exist", async function(assert) {
     assert.expect(1);
 
     let page = create({
@@ -171,57 +153,57 @@ moduleForProperty('blurrable', function(test) {
       }
     });
 
-    this.adapter.createTemplate(this, page);
+    await this.adapter.createTemplate(this, page);
 
-    this.adapter.throws(assert, function() {
+    await this.adapter.throws(assert, function() {
       return page.foo.bar.baz.qux();
     }, /page\.foo\.bar\.baz\.qux/, 'Element not found');
   });
 
-  test('Does not raise error when blurring focusable elements', function(assert) {
-    assert.expect(0);
+  if (adapter === 'integration' || adapter === 'acceptance') {
+    test('Does not raise error when blurring focusable elements', async function(assert) {
+      assert.expect(0);
 
-    let page = create({
-      foo: {
-        bar: {
-          input: blurrable('input'),
-          select: blurrable('select'),
-          a: blurrable('a'),
-          area: blurrable('area'),
-          iframe: blurrable('iframe'),
-          button: blurrable('button'),
-          contentEditable: blurrable('[contenteditable]'),
-          tabindex: blurrable('[tabindex]'),
+      let page = create({
+        foo: {
+          bar: {
+            input: blurrable('input'),
+            select: blurrable('select'),
+            a: blurrable('a'),
+            area: blurrable('area'),
+            iframe: blurrable('iframe'),
+            button: blurrable('button'),
+            contentEditable: blurrable('[contenteditable]'),
+            tabindex: blurrable('[tabindex]'),
 
+          }
         }
-      }
+      });
+
+      await this.adapter.createTemplate(this, page, `
+        <input/>
+        <a href="foo"></a>
+        <area href="foo"></a>
+        <iframe></iframe>
+        <select></select>
+        <button></button>
+        <div contenteditable></div>
+        <div tabindex=-1></div>
+      `);
+
+
+      page.foo.bar.input();
+      page.foo.bar.select();
+      page.foo.bar.a();
+      page.foo.bar.area();
+      page.foo.bar.iframe();
+      page.foo.bar.button()
+      page.foo.bar.contentEditable();
+      page.foo.bar.tabindex();
     });
+  }
 
-    this.adapter.createTemplate(this, page, `
-      <input/>
-      <a href="foo"></a>
-      <area href="foo"></a>
-      <iframe></iframe>
-      <select></select>
-      <button></button>
-      <div contenteditable></div>
-      <div tabindex=-1></div>
-    `);
-
-
-    page.foo.bar.input();
-    page.foo.bar.select();
-    page.foo.bar.a();
-    page.foo.bar.area();
-    page.foo.bar.iframe();
-    page.foo.bar.button()
-    page.foo.bar.contentEditable();
-    page.foo.bar.tabindex();
-  });
-
-  test('raises an error when the element is not focusable', function(assert) {
-    assert.expect(4);
-
+  test('raises an error when the element is not focusable', async function(assert) {
     let page = create({
       foo: {
         bar: {
@@ -233,26 +215,28 @@ moduleForProperty('blurrable', function(test) {
       }
     });
 
-    this.adapter.createTemplate(this, page, `
+    await this.adapter.createTemplate(this, page, `
       <span></span>
       <input disabled=true/>
       <button style="display: none;"></button>
       <div contenteditable="false"></div>
     `);
 
-    this.adapter.throws(assert, function() {
+    await this.adapter.throws(assert, function() {
       return page.foo.bar.baz();
     }, /page\.foo\.bar\.baz/, 'Element is not focusable because it is not a link');
 
-    this.adapter.throws(assert, function() {
-      return page.foo.bar.qux();
-    }, /page\.foo\.bar\.qux/, 'Element is not focusable because it is disabled');
+    if (adapter === 'acceptance' || adapter === 'integration') {
+      await this.adapter.throws(assert, function() {
+        return page.foo.bar.qux();
+      }, /page\.foo\.bar\.qux/, 'Element is not focusable because it is disabled');
 
-    this.adapter.throws(assert, function() {
-      return page.foo.bar.quux();
-    }, /page\.foo\.bar\.quux/, 'Element is not focusable because it is hidden');
+      await this.adapter.throws(assert, function() {
+        return page.foo.bar.quux();
+      }, /page\.foo\.bar\.quux/, 'Element is not focusable because it is hidden');
+    }
 
-    this.adapter.throws(assert, function() {
+    await this.adapter.throws(assert, function() {
       return page.foo.bar.quuz();
     }, /page\.foo\.bar\.quuz/, 'Element is not focusable because it is contenteditable="false"');
   });

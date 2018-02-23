@@ -1,8 +1,26 @@
-import { AcceptanceAdapter, moduleForAcceptance, testForAcceptance } from './properties/acceptance-adapter';
+import {
+  AcceptanceAdapter,
+  moduleForAcceptance,
+  testForAcceptance
+} from './properties/acceptance-adapter';
 
-import { IntegrationAdapter, moduleForIntegration, testForIntegration } from './properties/integration-adapter';
+import {
+  IntegrationAdapter,
+  moduleForIntegration,
+  testForIntegration
+} from './properties/integration-adapter';
+
+import ApplicationAdapter from './properties/application-adapter';
+import RenderingAdapter from './properties/rendering-adapter';
+import {
+  setupRenderingTest,
+  setupApplicationTest
+} from 'ember-qunit'
+import { module, test } from 'qunit';
 
 import { useNativeEvents } from 'ember-cli-page-object/extend';
+
+import require from 'require';
 
 export function moduleForProperty(name, cbOrOptions, cb) {
   let options = cb ? cbOrOptions : {};
@@ -25,28 +43,56 @@ export function moduleForProperty(name, cbOrOptions, cb) {
 
       afterEach() {
         useNativeEvents(false);
-        this.adapter.revert();
       }
     });
     cb(testForAcceptance, 'acceptance');
 
-    if (options.acceptanceOnly) {
-      return;
-    }
-
     // Generate integration tests
-    moduleForIntegration('html-render', `Integration mode | Property | ${name}`, {
-      integration: true,
-      beforeEach() {
-        useNativeEvents(_useNativeEvents);
 
-        this.adapter = new IntegrationAdapter(this);
-      },
-      afterEach() {
-        useNativeEvents(false);
-        this.adapter.revert();
+    if (!options.needsVisit) {
+      moduleNamePrefix = 'Integration mode ';
+      if (_useNativeEvents) {
+        moduleNamePrefix += '[native-events]';
       }
-    });
-    cb(testForIntegration, 'integration');
+
+      moduleForIntegration('html-render', `${moduleNamePrefix} | Property | ${name}`, {
+        integration: true,
+        beforeEach() {
+          useNativeEvents(_useNativeEvents);
+
+          this.adapter = new IntegrationAdapter(this);
+        },
+        afterEach() {
+          useNativeEvents(false);
+        }
+      });
+      cb(testForIntegration, 'integration');
+    }
   });
+
+  if (require.has('@ember/test-helpers')) {
+    // Generate rfc268 tests
+
+    module(`Application mode | Property | ${name}`, function(hooks) {
+      setupApplicationTest(hooks);
+
+      let adapter = new ApplicationAdapter(hooks);
+      hooks.beforeEach(function() {
+        this.adapter = adapter;
+      });
+      cb(test, 'application');
+    });
+
+    if (!options.needsVisit) {
+      module(`Rendering mode | Property | ${name}`, function(hooks) {
+        setupRenderingTest(hooks);
+
+        let adapter = new RenderingAdapter(hooks);
+        hooks.beforeEach(function() {
+          this.adapter = adapter;
+        });
+        cb(test, 'rendering');
+      });
+    }    
+  }
 }

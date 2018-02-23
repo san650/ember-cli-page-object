@@ -1,4 +1,5 @@
-import Ember from 'ember';
+import $ from '-jquery';
+import { run } from '@ember/runloop';
 import {
   guardMultiple,
   buildSelector,
@@ -12,8 +13,6 @@ import {
   ELEMENT_NOT_FOUND,
   throwBetterError
 } from '../better-errors';
-
-const { $, run } = Ember;
 
 export default function IntegrationExecutionContext(pageObjectNode, testContext) {
   this.pageObjectNode = pageObjectNode;
@@ -30,6 +29,10 @@ IntegrationExecutionContext.prototype = {
       cb(this);
     });
 
+    return this.chainable();
+  },
+
+  chainable() {
     return this.pageObjectNode;
   },
 
@@ -60,7 +63,7 @@ IntegrationExecutionContext.prototype = {
     }
   },
 
-  triggerEvent(selector, container, eventName, eventOptions) {
+  triggerEvent(selector, container, options, eventName, eventOptions) {
     let event = $.Event(eventName, eventOptions);
 
     if (container) {

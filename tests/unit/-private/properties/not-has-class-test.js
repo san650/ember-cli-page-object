@@ -2,27 +2,27 @@ import { moduleForProperty } from '../../../helpers/properties';
 import { create, notHasClass } from 'ember-cli-page-object';
 
 moduleForProperty('notHasClass', function(test) {
-  test('returns false when the element has the class', function(assert) {
+  test('returns false when the element has the class', async function(assert) {
     let page = create({
       foo: notHasClass('ipsum', '.lorem')
     });
 
-    this.adapter.createTemplate(this, page, '<span class="lorem ipsum"></span>');
+    await this.adapter.createTemplate(this, page, '<span class="lorem ipsum"></span>');
 
     assert.ok(!page.foo);
   });
 
-  test('returns true when the element doesn\'t have the class', function(assert) {
+  test('returns true when the element doesn\'t have the class', async function(assert) {
     let page = create({
       foo: notHasClass('ipsum', '.lorem')
     });
 
-    this.adapter.createTemplate(this, page, '<span class="lorem"></span>');
+    await this.adapter.createTemplate(this, page, '<span class="lorem"></span>');
 
     assert.ok(page.foo);
   });
 
-  test("raises an error when the element doesn't exist", function(assert) {
+  test("raises an error when the element doesn't exist", async function(assert) {
     let page = create({
       foo: {
         bar: {
@@ -33,17 +33,17 @@ moduleForProperty('notHasClass', function(test) {
       }
     });
 
-    this.adapter.createTemplate(this, page);
+    await this.adapter.createTemplate(this, page);
 
     assert.throws(() => page.foo.bar.baz.qux, /page\.foo\.bar\.baz\.qux/);
   });
 
-  test('looks for elements inside the scope', function(assert) {
+  test('looks for elements inside the scope', async function(assert) {
     let page = create({
       foo: notHasClass('lorem', 'span', { scope: '.scope' })
     });
 
-    this.adapter.createTemplate(this, page, `
+    await this.adapter.createTemplate(this, page, `
       <div>
         <span class="lorem"></span>
       </div>
@@ -55,14 +55,14 @@ moduleForProperty('notHasClass', function(test) {
     assert.ok(page.foo);
   });
 
-  test("looks for elements inside page's scope", function(assert) {
+  test("looks for elements inside page's scope", async function(assert) {
     let page = create({
       scope: '.scope',
 
       foo: notHasClass('lorem', 'span')
     });
 
-    this.adapter.createTemplate(this, page, `
+    await this.adapter.createTemplate(this, page, `
       <div>
         <span class="lorem"></span>
       </div>
@@ -74,14 +74,14 @@ moduleForProperty('notHasClass', function(test) {
     assert.ok(page.foo);
   });
 
-  test('resets scope', function(assert) {
+  test('resets scope', async function(assert) {
     let page = create({
       scope: '.scope',
 
       foo: notHasClass('ipsum', 'span', { resetScope: true, at: 0 })
     });
 
-    this.adapter.createTemplate(this, page, `
+    await this.adapter.createTemplate(this, page, `
       <div>
         <span class="lorem"></span>
       </div>
@@ -93,12 +93,12 @@ moduleForProperty('notHasClass', function(test) {
     assert.ok(page.foo);
   });
 
-  test('throws error if selector matches more than one element', function(assert) {
+  test('throws error if selector matches more than one element', async function(assert) {
     let page = create({
       foo: notHasClass('lorem', 'span')
     });
 
-    this.adapter.createTemplate(this, page, `
+    await this.adapter.createTemplate(this, page, `
       <span class="lorem"></span>
       <span class="ipsum"></span>
     `);
@@ -107,12 +107,12 @@ moduleForProperty('notHasClass', function(test) {
       /matched more than one element. If this is not an error use { multiple: true }/);
   });
 
-  test('matches multiple elements with multiple: true option, returns true if no elements have class', function(assert) {
+  test('matches multiple elements with multiple: true option, returns true if no elements have class', async function(assert) {
     let page = create({
       foo: notHasClass('other-class', 'span', { multiple: true })
     });
 
-    this.adapter.createTemplate(this, page, `
+    await this.adapter.createTemplate(this, page, `
       <span class="lorem"></span>
       <span class="ipsum"></span>
     `);
@@ -120,12 +120,12 @@ moduleForProperty('notHasClass', function(test) {
     assert.ok(page.foo);
   });
 
-  test('matches multiple elements with multiple: true option, returns false if some elements have class', function(assert) {
+  test('matches multiple elements with multiple: true option, returns false if some elements have class', async function(assert) {
     let page = create({
       foo: notHasClass('lorem', 'span', { multiple: true })
     });
 
-    this.adapter.createTemplate(this, page, `
+    await this.adapter.createTemplate(this, page, `
       <span class="lorem"></span>
       <span class="ipsum"></span>
     `);
@@ -133,12 +133,12 @@ moduleForProperty('notHasClass', function(test) {
     assert.ok(!page.foo);
   });
 
-  test('finds element by index', function(assert) {
+  test('finds element by index', async function(assert) {
     let page = create({
       foo: notHasClass('lorem', 'span', { at: 1 })
     });
 
-    this.adapter.createTemplate(this, page, `
+    await this.adapter.createTemplate(this, page, `
       <span class="lorem"></span>
       <span class="ipsum"></span>
     `);
@@ -146,23 +146,23 @@ moduleForProperty('notHasClass', function(test) {
     assert.ok(page.foo);
   });
 
-  test('looks for elements outside the testing container', function(assert) {
+  test('looks for elements outside the testing container', async function(assert) {
     let page = create({
       foo: notHasClass('ipsum', '.lorem', { testContainer: '#alternate-ember-testing' })
     });
 
-    this.adapter.createTemplate(this, page, '<span class="lorem ipsum"></span>', { useAlternateContainer: true });
+    await this.adapter.createTemplate(this, page, '<span class="lorem ipsum"></span>', { useAlternateContainer: true });
 
     assert.ok(!page.foo);
   });
 
-  test('looks for elements within test container specified at node level', function(assert) {
+  test('looks for elements within test container specified at node level', async function(assert) {
     let page = create({
       testContainer: '#alternate-ember-testing',
       foo: notHasClass('ipsum', '.lorem')
     });
 
-    this.adapter.createTemplate(this, page, '<span class="lorem ipsum"></span>', { useAlternateContainer: true });
+    await this.adapter.createTemplate(this, page, '<span class="lorem ipsum"></span>', { useAlternateContainer: true });
 
     assert.ok(!page.foo);
   });
