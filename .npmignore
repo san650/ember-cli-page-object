@@ -13,6 +13,7 @@
 .watchmanconfig
 .travis.yml
 bower.json
+docs.js
 ember-cli-build.js
 testem.js
 Brocfile.js
