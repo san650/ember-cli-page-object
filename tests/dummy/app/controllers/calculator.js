@@ -4,6 +4,8 @@ import { computed as c } from '@ember/object';
 
 export default Controller.extend({
   init() {
+    this._super(...arguments);
+
     this.setProperties({
       result: '',
       expression: '',
