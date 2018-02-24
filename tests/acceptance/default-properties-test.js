@@ -8,7 +8,7 @@ let {
   visitable
 } = PageObject;
 
-test('Adds default properties', function(assert) {
+test('Adds default properties', async function(assert) {
   let page = PageObject.create({
     visit: visitable('/calculator'),
 
@@ -29,25 +29,23 @@ test('Adds default properties', function(assert) {
     }
   });
 
-  page
+  await page
     .visit()
     .clickOn('9')
     .one
     .click();
 
-  page.clickOn('=');
+  await page.clickOn('=');
 
-  andThen(function() {
-    assert.equal(page.screen.result.text, '91', 'text');
-    assert.ok(page.screen.result.contains('91'), 'contains');
-    assert.ok(!page.screen.result.contains('99'), 'not contains');
-    assert.ok(page.screen.isPresent, 'isPresent');
-    assert.ok(page.screen.isVisible, 'isVisible');
-    assert.ok(!page.screen.isHidden, 'isHidden');
-  });
+  assert.equal(page.screen.result.text, '91', 'text');
+  assert.ok(page.screen.result.contains('91'), 'contains');
+  assert.ok(!page.screen.result.contains('99'), 'not contains');
+  assert.ok(page.screen.isPresent, 'isPresent');
+  assert.ok(page.screen.isVisible, 'isVisible');
+  assert.ok(!page.screen.isHidden, 'isHidden');
 });
 
-test('Overrides default properties', function(assert) {
+test('Overrides default properties', async function(assert) {
   let page = PageObject.create({
     dummy: {
       click() {
@@ -74,13 +72,11 @@ test('Overrides default properties', function(assert) {
     }
   });
 
-  andThen(function() {
-    assert.equal(page.dummy.click(), 'click');
-    assert.equal(page.dummy.clickOn(), 'clickOn');
-    assert.equal(page.dummy.contains(), 'contains');
-    assert.equal(page.dummy.isHidden(), 'isHidden');
-    assert.equal(page.dummy.isPresent(), 'isPresent');
-    assert.equal(page.dummy.isVisible(), 'isVisible');
-    assert.equal(page.dummy.text(), 'text');
-  });
+  assert.equal(page.dummy.click(), 'click');
+  assert.equal(page.dummy.clickOn(), 'clickOn');
+  assert.equal(page.dummy.contains(), 'contains');
+  assert.equal(page.dummy.isHidden(), 'isHidden');
+  assert.equal(page.dummy.isPresent(), 'isPresent');
+  assert.equal(page.dummy.isVisible(), 'isVisible');
+  assert.equal(page.dummy.text(), 'text');
 });
