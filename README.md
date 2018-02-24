@@ -30,7 +30,8 @@ Let's work together to improve this addon!
 
 You can find us on the [official Slack](https://ember-community-slackin.herokuapp.com/), join the `ec-page-object` channel or [open an issue on Github](https://github.com/san650/ember-cli-page-object/issues) to request features, report bugs or just to ask any question.
 
-## Installation
+Installation
+------------------------------------------------------------------------------
 
 ```sh
 $ ember install ember-cli-page-object
