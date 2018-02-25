@@ -1,5 +1,5 @@
 /* global Symbol */
-import Ember from 'ember';
+import { A } from '@ember/array';
 import { buildSelector, assign } from '../../helpers';
 import { create } from '../../create';
 import { count } from '../count';
@@ -71,7 +71,7 @@ export class Collection {
   toArray() {
     let { length } = this;
 
-    let array = Ember.A();
+    let array = A();
 
     for (let i = 0; i < length; i++) {
       array.push(this.objectAt(i));

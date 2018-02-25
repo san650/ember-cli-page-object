@@ -1,4 +1,5 @@
 'use strict';
+/* eslint no-console:0 */
 
 /*
  * Parses the JavaScript files in `addon/` and

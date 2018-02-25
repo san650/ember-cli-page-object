@@ -21,14 +21,12 @@ let page = create({
   }
 });
 
-test('finds an element in the DOM', function(assert) {
-  page.visit();
+test('finds an element in the DOM', async function(assert) {
+  await page.visit();
 
-  andThen(function() {
-    let element = page.findElement('.screen');
-    assert.ok(element.length);
+  let element = page.findElement('.screen');
+  assert.ok(element.length);
 
-    element = page.findElementWithAssert('.screen');
-    assert.ok(element.length);
-  });
+  element = page.findElementWithAssert('.screen');
+  assert.ok(element.length);
 });

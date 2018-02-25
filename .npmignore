@@ -8,11 +8,12 @@
 .bowerrc
 .editorconfig
 .ember-cli
-.gitignore
 .eslintrc.js
+.gitignore
 .watchmanconfig
 .travis.yml
 bower.json
+docs.js
 ember-cli-build.js
 testem.js
 Brocfile.js
