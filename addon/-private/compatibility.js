@@ -38,6 +38,7 @@
 const { require } = window;
 
 let helpers;
+let waitFn;
 
 if (require.has('@ember/test-helpers')) {
   helpers = require('@ember/test-helpers');
@@ -55,18 +56,32 @@ if (require.has('ember-test-helpers/wait')) {
   // since this code executes while modules are initially loading, under certain
   // conditions `ember-test-helpers/wait` can still be in the pending state
   // at this point, so its exports are still undefined.
-  helpers.wait = (...args) => require('ember-test-helpers/wait').default(...args);
+  waitFn = (...args) => require('ember-test-helpers/wait').default(...args);
 } else {
-  helpers.wait = () => {
+  waitFn = () => {
     throw new Error('ember-test-helpers or @ember/test-helpers must be installed');
   };
 }
 
-export let getContext = helpers.getContext;
-export let visit = helpers.visit;
-export let click = helpers.click;
-export let fillIn = helpers.fillIn;
-export let triggerEvent = helpers.triggerEvent;
-export let focus = helpers.focus;
-export let blur = helpers.blur;
-export let wait = helpers.wait;
+export function getContext(...args) {
+  return helpers.getContext(...args);
+}
+export function visit(...args) {
+  return helpers.visit(...args);
+}
+export function click(...args) {
+  return helpers.click(...args);
+}
+export function fillIn(...args) {
+  return helpers.fillIn(...args);
+}
+export function triggerEvent(...args) {
+  return helpers.triggerEvent(...args);
+}
+export function focus(...args) {
+  return helpers.focus(...args);
+}
+export function blur(...args) {
+  return helpers.blur(...args);
+}
+export let wait = waitFn;
