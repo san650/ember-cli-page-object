@@ -180,12 +180,16 @@ function capitalizeFirstLetter(string) {
 * @returns {Promise}
 */
 function writeApiDocs(srcPaths, destDir) {
-  return RSVP.map(srcPaths, srcPath => {
-    let slug = path.basename(srcPath, '.js');
-    let title = capitalizeFirstLetter(slug.replace('-', ' '));
+  return removeDir(destDir)
+    .then(() => createDir(destDir))
+    .then(() => {
+      return RSVP.map(srcPaths, srcPath => {
+        let slug = path.basename(srcPath, '.js');
+        let title = capitalizeFirstLetter(slug.replace('-', ' '));
 
-    return writeDocsFile(srcPath, destDir, { slug, title });
-  });
+        return writeDocsFile(srcPath, destDir, { slug, title });
+      });
+    })
 }
 
 /* Copies the documentation files from the temporary directory to the Jekyll
@@ -253,18 +257,17 @@ function removeDir(dir) {
   var version = 'v' + versionArray[0] + '.' + versionArray[1] + '.x';
 
   var tmpDir = path.join(__dirname, 'tmp_docs');
-  var destDir = path.join(__dirname, 'docs', version, 'api');
+  var destDir = path.join(__dirname, 'docs', version);
+  var guidesDir = path.join(__dirname, 'guides');
 
-  const apiSourcesPath = 'addon/-private/{create.js,properties/*.js}';
+  const apiSourcesPaths = walkSync('.', {
+    globs: ['addon/-private/{create.js,properties/*.js}' ]
+  });
 
   // Create the temporary directory for the docs
   createDir(tmpDir)
-    .then(function() {
-      return writeApiDocs(
-        walkSync('.', { globs: [apiSourcesPath] }),
-        tmpDir
-      );
-    })
+    .then(() => copyDocs(guidesDir, tmpDir))
+    .then(() => writeApiDocs(apiSourcesPaths, path.join(tmpDir, 'api')))
     .then(() => execCmd('git branch'))
     .then((branches) => {
       const branch = 'gh-pages';
