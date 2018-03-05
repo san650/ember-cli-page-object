@@ -21,7 +21,7 @@ The pattern was first introduced by the Selenium
 
 You can find more information about this design pattern here:
 
-* [Page Objects - Selenium wiki](https://seleniumhq.github.io/docs/best.html#page_object_models)
+* [Page Objects - Selenium wiki](https://github.com/SeleniumHQ/selenium/wiki/PageObjects)
 * [PageObject - Martin Fowler](http://martinfowler.com/bliki/PageObject.html)
 
 ## Community
