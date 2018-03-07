@@ -14,7 +14,7 @@ The addon is:
 - Agnostic to the testing framework (but really hooked on Ember!)
 
 ```javascript
-const page = PageObject.create({
+const page = create({
   visit: visitable('/'),
 
   username: fillable('#username'),
@@ -52,4 +52,4 @@ This addon allows you to define page objects in a declarative fashion, making it
 
 - [Using the page object pattern with ember-cli](https://wyeworks.com/blog/2015/5/13/using-the-page-object-pattern-with-ember-cli/)
 - [Martin Fowler's original description](http://martinfowler.com/bliki/PageObject.html)
-- [Selenium's wiki page](https://seleniumhq.github.io/docs/best.html#page_object_models)
+- [Selenium's wiki page](https://github.com/SeleniumHQ/selenium/wiki/PageObjects)
