@@ -8,8 +8,10 @@ import { getExecutionContext } from '../execution_context';
  *
  * // Lorem <span>ipsum</span>
  *
- * const page = PageObject.create({
- *   spanIsVisible: PageObject.isVisible('span')
+ * import { create, isVisible } from 'ember-cli-page-object';
+ * 
+ * const page = create({
+ *   spanIsVisible: isVisible('span')
  * });
  *
  * assert.ok(page.spanIsVisible);
@@ -19,8 +21,10 @@ import { getExecutionContext } from '../execution_context';
  * // <span>ipsum</span>
  * // <span style="display:none">dolor</span>
  *
- * const page = PageObject.create({
- *   spansAreVisible: PageObject.isVisible('span', { multiple: true })
+ * import { create, isVisible } from 'ember-cli-page-object';
+ * 
+ * const page = create({
+ *   spansAreVisible: isVisible('span', { multiple: true })
  * });
  *
  * // not all spans are visible
@@ -31,8 +35,10 @@ import { getExecutionContext } from '../execution_context';
  * // <span>ipsum</span>
  * // <span>dolor</span>
  *
- * const page = PageObject.create({
- *   spansAreVisible: PageObject.isVisible('span', { multiple: true })
+ * import { create, isVisible } from 'ember-cli-page-object';
+ * 
+ * const page = create({
+ *   spansAreVisible: isVisible('span', { multiple: true })
  * });
  *
  * // all spans are visible
@@ -42,8 +48,10 @@ import { getExecutionContext } from '../execution_context';
  *
  * // Lorem <strong>ipsum</strong>
  *
- * const page = PageObject.create({
- *   spanIsVisible: PageObject.isVisible('span')
+ * import { create, isVisible } from 'ember-cli-page-object';
+ * 
+ * const page = create({
+ *   spanIsVisible: isVisible('span')
  * });
  *
  * // returns false when element doesn't exist in DOM
@@ -58,8 +66,10 @@ import { getExecutionContext } from '../execution_context';
  * //   <span>ipsum</span>
  * // </div>
  *
- * const page = PageObject.create({
- *   spanIsVisible: PageObject.isVisible('span', { scope: '.scope' })
+ * import { create, isVisible } from 'ember-cli-page-object';
+ * 
+ * const page = create({
+ *   spanIsVisible: isVisible('span', { scope: '.scope' })
  * });
  *
  * assert.ok(page.spanIsVisible);
@@ -73,9 +83,11 @@ import { getExecutionContext } from '../execution_context';
  * //   <span>ipsum</span>
  * // </div>
  *
- * const page = PageObject.create({
+ * import { create, isVisible } from 'ember-cli-page-object';
+ * 
+ * const page = create({
  *   scope: '.scope',
- *   spanIsVisible: PageObject.isVisible('span')
+ *   spanIsVisible: isVisible('span')
  * });
  *
  * assert.ok(page.spanIsVisible);

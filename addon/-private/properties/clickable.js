@@ -13,7 +13,9 @@ import { getExecutionContext } from '../execution_context';
  * // <button class="continue">Continue<button>
  * // <button>Cancel</button>
  *
- * const page = PageObject.create({
+ * import { create, clickable } from 'ember-cli-page-object';
+ * 
+ * const page = create({
  *   continue: clickable('button.continue')
  * });
  *
@@ -27,7 +29,9 @@ import { getExecutionContext } from '../execution_context';
  * // </div>
  * // <button>Cancel</button>
  *
- * const page = PageObject.create({
+ * import { create, clickable } from 'ember-cli-page-object';
+ * 
+ * const page = create({
  *   continue: clickable('button.continue', { scope: '.scope' })
  * });
  *
@@ -41,7 +45,9 @@ import { getExecutionContext } from '../execution_context';
  * // </div>
  * // <button>Cancel</button>
  *
- * const page = PageObject.create({
+ * import { create, clickable } from 'ember-cli-page-object';
+ * 
+ * const page = create({
  *   scope: '.scope',
  *   continue: clickable('button.continue')
  * });

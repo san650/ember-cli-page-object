@@ -10,8 +10,10 @@ import { getExecutionContext } from '../execution_context';
  * @example
  * // <input type="checkbox" checked="checked">
  *
- * const page = PageObject.create({
- *   isChecked: PageObject.property('checked', 'input')
+ * import { create, property } from 'ember-cli-page-object';
+ * 
+ * const page = create({
+ *   isChecked: property('checked', 'input')
  * });
  *
  * assert.ok(page.isChecked);
@@ -21,8 +23,10 @@ import { getExecutionContext } from '../execution_context';
  * // <input type="checkbox" checked="checked">
  * // <input type="checkbox" checked="">
  *
- * const page = PageObject.create({
- *   inputsChecked: PageObject.property('checked', 'input', { multiple: true })
+ * import { create, property } from 'ember-cli-page-object';
+ * 
+ * const page = create({
+ *   inputsChecked: property('checked', 'input', { multiple: true })
  * });
  *
  * assert.deepEqual(page.inputsChecked, [true, false]);
@@ -33,8 +37,10 @@ import { getExecutionContext } from '../execution_context';
  * // <div class="scope"><input type="checkbox" checked="checked"></div>
  * // <div><input></div>
  *
- * const page = PageObject.create({
- *   isChecked: PageObject.property('checked', 'input', { scope: '.scope' })
+ * import { create, property } from 'ember-cli-page-object';
+ * 
+ * const page = create({
+ *   isChecked: property('checked', 'input', { scope: '.scope' })
  * });
  *
  * assert.ok(page.isChecked);

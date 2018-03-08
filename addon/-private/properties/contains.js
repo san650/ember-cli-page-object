@@ -8,8 +8,10 @@ import { getExecutionContext } from '../execution_context';
  *
  * // Lorem <span>ipsum</span>
  *
- * const page = PageObject.create({
- *   spanContains: PageObject.contains('span')
+ * import { create, contains } from 'ember-cli-page-object';
+ * 
+ * const page = create({
+ *   spanContains: contains('span')
  * });
  *
  * assert.ok(page.spanContains('ipsum'));
@@ -32,8 +34,10 @@ import { getExecutionContext } from '../execution_context';
  * // <span>super text</span>
  * // <span>regular text</span>
  *
- * const page = PageObject.create({
- *   spansContain: PageObject.contains('span', { multiple: true })
+ * import { create, contains } from 'ember-cli-page-object';
+ * 
+ * const page = create({
+ *   spansContain: contains('span', { multiple: true })
  * });
  *
  * // all spans contain 'text'
@@ -45,8 +49,10 @@ import { getExecutionContext } from '../execution_context';
  * // <div class="scope"><span>ipsum</span></div>
  * // <div><span>dolor</span></div>
  *
- * const page = PageObject.create({
- *   spanContains: PageObject.contains('span', { scope: '.scope' })
+ * import { create, contains } from 'ember-cli-page-object';
+ * 
+ * const page = create({
+ *   spanContains: contains('span', { scope: '.scope' })
  * });
  *
  * assert.notOk(page.spanContains('lorem'));
@@ -58,10 +64,12 @@ import { getExecutionContext } from '../execution_context';
  * // <div class="scope"><span>ipsum</span></div>
  * // <div><span>dolor</span></div>
  *
- * const page = PageObject.create({
+ * import { create, contains } from 'ember-cli-page-object';
+ * 
+ * const page = create({
  *   scope: '.scope',
 
- *   spanContains: PageObject.contains('span')
+ *   spanContains: contains('span')
  * });
  *
  * assert.notOk(page.spanContains('lorem'));

@@ -14,8 +14,10 @@ function identity(v) {
  *
  * // Hello <span>world!</span>
  *
- * const page = PageObject.create({
- *   text: PageObject.text('span')
+ * import { create, text } from 'ember-cli-page-object';
+ * 
+ * const page = create({
+ *   text: text('span')
  * });
  *
  * assert.equal(page.text, 'world!');
@@ -26,8 +28,10 @@ function identity(v) {
  * // <span> ipsum </span>
  * // <span>dolor</span>
  *
- * const page = PageObject.create({
- *   texts: PageObject.text('span', { multiple: true })
+ * import { create, text } from 'ember-cli-page-object';
+ * 
+ * const page = create({
+ *   texts: text('span', { multiple: true })
  * });
  *
  * assert.deepEqual(page.texts, ['lorem', 'ipsum', 'dolor']);
@@ -38,8 +42,10 @@ function identity(v) {
  * // <div class="scope"><span>ipsum</span></div>
  * // <div><span>dolor</span></div>
  *
- * const page = PageObject.create({
- *   text: PageObject.text('span', { scope: '.scope' })
+ * import { create, text } from 'ember-cli-page-object';
+ * 
+ * const page = create({
+ *   text: text('span', { scope: '.scope' })
  * });
  *
  * assert.equal(page.text, 'ipsum');
@@ -50,9 +56,11 @@ function identity(v) {
  * // <div class="scope"><span>ipsum</span></div>
  * // <div><span>dolor</span></div>
  *
- * const page = PageObject.create({
+ * import { create, text } from 'ember-cli-page-object';
+ * 
+ * const page = create({
  *   scope: '.scope',
- *   text: PageObject.text('span')
+ *   text: text('span')
  * });
  *
  * // returns 'ipsum'
@@ -66,9 +74,11 @@ function identity(v) {
  * // </div>
  * // <div><span>dolor</span></div>
  *
- * const page = PageObject.create({
+ * import { create, text } from 'ember-cli-page-object';
+ * 
+ * const page = create({
  *   scope: '.scope',
- *   text: PageObject.text('span', { normalize: false })
+ *   text: text('span', { normalize: false })
  * });
  *
  * // returns 'ipsum'

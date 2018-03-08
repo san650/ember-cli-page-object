@@ -10,7 +10,9 @@ import { getExecutionContext } from '../execution_context';
  * // <input class="name">
  * // <input class="email">
  *
- * const page = PageObject.create({
+ * import { create, focusable } from 'ember-cli-page-object';
+ * 
+ * const page = create({
  *   focus: focusable('.name')
  * });
  *
@@ -24,7 +26,9 @@ import { getExecutionContext } from '../execution_context';
  * // </div>
  * // <input class="email">
  *
- * const page = PageObject.create({
+ * import { create, focusable } from 'ember-cli-page-object';
+ * 
+ * const page = create({
  *   focus: focusable('.name', { scope: '.scope' })
  * });
  *
@@ -38,7 +42,9 @@ import { getExecutionContext } from '../execution_context';
  * // </div>
  * // <input class="email">
  *
- * const page = PageObject.create({
+ * import { create, focusable } from 'ember-cli-page-object';
+ * 
+ * const page = create({
  *   scope: '.scope',
  *   focus: focusable('.name')
  * });

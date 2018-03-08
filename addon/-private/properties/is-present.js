@@ -16,8 +16,10 @@ import { findElement } from 'ember-cli-page-object';
  *
  * // Lorem <span>ipsum</span>
  *
- * const page = PageObject.create({
- *   spanIsPresent: PageObject.isPresent('span')
+ * import { create, isPresent } from 'ember-cli-page-object';
+ * 
+ * const page = create({
+ *   spanIsPresent: isPresent('span')
  * });
  *
  * assert.ok(page.spanIsPresent);
@@ -27,8 +29,10 @@ import { findElement } from 'ember-cli-page-object';
  * // <span>ipsum</span>
  * // <span style="display:none">dolor</span>
  *
- * const page = PageObject.create({
- *   spanIsPresent: PageObject.isPresent('span', { multiple: true })
+ * import { create, isPresent } from 'ember-cli-page-object';
+ * 
+ * const page = create({
+ *   spanIsPresent: isPresent('span', { multiple: true })
  * });
  *
  * assert.ok(page.spanIsPresent);
@@ -39,8 +43,10 @@ import { findElement } from 'ember-cli-page-object';
  * //   <meta name='robots' content='noindex'>
  * // </head>
  *
- * const page = PageObject.create({
- *   notIndexed: PageObject.isPresent(`meta[name='robots'][content='noindex']`, {
+ * import { create, isPresent } from 'ember-cli-page-object';
+ * 
+ * const page = create({
+ *   notIndexed: isPresent(`meta[name='robots'][content='noindex']`, {
  *     testContainer: 'head'
  *   })
  * });
@@ -51,8 +57,10 @@ import { findElement } from 'ember-cli-page-object';
  *
  * // Lorem <strong>ipsum</strong>
  *
- * const page = PageObject.create({
- *   spanIsPresent: PageObject.isPresent('span')
+ * import { create, isPresent } from 'ember-cli-page-object';
+ * 
+ * const page = create({
+ *   spanIsPresent: isPresent('span')
  * });
  *
  * // returns false when element doesn't exist in DOM
