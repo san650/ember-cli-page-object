@@ -63,15 +63,19 @@ andThen(function() {
 
 By default, all components define some handy attributes and methods without being explicitly declared.
 
-* [click](/docs/v1.8.x/api/clickable)
-* [clickOn](/docs/v1.8.x/api/click-on-text)
-* [contains](/docs/v1.8.x/api/contains)
-* [fillIn](/docs/v1.8.x/api/fillable)
-* [isVisible](/docs/v1.8.x/api/is-visible)
-* [isHidden](/docs/v1.8.x/api/is-hidden)
-* [select](/docs/v1.8.x/api/selectable)
-* [text](/docs/v1.8.x/api/text)
-* [value](/docs/v1.8.x/api/value)
+* [as](/docs/v1.14.x/api/as)
+* [blur](/docs/v1.14.x/api/blur)
+* [click](/docs/v1.14.x/api/clickable)
+* [clickOn](/docs/v1.14.x/api/click-on-text)
+* [contains](/docs/v1.14.x/api/contains)
+* [fillIn](/docs/v1.14.x/api/fillable)
+* [focus](/docs/v1.14.x/api/focus)
+* [isHidden](/docs/v1.14.x/api/is-hidden)
+* [isPresent](/docs/v1.14.x/api/is-present)
+* [isVisible](/docs/v1.14.x/api/is-visible)
+* [select](/docs/v1.14.x/api/selectable)
+* [text](/docs/v1.14.x/api/text)
+* [value](/docs/v1.14.x/api/value)
 
 <div class="alert alert-warning" role="alert">
   <strong>Note</strong> that these attributes will use the component scope as their selector.
