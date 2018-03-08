@@ -6,6 +6,8 @@ title: Extend
 {% raw %}
 ### Methods
 
+You can create custom helpers by creating `Ceibo` descriptors. (`Ceibo` is a small library for parsing trees. You can check it out [here](http://github.com/san650/ceibo)).
+
 - [findElementWithAssert](#findelementwithassert)
 - [findElement](#findelement)
 
@@ -43,8 +45,6 @@ export default function isDisabled(selector, options = {}) {
 }
 ```
 
-Returns **Object** jQuery object
-
 ## findElement
 
 [addon/-private/extend/find-element.js:36-42](https://github.com/san650/ember-cli-page-object/blob/c521335ffba9955a6acaf1006ed503cbb61ba72d/addon/-private/extend/find-element.js#L36-L42 "Source code on GitHub")
@@ -78,5 +78,17 @@ export default function isDisabled(selector, options = {}) {
 }
 ```
 
-Returns **Object** jQuery object
+Usage Example:
+
+```js
+const page = create({
+  scope: '.page',
+
+  isAdmin: disabled('#override-name')
+});
+```
+
+`page.isAdmin` will look for elements in the DOM that match ".page
+\#override-name" and check if they are disabled.
+
 {% endraw %}

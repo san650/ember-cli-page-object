@@ -113,37 +113,6 @@ andThen(function() {
 page.modal.clickOn("I'm sure");
 ```
 
-## Custom helper
-
-You can create custom helpers by creating `Ceibo` descriptors. (`Ceibo` is a small library for parsing trees. You can check it out [here](http://github.com/san650/ceibo)).
-
-```js
-import { findElement } from 'ember-cli-page-object';
-
-export default function disabled(selector, options = {}) {
-  return {
-    isDescriptor: true,
-
-    get() {
-      return findElement(this, selector, options).is(':disabled');
-    }
-  }
-}
-```
-
-Example usage:
-
-```js
-const page = create({
-  scope: '.page',
-
-  isAdmin: disabled('#override-name')
-});
-```
-
-`page.isAdmin` will look for elements in the DOM that match ".page
-\#override-name" and check if they are disabled.
-
 ## Scopes
 
 The `scope` attribute can be used to reduce the set of matched elements to the ones enclosed by the given selector.
