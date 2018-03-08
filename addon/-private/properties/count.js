@@ -11,8 +11,10 @@ import { getExecutionContext } from '../execution_context';
  * // <span>1</span>
  * // <span>2</span>
  *
- * const page = PageObject.create({
- *   spanCount: PageObject.count('span')
+ * import { create, count } from 'ember-cli-page-object';
+ * 
+ * const page = create({
+ *   spanCount: count('span')
  * });
  *
  * assert.equal(page.spanCount, 2);
@@ -21,8 +23,10 @@ import { getExecutionContext } from '../execution_context';
  *
  * // <div>Text</div>
  *
- * const page = PageObject.create({
- *   spanCount: PageObject.count('span')
+ * import { create, count } from 'ember-cli-page-object';
+ * 
+ * const page = create({
+ *   spanCount: count('span')
  * });
  *
  * assert.equal(page.spanCount, 0);
@@ -32,8 +36,10 @@ import { getExecutionContext } from '../execution_context';
  * // <div><span></span></div>
  * // <div class="scope"><span></span><span></span></div>
  *
- * const page = PageObject.create({
- *   spanCount: PageObject.count('span', { scope: '.scope' })
+ * import { create, count } from 'ember-cli-page-object';
+ * 
+ * const page = create({
+ *   spanCount: count('span', { scope: '.scope' })
  * });
  *
  * assert.equal(page.spanCount, 2)
@@ -43,9 +49,11 @@ import { getExecutionContext } from '../execution_context';
  * // <div><span></span></div>
  * // <div class="scope"><span></span><span></span></div>
  *
- * const page = PageObject.create({
+ * import { create, count } from 'ember-cli-page-object';
+ * 
+ * const page = create({
  *   scope: '.scope',
- *   spanCount: PageObject.count('span')
+ *   spanCount: count('span')
  * });
  *
  * assert.equal(page.spanCount, 2)
@@ -55,9 +63,11 @@ import { getExecutionContext } from '../execution_context';
  * // <div><span></span></div>
  * // <div class="scope"><span></span><span></span></div>
  *
- * const page = PageObject.create({
+ * import { create, count } from 'ember-cli-page-object';
+ * 
+ * const page = create({
  *   scope: '.scope',
- *   spanCount: PageObject.count('span', { resetScope: true })
+ *   spanCount: count('span', { resetScope: true })
  * });
  *
  * assert.equal(page.spanCount, 1);

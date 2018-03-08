@@ -39,7 +39,9 @@ import { collection as legacyCollection } from './collection/legacy';
  * //   </tbody>
  * // </table>
  *
- * const page = PageObject.create({
+ * import { create, collection, text } from 'ember-cli-page-object';
+ * 
+ * const page = create({
  *   users: collection('table tr', {
  *     firstName: text('td', { at: 0 }),
  *     lastName: text('td', { at: 1 })
@@ -72,7 +74,9 @@ import { collection as legacyCollection } from './collection/legacy';
  * //   </table>
  * // </div>
  *
- * const page = PageObject.create({
+ * import { create, collection, text } from 'ember-cli-page-object';
+ * 
+ * const page = create({
  *   scope: '.admins',
  *
  *   users: collection('table tr', {
@@ -99,10 +103,12 @@ import { collection as legacyCollection } from './collection/legacy';
  * //   </tbody>
  * // </table>
  *
- * const page = PageObject.create({
+ * import { create, collection, text } from 'ember-cli-page-object';
+ * 
+ * const page = create({
  *   scope: 'table',
  *
- *   users: PageObject.collection('tr', {
+ *   users: collection('tr', {
  *     firstName: text('td', { at: 0 }),
  *     lastName: text('td', { at: 1 }),
  *   })
@@ -122,8 +128,10 @@ import { collection as legacyCollection } from './collection/legacy';
  * //   </tr>
  * // </table>
  *
- * const page = PageObject.create({
- *   users: PageObject.collection('tr')
+ * import { create, collection } from 'ember-cli-page-object';
+ * 
+ * const page = create({
+ *   users: collection('tr')
  * });
  *
  * // This only works on browsers that support `Proxy`

@@ -10,7 +10,9 @@ import { getExecutionContext } from '../execution_context';
  * // <input class="name">
  * // <input class="email">
  *
- * const page = PageObject.create({
+ * import { create, blurrable } from 'ember-cli-page-object';
+ * 
+ * const page = create({
  *   blur: blurrable('.name')
  * });
  *
@@ -24,7 +26,9 @@ import { getExecutionContext } from '../execution_context';
  * // </div>
  * // <input class="email">
  *
- * const page = PageObject.create({
+ * import { create, blurrable } from 'ember-cli-page-object';
+ * 
+ * const page = create({
  *   blur: blurrable('.name', { scope: '.scope' })
  * });
  *
@@ -38,7 +42,9 @@ import { getExecutionContext } from '../execution_context';
  * // </div>
  * // <input class="email">
  *
- * const page = PageObject.create({
+ * import { create, blurrable } from 'ember-cli-page-object';
+ * 
+ * const page = create({
  *   scope: '.scope',
  *   blur: blurrable('.name')
  * });

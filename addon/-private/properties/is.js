@@ -14,7 +14,9 @@ import { getExecutionContext } from '../execution_context';
  * // <input type="checkbox" checked="checked">
  * // <input type="checkbox" checked>
  *
- * const page = PageObject.create({
+ * import { create, is } from 'ember-cli-page-object';
+ * 
+ * const page = create({
  *   areInputsChecked: is(':checked', 'input', { multiple: true })
  * });
  *
@@ -23,7 +25,9 @@ import { getExecutionContext } from '../execution_context';
  * @example
  * // <button class="toggle-button active" disabled>Toggle something</button>
  *
- * const page = PageObject.create({
+ * import { create, is } from 'ember-cli-page-object';
+ * 
+ * const page = create({
  *   isToggleButtonActive: is('.active:disabled', '.toggle-button')
  * });
  *
