@@ -7,6 +7,11 @@ import { collection as legacyCollection } from './collection/legacy';
 /**
  * @public
  *
+ * <div class="alert alert-warning" role="alert">
+ *   <strong>Note:</strong> v1.14.x introduces the new collection API.
+ *   You can see the legacy collection API in the [v1.13.x docs](/docs/v1.13.x/api/collection).
+ * </div>
+ *
  * Creates a enumerable that represents a collection of items. The collection is zero-indexed
  * and has the following public methods and properties:
  *
