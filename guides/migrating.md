@@ -78,7 +78,7 @@ var disabled = customHelper(function(selector, options) {
 On version `1.x` this can be represented as:
 
 ```js
-import { findElement } from './page-object';
+import { findElement } from 'ember-cli-page-object/extend';
 
 export default function disabled(selector, options = {}) {
   return {
