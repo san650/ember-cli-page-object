@@ -14,6 +14,14 @@ The addon is:
 - Agnostic to the testing framework (but really hooked on Ember!)
 
 ```javascript
+import {
+  create,
+  visitable,
+  fillable,
+  clickable,
+  text
+} from 'ember-cli-page-object';
+
 const page = create({
   visit: visitable('/'),
 
