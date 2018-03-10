@@ -52,14 +52,15 @@ installing
 The generator created a file inside the directory `/tests/pages`. Let's describe the login page structure on our new page object.
 
 ```js
-import PageObject, {
+import {
+  create,
   clickable,
   fillable,
   text,
   visitable
-} from 'frontend/tests/page-object';
+} from 'ember-cli-page-object';
 
-export default PageObject.create({
+export default create({
   visit: visitable('/'),
 
   username: fillable('#username'),
@@ -104,14 +105,15 @@ test('shows an error when password is wrong', function(assert) {
 We can go a step further and describe the steps of the test using a higher level of abstraction.
 
 ```js
-import PageObject, {
+import {
+  create,
   clickable,
   fillable,
   text,
   visitable
-} from 'frontend/tests/page-object';
+} from 'ember-cli-page-object';
 
-export default PageObject.create({
+export default create({
   visit: visitable('/'),
 
   username: fillable('#username'),
@@ -223,14 +225,15 @@ test('shows errors', function(assert) {
 Let's use our existing page object to refactor these integration tests. As a reminder, here is our page object. (We don't need to change anything to use it in our integration tests!)
 
 ```js
-import PageObject, {
+import {
+  create,
   clickable,
   fillable,
   text,
   visitable
-} from 'frontend/tests/page-object';
+} from 'ember-cli-page-object';
 
-export default PageObject.create({
+export default create({
   visit: visitable('/'),
 
   username: fillable('#username'),
@@ -282,11 +285,11 @@ test('calls submit action with correct username and password', function(assert) 
 
   this.set('submit', submit);
 
-  page.render(hbs`
-      {{login-form
-        submit=(action submit)
-      }}
-    `)
+  this.render(hbs`{{login-form
+    submit=(action submit)
+  }}`);
+
+  page
     .username('admin')
     .password('secret')
     .submit();
@@ -297,7 +300,7 @@ test('shows errors', function(assert) {
 
   this.set('error', '');
 
-  page.render(hbs`
+  this.render(hbs`
     {{login-form
       error=error
     }}
@@ -317,7 +320,6 @@ Let's take a look at the changes:
 
 - In the test's `beforeEach()` hook we set the page's test context with `page.setContext(this)`. That tells the page object to use the test's `this.$()` to find elements, instead of Ember's global acceptance test helpers.
 - In the `afterEach()` hook, we call `page.removeContext()` to clear the test context from the page object.
-- We change `this.render()` to `page.render()`. `page.render()` delegates to the test's `this.render()`, but it returns the page object so you can chain other page object methods onto it.
 - The rest of the changes are the same as in our acceptance tests: After you set the test's `this` context on the page object, you can use the page object as before. (The one exception is `page.visit()`, which doesn't work in component tests since we don't have access to a router.)
 
 As in our acceptance tests, we can DRY things up a bit more by grouping actions together into methods that describe specific user flows. For example, in the first test we can use our `page.loginSuccessfully()` method to eliminate a few lines of code:
@@ -333,12 +335,11 @@ test('calls submit action with correct username and password', function(assert) 
 
   this.set('submit', submit);
 
-  page.render(hbs`
-      {{login-form
-        submit=(action submit)
-      }}
-    `)
-    .loginSuccessfully();
+  this.render(hbs`{{login-form
+    submit=(action submit)
+  }}`);
+
+  page.loginSuccessfully();
 });
 ```
 
@@ -349,9 +350,11 @@ And that's it! Our integration and acceptance tests are cleaner, more maintainab
 A helpful tip is to separate the exports in component page objects. This will allow you to compose larger page objects using the same definitions. For example say we have an integration test of a `my-fanfare` component:
 
 ```js
-import PageObject from 'ember-cli-page-object';
-
-const { clickable, isVisible } = PageObject;
+import {
+  create,
+  clickable,
+  isVisible
+} from 'ember-cli-page-object';
 
 export const MyFanfare = {
   scope: '.ui-my-fanfare',
@@ -359,7 +362,7 @@ export const MyFanfare = {
   isCelebrating: isVisible('.fireworks')
 };
 
-export default PageObject.create(MyFanfare);
+export default create(MyFanfare);
 ```
 
 This separation gives us two `import`-able signatures. In the case of the component's integration test importing the `default` will work as expected:
@@ -380,7 +383,7 @@ moduleForComponent('my-fanfare', 'Integration | Components | my fanfare', {
 });
 
 test('it show fireworks when user clicks fanfare button', function (assert) {
-  page.render(hbs`{{my-fanfaire}}`);
+  this.render(hbs`{{my-fanfaire}}`);
   page.playFanfare();
   assert.ok(page.isCelebrating, 'expected fireworks to have happened');
 });
@@ -389,13 +392,17 @@ test('it show fireworks when user clicks fanfare button', function (assert) {
 Then in the case of an acceptance test where the page object happens to include a `my-fanfare` component we can add that definition to the page object we are using in the acceptance test(s):
 
 ```js
-import PageObject from 'ember-cli-page-object';
+import { 
+  create,
+  visitable,
+  fillable,
+  clickable
+} from 'ember-cli-page-object';
+
 import { MyFanfare } from 'frontend/tests/pages/components/my-fanfare';
 
-const { visitable, fillable, clickable } = PageObject;
-
-export default PageObject.create({
-  visit('/');
+export default create({
+  visit: visitable('/'),
   enterName: fillable('input.username'),
   register: clickable('button.register'),
   myFanfare: MyFanfare
@@ -411,13 +418,11 @@ assert.ok(page.myFanfare.isCelebrating, 'expected fireworks to have happened');
 Some manipulation could be added (for example picking the first instance only):
 
 ```js
-import Ember from 'ember';
-import PageObject from 'ember-cli-page-object';
+import { assign } from '@ember/polyfills';
+import { create } from 'ember-cli-page-object';
 import { MyFanfare } from 'frontend/tests/pages/components/my-fanfare';
 
-const { assign } = Ember;
-
-export default PageObject.create({
+export default create({
   myFanfare: assign({eq: 0}, MyFanfare)
 });
 ```

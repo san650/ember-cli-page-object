@@ -26,9 +26,15 @@ __Example__
 ```
 
 ```js
-const { visitable, text, fillable, clickable } = PageObject;
+import {
+  create,
+  visitable,
+  text,
+  fillable,
+  clickable
+} from 'ember-cli-page-object';
 
-var page = PageObject.create({
+const page = create({
   visit: visitable('/user/create'),
   title: text('h1'),
 
@@ -84,9 +90,9 @@ Suppose you have a modal dialog
 ```
 
 ```js
-const { visitable } = PageObject;
+import { create, visitable } from 'ember-cli-page-object';
 
-var page = PageObject.create({
+const page = create({
   visit: visitable('/'),
 
   modal: {
@@ -105,10 +111,10 @@ page.modal.clickOn("I'm sure");
 
 ## Custom helper
 
-You can create custom helpers by creating `Ceibo` descriptors. (`Ceibo` is a small library for parsing trees. You can check it out [here](http://github.com/san650/ceibo).)
+You can create custom helpers by creating `Ceibo` descriptors. (`Ceibo` is a small library for parsing trees. You can check it out [here](http://github.com/san650/ceibo)).
 
 ```js
-import { findElement } from './page-object';
+import { findElement } from 'ember-cli-page-object';
 
 export default function disabled(selector, options = {}) {
   return {
@@ -124,7 +130,7 @@ export default function disabled(selector, options = {}) {
 Example usage:
 
 ```js
-let page = PageObject.create({
+const page = create({
   scope: '.page',
 
   isAdmin: disabled('#override-name')
@@ -152,10 +158,10 @@ Given the following HTML
 the following configuration will match the article paragraph element
 
 ```js
-var page = PageObject.create({
+const page = create({
   scope: '.article',
 
-  textBody: PageObject.text('p'),
+  textBody: text('p'),
 });
 
 andThen(function() {
@@ -177,7 +183,7 @@ Given the following HTML
 We can define several attributes on the same `input` element as follows
 
 ```js
-var page = PageObject.create({
+const page = create({
   input: {
     scope: '#userName',
 
@@ -210,7 +216,7 @@ andThen(function() {
 ```
 
 ```js
-var page = PageObject.create({
+const page = create({
   search: {
     scope: '.search',
 
@@ -230,7 +236,7 @@ var page = PageObject.create({
 You can reset parent scope by setting the `scope` and `resetScope` attribute on the component declaration.
 
 ```js
-var page = PageObject.create({
+const page = create({
   search: {
     scope: '.search',
 

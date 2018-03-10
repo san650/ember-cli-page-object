@@ -31,9 +31,9 @@ Given the following HTML
 the following configuration will match the footer element
 
 ```js
-const { text } = PageObject;
+const { create, text } from 'ember-cli-page-object';
 
-var page = PageObject.create({
+const page = create({
   scope: '.page',
 
   copyrightNotice: text('p', { scope: '.footer' })
@@ -57,9 +57,9 @@ The `at` option can be used to reduce the set of matched elements to the one at 
 the following configuration will match the second `span` element
 
 ```js
-const { text } = PageObject;
+import { create, text } from 'ember-cli-page-object';
 
-var page = PageObject.create({
+const page = create({
   word: text('span', { at: 1 })
 });
 
@@ -85,9 +85,9 @@ value defined on the `scope` property.
 ```
 
 ```js
-const { text } = PageObject;
+import { create, text } from 'ember-cli-page-object';
 
-var page = PageObject.create({
+const page = create({
   scope: '.scope',
   outsideWord: text('span', { scope: 'outside-scope', resetScope: true })
 });
@@ -108,9 +108,9 @@ is matched. Setting the `multiple` option will override this behavior:
 ```
 
 ```js
-const { text } = PageObject;
+import { create, text } from 'ember-cli-page-object';
 
-var page = PageObject.create({
+const page = create({
   words: text('span', { multiple: true })
 });
 
