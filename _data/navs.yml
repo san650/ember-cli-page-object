@@ -1,3 +1,93 @@
+v1.14.x:
+  sections:
+    - title: Getting started
+      links:
+        - path: /
+          name: Overview
+        - path: /installation
+          name: Installation
+        - path: /quickstart
+          name: Quickstart
+        - path: /migrating
+          name: Migration Guide
+        - path: /components
+          name: Components
+        - path: /extend
+          name: Extend page objects
+        - path: /native-events
+          name: Native Events Mode
+
+    - title: API reference
+      links:
+      - path: /api/alias
+        name: alias
+      - path: /api/as
+        name: as
+      - path: /api/attribute
+        name: attribute
+      - path: /api/blurrable
+        name: blurrable
+      - path: /api/click-on-text
+        name: clickOnText
+      - path: /api/clickable
+        name: clickable
+      - path: /api/collection
+        name: collection
+      - path: /api/contains
+        name: contains
+      - path: /api/count
+        name: count
+      - path: /api/create
+        name: create
+      - path: /api/fillable
+        name: fillable
+      - path: /api/focusable
+        name: focusable
+      - path: /api/getter
+        name: getter
+      - path: /api/has-class
+        name: hasClass
+      - path: /api/is-hidden
+        name: isHidden
+      - path: /api/is-present
+        name: isPresent
+      - path: /api/is-visible
+        name: isVisible
+      - path: /api/is
+        name: is
+      - path: /api/not-has-class
+        name: notHasClass
+      - path: /api/property
+        name: property
+      - path: /api/text
+        name: text
+      - path: /api/triggerable
+        name: triggerable
+      - path: /api/value
+        name: value
+      - path: /api/visitable
+        name: visitable
+
+    - title: Contribute
+      links:
+        - path: https://github.com/san650/ember-cli-page-object
+          name: Github
+          external: true
+        - path: https://github.com/san650/ember-cli-page-object/issues
+          name: Bugs
+          external: true
+        - path: https://github.com/san650/ember-cli-page-object/issues
+          name: Feature requests
+          external: true
+        - path: https://github.com/san650/ember-cli-page-object/releases
+          name: Release notes
+          external: true
+        - path: http://emberobserver.com/addons/ember-cli-page-object
+          name: Ember Observer
+          external: true
+        - path: https://www.npmjs.com/package/ember-cli-page-object
+          name: NPM
+          external: true
 v1.13.x:
   sections:
     - title: Getting started
