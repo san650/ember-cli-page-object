@@ -11,20 +11,37 @@ title: Collection
 
 #### Table of Contents
 
--   [collection](#collection)
+-   [collection][1]
 
 ### collection
 
+<div class="alert alert-warning" role="alert">
+  <strong>Note:</strong> v1.14.x introduces the new collection API.
+  You can see the legacy collection API in the <a href="/docs/v1.13.x/api/collection">v1.13.x docs</a>
+</div>
+
+Creates a enumerable that represents a collection of items. The collection is zero-indexed
+and has the following public methods and properties:
+
+-   `length` - The number of items in the collection.
+-   `objectAt()` - Returns the page for the item at the specified index.
+-   `filter()` - Filters the items in the array and returns the ones which match the predicate function.
+-   `filterBy()` - Filters the items of the array by the specified property, returning all that are truthy or that match an optional value.
+-   `forEach()` - Runs a function for each item in the collection
+-   `map()` - maps over the elements of the collection
+-   `mapBy()` - maps over the elements of the collecton by the specified property
+-   `toArray()` - returns an array containing all the items in the collection
+-   `[Symbol.iterator]()` - if supported by the environment, this allows the collection to be iterated with `for/of` and spread with `...` like a normal array
+
 **Parameters**
 
--   `scopeOrDefinition` **[String](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** Selector to define the items of the collection
--   `definitionOrNothing` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)?** Object with the definition of item properties
+-   `scopeOrDefinition` **[String][2]** Selector to define the items of the collection
+-   `definitionOrNothing` **[Object][3]?** Object with the definition of item properties
 
 **Examples**
 
-_List of users_
-
 ```javascript
+// <table>
 //   <tbody>
 //     <tr>
 //       <td>Mary<td>
@@ -116,9 +133,9 @@ let john = page.users.filter((item) => item.firstName === 'John' )[0];
 assert.equal(john.lastName, 'Doe');
 ```
 
-```javascript
-if the browser you run tests supports Proxy, you can use array accessors to access elements by index
+_If the browser you run tests [supports][4] Proxy, you can use array accessors to access elements by index_
 
+```javascript
 // <table>
 //   <tr>
 //       <td>Mary<td>
@@ -140,4 +157,12 @@ assert.equal(page.users[1].text, 'John');
 ```
 
 Returns **Descriptor** 
+
+[1]: #collection
+
+[2]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String
+
+[3]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object
+
+[4]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy#Browser_compatibility
 {% endraw %}
