@@ -42,8 +42,10 @@ function appendQueryParams(path, queryParams) {
  *
  * @example
  *
- * const page = PageObject.create({
- *   visit: PageObject.visitable('/users')
+ * import { create, visitable } from 'ember-cli-page-object';
+ * 
+ * const page = create({
+ *   visit: visitable('/users')
  * });
  *
  * // visits '/users'
@@ -51,8 +53,10 @@ function appendQueryParams(path, queryParams) {
  *
  * @example
  *
- * const page = PageObject.create({
- *   visit: PageObject.visitable('/users/:user_id')
+ * import { create, visitable } from 'ember-cli-page-object';
+ * 
+ * const page = create({
+ *   visit: visitable('/users/:user_id')
  * });
  *
  * // visits '/users/10'
@@ -60,8 +64,10 @@ function appendQueryParams(path, queryParams) {
  *
  * @example
  *
- * const page = PageObject.create({
- *   visit: PageObject.visitable('/users')
+ * import { create, visitable } from 'ember-cli-page-object';
+ * 
+ * const page = create({
+ *   visit: visitable('/users')
  * });
  *
  * // visits '/users?name=john'
@@ -69,8 +75,10 @@ function appendQueryParams(path, queryParams) {
  *
  * @example
  *
- * const page = PageObject.create({
- *   visit: PageObject.visitable('/users/:user_id')
+ * import { create, visitable } from 'ember-cli-page-object';
+ * 
+ * const page = create({
+ *   visit: visitable('/users/:user_id')
  * });
  *
  * // visits '/users/1?name=john'

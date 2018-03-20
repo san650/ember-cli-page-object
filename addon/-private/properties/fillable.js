@@ -28,8 +28,10 @@ import { getExecutionContext } from '../execution_context';
  *
  * // <input value="">
  *
- * const page = PageObject.create({
- *   fillIn: PageObject.fillable('input')
+ * import { create, fillable } from 'ember-cli-page-object';
+ * 
+ * const page = create({
+ *   fillIn: fillable('input')
  * });
  *
  * // result: <input value="John Doe">
@@ -44,8 +46,10 @@ import { getExecutionContext } from '../execution_context';
  * //   <input value= "">
  * // </div>
  *
- * const page = PageObject.create({
- *   fillInName: PageObject.fillable('input', { scope: '.name' })
+ * import { create, fillable } from 'ember-cli-page-object';
+ * 
+ * const page = create({
+ *   fillInName: fillable('input', { scope: '.name' })
  * });
  *
  * page.fillInName('John Doe');
@@ -64,9 +68,11 @@ import { getExecutionContext } from '../execution_context';
  * //   <input value= "">
  * // </div>
  *
- * const page = PageObject.create({
+ * import { create, fillable } from 'ember-cli-page-object';
+ * 
+ * const page = create({
  *   scope: 'name',
- *   fillInName: PageObject.fillable('input')
+ *   fillInName: fillable('input')
  * });
  *
  * page.fillInName('John Doe');

@@ -12,8 +12,10 @@ import { getExecutionContext } from '../execution_context';
  *
  * // <input value="Lorem ipsum">
  *
- * const page = PageObject.create({
- *   value: PageObject.value('input')
+ * import { create, value } from 'ember-cli-page-object';
+ * 
+ * const page = create({
+ *   value: value('input')
  * });
  *
  * assert.equal(page.value, 'Lorem ipsum');
@@ -22,8 +24,10 @@ import { getExecutionContext } from '../execution_context';
  *
  * // <div contenteditable="true"><b>Lorem ipsum</b></div>
  *
- * const page = PageObject.create({
- *   value: PageObject.value('[contenteditable]')
+ * import { create, value } from 'ember-cli-page-object';
+ * 
+ * const page = create({
+ *   value: value('[contenteditable]')
  * });
  *
  * assert.equal(page.value, '<b>Lorem ipsum</b>');
@@ -33,8 +37,10 @@ import { getExecutionContext } from '../execution_context';
  * // <input value="lorem">
  * // <input value="ipsum">
  *
- * const page = PageObject.create({
- *   value: PageObject.value('input', { multiple: true })
+ * import { create, value } from 'ember-cli-page-object';
+ * 
+ * const page = create({
+ *   value: value('input', { multiple: true })
  * });
  *
  * assert.deepEqual(page.value, ['lorem', 'ipsum']);
@@ -44,8 +50,10 @@ import { getExecutionContext } from '../execution_context';
  * // <div><input value="lorem"></div>
  * // <div class="scope"><input value="ipsum"></div>
  *
- * const page = PageObject.create({
- *   value: PageObject.value('input', { scope: '.scope' })
+ * import { create, value } from 'ember-cli-page-object';
+ * 
+ * const page = create({
+ *   value: value('input', { scope: '.scope' })
  * });
  *
  * assert.equal(page.value, 'ipsum');
@@ -55,9 +63,11 @@ import { getExecutionContext } from '../execution_context';
  * // <div><input value="lorem"></div>
  * // <div class="scope"><input value="ipsum"></div>
  *
- * const page = PageObject.create({
+ * import { create, value } from 'ember-cli-page-object';
+ * 
+ * const page = create({
  *   scope: '.scope',
- *   value: PageObject.value('input')
+ *   value: value('input')
  * });
  *
  * assert.equal(page.value, 'ipsum');

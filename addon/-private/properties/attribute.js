@@ -9,9 +9,11 @@ import { getExecutionContext } from '../execution_context';
  *
  * @example
  * // <input placeholder="a value">
+ * 
+ * import { create, attribute } from 'ember-cli-page-object';
  *
- * const page = PageObject.create({
- *   inputPlaceholder: PageObject.attribute('placeholder', 'input')
+ * const page = create({
+ *   inputPlaceholder: attribute('placeholder', 'input')
  * });
  *
  * assert.equal(page.inputPlaceholder, 'a value');
@@ -21,8 +23,10 @@ import { getExecutionContext } from '../execution_context';
  * // <input placeholder="a value">
  * // <input placeholder="other value">
  *
- * const page = PageObject.create({
- *   inputPlaceholders: PageObject.attribute('placeholder', ':input', { multiple: true })
+ * import { create, attribute } from 'ember-cli-page-object';
+ * 
+ * const page = create({
+ *   inputPlaceholders: attribute('placeholder', ':input', { multiple: true })
  * });
  *
  * assert.deepEqual(page.inputPlaceholders, ['a value', 'other value']);
@@ -33,8 +37,10 @@ import { getExecutionContext } from '../execution_context';
  * // <div class="scope"><input placeholder="a value"></div>
  * // <div><input></div>
  *
- * const page = PageObject.create({
- *   inputPlaceholder: PageObject.attribute('placeholder', ':input', { scope: '.scope' })
+ * import { create, attribute } from 'ember-cli-page-object';
+ * 
+ * const page = create({
+ *   inputPlaceholder: attribute('placeholder', ':input', { scope: '.scope' })
  * });
  *
  * assert.equal(page.inputPlaceholder, 'a value');
@@ -45,9 +51,11 @@ import { getExecutionContext } from '../execution_context';
  * // <div class="scope"><input placeholder="a value"></div>
  * // <div><input></div>
  *
- * const page = PageObject.create({
+ * import { create, attribute } from 'ember-cli-page-object';
+ * 
+ * const page = create({
  *   scope: 'scope',
- *   inputPlaceholder: PageObject.attribute('placeholder', ':input')
+ *   inputPlaceholder: attribute('placeholder', ':input')
  * });
  *
  * assert.equal(page.inputPlaceholder, 'a value');
