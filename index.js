@@ -21,22 +21,22 @@ module.exports = {
     }
   },
 
-  included: function() {
+  included() {
     this.app = this._findHost();
 
     if (this._shouldIncludeFiles()) {
       if (!this.app.vendorFiles['jquery.js']) {
-        this.import('vendor/ecpo-jquery/dist/jquery.js');
-        this.import('vendor/shims/ecpo-jquery.js');
+        this.import('vendor/ecpo-jquery/dist/jquery.js', { type: 'test' });
+        this.import('vendor/shims/ecpo-jquery.js', { type: 'test' });
       } else {
-        this.import('vendor/shims/project-jquery.js');
+        this.import('vendor/shims/project-jquery.js', { type: 'test' });
       }
     }
 
     this._super.included.apply(this, arguments);
   },
 
-  treeFor: function(/*name*/) {
+  treeFor(/*name*/) {
     if (!this._shouldIncludeFiles()) {
       return;
     }
@@ -44,16 +44,30 @@ module.exports = {
     return this._super.treeFor.apply(this, arguments);
   },
 
-  _shouldIncludeFiles: function() {
+  treeForAddonTestSupport(tree) {
+    // intentionally not calling _super here
+    // so that can have our `import`'s be
+    // import { clickable } from 'ember-cli-page-object';
+
+    const Funnel = require('broccoli-funnel');
+
+    let namespacedTree = new Funnel(tree, {
+      srcDir: '/',
+      destDir: `/${this.moduleName()}`,
+      annotation: `Addon#treeForTestSupport (${this.name})`,
+    });
+
+    return this.preprocessJs(namespacedTree, '/', this.name, {
+      registry: this.registry,
+    });
+  },
+
+  _shouldIncludeFiles() {
     // TODO: In order to make the addon work in EmberTwiddle, we cannot use // the `tests` prop til
     // https://github.com/joostdevries/twiddle-backend/pull/28 is merged.
     // return !!this.app.tests;
 
-    if(process.env && process.env.EMBER_CLI_FASTBOOT) {
-      return false;
-    } else {
-      return this.app.env !== 'production';
-    }
+    return this.app.env !== 'production';
   },
 
   _findHost() {
