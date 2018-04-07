@@ -15,9 +15,11 @@ import { buildSelector } from './click-on-text/helpers';
  * //  <button>Ipsum</button>
  * // </fieldset>
  *
- * const page = PageObject.create({
- *   clickOnFieldset: PageObject.clickOnText('fieldset'),
- *   clickOnButton: PageObject.clickOnText('button')
+ * import { create, clickOnText } from 'ember-cli-page-object';
+ * 
+ * const page = create({
+ *   clickOnFieldset: clickOnText('fieldset'),
+ *   clickOnButton: clickOnText('button')
  * });
  *
  * // queries the DOM with selector 'fieldset :contains("Lorem"):last'
@@ -35,9 +37,11 @@ import { buildSelector } from './click-on-text/helpers';
  * //   </fieldset>
  * // </div>
  *
- * const page = PageObject.create({
- *   clickOnFieldset: PageObject.clickOnText('fieldset', { scope: '.scope' }),
- *   clickOnButton: PageObject.clickOnText('button', { scope: '.scope' })
+ * import { create, clickOnText } from 'ember-cli-page-object';
+ * 
+ * const page = create({
+ *   clickOnFieldset: clickOnText('fieldset', { scope: '.scope' }),
+ *   clickOnButton: clickOnText('button', { scope: '.scope' })
  * });
  *
  * // queries the DOM with selector '.scope fieldset :contains("Lorem"):last'
@@ -55,10 +59,12 @@ import { buildSelector } from './click-on-text/helpers';
  * //   </fieldset>
  * // </div>
  *
- * const page = PageObject.create({
+ * import { create, clickOnText } from 'ember-cli-page-object';
+ * 
+ * const page = create({
  *   scope: '.scope',
- *   clickOnFieldset: PageObject.clickOnText('fieldset'),
- *   clickOnButton: PageObject.clickOnText('button')
+ *   clickOnFieldset: clickOnText('fieldset'),
+ *   clickOnButton: clickOnText('button')
  * });
  *
  * // queries the DOM with selector '.scope fieldset :contains("Lorem"):last'

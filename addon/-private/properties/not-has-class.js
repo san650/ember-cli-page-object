@@ -10,8 +10,10 @@ import { getExecutionContext } from '../execution_context';
  *
  * // <em class="lorem"></em><span class="success">Message!</span>
  *
- * const page = PageObject.create({
- *   messageIsSuccess: PageObject.notHasClass('error', 'span')
+ * import { create, notHasClass } from 'ember-cli-page-object';
+ * 
+ * const page = create({
+ *   messageIsSuccess: notHasClass('error', 'span')
  * });
  *
  * assert.ok(page.messageIsSuccess);
@@ -21,8 +23,10 @@ import { getExecutionContext } from '../execution_context';
  * // <span class="success"></span>
  * // <span class="error"></span>
  *
- * const page = PageObject.create({
- *   messagesAreSuccessful: PageObject.notHasClass('error', 'span', { multiple: true })
+ * import { create, notHasClass } from 'ember-cli-page-object';
+ * 
+ * const page = create({
+ *   messagesAreSuccessful: notHasClass('error', 'span', { multiple: true })
  * });
  *
  * // one span has error class
@@ -33,8 +37,10 @@ import { getExecutionContext } from '../execution_context';
  * // <span class="success"></span>
  * // <span class="success"></span>
  *
- * const page = PageObject.create({
- *   messagesAreSuccessful: PageObject.notHasClass('error', 'span', { multiple: true })
+ * import { create, notHasClass } from 'ember-cli-page-object';
+ * 
+ * const page = create({
+ *   messagesAreSuccessful: notHasClass('error', 'span', { multiple: true })
  * });
  *
  * // no spans have error class
@@ -49,8 +55,10 @@ import { getExecutionContext } from '../execution_context';
  * //   <span class="ipsum"></span>
  * // </div>
  *
- * const page = PageObject.create({
- *   spanNotHasClass: PageObject.notHasClass('lorem', 'span', { scope: '.scope' })
+ * import { create, notHasClass } from 'ember-cli-page-object';
+ * 
+ * const page = create({
+ *   spanNotHasClass: notHasClass('lorem', 'span', { scope: '.scope' })
  * });
  *
  * assert.ok(page.spanNotHasClass);
@@ -64,9 +72,11 @@ import { getExecutionContext } from '../execution_context';
  * //   <span class="ipsum"></span>
  * // </div>
  *
- * const page = PageObject.create({
+ * import { create, notHasClass } from 'ember-cli-page-object';
+ * 
+ * const page = create({
  *   scope: '.scope',
- *   spanNotHasClass: PageObject.notHasClass('lorem', 'span')
+ *   spanNotHasClass: notHasClass('lorem', 'span')
  * });
  *
  * assert.ok(page.spanNotHasClass);

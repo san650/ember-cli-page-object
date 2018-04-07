@@ -8,8 +8,10 @@ import { getExecutionContext } from '../execution_context';
  *
  * // <em class="lorem"></em><span class="success">Message!</span>
  *
- * const page = PageObject.create({
- *   messageIsSuccess: PageObject.hasClass('success', 'span')
+ * import { create, hasClass } from 'ember-cli-page-object';
+ * 
+ * const page = create({
+ *   messageIsSuccess: hasClass('success', 'span')
  * });
  *
  * assert.ok(page.messageIsSuccess);
@@ -19,8 +21,10 @@ import { getExecutionContext } from '../execution_context';
  * // <span class="success"></span>
  * // <span class="error"></span>
  *
- * const page = PageObject.create({
- *   messagesAreSuccessful: PageObject.hasClass('success', 'span', { multiple: true })
+ * import { create, hasClass } from 'ember-cli-page-object';
+ * 
+ * const page = create({
+ *   messagesAreSuccessful: hasClass('success', 'span', { multiple: true })
  * });
  *
  * assert.notOk(page.messagesAreSuccessful);
@@ -30,8 +34,10 @@ import { getExecutionContext } from '../execution_context';
  * // <span class="success"></span>
  * // <span class="success"></span>
  *
- * const page = PageObject.create({
- *   messagesAreSuccessful: PageObject.hasClass('success', 'span', { multiple: true })
+ * import { create, hasClass } from 'ember-cli-page-object';
+ * 
+ * const page = create({
+ *   messagesAreSuccessful: hasClass('success', 'span', { multiple: true })
  * });
  *
  * assert.ok(page.messagesAreSuccessful);
@@ -45,8 +51,10 @@ import { getExecutionContext } from '../execution_context';
  * //   <span class="ipsum"></span>
  * // </div>
  *
- * const page = PageObject.create({
- *   spanHasClass: PageObject.hasClass('ipsum', 'span', { scope: '.scope' })
+ * import { create, hasClass } from 'ember-cli-page-object';
+ * 
+ * const page = create({
+ *   spanHasClass: hasClass('ipsum', 'span', { scope: '.scope' })
  * });
  *
  * assert.ok(page.spanHasClass);
@@ -60,9 +68,11 @@ import { getExecutionContext } from '../execution_context';
  * //   <span class="ipsum"></span>
  * // </div>
  *
- * const page = PageObject.create({
+ * import { create, hasClass } from 'ember-cli-page-object';
+ * 
+ * const page = create({
  *   scope: '.scope',
- *   spanHasClass: PageObject.hasClass('ipsum', 'span')
+ *   spanHasClass: hasClass('ipsum', 'span')
  * });
  *
  * assert.ok(page.spanHasClass);

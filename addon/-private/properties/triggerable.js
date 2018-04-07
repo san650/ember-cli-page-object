@@ -14,7 +14,9 @@ import { getExecutionContext } from '../execution_context';
  * // <input class="name">
  * // <input class="email">
  *
- * const page = PageObject.create({
+ * import { create, triggerable } from 'ember-cli-page-object';
+ * 
+ * const page = create({
  *   enter: triggerable('keypress', '.name', { eventProperties: { keyCode: 13 } })
  * });
  *
@@ -26,7 +28,9 @@ import { getExecutionContext } from '../execution_context';
  * // <input class="name">
  * // <input class="email">
  *
- * const page = PageObject.create({
+ * import { create, triggerable } from 'ember-cli-page-object';
+ * 
+ * const page = create({
  *   keydown: triggerable('keypress', '.name')
  * });
  *
@@ -40,7 +44,9 @@ import { getExecutionContext } from '../execution_context';
  * // </div>
  * // <input class="email">
  *
- * const page = PageObject.create({
+ * import { create, triggerable } from 'ember-cli-page-object';
+ * 
+ * const page = create({
  *   keydown: triggerable('keypress', '.name', { scope: '.scope' })
  * });
  *
@@ -54,7 +60,9 @@ import { getExecutionContext } from '../execution_context';
  * // </div>
  * // <input class="email">
  *
- * const page = PageObject.create({
+ * import { create, triggerable } from 'ember-cli-page-object';
+ * 
+ * const page = create({
  *   scope: '.scope',
  *   keydown: triggerable('keypress', '.name')
  * });

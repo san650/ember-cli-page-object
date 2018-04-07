@@ -8,8 +8,10 @@ import { getExecutionContext } from '../execution_context';
  *
  * // Lorem <span style="display:none">ipsum</span>
  *
- * const page = PageObject.create({
- *   spanIsHidden: PageObject.isHidden('span')
+ * import { create, isHidden } from 'ember-cli-page-object';
+ * 
+ * const page = create({
+ *   spanIsHidden: isHidden('span')
  * });
  *
  * assert.ok(page.spanIsHidden);
@@ -19,8 +21,10 @@ import { getExecutionContext } from '../execution_context';
  * // <span>ipsum</span>
  * // <span style="display:none">dolor</span>
  *
+ * import { create, isHidden } from 'ember-cli-page-object';
+ * 
  * const page = create({
- *   spansAreHidden: PageObject.isHidden('span', { multiple: true })
+ *   spansAreHidden: isHidden('span', { multiple: true })
  * });
  *
  * // not all spans are hidden
@@ -31,8 +35,10 @@ import { getExecutionContext } from '../execution_context';
  * // <span style="display:none">dolor</span>
  * // <span style="display:none">dolor</span>
  *
+ * import { create, isHidden } from 'ember-cli-page-object';
+ * 
  * const page = create({
- *   spansAreHidden: PageObject.isHidden('span', { multiple: true })
+ *   spansAreHidden: isHidden('span', { multiple: true })
  * });
  *
  * // all spans are hidden
@@ -42,8 +48,10 @@ import { getExecutionContext } from '../execution_context';
  *
  * // Lorem <strong>ipsum</strong>
  *
- * const page = PageObject.create({
- *   spanIsHidden: PageObject.isHidden('span')
+ * import { create, isHidden } from 'ember-cli-page-object';
+ * 
+ * const page = create({
+ *   spanIsHidden: isHidden('span')
  * });
  *
  * // returns true when element doesn't exist in DOM
@@ -55,8 +63,10 @@ import { getExecutionContext } from '../execution_context';
  * // <div class="scope"><span style="display:none">ipsum</span></div>
  * // <div><span>dolor</span></div>
  *
- * const page = PageObject.create({
- *   scopedSpanIsHidden: PageObject.isHidden('span', { scope: '.scope' })
+ * import { create, isHidden } from 'ember-cli-page-object';
+ * 
+ * const page = create({
+ *   scopedSpanIsHidden: isHidden('span', { scope: '.scope' })
  * });
  *
  * assert.ok(page.scopedSpanIsHidden);
@@ -67,9 +77,11 @@ import { getExecutionContext } from '../execution_context';
  * // <div class="scope"><span style="display:none">ipsum</span></div>
  * // <div><span>dolor</span></div>
  *
- * const page = PageObject.create({
+ * import { create, isHidden } from 'ember-cli-page-object';
+ * 
+ * const page = create({
  *   scope: '.scope',
- *   scopedSpanIsHidden: PageObject.isHidden('span')
+ *   scopedSpanIsHidden: isHidden('span')
  * });
  *
  * assert.ok(page.scopedSpanIsHidden);

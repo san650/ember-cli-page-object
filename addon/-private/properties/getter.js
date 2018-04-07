@@ -12,7 +12,7 @@ const NOT_A_FUNCTION_ERROR = 'Argument passed to `getter` must be a function.';
  * // <input type="text">
  * // <button disabled>Submit</button>
  *
- * import { create } from 'ember-cli-page-object';
+ * import { create, value, property } from 'ember-cli-page-object';
  * import { getter } from 'ember-cli-page-object/macros';
  *
  * const page = create({

@@ -5,13 +5,13 @@ import { collection as mainCollection } from './collection/main';
 import { collection as legacyCollection } from './collection/legacy';
 
 /**
- * @public
+ *  <div class="alert alert-warning" role="alert">
+ *   <strong>Note:</strong> v1.14.x introduces the new collection API.
+ *   You can see the legacy collection API in the <a href="/docs/v1.13.x/api/collection">v1.13.x docs</a>
+ * </div>
  *
  * Creates a enumerable that represents a collection of items. The collection is zero-indexed
  * and has the following public methods and properties:
- *
- * IMPORTANT: You can use Array accessors only on browsers that support Proxy.
- *            See https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy#Browser_compatibility
  *
  * - `length` - The number of items in the collection.
  * - `objectAt()` - Returns the page for the item at the specified index.
@@ -26,7 +26,6 @@ import { collection as legacyCollection } from './collection/legacy';
  * @example
  *
  * // <table>
- * //   <caption>List of users</caption>
  * //   <tbody>
  * //     <tr>
  * //       <td>Mary<td>
@@ -39,7 +38,9 @@ import { collection as legacyCollection } from './collection/legacy';
  * //   </tbody>
  * // </table>
  *
- * const page = PageObject.create({
+ * import { create, collection, text } from 'ember-cli-page-object';
+ *
+ * const page = create({
  *   users: collection('table tr', {
  *     firstName: text('td', { at: 0 }),
  *     lastName: text('td', { at: 1 })
@@ -72,7 +73,9 @@ import { collection as legacyCollection } from './collection/legacy';
  * //   </table>
  * // </div>
  *
- * const page = PageObject.create({
+ * import { create, collection, text } from 'ember-cli-page-object';
+ *
+ * const page = create({
  *   scope: '.admins',
  *
  *   users: collection('table tr', {
@@ -99,10 +102,12 @@ import { collection as legacyCollection } from './collection/legacy';
  * //   </tbody>
  * // </table>
  *
- * const page = PageObject.create({
+ * import { create, collection, text } from 'ember-cli-page-object';
+ *
+ * const page = create({
  *   scope: 'table',
  *
- *   users: PageObject.collection('tr', {
+ *   users: collection('tr', {
  *     firstName: text('td', { at: 0 }),
  *     lastName: text('td', { at: 1 }),
  *   })
@@ -111,7 +116,8 @@ import { collection as legacyCollection } from './collection/legacy';
  * let john = page.users.filter((item) => item.firstName === 'John' )[0];
  * assert.equal(john.lastName, 'Doe');
  *
- * @example if the browser you run tests supports Proxy, you can use array accessors to access elements by index
+ * @example
+ * <caption>If the browser you run tests [supports](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy#Browser_compatibility) Proxy, you can use array accessors to access elements by index</caption>
  *
  * // <table>
  * //   <tr>
@@ -122,8 +128,10 @@ import { collection as legacyCollection } from './collection/legacy';
  * //   </tr>
  * // </table>
  *
- * const page = PageObject.create({
- *   users: PageObject.collection('tr')
+ * import { create, collection } from 'ember-cli-page-object';
+ *
+ * const page = create({
+ *   users: collection('tr')
  * });
  *
  * // This only works on browsers that support `Proxy`
