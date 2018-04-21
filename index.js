@@ -5,55 +5,58 @@ module.exports = {
 
   options: {
     nodeAssets: {
-      ceibo: function() {
-        return {
-          enabled: this._shouldIncludeFiles(),
-          import: ['index.js']
-        };
+      ceibo: {
+        vendor: ['index.js']
       },
-      jquery: function() {
-        return {
-          enabled: this._shouldIncludeFiles(),
-          vendor: ['dist/jquery.js'],
-          destDir: 'ecpo-jquery'
-        }
+      jquery: {
+        vendor: ['dist/jquery.js'],
+        destDir: 'ecpo-jquery'
       }
     }
   },
 
-  included: function() {
+  included() {
     this.app = this._findHost();
 
-    if (this._shouldIncludeFiles()) {
-      if (!this.app.vendorFiles['jquery.js']) {
-        this.import('vendor/ecpo-jquery/dist/jquery.js');
-        this.import('vendor/shims/ecpo-jquery.js');
-      } else {
-        this.import('vendor/shims/project-jquery.js');
-      }
+    this.import('vendor/ceibo/index.js', { type: 'test' });
+
+    if (!this.app.vendorFiles['jquery.js']) {
+      this.import('vendor/ecpo-jquery/dist/jquery.js', { type: 'test' });
+      this.import('vendor/shims/ecpo-jquery.js', { type: 'test' });
+    } else {
+      this.import('vendor/shims/project-jquery.js', { type: 'test' });
     }
 
     this._super.included.apply(this, arguments);
   },
 
-  treeFor: function(/*name*/) {
-    if (!this._shouldIncludeFiles()) {
-      return;
-    }
+  treeForAddonTestSupport(tree) {
+    // intentionally not calling _super here
+    // so that can have our `import`'s be
+    // import { clickable } from 'ember-cli-page-object';
 
-    return this._super.treeFor.apply(this, arguments);
-  },
+    const Funnel = require('broccoli-funnel');
+    const mergeTrees = require('broccoli-merge-trees');
 
-  _shouldIncludeFiles: function() {
-    // TODO: In order to make the addon work in EmberTwiddle, we cannot use // the `tests` prop til
-    // https://github.com/joostdevries/twiddle-backend/pull/28 is merged.
-    // return !!this.app.tests;
+    let publicExportsTree = new Funnel(tree, {
+      srcDir: '/--re-exports',
+      destDir: `/${this.moduleName()}`,
+      annotation: `Addon#treeForTestSupport (${this.name})`,
+    });
 
-    if(process.env && process.env.EMBER_CLI_FASTBOOT) {
-      return false;
-    } else {
-      return this.app.env !== 'production';
-    }
+    let testSupportTree = new Funnel(tree, {
+      srcDir: '/',
+      exclude: ['/--re-exports'],
+      destDir: `/${this.moduleName()}/test-support`,
+      annotation: `Addon#treeForTestSupport (${this.name})`,
+    });
+
+    return this.preprocessJs(
+      mergeTrees([ publicExportsTree, testSupportTree ]),
+      '/',
+      this.name,
+      { registry: this.registry, }
+    );
   },
 
   _findHost() {

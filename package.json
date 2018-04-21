@@ -34,6 +34,8 @@
     "nodetest": "mocha node-tests --recursive"
   },
   "dependencies": {
+    "broccoli-merge-trees": "^3.0.0",
+    "broccoli-funnel": "^2.0.1",
     "ceibo": "~2.0.0",
     "ember-cli-babel": "^6.12.0",
     "ember-cli-node-assets": "^0.2.2",
