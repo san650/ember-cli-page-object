@@ -15,7 +15,10 @@ module.exports = {
         return {
           enabled: this._shouldIncludeFiles(),
           vendor: ['dist/jquery.js'],
-          destDir: 'ecpo-jquery'
+          destDir: 'ecpo-jquery',
+          processTree(tree) {
+            return require('fastboot-transform')(tree);
+          }
         }
       }
     }
