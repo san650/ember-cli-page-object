@@ -31,32 +31,34 @@ module.exports = {
   },
 
   treeForAddonTestSupport(tree) {
-    // intentionally not calling _super here
-    // so that can have our `import`'s be
-    // import { clickable } from 'ember-cli-page-object';
+    const testSupportTree = this._super(tree);
 
-    const Funnel = require('broccoli-funnel');
     const mergeTrees = require('broccoli-merge-trees');
+    const writeFile = require('broccoli-file-creator');
 
-    let publicExportsTree = new Funnel(tree, {
-      srcDir: '/--re-exports',
-      destDir: `/${this.moduleName()}`,
-      annotation: `Addon#treeForTestSupport (${this.name})`,
-    });
+    // Generate re-exports for public modules to allow
+    // import w/o "test-support/" part in the path:
+    //
+    // `import { clickable } from 'ember-cli-page-object';`
+    //
+    // instead of:
+    //
+    // `import { clickable } from 'ember-cli-page-object/test-support';`
+    //
+    // which is a default behavior in ember-cli
+    const reexportsTree = mergeTrees(['index', 'extend', 'macros'].map(publicModuleName =>
+      writeFile(
+        `/${this.moduleName()}/${publicModuleName}.js`,
+        `export * from '${this.moduleName()}/test-support/${publicModuleName}';`
+      )
+    ));
 
-    let testSupportTree = new Funnel(tree, {
-      srcDir: '/',
-      exclude: ['/--re-exports'],
-      destDir: `/${this.moduleName()}/test-support`,
-      annotation: `Addon#treeForTestSupport (${this.name})`,
-    });
-
-    return this.preprocessJs(
-      mergeTrees([ publicExportsTree, testSupportTree ]),
-      '/',
-      this.name,
-      { registry: this.registry, }
-    );
+    return mergeTrees([
+      testSupportTree,
+      this.preprocessJs(
+        reexportsTree, '/', this.name, { registry: this.registry, }
+      )
+    ]);
   },
 
   _findHost() {
