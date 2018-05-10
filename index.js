@@ -46,7 +46,12 @@ module.exports = {
     // `import { clickable } from 'ember-cli-page-object/test-support';`
     //
     // which is a default behavior in ember-cli
-    const reexportsTree = mergeTrees(['index', 'extend', 'macros'].map(publicModuleName =>
+    const reexportsTree = mergeTrees([
+      'index',
+      'extend',
+      'macros',
+      '-private/execution_context' // @see: https://github.com/san650/ember-cli-page-object/pull/400#issuecomment-384021927
+    ].map(publicModuleName =>
       writeFile(
         `/${this.moduleName()}/${publicModuleName}.js`,
         `export * from '${this.moduleName()}/test-support/${publicModuleName}';`
