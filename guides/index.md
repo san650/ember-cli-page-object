@@ -31,16 +31,14 @@ const page = create({
   error: text('.errors')
 });
 
-test('my awesome test', function(assert) {
-  page
+test('my awesome test', async function(assert) {
+  await page
     .visit()
     .username('admin')
     .password('invalid')
     .submit();
 
-  andThen(() => {
-    assert.equal(page.error, 'Invalid credentials');
-  });
+  assert.equal(page.error, 'Invalid credentials');
 });
 ```
 
