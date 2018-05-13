@@ -5,9 +5,6 @@ import {
   getRoot
 } from '../helpers';
 import {
-  throwBetterError
-} from '../better-errors';
-import {
   getContext,
   visit,
   click,
@@ -126,17 +123,5 @@ export default class RFC268ExecutionContext extends ExecutionContext {
   blur(selector, options) {
     selector = buildSelector(this.pageObjectNode, selector, options);
     return this.invokeHelper(selector, options, blur);
-  }
-
-  invokeHelper(selector, options, helper, ...args) {
-    let element = this.getElements(selector, options)[0];
-    return helper(element, ...args).catch((e) => {
-      throwBetterError(
-        this.pageObjectNode,
-        options.pageObjectKey,
-        e.message || e.toString(),
-        { selector }
-      );
-    });
   }
 }

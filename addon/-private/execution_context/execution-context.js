@@ -68,4 +68,16 @@ export default class ExecutionContext {
 
     return result;
   }
+
+  invokeHelper(selector, options, helper, ...args) {
+    let element = this.getElements(selector, options)[0];
+    return helper(element, ...args).catch((e) => {
+      throwBetterError(
+        this.pageObjectNode,
+        options.pageObjectKey,
+        e.message || e.toString(),
+        { selector }
+      );
+    });
+  }
 }

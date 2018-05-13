@@ -39,8 +39,7 @@ export default class NativeEventsExecutionContext extends ExecutionContext {
   }
 
   click(selector, testContainer) {
-    const el = this.getElements(selector, { testContainer })[0];
-    click(el);
+    this.invokeHelper(selector, { testContainer }, click);
   }
 
   fillIn(selector, testContainer, options, content) {
@@ -59,8 +58,6 @@ export default class NativeEventsExecutionContext extends ExecutionContext {
   }
 
   triggerEvent(selector, testContainer, options, eventName, eventOptions) {
-    const element = this.getElements(selector, { testContainer })[0];
-
     // `keyCode` is a deprecated property.
     // @see: https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/keyCode
     // Due to this deprecation `ember-native-dom-helpers` doesn't accept `keyCode` as a `KeyboardEvent` option.
@@ -70,9 +67,9 @@ export default class NativeEventsExecutionContext extends ExecutionContext {
     }
 
     if (KEYBOARD_EVENT_TYPES.indexOf(eventName) > -1) {
-      keyEvent(element, eventName, eventOptions.key, eventOptions);
+      this.invokeHelper(selector, { testContainer }, keyEvent, eventName, eventOptions.key, eventOptions);
     } else {
-      triggerEvent(element, eventName, eventOptions);
+      this.invokeHelper(selector, { testContainer }, triggerEvent, eventName, eventOptions);
     }
   }
 
