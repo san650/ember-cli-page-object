@@ -37,49 +37,51 @@ export default class IntegrationExecutionContext extends ExecutionContext {
   visit() {}
 
   click(selector, testContainer) {
-    this.getElements(selector, { testContainer }).click();
+    $(this.getElements(selector, { testContainer })).click();
   }
 
   fillIn(selector, testContainer, options, content) {
-    let $selection = this.getElements(selector, { testContainer });
+    let elements = this.getElements(selector, { testContainer }).toArray();
 
-    fillElement($selection, content, {
-      selector,
-      pageObjectNode: this.pageObjectNode,
-      pageObjectKey: options.pageObjectKey
+    elements.forEach((el) => {
+      fillElement(el, content, {
+        selector,
+        pageObjectNode: this.pageObjectNode,
+        pageObjectKey: options.pageObjectKey
+      });
+
+      $(el).trigger('input');
+      $(el).change();
     });
-
-    $selection.trigger('input');
-    $selection.change();
   }
 
   triggerEvent(selector, testContainer, options, eventName, eventOptions) {
     let event = $.Event(eventName, eventOptions);
 
-    this.getElements(selector, { testContainer }).trigger(event);
+    $(this.getElements(selector, { testContainer })).trigger(event);
   }
 
   focus(selector, options) {
-    let $selection = this.findWithAssert(selector, options);
+    let element = this.findWithAssert(selector, options)[0];
 
-    assertFocusable($selection[0], {
+    assertFocusable(element, {
       selector,
       pageObjectNode: this.pageObjectNode,
       pageObjectKey: options.pageObjectKey
     });
 
-    $selection.focus();
+    $(element).focus();
   }
 
   blur(selector, options) {
-    let $selection = this.findWithAssert(selector, options);
+    let element = this.findWithAssert(selector, options)[0];
 
-    assertFocusable($selection[0], {
+    assertFocusable(element, {
       selector,
       pageObjectNode: this.pageObjectNode,
       pageObjectKey: options.pageObjectKey
     });
 
-    $selection.blur();
+    $(element).blur();
   }
 }

@@ -29,13 +29,14 @@ export default class AcceptanceExecutionContext extends ExecutionContext {
     visit(path);
   }
 
-  click(selector, container) {
+  click(selector, testContainer) {
     /* global click */
-    click(selector, container);
+    let elements = this.getElements(selector, { testContainer });
+    click(elements);
   }
 
-  fillIn(selector, container, options, content) {
-    let $selection = find(selector, container || findClosestValue(this.pageObjectNode, 'testContainer'));
+  fillIn(selector, testContainer, options, content) {
+    let $selection = this.getElements(selector, { testContainer });
 
     /* global focus */
     focus($selection);
@@ -47,36 +48,37 @@ export default class AcceptanceExecutionContext extends ExecutionContext {
     });
 
     /* global triggerEvent */
-    triggerEvent(selector, container, 'input');
-    triggerEvent(selector, container, 'change');
+    triggerEvent(selector, 'input');
+    triggerEvent(selector, 'change');
   }
 
-  triggerEvent(selector, container, options, eventName, eventOptions) {
+  triggerEvent(selector, testContainer, options, eventName, eventOptions) {
+    const elements = this.getElements(selector, { testContainer })
     /* global triggerEvent */
-    triggerEvent(selector, container, eventName, eventOptions);
+    triggerEvent(elements, eventName, eventOptions);
   }
 
   focus(selector, options) {
-    let $selection = this.findWithAssert(selector, options);
+    let $element = this.findWithAssert(selector, options)[0];
 
-    assertFocusable($selection[0], {
+    assertFocusable($element, {
       selector,
       pageObjectNode: this.pageObjectNode,
       pageObjectKey: options.pageObjectKey
     });
 
-    $selection.focus();
+    $element.focus();
   }
 
   blur(selector, options) {
-    let $selection = this.findWithAssert(selector, options);
+    let $element = this.findWithAssert(selector, options)[0];
 
-    assertFocusable($selection[0], {
+    assertFocusable($element, {
       selector,
       pageObjectNode: this.pageObjectNode,
       pageObjectKey: options.pageObjectKey
     });
 
-    $selection.blur();
+    $element.blur();
   }
 }
