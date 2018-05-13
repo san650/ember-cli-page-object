@@ -1,5 +1,3 @@
-import $ from '-jquery';
-
 import {
   click,
   triggerEvent,
@@ -9,46 +7,44 @@ import {
 } from 'ember-native-dom-helpers';
 
 import {
-  guardMultiple,
-  buildSelector,
-  findClosestValue
-} from '../helpers';
-import {
   fillElement,
   assertFocusable
 } from './helpers';
-import {
-  ELEMENT_NOT_FOUND,
-  throwBetterError
-} from '../better-errors';
+
+import ExecutionContext from './execution-context'
 
 const KEYBOARD_EVENT_TYPES = ['keydown', 'keypress', 'keyup'];
 
-export default function ExecutionContext(pageObjectNode, testContext) {
-  this.pageObjectNode = pageObjectNode;
-  this.testContext = testContext;
-}
+export default class NativeEventsExecutionContext extends ExecutionContext {
+  constructor(pageObjectNode, testContext) {
+    super(...arguments);
 
-ExecutionContext.prototype = {
+    this.testContext = testContext;
+  }
+
+  get contextElement() {
+    return this.testContext ? this.testContext._element : '#ember-testing';
+  }
+
   run(cb) {
     return cb(this);
-  },
+  }
 
   runAsync() {
     throw new Error('not implemented');
-  },
+  }
 
   chainable() {
     return this.pageObjectNode;
-  },
+  }
 
-  click(selector, container) {
-    const el = this.$(selector, container)[0];
+  click(selector, testContainer) {
+    const el = this.getElements(selector, { testContainer })[0];
     click(el);
-  },
+  }
 
-  fillIn(selector, container, options, content) {
-    let elements = this.$(selector, container).toArray();
+  fillIn(selector, testContainer, options, content) {
+    let elements = this.getElements(selector, { testContainer }).toArray();
 
     elements.forEach((el) => {
       fillElement(el, content, {
@@ -60,24 +56,10 @@ ExecutionContext.prototype = {
       triggerEvent(el, 'input');
       triggerEvent(el, 'change');
     });
-  },
+  }
 
-  $(selector, container) {
-    if (container) {
-      return $(selector, container);
-    } else {
-      // @todo: we should fixed usage of private `_element`
-      // after https://github.com/emberjs/ember-test-helpers/issues/184 is resolved
-      let testsContainer = this.testContext ?
-        this.testContext._element :
-        '#ember-testing';
-
-      return $(selector, testsContainer);
-    }
-  },
-
-  triggerEvent(selector, container, options, eventName, eventOptions) {
-    const element = this.$(selector, container)[0];
+  triggerEvent(selector, testContainer, options, eventName, eventOptions) {
+    const element = this.getElements(selector, { testContainer })[0];
 
     // `keyCode` is a deprecated property.
     // @see: https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/keyCode
@@ -92,7 +74,7 @@ ExecutionContext.prototype = {
     } else {
       triggerEvent(element, eventName, eventOptions);
     }
-  },
+  }
 
   focus(selector, options) {
     const element = this.findWithAssert(selector, options)[0];
@@ -104,7 +86,7 @@ ExecutionContext.prototype = {
     });
 
     focus(element);
-  },
+  }
 
   blur(selector, options) {
     const element = this.findWithAssert(selector, options)[0];
@@ -116,54 +98,5 @@ ExecutionContext.prototype = {
     });
 
     blur(element);
-  },
-
-  assertElementExists(selector, options) {
-    let container = options.testContainer || findClosestValue(this.pageObjectNode, 'testContainer');
-
-    let result = this.$(selector, container);
-
-    if (result.length === 0) {
-      throwBetterError(
-        this.pageObjectNode,
-        options.pageObjectKey,
-        ELEMENT_NOT_FOUND,
-        { selector }
-      );
-    }
-  },
-
-  find(selector, options) {
-    let container = options.testContainer || findClosestValue(this.pageObjectNode, 'testContainer');
-
-    selector = buildSelector(this.pageObjectNode, selector, options);
-
-    let result = this.$(selector, container);
-
-    guardMultiple(result, selector, options.multiple);
-
-    return result;
-  },
-
-  findWithAssert(selector, options) {
-    let container = options.testContainer || findClosestValue(this.pageObjectNode, 'testContainer');
-
-    selector = buildSelector(this.pageObjectNode, selector, options);
-
-    let result = this.$(selector, container);
-
-    if (result.length === 0) {
-      throwBetterError(
-        this.pageObjectNode,
-        options.pageObjectKey,
-        ELEMENT_NOT_FOUND,
-        { selector }
-      );
-    }
-
-    guardMultiple(result, selector, options.multiple);
-
-    return result;
   }
-};
-
+}
