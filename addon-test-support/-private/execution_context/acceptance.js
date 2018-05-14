@@ -1,13 +1,16 @@
 import ExecutionContext from './execution-context';
 import {
-  findClosestValue
-} from '../helpers';
-import {
   fillElement,
   assertFocusable
 } from './helpers';
 
 export default class AcceptanceExecutionContext extends ExecutionContext {
+  // constructor(pageObjectNode, testContext) {
+  //   super(...arguments);
+
+  //   this.testContext = testContext;
+  // }
+
   run(cb) {
     return cb(this);
   }
@@ -36,20 +39,22 @@ export default class AcceptanceExecutionContext extends ExecutionContext {
   }
 
   fillIn(selector, testContainer, options, content) {
-    let $selection = this.getElements(selector, { testContainer });
+    let elements = this.getElements(selector, { testContainer }).toArray();
 
-    /* global focus */
-    focus($selection);
+    elements.forEach((el) => {
+      /* global focus */
+      focus(el);
 
-    fillElement($selection, content, {
-      selector,
-      pageObjectNode: this.pageObjectNode,
-      pageObjectKey: options.pageObjectKey
-    });
+      fillElement(el, content, {
+        selector,
+        pageObjectNode: this.pageObjectNode,
+        pageObjectKey: options.pageObjectKey
+      });
 
-    /* global triggerEvent */
-    triggerEvent(selector, 'input');
-    triggerEvent(selector, 'change');
+      /* global triggerEvent */
+      triggerEvent(el, 'input');
+      triggerEvent(el, 'change');
+    })
   }
 
   triggerEvent(selector, testContainer, options, eventName, eventOptions) {
