@@ -78,6 +78,9 @@ export function fillIn(...args) {
 export function triggerEvent(...args) {
   return helpers.triggerEvent(...args);
 }
+export function triggerKeyEvent(...args) {
+  return helpers.triggerKeyEvent(...args);
+}
 export function focus(...args) {
   return helpers.focus(...args);
 }
