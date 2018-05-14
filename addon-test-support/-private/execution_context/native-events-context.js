@@ -16,16 +16,6 @@ import ExecutionContext from './execution-context'
 const KEYBOARD_EVENT_TYPES = ['keydown', 'keypress', 'keyup'];
 
 export default class NativeEventsExecutionContext extends ExecutionContext {
-  constructor(pageObjectNode, testContext) {
-    super(...arguments);
-
-    this.testContext = testContext;
-  }
-
-  get contextElement() {
-    return this.testContext ? this.testContext._element : '#ember-testing';
-  }
-
   run(cb) {
     return cb(this);
   }

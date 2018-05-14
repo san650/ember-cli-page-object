@@ -16,8 +16,13 @@ export default class ExecutionContext {
     this.pageObjectNode = pageObjectNode;
   }
 
+  /**
+   * Root node to search element in
+   *
+   * @returns Element
+   */
   get contextElement() {
-    throw new Error('contextElement is not implemented');
+    return document.querySelector('#ember-testing');
   }
 
   getElements(selector, options) {

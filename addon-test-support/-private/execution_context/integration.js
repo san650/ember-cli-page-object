@@ -14,10 +14,6 @@ export default class IntegrationExecutionContext extends ExecutionContext {
     this.testContext = testContext;
   }
 
-  get contextElement() {
-    return $('#ember-testing');
-  }
-
   run(cb) {
     return cb(this);
   }
