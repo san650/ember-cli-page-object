@@ -5,55 +5,65 @@ module.exports = {
 
   options: {
     nodeAssets: {
-      ceibo: function() {
-        return {
-          enabled: this._shouldIncludeFiles(),
-          import: ['index.js']
-        };
+      ceibo: {
+        vendor: ['index.js']
       },
-      jquery: function() {
-        return {
-          enabled: this._shouldIncludeFiles(),
-          vendor: ['dist/jquery.js'],
-          destDir: 'ecpo-jquery'
-        }
+      jquery: {
+        vendor: ['dist/jquery.js'],
+        destDir: 'ecpo-jquery'
       }
     }
   },
 
-  included: function() {
+  included() {
     this.app = this._findHost();
 
-    if (this._shouldIncludeFiles()) {
-      if (!this.app.vendorFiles['jquery.js']) {
-        this.import('vendor/ecpo-jquery/dist/jquery.js');
-        this.import('vendor/shims/ecpo-jquery.js');
-      } else {
-        this.import('vendor/shims/project-jquery.js');
-      }
+    this.import('vendor/ceibo/index.js', { type: 'test' });
+
+    if (!this.app.vendorFiles['jquery.js']) {
+      this.import('vendor/ecpo-jquery/dist/jquery.js', { type: 'test' });
+      this.import('vendor/shims/ecpo-jquery.js', { type: 'test' });
+    } else {
+      this.import('vendor/shims/project-jquery.js', { type: 'test' });
     }
 
     this._super.included.apply(this, arguments);
   },
 
-  treeFor: function(/*name*/) {
-    if (!this._shouldIncludeFiles()) {
-      return;
-    }
+  treeForAddonTestSupport(tree) {
+    const testSupportTree = this._super(tree);
 
-    return this._super.treeFor.apply(this, arguments);
-  },
+    const mergeTrees = require('broccoli-merge-trees');
+    const writeFile = require('broccoli-file-creator');
 
-  _shouldIncludeFiles: function() {
-    // TODO: In order to make the addon work in EmberTwiddle, we cannot use // the `tests` prop til
-    // https://github.com/joostdevries/twiddle-backend/pull/28 is merged.
-    // return !!this.app.tests;
+    // Generate re-exports for public modules to allow
+    // import w/o "test-support/" part in the path:
+    //
+    // `import { clickable } from 'ember-cli-page-object';`
+    //
+    // instead of:
+    //
+    // `import { clickable } from 'ember-cli-page-object/test-support';`
+    //
+    // which is a default behavior in ember-cli
+    const reexportsTree = mergeTrees([
+      'index',
+      'extend',
+      'macros',
+      '-private/execution_context' // @see: https://github.com/san650/ember-cli-page-object/pull/400#issuecomment-384021927
+    ].map(publicModuleName =>
+      writeFile(
+        `/${this.moduleName()}/${publicModuleName}.js`,
+        `export * from '${this.moduleName()}/test-support/${publicModuleName}';`
+      )
+    ));
 
-    if(process.env && process.env.EMBER_CLI_FASTBOOT) {
-      return false;
-    } else {
-      return this.app.env !== 'production';
-    }
+    return mergeTrees([
+      testSupportTree,
+      this.preprocessJs(
+        reexportsTree, '/', this.name, { registry: this.registry, }
+      )
+    ]);
   },
 
   _findHost() {

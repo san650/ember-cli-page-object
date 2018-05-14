@@ -4,7 +4,7 @@ import {
   fullScope,
   getProperty,
   objectHasProperty
-} from 'ember-cli-page-object/-private/helpers';
+} from 'ember-cli-page-object/test-support/-private/helpers';
 
 module('Unit | helpers | fullScope');
 
