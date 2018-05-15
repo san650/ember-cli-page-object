@@ -36,19 +36,11 @@ export default class IntegrationExecutionContext extends ExecutionContext {
     $(this.getElements(selector, { testContainer })).click();
   }
 
-  fillIn(selector, testContainer, options, content) {
-    let elements = this.getElements(selector, { testContainer }).toArray();
+  fillElement(el, content, contextualInfo) {
+    fillElement(el, content, contextualInfo);
 
-    elements.forEach((el) => {
-      fillElement(el, content, {
-        selector,
-        pageObjectNode: this.pageObjectNode,
-        pageObjectKey: options.pageObjectKey
-      });
-
-      $(el).trigger('input');
-      $(el).change();
-    });
+    $(el).trigger('input');
+    $(el).change();
   }
 
   triggerEvent(selector, testContainer, options, eventName, eventOptions) {

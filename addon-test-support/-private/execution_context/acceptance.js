@@ -5,12 +5,6 @@ import {
 } from './helpers';
 
 export default class AcceptanceExecutionContext extends ExecutionContext {
-  // constructor(pageObjectNode, testContext) {
-  //   super(...arguments);
-
-  //   this.testContext = testContext;
-  // }
-
   run(cb) {
     return cb(this);
   }
@@ -38,23 +32,15 @@ export default class AcceptanceExecutionContext extends ExecutionContext {
     click(elements);
   }
 
-  fillIn(selector, testContainer, options, content) {
-    let elements = this.getElements(selector, { testContainer }).toArray();
+  fillElement(el, content, contextualInfo) {
+    /* global focus */
+    focus(el);
 
-    elements.forEach((el) => {
-      /* global focus */
-      focus(el);
+    fillElement(el, content, contextualInfo);
 
-      fillElement(el, content, {
-        selector,
-        pageObjectNode: this.pageObjectNode,
-        pageObjectKey: options.pageObjectKey
-      });
-
-      /* global triggerEvent */
-      triggerEvent(el, 'input');
-      triggerEvent(el, 'change');
-    })
+    /* global triggerEvent */
+    triggerEvent(el, 'input');
+    triggerEvent(el, 'change');
   }
 
   triggerEvent(selector, testContainer, options, eventName, eventOptions) {

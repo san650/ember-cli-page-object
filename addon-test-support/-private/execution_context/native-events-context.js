@@ -32,19 +32,11 @@ export default class NativeEventsExecutionContext extends ExecutionContext {
     this.invokeHelper(selector, { testContainer }, click);
   }
 
-  fillIn(selector, testContainer, options, content) {
-    let elements = this.getElements(selector, { testContainer }).toArray();
+  fillElement(el, content, contextualInfo) {
+    fillElement(el, content, contextualInfo);
 
-    elements.forEach((el) => {
-      fillElement(el, content, {
-        selector,
-        pageObjectNode: this.pageObjectNode,
-        pageObjectKey: options.pageObjectKey
-      });
-
-      triggerEvent(el, 'input');
-      triggerEvent(el, 'change');
-    });
+    triggerEvent(el, 'input');
+    triggerEvent(el, 'change');
   }
 
   triggerEvent(selector, testContainer, options, eventName, eventOptions) {

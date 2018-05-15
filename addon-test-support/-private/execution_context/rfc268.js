@@ -101,8 +101,8 @@ export default class RFC268ExecutionContext extends ExecutionContext {
     return this.invokeHelper(selector, options, click);
   }
 
-  fillIn(selector, container, options, content) {
-    return this.invokeHelper(selector, options, fillIn, content);
+  fillElement(el, content) {
+    return fillIn(el, content);
   }
 
   triggerEvent(selector, container, options, eventName, eventOptions) {

@@ -85,4 +85,17 @@ export default class ExecutionContext {
       );
     });
   }
+
+  // @todo: remove me after `fillable` is updated to call `fillElement`
+  fillIn(selector, testContainer, options, content) {
+    let elements = this.getElements(selector, { testContainer }).toArray();
+
+    elements.forEach((el) => {
+      this.fillElement(el, content, {
+        selector,
+        pageObjectNode: this.pageObjectNode,
+        pageObjectKey: options.pageObjectKey
+      });
+    });
+  }
 }
