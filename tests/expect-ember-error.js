@@ -1,5 +1,6 @@
 
 import { run } from '@ember/runloop';
+import { VERSION as EmberVersion } from '@ember/version';
 import Ember from 'ember';
 
 // ember@2.11.3 introduces a breaking change in how the errors are propagated
@@ -11,7 +12,7 @@ import Ember from 'ember';
 //
 // See https://github.com/emberjs/ember.js/pull/15871
 function useHack() {
-  var [major, minor] = Ember.VERSION.split('.');
+  var [major, minor] = EmberVersion.split('.');
   major = Number(major);
   minor = Number(minor);
 
