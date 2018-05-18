@@ -91,35 +91,32 @@ if (typeof (Symbol) !== 'undefined' && Symbol.iterator) {
   }
 }
 
-function proxyIt(instance) {
-  return new window.Proxy(instance, {
-    get: function(target, name) {
-      if (typeof(name) === 'number' || typeof(name) === 'string') {
-        let index = parseInt(name, 10);
+function proxyIfSupported(instance) {
+  if (window.Proxy) {
+    return new window.Proxy(instance, {
+      get: function (target, name) {
+        if (typeof (name) === 'number' || typeof (name) === 'string') {
+          let index = parseInt(name, 10);
 
-        if (!isNaN(index)) {
-          return target.objectAt(index);
+          if (!isNaN(index)) {
+            return target.objectAt(index);
+          }
         }
-      }
 
-      return target[name];
-    }
-  });
+        return target[name];
+      }
+    });
+  } else {
+    return instance;
+  }
 }
 
 export function collection(scope, definition) {
   let descriptor = {
     isDescriptor: true,
 
-    setup(node, key) {
-      // Set the value on the descriptor so that it will be picked up and applied by Ceibo.
-      // This does mutate the descriptor, but because `setup` is always called before the
-      // value is assigned we are guaranteed to get a new, unique Collection instance each time.
-      descriptor.value = new Collection(scope, definition, node, key);
-
-      if (window.Proxy) {
-        descriptor.value = proxyIt(descriptor.value);
-      }
+    get(key) {
+      return proxyIfSupported(new Collection(scope, definition, this, key));
     }
   };
 
