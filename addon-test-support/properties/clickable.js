@@ -4,6 +4,7 @@ import {
   findClosestValue
 } from '../-private/helpers';
 import { getExecutionContext } from '../-private/execution_context';
+import { action } from '../macros/action';
 
 /**
  * Clicks elements matched by a selector.
@@ -67,23 +68,15 @@ import { getExecutionContext } from '../-private/execution_context';
  * @return {Descriptor}
  */
 export function clickable(selector, userOptions = {}) {
-  return {
-    isDescriptor: true,
+  return action((node, options) => {
+    options = assign(options, userOptions);
 
-    get(key) {
-      return function() {
-        let executionContext = getExecutionContext(this);
-        let options = assign({ pageObjectKey: `${key}()` }, userOptions);
+    let context = getExecutionContext(node);
+    let fullSelector = buildSelector(node, selector, options);
+    let container = options.testContainer || findClosestValue(node, 'testContainer');
 
-        return executionContext.runAsync((context) => {
-          let fullSelector = buildSelector(this, selector, options);
-          let container = options.testContainer || findClosestValue(this, 'testContainer');
+    context.assertElementExists(fullSelector, options);
 
-          context.assertElementExists(fullSelector, options);
-
-          return context.click(fullSelector, container, options);
-        });
-      };
-    }
-  };
+    return context.click(fullSelector, container, options);
+  });
 }

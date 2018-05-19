@@ -1,5 +1,6 @@
 import { assign } from '../-private/helpers';
 import { getExecutionContext } from '../-private/execution_context';
+import { action } from '../macros/action';
 
 /**
  *
@@ -63,18 +64,9 @@ import { getExecutionContext } from '../-private/execution_context';
  * @return {Descriptor}
 */
 export function focusable(selector, userOptions = {}) {
-  return {
-    isDescriptor: true,
+  return action((node, options) => {
+    options = assign(options, userOptions);
 
-    get(key) {
-      return function() {
-        const executionContext = getExecutionContext(this);
-        const options = assign({ pageObjectKey: `${key}()` }, userOptions);
-
-        return executionContext.runAsync((context) => {
-          return context.focus(selector, options);
-        });
-      };
-    }
-  };
+    return getExecutionContext(node).focus(selector, options);
+  })
 }

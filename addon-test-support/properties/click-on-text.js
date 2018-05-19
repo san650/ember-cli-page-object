@@ -1,6 +1,7 @@
 import { assign, findClosestValue } from '../-private/helpers';
 import { getExecutionContext } from '../-private/execution_context';
 import { buildSelector } from './click-on-text/helpers';
+import { action } from '../macros/action';
 
 /**
  * Clicks on an element containing specified text.
@@ -85,23 +86,17 @@ import { buildSelector } from './click-on-text/helpers';
  * @return {Descriptor}
  */
 export function clickOnText(selector, userOptions = {}) {
-  return {
-    isDescriptor: true,
+  return action((node, options, textToClick) => {
+    options = assign(options, {
+      contains: textToClick
+    }, userOptions);
 
-    get(key) {
-      return function(textToClick) {
-        let executionContext = getExecutionContext(this);
-        let options = assign({ pageObjectKey: `${key}("${textToClick}")`, contains: textToClick }, userOptions);
+    let context = getExecutionContext(node);
+    let fullSelector = buildSelector(node, context, selector, options);
+    let container = options.testContainer || findClosestValue(node, 'testContainer');
 
-        return executionContext.runAsync((context) => {
-          let fullSelector = buildSelector(this, context, selector, options);
-          let container = options.testContainer || findClosestValue(this, 'testContainer');
+    context.assertElementExists(fullSelector, options);
 
-          context.assertElementExists(fullSelector, options);
-
-          return context.click(fullSelector, container, options);
-        });
-      };
-    }
-  };
+    return context.click(fullSelector, container, options);
+  });
 }

@@ -4,6 +4,7 @@ import {
   findClosestValue
 } from '../-private/helpers';
 import { getExecutionContext } from '../-private/execution_context';
+import { action } from '../macros/action';
 
 /**
  *
@@ -83,25 +84,17 @@ import { getExecutionContext } from '../-private/execution_context';
  * @return {Descriptor}
 */
 export function triggerable(event, selector, userOptions = {}) {
-  return {
-    isDescriptor: true,
+  return action((node, options, eventProperties) => {
+    options = assign(options, userOptions);
 
-    get(key) {
-      return function(eventProperties = {}) {
-        const executionContext = getExecutionContext(this);
-        const options = assign({ pageObjectKey: `${key}()` }, userOptions);
-        const staticEventProperties = assign({}, options.eventProperties);
+    const context = getExecutionContext(node);
+    const staticEventProperties = assign({}, options.eventProperties);
+    const fullSelector = buildSelector(node, selector, options);
+    const container =  options.testContainer || findClosestValue(node, 'testContainer');
 
-        return executionContext.runAsync((context) => {
-          const fullSelector = buildSelector(this, selector, options);
-          const container =  options.testContainer || findClosestValue(this, 'testContainer');
+    context.assertElementExists(fullSelector, options);
 
-          context.assertElementExists(fullSelector, options);
-
-          const mergedEventProperties = assign(staticEventProperties, eventProperties);
-          return context.triggerEvent(fullSelector, container, options, event, mergedEventProperties);
-        });
-      };
-    }
-  };
+    const mergedEventProperties = assign(staticEventProperties, eventProperties);
+    return context.triggerEvent(fullSelector, container, options, event, mergedEventProperties);
+  })
 }

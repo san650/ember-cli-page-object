@@ -4,6 +4,7 @@ import {
   findClosestValue
 } from '../-private/helpers';
 import { getExecutionContext } from '../-private/execution_context';
+import { action } from '../macros/action';
 
 /**
  * Alias for `fillable`, which works for inputs, HTML select menus, and
@@ -118,44 +119,36 @@ import { getExecutionContext } from '../-private/execution_context';
  * @return {Descriptor}
  */
 export function fillable(selector, userOptions = {}) {
-  return {
-    isDescriptor: true,
+  return action((node, options, contentOrClue, content) => {
+    let clue;
 
-    get(key) {
-      return function(contentOrClue, content) {
-        let clue;
-
-        if (content === undefined) {
-          content = contentOrClue;
-        } else {
-          clue = contentOrClue;
-        }
-
-        let executionContext = getExecutionContext(this);
-        let options = assign({ pageObjectKey: `${key}()` }, userOptions);
-
-        return executionContext.runAsync((context) => {
-          let fullSelector = buildSelector(this, selector, options);
-          let container = options.testContainer || findClosestValue(this, 'testContainer');
-
-          if (clue) {
-            fullSelector = ['input', 'textarea', 'select', '[contenteditable]']
-              .map((tag) => [
-                `${fullSelector} ${tag}[data-test="${clue}"]`,
-                `${fullSelector} ${tag}[aria-label="${clue}"]`,
-                `${fullSelector} ${tag}[placeholder="${clue}"]`,
-                `${fullSelector} ${tag}[name="${clue}"]`,
-                `${fullSelector} ${tag}#${clue}`
-              ])
-              .reduce((total, other) => total.concat(other), [])
-              .join(',');
-          }
-
-          context.assertElementExists(fullSelector, options);
-
-          return context.fillIn(fullSelector, container, options, content);
-        });
-      };
+    if (content === undefined) {
+      content = contentOrClue;
+    } else {
+      clue = contentOrClue;
     }
-  };
+
+    options = assign(options, userOptions);
+    let fullSelector = buildSelector(node, selector, options);
+    let container = options.testContainer || findClosestValue(node, 'testContainer');
+
+    if (clue) {
+      fullSelector = ['input', 'textarea', 'select', '[contenteditable]']
+        .map((tag) => [
+          `${fullSelector} ${tag}[data-test="${clue}"]`,
+          `${fullSelector} ${tag}[aria-label="${clue}"]`,
+          `${fullSelector} ${tag}[placeholder="${clue}"]`,
+          `${fullSelector} ${tag}[name="${clue}"]`,
+          `${fullSelector} ${tag}#${clue}`
+        ])
+        .reduce((total, other) => total.concat(other), [])
+        .join(',');
+    }
+
+    let context = getExecutionContext(node);
+
+    context.assertElementExists(fullSelector, options);
+
+    return context.fillIn(fullSelector, container, options, content);
+  })
 }
