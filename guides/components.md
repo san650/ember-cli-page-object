@@ -47,16 +47,12 @@ const page = create({
   }
 });
 
-page
+await page
   .visit()
   .form
   .firstName('John')
   .lastName('Doe')
   .submit();
-
-andThen(function() {
-  // assert something
-});
 ```
 
 ## Default attributes
@@ -104,13 +100,11 @@ const page = create({
   }
 });
 
-page.visit();
+await page.visit();
 
-andThen(function() {
-  assert.ok(page.modal.contains('Are you sure you want to exit the page?'));
-});
+assert.ok(page.modal.contains('Are you sure you want to exit the page?'));
 
-page.modal.clickOn("I'm sure");
+await page.modal.clickOn("I'm sure");
 ```
 
 ## Scopes
@@ -137,9 +131,7 @@ const page = create({
   textBody: text('p'),
 });
 
-andThen(function() {
-  assert.equal(page.textBody, 'Lorem ipsum dolor.');
-});
+assert.equal(page.textBody, 'Lorem ipsum dolor.');
 ```
 
 The attribute's selector can be omited when the scope matches the element we want to use.
@@ -168,15 +160,13 @@ const page = create({
   submit: clickable('button')
 });
 
-page
+await page
   .input
   .fillIn('an invalid value');
 
-page.submit();
+await page.submit();
 
-andThen(function() {
-  assert.ok(page.input.hasError, 'Input has an error');
-});
+assert.ok(page.input.hasError, 'Input has an error');
 ```
 
 ### A `component` inherits parent scope by default

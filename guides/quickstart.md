@@ -14,27 +14,23 @@ This is a short guide to get you started writing page objects and using them in 
 Suppose we have a couple of acceptance tests to test the login page of our site.
 
 ```js
-test('logs in sucessfully', function(assert) {
-  visit('/login');
-  fillIn('#username', 'admin');
-  fillIn('#password', 'secret');
-  click('button');
+test('logs in sucessfully', async function(assert) {
+  await visit('/login');
+  await fillIn('#username', 'admin');
+  await fillIn('#password', 'secret');
+  await click('button');
 
-  andThen(function() {
-    assert.equal(currentURL(), '/private-page');
-  });
+  assert.equal(currentURL(), '/private-page');
 });
 
-test('shows an error when password is wrong', function(assert) {
-  visit('/login');
-  fillIn('#username', 'admin');
-  fillIn('#password', 'invalid');
-  click('button');
+test('shows an error when password is wrong', async function(assert) {
+  await visit('/login');
+  await fillIn('#username', 'admin');
+  await fillIn('#password', 'invalid');
+  await click('button');
 
-  andThen(function() {
-    assert.equal(currentURL(), '/login');
-    assert.equal($.trim(find('.errors').text()), 'Invalid credentials');
-  });
+  assert.equal(currentURL(), '/login');
+  assert.equal($.trim(find('.errors').text()), 'Invalid credentials');
 });
 ```
 
@@ -77,28 +73,24 @@ import page from 'frontend/tests/pages/login';
 
 // ...
 
-test('logs in sucessfully', function(assert) {
-  page
+test('logs in sucessfully', async function(assert) {
+  await page
     .visit()
     .username('admin')
     .password('secret')
     .submit();
 
-  andThen(function() {
-    assert.equal(currentURL(), '/private-page');
-  });
+  assert.equal(currentURL(), '/private-page');
 });
 
-test('shows an error when password is wrong', function(assert) {
-  page
+test('shows an error when password is wrong', async function(assert) {
+  await page
     .visit()
     .username('admin')
     .password('invalid')
     .submit();
 
-  andThen(function() {
-    assert.equal(page.error, 'Invalid credentials');
-  });
+  assert.equal(page.error, 'Invalid credentials');
 });
 ```
 
@@ -138,22 +130,18 @@ export default create({
 Let's update the test accordingly.
 
 ```js
-test('logs in sucessfully', function(assert) {
-  page.visit()
+test('logs in sucessfully', async function(assert) {
+  await page.visit()
     .loginSuccessfully();
 
-  andThen(function() {
-    assert.equal(currentURL(), '/private-page');
-  });
+  assert.equal(currentURL(), '/private-page');
 });
 
-test('shows an error when password is wrong', function(assert) {
-  page.visit()
+test('shows an error when password is wrong', async function(assert) {
+  await page.visit()
     .loginFailed();
 
-  andThen(function() {
-    assert.equal(page.error, 'Invalid credentials');
-  });
+  assert.equal(page.error, 'Invalid credentials');
 });
 ```
 
@@ -275,7 +263,7 @@ moduleForComponent('login-form', 'Integration | login form', {
   }
 });
 
-test('calls submit action with correct username and password', function(assert) {
+test('calls submit action with correct username and password', async function(assert) {
   assert.expect(2);
 
   function submit(username, password) {
@@ -289,7 +277,7 @@ test('calls submit action with correct username and password', function(assert) 
     submit=(action submit)
   }}`);
 
-  page
+  await page
     .username('admin')
     .password('secret')
     .submit();
@@ -325,7 +313,7 @@ Let's take a look at the changes:
 As in our acceptance tests, we can DRY things up a bit more by grouping actions together into methods that describe specific user flows. For example, in the first test we can use our `page.loginSuccessfully()` method to eliminate a few lines of code:
 
 ```js
-test('calls submit action with correct username and password', function(assert) {
+test('calls submit action with correct username and password', async function(assert) {
   assert.expect(2);
 
   function submit(username, password) {
@@ -339,7 +327,7 @@ test('calls submit action with correct username and password', function(assert) 
     submit=(action submit)
   }}`);
 
-  page.loginSuccessfully();
+  await page.loginSuccessfully();
 });
 ```
 
@@ -382,9 +370,9 @@ moduleForComponent('my-fanfare', 'Integration | Components | my fanfare', {
   }
 });
 
-test('it show fireworks when user clicks fanfare button', function (assert) {
+test('it show fireworks when user clicks fanfare button', async function (assert) {
   this.render(hbs`{{my-fanfaire}}`);
-  page.playFanfare();
+  await page.playFanfare();
   assert.ok(page.isCelebrating, 'expected fireworks to have happened');
 });
 ```
