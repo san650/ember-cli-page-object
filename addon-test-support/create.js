@@ -4,6 +4,16 @@ import { assign } from './-private/helpers';
 import { visitable } from './properties/visitable';
 import dsl from './-private/dsl';
 
+function assignDescriptors(target, source) {
+  Object.getOwnPropertyNames(source).forEach((key) => {
+    const descriptor = Object.getOwnPropertyDescriptor(source, key);
+
+    Object.defineProperty(target, key, descriptor);
+  });
+
+  return target;
+}
+
 //
 // When running RFC268 tests, we have to play some tricks to support chaining.
 // RFC268 helpers don't wait for things to settle by defaut, but return a
@@ -44,6 +54,14 @@ import dsl from './-private/dsl';
 
 // This builder builds the primary tree
 function buildObject(node, blueprintKey, blueprint, defaultBuilder) {
+  Object.getOwnPropertyNames(blueprint).forEach((key) => {
+    const { get } = Object.getOwnPropertyDescriptor(blueprint, key);
+
+    if (typeof get === 'function') {
+      Object.defineProperty(blueprint, key, { value: { isDescriptor: true, get } });
+    }
+  });
+
   blueprint = assign(assign({}, dsl), blueprint);
 
   return defaultBuilder(node, blueprintKey, blueprint, defaultBuilder);
@@ -156,7 +174,7 @@ export function create(definitionOrUrl, definitionOrOptions, optionsOrNothing) {
     options = definitionOrOptions || {};
   }
 
-  definition = assign({}, definition);
+  definition = assignDescriptors({}, definition);
 
   if (url) {
     definition.visit = visitable(url);
