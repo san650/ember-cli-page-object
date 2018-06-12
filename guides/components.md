@@ -120,19 +120,24 @@ You can use native syntax for functions and getters on pages as well to create
 methods and properties with custom functionality:
 
 ```js
-import { click } from 'ember-test-helpers';
-import { findElement } from 'ember-cli-page-object';
+import { find, click } from 'ember-test-helpers';
 
 const page = create({
-  button: {
-    scope: 'button',
+  form: {
+    scope: '.awesome-form',
 
-    clickWith(options) {
-      click(findElement(this), options);
-    },
+    firstName: fillable('#firstName'),
+    lastName: fillable('#lastName'),
+    submit: clickable('button')
+
+    login(data) {
+      return this.username(data.username)
+        .password(data.password)
+        .submit();
+    }
 
     get role() {
-      return findElement(this).getAttribute('aria-role');
+      return find(this.scope).getAttribute('aria-role');
     }
   }
 });
