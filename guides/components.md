@@ -8,6 +8,7 @@ Group attributes and create new ones
 * [Components](#components)
 * [Default attributes](#default-attributes)
 * [Custom helper](#custom-helper)
+* [Functions and Getters](#scopes)
 * [Scopes](#scopes)
 
 ## Components
@@ -111,6 +112,30 @@ andThen(function() {
 });
 
 page.modal.clickOn("I'm sure");
+```
+
+## Functions and Getters
+
+You can use native syntax for functions and getters on pages as well to create
+methods and properties with custom functionality:
+
+```js
+import { click } from 'ember-test-helpers';
+import { findElement } from 'ember-cli-page-object';
+
+const page = create({
+  button: {
+    scope: 'button',
+
+    clickWith(options) {
+      click(findElement(this), options);
+    },
+
+    get role() {
+      return findElement(this).getAttribute('aria-role');
+    }
+  }
+});
 ```
 
 ## Scopes
