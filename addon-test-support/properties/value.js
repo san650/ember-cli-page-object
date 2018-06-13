@@ -1,5 +1,5 @@
 import { assign, map } from '../-private/helpers';
-import { getExecutionContext } from '../-private/execution_context';
+import { findElementWithAssert } from '../extend';
 
 /**
  * @public
@@ -91,23 +91,17 @@ export function value(selector, userOptions = {}) {
     isDescriptor: true,
 
     get(key) {
-      let executionContext = getExecutionContext(this);
       let options = assign({ pageObjectKey: key }, userOptions);
 
-      return executionContext.run((context) => {
-        let elements = context.findWithAssert(selector, options);
-        let result;
+      let elements = findElementWithAssert(this, selector, options);
 
-        result = map(elements, function(element) {
-          if (element.is('[contenteditable]')) {
-            return element.html();
-          } else {
-            return element.val();
-          }
-        });
-
-        return options.multiple ? result : result[0];
-      });
+      return map(elements, function(element) {
+        if (element.is('[contenteditable]')) {
+          return element.html();
+        } else {
+          return element.val();
+        }
+      }, options);
     }
   };
 }

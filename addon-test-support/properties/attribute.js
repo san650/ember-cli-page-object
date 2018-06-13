@@ -1,5 +1,5 @@
 import { assign, map } from '../-private/helpers';
-import { getExecutionContext } from '../-private/execution_context';
+import { findElementWithAssert } from '../extend';
 
 /**
  * @public
@@ -80,19 +80,11 @@ export function attribute(attributeName, selector, userOptions = {}) {
     isDescriptor: true,
 
     get(key) {
-      let executionContext = getExecutionContext(this);
       let options = assign({ pageObjectKey: key }, userOptions);
 
-      return executionContext.run((context) => {
-        let elements = context.findWithAssert(selector, options);
-        let result;
+      let elements = findElementWithAssert(this, selector, options);
 
-        result = map(elements, function(element) {
-          return element.attr(attributeName);
-        });
-
-        return options.multiple ? result : result[0];
-      });
+      return map(elements, element => element.attr(attributeName), options);
     }
   };
 }
