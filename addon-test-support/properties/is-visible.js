@@ -1,5 +1,5 @@
 import { assign, every } from '../-private/helpers';
-import { getExecutionContext } from '../-private/execution_context';
+import { findElement } from '../extend';
 
 /**
  * Validates if an element or set of elements are visible.
@@ -110,19 +110,16 @@ export function isVisible(selector, userOptions = {}) {
     isDescriptor: true,
 
     get(key) {
-      let executionContext = getExecutionContext(this);
       let options = assign({ pageObjectKey: key }, userOptions);
 
-      return executionContext.run((context) => {
-        let elements = context.find(selector, options);
+      let elements = findElement(this, selector, options);
 
-        if (elements.length === 0) {
-          return false;
-        }
+      if (elements.length === 0) {
+        return false;
+      }
 
-        return every(elements, function(element) {
-          return element.is(':visible');
-        });
+      return every(elements, function(element) {
+        return element.is(':visible');
       });
     }
   };

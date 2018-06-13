@@ -1,5 +1,5 @@
 import { assign } from '../-private/helpers';
-import { getExecutionContext } from '../-private/execution_context';
+import { findElement } from '../extend';
 
 /**
  * @public
@@ -86,14 +86,11 @@ export function count(selector, userOptions = {}) {
     isDescriptor: true,
 
     get(key) {
-      let executionContext = getExecutionContext(this);
       let options = assign({ pageObjectKey: key }, userOptions);
 
       options = assign(options, { multiple: true });
 
-      return executionContext.run((context) => {
-        return context.find(selector, options).length;
-      });
+      return findElement(this, selector, options).length;
     }
   };
 }
