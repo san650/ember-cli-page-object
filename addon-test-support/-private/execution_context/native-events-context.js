@@ -30,10 +30,6 @@ export default function ExecutionContext(pageObjectNode, testContext) {
 }
 
 ExecutionContext.prototype = {
-  run(cb) {
-    return cb(this);
-  },
-
   runAsync() {
     throw new Error('not implemented');
   },
