@@ -5,12 +5,19 @@ title: Quickstart
 
 {% raw %}
 
+* [Installation](#installation)
 * [Components](#components)
 * [Properties](#properties)
 * [Collections](#collections)
 * [Application Tests](#application-tests)
 * [moduleFor test helpers](#moduleFor-test-helpers)
 
+
+## Installation
+
+```bash
+$ ember install ember-cli-page-object
+```
 
 ## Components
 
