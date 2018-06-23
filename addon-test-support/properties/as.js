@@ -6,24 +6,22 @@
  * Useful for grouping what's being tested.
  *
  * @example
- * andThen(() => {
- *   page.users(1).as(user => {
- *     assert.equal(user.name, 'John');
- *     assert.equal(user.lastName, 'Doe');
- *     assert.equal(user.email, 'john@doe');
- *   });
+ * page.users(1).as(user => {
+ *   assert.equal(user.name, 'John');
+ *   assert.equal(user.lastName, 'Doe');
+ *   assert.equal(user.email, 'john@doe');
+ * });
  *
- *   page.users(2).as(user => {
- *     assert.equal(user.name, 'John');
- *     assert.equal(user.lastName, 'Doe');
- *     assert.equal(user.email, 'john@doe');
- *   });
+ * page.users(2).as(user => {
+ *   assert.equal(user.name, 'John');
+ *   assert.equal(user.lastName, 'Doe');
+ *   assert.equal(user.email, 'john@doe');
+ * });
  *
- *   page.users(3).as(user => {
- *     assert.equal(user.name, 'John');
- *     assert.equal(user.lastName, 'Doe');
- *     assert.equal(user.email, 'john@doe');
- *   });
+ * page.users(3).as(user => {
+ *   assert.equal(user.name, 'John');
+ *   assert.equal(user.lastName, 'Doe');
+ *   assert.equal(user.email, 'john@doe');
  * });
  *
  * @example
