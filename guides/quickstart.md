@@ -6,11 +6,8 @@ title: Quickstart
 {% raw %}
 
 * [Installation](#installation)
-* [Components](#components)
-* [Properties](#properties)
-* [Collections](#collections)
-* [Application Tests](#application-tests)
-
+* [Creating a Component](#creating-a-component)
+* [Creating a Page Object](#creating-a-page-object)
 
 ## Installation
 
@@ -18,219 +15,167 @@ title: Quickstart
 $ ember install ember-cli-page-object
 ```
 
-## Components
+## Creating a Component
 
-Components are the main building blocks in the EmberCLI Page Object. You can create one by running a component generator:
+Suppose we have a very simple search form:
 
-```bash
-$ ember generate page-object-component search-form
+```html
+<form class="hasError">
+  <input type="search">
 
-installing
-  create tests/pages/components/search-form.js
+  <button>Search</button>
+</form>
 ```
 
-The only required component option is a css `scope`:
+The form also supports `has-error` class when user does submit with an empty search text.
+
+Let's generate a dummy component definition:
+
+```bash
+$ ember generate page-object-component quick-search
+
+installing
+  create tests/pages/components/quick-search.js
+```
+
+Now we can descibe the form as follows:
 
 ```js
-// project-name/tests/pages/components/search-form.js
+// project-name/tests/pages/components/quick-search.js
+
+import { hasClass } from 'ember-cli-page-object';
 
 export default {
-  scope: 'form.SearchForm',
+  scope: 'form',
 
-  field: {
-    scope: '[data-test-search-field]',
-    
-    input: {
-      scope: 'input'
-    },
+  hasError: hasClass('has-error')
+
+  text: {
+    scope: 'input[type="search"]',
   },
 
-  submitButton: {
+  submit: {
     scope: 'button'
   }
-}
+};
 ```
 
-Scopes allows us to query a DOM via Page Object interface. Right after a component creation you can access a set of actions and properties provided by [default](./api/components#default-attributes).
+As you can see we export a plain javascript object here. First we need to create a page object instance from this definition in your component test:
 
 ```js
+// tests/integration/quick-search-test.js
+
 import { create } from 'ember-cli-page-object';
-import SearchForm from 'project-name/tests/pages/components/search-form';
+import QuickSearch from 'project-name/tests/pages/components/quick-search';
 
-const searchForm = create(SearchForm);
-
-test('it submits', async function(assert) {
-  assert.expect(2);
-
-  this.onSubmit = function(searchText) {
-    assert.equal(searchText, 'search text')
-  }
-
-  await render(`{{search-form onSubmit=(action this.onSubmit)}}`);
-
-  assert.ok(searchForm.isVisible);
-
-  await searchForm.field.input.fillIn('search text');
-  await searchForm.submitButton.click();
-});
+const search = create(QuickSearch);
 ```
 
-## Properties
-
-Component API can be extended with a rich set of properties and actions. By default all the properties and actions inherit a parent component `scope` but you can specify a custom `scope` for it.
+Finally we can test our form:
 
 ```js
-import {
-  attribute,
-  fillable,
-  clickable,
-  hasClass
-} from 'ember-cli-page-object';
-
-export default {
-  scope: 'form.SearchForm',
-  
-  field: {
-    scope: '[data-test-search-field]',
-    
-    fillIn: fillable('input'),
-
-    isFocused: hasClass('has-focus')
-
-    isDisabled: attribute('disabled')
-  },
-
-  submit: clickable('button')
-}
-```
-
-Then the previous test can be re-written as:
-
-```js
-test('it submits', async function(assert) {
-  assert.expect(2);
-  this.onSubmit = function(searchText) {
-    assert.equal(searchText, 'search text')
-  }
-
-  await render(`{{search-form onSubmit=(action this.onSubmit)}}`);
-
-  assert.ok(searchForm.isVisible);
-
-  // Fill in "form.SearchForm [data-test-search-field] input" element
-  await searchForm.field.fillIn('search text');
-
-  // click "form.SearchForm button" element
-  await searchForm.submit();
-
-});
-```
-
-## Collections
-
-
-In order to describe a List of components `collection` should be used:
-
-```js
-// project-name/tests/pages/components/awesome-list.js
-
-import { collection } from 'ember-cli-page-object';
-
-export default {
-  scope: '.AwesomeList',
-
-  items: collection('.AwesomeList-item', {
-    title: {
-      scope: '.AwesomeItem-title'
-    },
-
-    badges: collection('ul.AwesomeBadges li'),
-
-    updatedAt: {
-      scope: '.AwesomeItem-lastUpdated'
-    }
-  })
-}
-```
-
-EmberCLI Page Object collections behave similar to usual JS arrays:
-
-```js
-import { create } from 'ember-cli-page-object';
-import AwesomeList from 'project-name/tests/pages/components/awesome-list';
-
-const awesomeForm = create(AwesomeList);
-
 test('it renders', async function(assert) {
-  this.items = [
-    await run(() => this.store.createRecord('awesome-item', {
-      title: 'Some title'
-    }))
-  ];
+  await render(`{{quick-search text="some"}}`);
 
-  await render(`{{awesome-list items=this.items}}`);
+  search.as(s => {
+    assert.ok(s.isVisible);
+    assert.equal(s.text.value, 'some');
+    assert.equal(s.submitButton.text, 'Search');
+  });
+});
 
-  assert.equal(awesomeList.items.length, 1);
-  assert.equal(awesomeList.items[0].title.text, 'Some title');
+test('it requires text on submit', async function(assert) {
+  await render(hbs`{{my-search}}`);
+
+  await search.submitButton.click();
+
+  assert.ok(search.hasError)
 });
 ```
 
-## Application Tests
+## Creating a Page Object
 
-Application tests are not much different from the component tests. The only difference from the EmberCLI Page Object perpective is an availability of a visitable property.
+Now let's test a search page which includes a QuickSearch form from the previous example and a simple results list with a title and desciption for each result item:
 
-Let's generate a page object containing our `SearchForm` and `AwesomeList` components with an ability to visit a page in the application tests mode:
+```html
+<section class="SearchPage">
+  <form>
+    <input type="search">
+
+    <button>Search</button>
+  </form>
+
+  <ul>
+    <li>
+      <h5>Title...</h5>
+      <p>Description here...</p>
+    </li>
+  </ul>
+</section>
+```
+
+In application tests we use page objects. Page object is usually composed from a different components and `visit` method.
+
+Let's generate a Search Page page object:
 
 ```bash
-$ ember generate page-object search-page
+$ ember generate page-object search
 
 installing
-  create tests/pages/search-page.js
+  create tests/pages/search.js
 ```
 
 ```js
-// project-name/tests/pages/search-page.js
+// project-name/tests/pages/search.js
 
-import { create, visitable } from 'ember-cli-page-object';
+import {
+  create,
+  collection,
+  visitable
+} from 'ember-cli-page-object';
 
-import SearchForm from './components/search-form';
-import AwesomeList from './components/awesome-list';
+import Form from './components/quick-search';
 
 export default create({
   visit: visitable('/search'),
 
   scope: '.SearchPage',
 
-  form: SearchForm,
+  form: Form,
 
-  list: AwesomeList,
+  results: collection('ul li', {
+    title: 'h5',
+    description: 'p'
+  }),
 
-  // we can also express a sequence of actions or queries with page object methods
-  search(text) {
-    await this.form.field.fillIn(text);
+  // Let's also provide a shorhand for the search form submit
+  async search(text) {
+    await this.form.text.fillIn(text);
 
     await this.form.submit();
   }
 })
 ```
 
-Now let's write our application test:
+In comparison to components which are plain JS definitions, page objects are ready to use instances.
+
+It means can just import and use it in tests:
 
 ```js
-import searchPage from 'project-name/tests/pages/search-page';
+import searchPage from 'project-name/tests/pages/search';
 
 test('it searches', async function(assert) {
-  this.items = this.server.createList('awesome-item', [{
-    title: 'Some title'
+  this.items = this.server.createList('item-model', [{
+    title: 'Awesome Title'
   }, {
-    title: 'Some text'
+    title: 'Another Title'
   }])
 
   await searchPage.visit();
-  await searchPage.search('text');
+  await searchPage.search('some');
 
-  assert.equal(searchPage.list.length, 1);
-  assert.equal(searchPage.list[0].title, 'Some text');
+  assert.equal(searchPage.results.length, 1);
+  assert.equal(searchPage.results[0].title, 'Awesome Title');
 });
 ```
 
