@@ -1,5 +1,5 @@
-import { getContext } from './helpers';
-import isRfc268Test from './is-rfc268-test';
+import { getContext as getIntegrationTestContext } from './helpers';
+import { getContext, visit } from './compatibility';
 import AcceptanceExecutionContext from './execution_context/acceptance';
 import IntegrationExecutionContext from './execution_context/integration';
 import Rfc268Context from './execution_context/rfc268';
@@ -24,17 +24,56 @@ export function getExecutionContext(pageObjectNode) {
   // first, and only if that hasn't happened, check to see if we're in an
   // RFC232/RFC268 test, and if not, fall back on assuming a pre-RFC268
   // acceptance test, which is the only remaining supported scenario.
-  let testContext = getContext(pageObjectNode);
-  let context;
-  if (testContext) {
-    context = 'integration';
+  let integrationTestContext = getIntegrationTestContext(pageObjectNode);
+  let contextName;
+  if (integrationTestContext) {
+    contextName = 'integration';
   } else if (isRfc268Test()) {
-    context = 'rfc268';
+    contextName = 'rfc268';
   } else {
-    context = 'acceptance';
+    contextName = 'acceptance';
   }
 
-  return new executioncontexts[context](pageObjectNode, testContext);
+  return new executioncontexts[contextName](pageObjectNode, integrationTestContext);
+}
+
+/**
+ * @private
+ */
+export function isRfc268Test() {
+  // `getContext()` returns:
+  //  - falsey, if @ember/test-helpers is not available (stubbed in
+  //    compatibility.js)
+  //  - falsey, if @ember/test-helpers is available but none of the
+  //    `ember-qunit` setupTest() methods has been called (e.g.,
+  //    `setupRenderingTest()`)
+  //  - truthy, if @ember/test-helpers is available and one of the `ember-qunit`
+  //    setupTest() methods has been called.
+  //
+  // Note that if `page.setContext(this)` has been called, we'll never get here
+  // and will just be running with the integration context (even if the test is
+  // an RFC268 test).
+  let hasValidTestContext = Boolean(getContext());
+  if (!hasValidTestContext) {
+    return false;
+  }
+
+  // There are a few versions of `@ember/test-helpers` that have support for
+  // `ember-qunit`'s `setupRenderingTest()` method, but do not have the DOM
+  // helpers (`click`, `fillIn`, etc.) that the RFC268 execution context uses.
+  // `visit` was the last helper to be added to `@ember/test-helpers`, so we
+  // check for it, and if we can't find it, we can't use the RFC268 execution
+  // context, so we throw an exception.
+  let hasExpectedTestHelpers = Boolean(visit);
+  if (!hasExpectedTestHelpers) {
+    throw new Error([
+      'You are trying to use ember-cli-page-object with RFC232/RFC268 support',
+      '(setupRenderingContext()/setupApplicationContext()) which requires at',
+      'least ember-qunit@3.2.0 or ember-mocha@0.13.0-beta.3.'
+    ].join());
+  }
+
+  return true;
 }
 
 /*

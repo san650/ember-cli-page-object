@@ -5,13 +5,13 @@ import require from 'require';
 if (require.has('@ember/test-helpers')) {
   module('Unit | is rfc268 test', function(hooks) {
     function isRfc268Test() {
-      window.require.unsee('ember-cli-page-object/test-support/-private/is-rfc268-test');
-      return require('ember-cli-page-object/test-support/-private/is-rfc268-test').default();
+      window.require.unsee('ember-cli-page-object/test-support/-private/execution_context');
+      return require('ember-cli-page-object/test-support/-private/execution_context').isRfc268Test();
     }
 
     hooks.afterEach(function() {
       // Make sure we don't leave this module in a mutated state
-      window.require.unsee('ember-cli-page-object/test-support/-private/is-rfc268-test');
+      window.require.unsee('ember-cli-page-object/test-support/-private/execution_context');
     });
 
     module('with context', function(hooks) {
