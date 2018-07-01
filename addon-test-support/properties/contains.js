@@ -41,7 +41,7 @@ import { getExecutionContext } from '../-private/execution_context';
  * });
  *
  * // all spans contain 'text'
- * assert.ok(page.spanContains('text'));
+ * assert.ok(page.spansContain('text'));
  *
  * @example
  *
