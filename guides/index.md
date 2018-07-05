@@ -44,9 +44,7 @@ test('my awesome test', async function(assert) {
 
 ## So, What Is a Page Object?
 
-Ember, and more specifically `ember-testing`, provides a DSL that simplifies the creation and validation of conditions on our tests.
-
-One of the problems with acceptance and integration testing is that many of the CSS selectors used to look up elements are repeated across tests. In some cases, this repetition seems like a smell.
+One of the problems with testing a DOM is repetetive CSS selectors used to look up elements. In some cases, this repetition seems like a smell.
 
 In some cases the complexity of selectors makes it hard to remember what we were actually trying to test. This confusion can lead to difficulties updating tests and collaborating with others.
 
