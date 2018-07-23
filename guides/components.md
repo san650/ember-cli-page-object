@@ -11,27 +11,25 @@ Components is a way to describe some functional part of the DOM with a convenien
 
 ## Scopes
 
-Each component must have a `scope` which is a CSS selector.
+Each component has a CSS selector `scope` attribute which identifies a corresponding DOM element.
 
 ```js
 import { create } from 'ember-cli-page-object';
 
 const f = create({
-  scope: '.MyForm',
+  scope: '.AnArticle',
 
-  magic: {
-    scope: '.SomeMagic'
+  title: {
+    scope: '.AnArticle-title'
   }
 });
 
+assert.ok(f.title.text); 
 ```
 
-Nested components take into account a parent scope while building a query selector. 
+A result query selector of `f.title` would be a nested scope selector ".SomeCard .SomeCard-title"
 
-```js
-// built selector: ".MyForm .MagicButton"
-assert.equal(f.magic.isVisible, true);
-```
+You can also reset a scope
 
 Scope is calculated when you access some compmonent attributes like `isVisible`, `click`, etc,. If few DOM nodes are matched an exception occurs.
 
