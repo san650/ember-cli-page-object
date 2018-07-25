@@ -48,6 +48,10 @@ export class Collection {
     return this._items[index];
   }
 
+  getById(id) {
+    return this.toArray().find(o => o.id === id);
+  }
+
   filter(...args) {
     return this.toArray().filter(...args);
   }
@@ -100,6 +104,10 @@ function proxyIt(instance) {
         if (!isNaN(index)) {
           return target.objectAt(index);
         }
+      }
+
+      if (typeof target[name] === 'undefined') {
+        return target.getById(name);
       }
 
       return target[name];
