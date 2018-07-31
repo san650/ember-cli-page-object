@@ -141,6 +141,7 @@ import { collection as legacyCollection } from './collection/legacy';
  *
  * @param {String} scopeOrDefinition - Selector to define the items of the collection
  * @param {Object} [definitionOrNothing] - Object with the definition of item properties
+ * @param {boolean} definition.resetScope - Override parent's scope
  * @return {Descriptor}
  */
 export function collection(scopeOrDefinition, definitionOrNothing) {
