@@ -72,7 +72,6 @@ installing
 $ git clone https://github.com/san650/ember-cli-page-object.git
 $ cd $_
 $ yarn install # or npm install
-$ bower install
 ```
 
 ### Running Tests
