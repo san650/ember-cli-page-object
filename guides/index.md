@@ -46,9 +46,9 @@ test('my awesome test', async function(assert) {
 
 One of the problems with testing a DOM is repetetive CSS selectors used to look up elements. In some cases, this repetition seems like a smell.
 
-In some cases the complexity of selectors makes it hard to remember what we were actually trying to test. This confusion can lead to difficulties updating tests and collaborating with others.
+Sometimes DOM interactions complexity can even make it hard to remember what we were actually trying to test. This confusion can lead to difficulties updating tests and collaborating with others.
 
-A widely used design pattern comes to the rescue: page objects. The main idea behind this pattern is to encapsulate in an object the page or component structure being tested, hiding the details of its HTML structure and exposing only the semantic structure of the page.
+A widely used design pattern comes to the rescue: page objects. The main idea behind this pattern is to allow building convenient test interfaces for your pages and components being tested.
 
 This addon allows you to define page objects in a declarative fashion, making it simple to model complex pages and components.
 
