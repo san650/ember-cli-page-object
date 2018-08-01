@@ -27,6 +27,9 @@
 /yarn.lock
 /package-lock.json
 .gitkeep
+/types/*
+!/types/index.d.ts
+/guides
 
 # ember-try
 /.node_modules.ember-try/

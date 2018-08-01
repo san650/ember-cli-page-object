@@ -34,6 +34,7 @@ jobs:
       script:
         - npm run lint:hbs
         - npm run lint:js
+        - npm run lint:ts
         - npm test
 
     # we recommend new addons test the current and previous LTS
