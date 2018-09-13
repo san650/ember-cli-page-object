@@ -1,12 +1,9 @@
-import Ember from 'ember';
 import EmberError from '@ember/error';
 import { test, module } from 'qunit';
 import { create } from 'ember-cli-page-object';
 import {
   throwBetterError
 } from 'ember-cli-page-object/test-support/-private/better-errors';
-
-const { Logger } = Ember;
 
 const page = create({
   foo: {
@@ -49,15 +46,15 @@ test('shows the expected error message when `selector` is passed in', function(a
 test('logs the error to the console', function(assert) {
   assert.expect(2);
 
-  const origEmberLoggerError = Logger.error;
+  const origConsoleError = console.error;
 
   try {
-    Logger.error = (msg) => {
+    console.error = (msg) => {
       assert.equal(msg, "Oops!\n\nPageObject: 'page.foo.bar.focus'");
     };
 
     assert.throws(() => throwBetterError(page.foo.bar, 'focus', 'Oops!'));
   } finally {
-    Logger.error = origEmberLoggerError;
+    console.error = origConsoleError;
   }
 });
