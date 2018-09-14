@@ -32,7 +32,6 @@ Object.assign(ApplicationAdapter.prototype, {
 
   async createTemplate(test, page, template = '', { useAlternateContainer } = {}) {
     if (!(test && page)) {
-      // eslint-disable-next-line no-console
       console.error('Missing parameters in adapter.createTemplate(testContext, pageObject, templateString)');
     }
 

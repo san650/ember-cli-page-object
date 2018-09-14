@@ -22,7 +22,6 @@ AcceptanceAdapter.prototype = {
     template = template || '';
 
     if (!(test && page)) {
-      // eslint-disable-next-line no-console
       console.error('Missing parameters in adapter.createTemplate(testContext, pageObject, templateString)');
     }
 
