@@ -20,7 +20,7 @@ module.exports = {
 
     this.import('vendor/ceibo/index.js', { type: 'test' });
 
-    if (!this.app.vendorFiles['jquery.js']) {
+    if (!this.project.findAddonByName('@ember/jquery') && !this.app.vendorFiles['jquery.js']) {
       this.import('vendor/ecpo-jquery/dist/jquery.js', { type: 'test' });
       this.import('vendor/shims/ecpo-jquery.js', { type: 'test' });
     } else {
