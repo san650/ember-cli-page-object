@@ -39,53 +39,54 @@ declare module 'ember-cli-page-object' {
     fillIn(this: T, contentOrClue: string, value?: string): ActionResult<T>
   }
 
-  type aFunc = (...args: any[]) => any
-
   type UnpackedDefinition<T> = {
     [k in keyof T]:
       T[k] extends string|boolean|number|Function ? T[k]
       : T[k] extends Definition ? Component<T[k]>
-      : never
+      : T[k]
   }
 
-  type Definition = {
-    scope?: string
+  export type Definition = {
+    scope: string
     resetScope?: boolean
-  }
+    [l: string]: any
+  } | {}
 
-  type BoundFunction<T, K extends Function> = (this: T, ...args: any[]) => K
-  type ActionInstance<T> = (this: T, ...args: any[]) => ActionResult<T>
-
-  export type Component<T> = KnownProps<T> & UnpackedDefinition<T>;
+  export type Component<T = {}> = KnownProps<T> & UnpackedDefinition<T> & {
+    [s: string]: any;
+  };
 
   export type ActionResult<T> = KnownActions<T> & UnpackedDefinition<T> & {
     [s: string]: any
   }
 
-  export function attribute<T>(selector?: string, name?: string): string
-  export function isVisible(selector?: string): Function;
-  export function text(selector?: string): Function;
-  export function value(selector?: string): Function;
-  export function property<T>(selector?: string, name?: string): string
-  export function hasClass(selector: string, className: string): Function;
-  export function hasClass(className?: string): Function;
+  export function attribute(selector?: string, name?: string): string
+  export function isVisible(selector?: string): boolean;
+  export function text(selector?: string): string;
+  export function value(selector?: string): string;
+  export function property(selector?: string, name?: string): string|number|boolean
+  export function hasClass(selector: string, className: string): boolean;
+  export function hasClass(className?: string): boolean;
+  export function contains(): (text: string) => boolean;
 
-  export function clickable<T>(selector?: string): () => ActionResult<T>
-  export function fillable<T>(valueOrClue?: string, value?: string): () => ActionResult<T>
-  export function triggerable<T>(event: string, selector?: string, eventOptions?: TriggerOptions): () => ActionResult<T>
-  export function focusable<T>(selector?: string): () => ActionResult<T>
-  export function blurable<T>(selector?: string): () => ActionResult<T>
+  export function clickable(selector?: string): <T>(this: T) => ActionResult<T>
+  export function fillable(selector?: string, userOptions?: QueryOptions): <T>(this: T, content: string) => ActionResult<T>
+  export function fillable(selector?: string, userOptions?: QueryOptions): <T>(this: T, clue: string, content: string) => ActionResult<T>
+  export function triggerable(event: string, selector?: string, eventOptions?: TriggerOptions): <T>(this: T) => ActionResult<T>
+  export function focusable(selector?: string): <T>(this: T) => ActionResult<T>
+  export function blurrable(selector?: string): <T>(this: T) => ActionResult<T>
+  export function visitable(path: string): <T>(this: T, dynamicSegmentsAndQueryParams?: {}) => ActionResult<T>;
 
-  export function visit<T>(pageObject?: object): any;
-  export function create<T extends Partial<Definition>>(def: T): Component<T>
+  export function collection<T extends Partial<Definition>>(selector: string, definition?: T): Component<T>[];
+  export function create<T extends Partial<Definition>>(definition: T): Component<T>
 }
 
 declare module 'ember-cli-page-object/extend' {
-  export function findElement(pageObject: object, selector: string, options?: QueryOptions): any //JQuery
-  export function findElementWithAssert(pageObject: object, selector: string, options?: QueryOptions): any // JQuery
+  export function findElement(pageObject: any, selector?: string, options?: QueryOptions): any //JQuery
+  export function findElementWithAssert(pageObject: any, selector?: string, options?: QueryOptions): any // JQuery
 }
 
 declare module 'ember-cli-page-object/macros' {
-  export function getter(body: Function): Function
-  export function alias(path: string): object
+  export function getter<T>(body: (...args: any[]) => T): T
+  export function alias(path: string): any
 }

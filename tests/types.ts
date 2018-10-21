@@ -16,17 +16,23 @@ const Def = {
 
   hasSomething: hasClass('.aclass'),
 
-  do2: focusable()
+  do2: focusable(),
+
+  do3() {
+    return this.do2()
+  },
+
+  do4() {
+    return this.a.click();
+  }
 }
 
 const page = create(Def);
 
 page.isVisible;
 page.click().a.do1();
-page.a.click()
-
-page.do2().click();
-page.do2().a
+page.do2().a.do1()
+page.a.click();
 
 // !!!!!!!!!!!!!!!!
 // SHOULD FAIL
