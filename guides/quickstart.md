@@ -7,15 +7,14 @@ title: Quickstart
 
 This is a short guide to get you started building powerful UI testing APIs using EmberCLI Page Object.
 
-- [Basics](#basics)
-- [Calculator](#calculator)
+- [Basic Component](#basic-component)
 - [Pages](#pages)
 
-## Components
+## Basic Component
 
-The primary build block of page objects is a [component](./components). It consists of a [`scope`](./components#scopes), [`attributes`](./components#attributes), methods and nested components.
+The primary build block of page objects is a [component](./components). It consists of a [`scope`](./components#scopes), [`attributes`](./components#attributes), custom methods and nested components.
 
-Let's [`create`](./api/create) a page object instance for a simple form:
+Assume there is a simple `<SearchForm />` component with a text field and a submit button on it.
 
 __Example__
 
@@ -26,23 +25,45 @@ __Example__
 </form>
 ```
 
-```js
-import { create, triggerable } from 'ember-cli-page-object';
+Let's generate a page object component definition for it with a help of corresponding generator:
 
-const searchForm = create({
+```bash
+$ ember generate page-object-component search-form
+
+installing
+  create tests/pages/components/search-form.js
+```
+
+We can describe the form as follows:
+
+```js
+// your-app/tests/pages/components/search-form.js
+
+import { triggerable } from 'ember-cli-page-object';
+
+export default {
   scope: '.search-form',
 
   text: { scope: 'input[type="search"]' },
 
   submit: triggerable('submit')
-});
+};
 ```
 
-All the components are supplied with a set of [default attributes](./components#default-attributes). In many cases, you need only to define a component's `scope`, as seen with `datum` nested component here.
+All the components are supplied with a set of [default attributes](./components#default-attributes). In many cases, you need only to define a component's `scope`, as seen with the `text` nested component here.
+
+In order to use a component, you have to import its definition and pass it to the Page Object's `create` function:
 
 ```js
+// my-app/tests/integration/components/search-form-test.js
+import { create } from 'ember-cli-page-object';
+import SearchForm from 'my-app/tests/pages/components/search-form';
+
+const searchForm = create(SearchForm);
+
+module('SearchForm', // ...
   test('it renders', async function(assert) {
-    await render(hbs`{{search-form text="initial text"}}`);
+    await render(hbs`<SearchForm @text="initial text" />`);
 
     // using the default `isVisible` attribute, checks that `.search-form` is displayed
     assert.ok(searchForm.isVisible);
@@ -59,9 +80,9 @@ All the action attributes are asynchronous:
     let lastSearched;
     this.search = (text) => lastSearched = text;
 
-    await render(hbs`{{search-form onSubmit=(action search)}}`);
+    await render(hbs`<SearchForm onSubmit={{action search}} />`);
 
-    await searchForm.datum.fillIn('new text');
+    await searchForm.text.fillIn('new text');
     await searchForm.submit();
 
     assert.deepEqual(lastSearched,  'new text' )
@@ -85,146 +106,6 @@ And, the same result with chaining:
     .blur();
 ```
 
-## Calculator
-
-Assume there is a simple calculator with a numpad, basic operator buttons, and a screen to display results.
-
-Let's generate a page object component definition for it with a help of corresponding generator:
-
-```bash
-$ ember generate page-object-component quickstart-calculator
-
-installing
-  create tests/pages/components/quickstart-calculator.js
-```
-
-We can describe a calculator as follows:
-
-```js
-// your-app/tests/pages/components/quickstart-calculator.js
-import {
-  clickable,
-  collection,
-  triggerable,
-  value
-} from 'ember-cli-page-object';
-
-export default {
-  scope: 'form.quickstart-calculator',
-
-  plus: clickable('button.plus'),
-
-  equals: triggerable('submit'),
-
-  value: value('[data-test-screen]'),
-
-  digits: collection('.numpad > button'),
-};
-```
-
-Here we've used a [collection](./api/collection) to describe a list of digit buttons.
-
-The collection function's optional second argument is the definition for each item within the collection. When not supplied (as seen in this example), the item is composed of the default attributes.
-
-Let's test it:
-
-```js
-// my-app/tests/components/quickstart-calculator-test.js
-
-import { create } from 'ember-cli-page-object';
-import QuickstartCalculator from 'my-app/tests/pages/components/quickstart-calculator';
-
-const c = create(QuickstartCalculator);
-
-module('QuickstartCalculator', // ...
-  test('it works!', async function(assert) {
-    await render(hbs`<QuickstartCalculator />`);
-
-    await c.digits[1].click();
-    await c.plus();
-    await c.digits[2].click();
-    await c.equals();
-
-    assert.equal(c.value, 5);
-  });
-```
-
-We can reuse this `quickstart-calculator` page object component to test any other template that includes a `<QuickstartCalculator />`.
-
-If you noticed in the test, we directly rely on the digit button's ordering. For example, a zero button is rendered last in a typical calculator:
-
-```js
-  // click zero button
-  await c.digits[9].click();
-```
-
-This approach is fragile, unintuitive, and detracts from the readability of our tests. Let's improve it by declaring a method for clicking a digit button by its value.
-
-First, we have to normalize "0" to be the 10th button of the numpad, and then compensate for the collection's zero indexing by subtracting 1:
-
-```js
-const normalize = (d) => `${d}`.trim() === '0' ? 9 : d - 1;
-```
-
-Now let's add a `clickDigit` action into definition:
-
-```js
-export default {
-  scope: 'form.quickstart-calculator',
-
-  plus: clickable('button.plus'),
-
-  equals: triggerable('submit'),
-
-  value: value('[data-test-screen]'),
-
-  digits: collection('.numpad > button'),
-
-  async clickDigit(text) {
-    await this.digits[normalize(text)].click();
-
-    return this;
-  }
-}
-```
-
-We must return this (the page object's root node) to allow for further chaining of the page object's actions.
-
-```js
-// my-app/tests/components/quickstart-calculator-test.js
-
-import { create } from 'ember-cli-page-object';
-import QuickstartCalculator from 'my-app/tests/pages/components/quickstart-calculator';
-
-const c = create(QuickstartCalculator);
-
-module('QuickstartCalculator', // ...
-  test('it just works', async function(assert) {
-    await render(hbs`{{quickstart-calculator}}`);
-
-    await c.clickDigit(2);
-    await c.plus();
-    await c.clickDigit(3);
-    await c.equals();
-
-    assert.equal(c.value, 5);
-  });
-
-  test('it works with chaining', async function(assert) {
-    await render(hbs`{{quickstart-calculator}}`);
-
-    await c
-      .clickDigit(2)
-      .plus()
-      .clickDigit(3)
-      .equals();
-
-    assert.equal(c.value, 5);
-  });
-```
-
-Our new page object encapsulates all the possible interactions we'll need when testing our calculator with an idiomatic API that abstracts away the necessary DOM traversal and interaction. No more littering our test with brittle CSS selectors that hamper readability!
-
 ## Pages
 
 For comprehensive testing of our application, we must rely on more than testing individual components in isolation (ie acceptance testing). We can map each "page" in our app (route + template) to a `page-object`, composing various `page-object-component`s together to form a complete representation of page.
@@ -238,7 +119,7 @@ installing
   create tests/pages/my-page.js
 ```
 
-The generator created a file inside the directory `/tests/pages`. It allows to easier distinguish pages between components, which are located under `/tests/pages/components/`.
+The generator created a file inside the directory `/tests/pages`. Using this directory allows us to more easily distinguish pages from components, which are located under `/tests/pages/components/`.
 
 A generated page output looks like the following:
 
