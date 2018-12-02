@@ -5,7 +5,7 @@ title: Quickstart
 
 {% raw %}
 
-This is a short guide to get you started building powerful testing APIs for UI using EmberCLI Page Object.
+This is a short guide to get you started building powerful UI testing APIs using EmberCLI Page Object.
 
 - [Basics](#basics)
 - [Calculator](#calculator)
@@ -13,7 +13,7 @@ This is a short guide to get you started building powerful testing APIs for UI u
 
 ## Basics
 
-The primary building block in page objects is a [component](./components). It consists of a `scope`, attributes, methods and nested components.
+The primary build block of page objects is a [component](./components). It consists of a `scope`, attributes, methods and nested components.
 
 Let's [`create`](./api/create) a page object instance for a simple form:
 
@@ -29,16 +29,16 @@ const myForm = create({
 });
 ```
 
-All components are supplied with a set of [default attributes](./components#default-attributes), so in many cases you just need to define a component `scope` in order to use it: 
+All the components are supplied with a set of [default attributes](./components#default-attributes). In many cases, you need only to define a component's `scope`, as seen with `datum` nested component here.
 
 ```js
   test('it renders', async function(assert) {
     await render(hbs`{{my-form value="initial value"}}`);
 
-    // checks that ".my-form" is displayed
+    // using the default `isVisible` attribute, checks that ".my-form" is displayed
     assert.ok(myForm.isVisible);
 
-    // check an input value of ".my-form [data-test-datum]"
+    // using the default `value` attribute, check the input value of ".my-form [data-test-datum]"
     assert.equal(myForm.datum.value, 'initial value');
   });
 ```
@@ -61,16 +61,16 @@ All the action attributes are asynchronous:
   });
 ```
 
-In addition each action returns a chainable page object node which allows to chain further actions within a single statement. 
+In addition, each action returns the invoked page object node, which allows for the chaining of subsequent actions.
 
-For example that's how 2 consequent action invocations look like without chaining:
+For example. without chaining:
 
 ```js
   await myForm.datum.fillIn('test')
   await myForm.datum.blur()
 ```
 
-And that's how we achieve the same result with chaining: 
+And, the same result with chaining:
 
 ```js
   await myForm.datum
@@ -80,7 +80,7 @@ And that's how we achieve the same result with chaining:
 
 ## Calculator
 
-Assume there is a simple calculator with a numpad, basic operator buttons and a screen where we can see a result of calculation.
+Assume there is a simple calculator with a numpad, basic operator buttons, and a screen to display results.
 
 Let's generate a page object component definition for it with a help of corresponding generator:
 
@@ -117,9 +117,7 @@ export default {
 
 Here we've used a [collection](./api/collection) to describe a list of digit buttons.
 
-Collections can accept a definition as a second argument in order to describe a colletion item.
-
-In our example it's sufficient to rely on a component with default attributes for digit buttons.
+The collection function's optional second argument is the definition for each item within the collection. When not supplied (as seen in this example), the item is composed of the default attributes.
 
 Let's test it:
 
@@ -144,25 +142,21 @@ module('QuickstartCalculator', // ...
   });
 ```
 
-Now We have a working calculator page object component which we can use across tests.
+We can reuse this `quickstart-calculator` page object component to test any other template that includes a `<QuickstartCalculator />`.
 
-However there is still some unwanted complexity here. In the test we directly rely on digits buttons ordering which is fragile and may lead to a confusion when working with a test.
-
-For example, a zero button is rendered the last in a typical calculator:
+If you noticed in the test, we directly rely on the digit button's ordering. For example, a zero button is rendered last in a typical calculator:
 
 ```js
   // click zero button
   await c.digits[9].click();
 ```
 
-Usually you don't want to keep in mind rules like that when dealing with test scenarios.
+This approach is fragile, unintuitive, and detracts from the readability of our tests. Let's improve it by declaring a method for clicking a digit button by its value.
 
-Let's improve it by declaring a method for clicking a digit button by its value.
-
-First, we have to normalize "0" to be the 10th button of the numpad:
+First, we have to normalize "0" to be the 10th button of the numpad, and then compensate for the collection's zero indexing by subtracting 1:
 
 ```js
-const normalize = (d/*: number */) => `${d}`.trim() === '0' ? 9 : d - 1;
+const normalize = (d) => `${d}`.trim() === '0' ? 9 : d - 1;
 ```
 
 Now let's add a `clickDigit` action into definition:
@@ -187,9 +181,7 @@ export default {
 }
 ```
 
-By returning `this` we allow a chaining context to remain a calculator's root object rather than a `digit` button nested page oject.
-
-Now we have an easy way to interact with the form in tests:  
+We must return this (the page object's root node) to allow for further chaining of the page object's actions.
 
 ```js
 // my-app/tests/components/quickstart-calculator-test.js
@@ -224,17 +216,13 @@ module('QuickstartCalculator', // ...
   });
 ```
 
-Now we have a pretty solid and easy to use calculator testing API.
-
-We don't rely on any CSS selectors directly in our tests. We've also absorbed DOM layout complexity and exposed only functional properties of the component to the test.
-
-All this makes a test suite easier to maintain and fun to implement!
+Our new page object encapsulates all the possible interactions we'll need when testing our calculator with an idiomatic API that abstracts away the necessary DOM traversal and interaction. No more littering our test with brittle CSS selectors that hamper readability!
 
 ## Pages
 
-A web page is usually associated with a certain resource URL which is represented by some components hierarchy. Having an URL attribute makes testing of application pages a bit special.
+For comprehensive testing of our application, we must rely on more than testing individual components in isolation (ie acceptance testing). We can map each "page" in our app (route + template) to a `page-object`, composing various `page-object-component`s together to form a complete representation of page.
 
-Let's take a look on how the generated page-object page does look like:
+Let's take a look at how we might generate a page-object.
 
 ```
 $ ember generate page-object my-page
@@ -256,11 +244,11 @@ export default create({
 });
 ```
 
-The page is provided with a [`visitable`](./api/visitable) attribute to open associated web page.
+The page is provided with a [`visitable`](./api/visitable) attribute to navigate to the associated page in our app.
 
-You also might have noticed that rather than exporting a plain definition we export a page object instance which can be used in your tests right after the page is imported.
+You also might have noticed that rather than exporting a plain definition, we export a page object instance, which can be used in your tests directly after the page is imported. 
 
-We can include any number of nested components, attributes or methods into the definition, the same as for regular component definitions.
+We can include any number of nested components, attributes, or methods in the definition, just as we did for `page-object-component`s.
 
 Suppose we have a calculator on the page:
 
@@ -276,7 +264,7 @@ export default create({
 });
 ```
 
-That's how a minimal application test using a page object can look like:
+A simple application test using a `page-object` might look like:
 
 ```js
 // my-app/tests/acceptance/my-page-test.js
