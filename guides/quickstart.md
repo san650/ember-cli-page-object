@@ -110,13 +110,13 @@ And, the same result with chaining:
 
 For comprehensive testing of our application, we must rely on more than testing individual components in isolation (ie acceptance testing). We can map each "page" in our app (route + template) to a `page-object`, composing various `page-object-component`s together to form a complete representation of page.
 
-Let's take a look at how we might generate a page-object.
+Suppose we have a search page in our application. Let's generate a page-object for it.
 
 ```
-$ ember generate page-object my-page
+$ ember generate page-object search-page
 
 installing
-  create tests/pages/my-page.js
+  create tests/pages/search-page.js
 ```
 
 The generator created a file inside the directory `/tests/pages`. Using this directory allows us to more easily distinguish pages from components, which are located under `/tests/pages/components/`.
@@ -138,17 +138,19 @@ You also might have noticed that rather than exporting a plain definition, we ex
 
 We can include any number of nested components, attributes, or methods in the definition, just as we did for `page-object-component`s.
 
-Suppose we have a calculator on the page:
+Let's update the page object as follows:
 
 ```js
 // my-app/tests/pages/my-page.js
 import { create, visitable } from 'ember-cli-page-object';
-import Calculator from 'my-app/tests/pages/components/quickstart-calculator';
+import SearchForm from 'my-app/tests/pages/components/search-form';
 
 export default create({
   visit: visitable('/'),
 
-  calculator: Calculator
+  search: SearchForm,
+
+  results: collection('ol li article')
 });
 ```
 
@@ -158,11 +160,15 @@ A simple application test using a `page-object` might look like:
 // my-app/tests/acceptance/my-page-test.js
 import myPage from 'my-app/tests/pages/my-page';
 
-module('My Page', // ...
-  test('it renders a calculator', async function(assert) {
+module('Search Page', // ...
+  test('it works', async function(assert) {
     await myPage.visit();
 
-    assert.ok(myPage.calculator.isVisible);
+    await myPage.search.text.fillIn('some');
+    await myPage.search.submit();
+
+    assert.equal(myPage.results.length, 1);
+    assert.ok(myPage.results[0].contains('Awesome search result!'));
   })
 ```
 
