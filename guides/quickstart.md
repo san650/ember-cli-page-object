@@ -11,9 +11,9 @@ This is a short guide to get you started building powerful UI testing APIs using
 - [Calculator](#calculator)
 - [Pages](#pages)
 
-## Basics
+## Components
 
-The primary build block of page objects is a [component](./components). It consists of a `scope`, attributes, methods and nested components.
+The primary build block of page objects is a [component](./components). It consists of a [`scope`](./components#scopes), [`attributes`](./components#attributes), methods and nested components.
 
 Let's [`create`](./api/create) a page object instance for a simple form:
 
