@@ -12,7 +12,7 @@ This is a short guide to get you started building powerful UI testing APIs using
 
 ## Basic Component
 
-The primary build block of page objects is a [component](./components). It consists of a [`scope`](./components#scopes), [`attributes`](./components#attributes), custom methods and nested components.
+The primary build block of page objects is a [component](./components). It consists of a [`scope`](./components#scopes), [`attributes`](./components#attributes), custom methods, and nested components.
 
 Assume there is a simple `<SearchForm />` component with a text field and a submit button on it.
 
@@ -25,7 +25,7 @@ __Example__
 </form>
 ```
 
-Let's generate a page object component definition for it with a help of corresponding generator:
+Let's generate a page object component definition for it with the help of the corresponding generator:
 
 ```bash
 $ ember generate page-object-component search-form
@@ -108,7 +108,7 @@ And, the same result with chaining:
 
 ## Pages
 
-For comprehensive testing of our application, we must rely on more than testing individual components in isolation (ie acceptance testing). We can map each "page" in our app (route + template) to a `page-object`, composing various `page-object-component`s together to form a complete representation of page.
+For comprehensive testing of our application, we must rely on more than testing individual components in isolation (ie acceptance testing). We can map each "page" in our app (route + template) to a `page-object`, composing various `page-object-component`s together to form a complete representation of the page.
 
 Suppose we have a search page in our application. Let's generate a page-object for it.
 
@@ -121,7 +121,7 @@ installing
 
 The generator created a file inside the directory `/tests/pages`. Using this directory allows us to more easily distinguish pages from components, which are located under `/tests/pages/components/`.
 
-A generated page output looks like the following:
+The generated page object looks like the following:
 
 ```js
 // my-app/tests/pages/my-page.js
