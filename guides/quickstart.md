@@ -17,13 +17,22 @@ The primary build block of page objects is a [component](./components). It consi
 
 Let's [`create`](./api/create) a page object instance for a simple form:
 
+__Example__
+
+```html
+<form class="search-form">
+  <input type="search">
+  <button>Search</button>
+</form>
+```
+
 ```js
 import { create, triggerable } from 'ember-cli-page-object';
 
-const myForm = create({
-  scope: '.my-form',
+const searchForm = create({
+  scope: '.search-form',
 
-  datum: { scope: '[data-test-datum]' },
+  text: { scope: 'input[type="search"]' },
 
   submit: triggerable('submit')
 });
@@ -33,13 +42,13 @@ All the components are supplied with a set of [default attributes](./components#
 
 ```js
   test('it renders', async function(assert) {
-    await render(hbs`{{my-form value="initial value"}}`);
+    await render(hbs`{{search-form text="initial text"}}`);
 
-    // using the default `isVisible` attribute, checks that ".my-form" is displayed
-    assert.ok(myForm.isVisible);
+    // using the default `isVisible` attribute, checks that `.search-form` is displayed
+    assert.ok(searchForm.isVisible);
 
-    // using the default `value` attribute, check the input value of ".my-form [data-test-datum]"
-    assert.equal(myForm.datum.value, 'initial value');
+    // using the default `value` attribute, check the input value of `.search-form input[type=`search"]"
+    assert.equal(searchForm.text.value, 'initial text');
   });
 ```
 
@@ -47,17 +56,15 @@ All the action attributes are asynchronous:
 
 ```js
   test('using actions', async function(assert) {
-    let lastSaved;
-    this.save = (data) => lastSaved = data;
+    let lastSearched;
+    this.search = (text) => lastSearched = text;
 
-    await render(hbs`{{my-form onSave=(action save)}}`);
+    await render(hbs`{{search-form onSubmit=(action search)}}`);
 
-    await myForm.datum.fillIn('new value');
-    await myForm.submit();
+    await searchForm.datum.fillIn('new text');
+    await searchForm.submit();
 
-    assert.deepEqual(lastSaved, {
-      datum: 'new value'
-    })
+    assert.deepEqual(lastSearched,  'new text' )
   });
 ```
 
@@ -66,14 +73,14 @@ In addition, each action returns the invoked page object node, which allows for 
 For example. without chaining:
 
 ```js
-  await myForm.datum.fillIn('test')
-  await myForm.datum.blur()
+  await searchForm.text.fillIn('test')
+  await searchForm.text.blur()
 ```
 
 And, the same result with chaining:
 
 ```js
-  await myForm.datum
+  await searchForm.text
     .fillIn('test')
     .blur();
 ```
