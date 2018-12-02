@@ -13,9 +13,9 @@ Describe functional fragments of the DOM
 
 ## Definitions
 
-Components are described with definitions which are just plain objects with attributes, methods and nested definitions on it
+Components are created from definitions, which are just plain objects with attributes, methods, and nested definitions on them.
 
-__Example Markup__
+__Example__
 
 ```html
 <form class="awesome-form">
@@ -24,8 +24,6 @@ __Example Markup__
   <button>Create</button>
 </form>
 ```
-
-__Definition Example__
 
 ```js
 import {
@@ -56,7 +54,7 @@ await form
   .submit();
 ```
 
-Definitions can also be used as a part of higher order definitions. This way you can describe complex interfaces by composition of simpler component definitions:
+The best way to describe complex interfaces is through the composition of simpler component definitions.
 
 ```js
 import { create, visitable } from 'ember-cli-page-object';
@@ -78,7 +76,7 @@ await myPage.visit()
 
 ## Scopes
 
-CSS selector `scope` encloses a component to a corresponding DOM element. Parent scopes are encountered when calculating a nested component selector.
+The `scope` attribute, which refers to the CSS selector that encloses a component, is used to target the corresponding DOM element during testing. Parent scopes are included when calculating a nested component's selector.
 
 Given the following HTML
 
@@ -106,7 +104,9 @@ const page = create({
 assert.equal(page.textBody.text, 'Lorem ipsum dolor.');
 ```
 
-You can reset parent scope by setting the `resetScope` attribute on the component definition.
+When `page.textBody.text` is evaluated, each link in the hierarchy of page objects has its scope incorporated into the final selector that's used to find an element whose text is returned (`.article p` in this example).
+
+You can avoid applying the parent `scope` to a particular component by setting the `resetScope` attribute on the component's definition to `true`.
 
 ```js
 const form = create({
@@ -126,9 +126,9 @@ assert.ok(form.dialog.isVisible);
 
 ## Attributes
 
-Attributes are just Page Object aware wrappers around the low level DOM operations. It allows you to configure component's behavior in a declarative fashion.
+Attributes are just Page Object aware wrappers around low level DOM operations. They allow you to configure a component's testable behavior in a declarative fashion.
 
-By default attribute uses a parent component's `scope`:
+By default, attribute uses a parent component's `scope`:
 
 ```js
 import { create, value } from 'ember-cli-page-object';
@@ -142,9 +142,9 @@ const input = create({
 assert.equal(input.value, 'some value');
 ```
 
-In the assert statement above [`value`](./api/value) attribute queries a DOM element with a selector equal to `input[name="my-input"]`.
+In the assert statement above, the [`value`](./api/value) attribute queries a DOM element with the selector `input[name="my-input"]` and returns its DOM value property.
 
-You can also specify CSS selector by passing a `scope` as an attribute's argument:
+You can add further specificity by passing a selector as the attribute's argument:
 
 ```js
 import { create, text } from 'ember-cli-page-object';
@@ -158,11 +158,11 @@ const customSelect = create({
 assert.equal(customSelect.value, 'some value');
 ```
 
-In the assert statement above [`text`](./api/text) attribute queries a DOM element with a selector equal to `.my-select .trigger`.
+In the assert statement above, the [`text`](./api/text) attribute queries a DOM element with the selector `.my-select .trigger` and returns its text value.
 
 ### Actions
 
-Actions are a special kind of attributes which allows to perform async operations on the DOM.
+Actions are a special kind of attribute that allow page objects to perform async operations on the DOM.
 
 ```js
 import { create, fillable, triggerable } from 'ember-cli-page-object';
@@ -179,9 +179,9 @@ await form.fillIn('some text');
 await form.submit();
 ```
 
-A result of an action is a `Promise`-like chainable page object node.
+The result of an action is a `Promise`-like chainable page object node.
 
-Chaining allows to write scenarios in the following way:
+Chaining allows you to write scenarios in the following way:
 
 ```js
 await form
@@ -191,7 +191,7 @@ await form
 
 ### Default attributes
 
-By default, all components define some handy attributes and methods without being explicitly declared.
+The following commonly used attributes are included in every component page object by default to help reduce the boilerplate.
 
 * [as](/docs/v1.14.x/api/as)
 * [blur](/docs/v1.14.x/api/blur)
