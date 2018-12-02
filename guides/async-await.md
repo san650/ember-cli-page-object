@@ -4,7 +4,7 @@ title: Migrating to async/await
 ---
 {% raw %}
 
-If you migrate to `"@ember/test-helpers"` you should take care to update all your "actions" usages to leaverage `async`/`await` syntax.
+When migrating to use `"@ember/test-helpers"`, you should take care to update all your "actions" usages to leverage `async`/`await` syntax.
 
 ## Manual steps
 
@@ -33,17 +33,25 @@ Custom methods using actions should also become async:
 **Bad**
 ```js
 export default {
-  scope, 
+  scope: 'form.login-form', 
 
-  username: fillable('[name=usename]'),
-  password: fillable('[type=password]'),
+  username: {
+    scope: '[name=usename]'
+  },
+
+  password: {
+    scope: '[type=password]'
+  },
+
   submit: clickable('button'),
 
   login(username, password) {
-    this.visit('/login')
-      .username(username)
-      .password(password)
-      .submit();
+    this.visit('/login');
+
+    this.username.fillIn(username);
+    this.password.fillIn(password);
+
+    return this.submit();
   }
 }
 ```
@@ -51,17 +59,25 @@ export default {
 **Good**
 ```js
 export default {
-  scope, 
+  scope: 'form.login-form', 
 
-  username: fillable('[name=usename]'),
-  password: fillable('[type=password]'),
+  username: {
+    scope: '[name=usename]'
+  },
+
+  password: {
+    scope: '[type=password]'
+  },
+
   submit: clickable('button'),
 
   async login(username, password) {
     await this.visit('/login');
-      .username(username)
-      .password(password)
-      .submit();
+
+    await this.username.fillIn(username)
+    await this.password.fillIn(password)
+
+    return this.submit();
   }
 }
 ```
