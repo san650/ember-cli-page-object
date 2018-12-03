@@ -38,7 +38,6 @@ We can describe the form as follows:
 
 ```js
 // your-app/tests/pages/components/search-form.js
-
 import { triggerable } from 'ember-cli-page-object';
 
 export default {
