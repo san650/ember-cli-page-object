@@ -3,3 +3,6 @@ _site
 /node_modules
 /bower_components
 /tmp
+/coverage
+/dist
+package-lock.json
