@@ -1,5 +1,5 @@
 import { assign, every } from '../-private/helpers';
-import { getExecutionContext } from '../-private/execution_context';
+import { findElementWithAssert } from '../extend';
 
 /**
  * Returns a boolean representing whether an element or a set of elements contains the specified text.
@@ -95,15 +95,12 @@ export function contains(selector, userOptions = {}) {
 
     get(key) {
       return function(textToSearch) {
-        let executionContext = getExecutionContext(this);
         let options = assign({ pageObjectKey: `${key}("${textToSearch}")` }, userOptions);
 
-        return executionContext.run((context) => {
-          let elements = context.findWithAssert(selector, options);
+        let elements = findElementWithAssert(this, selector, options);
 
-          return every(elements, function(element) {
-            return element.text().indexOf(textToSearch) >= 0;
-          });
+        return every(elements, function(element) {
+          return element.text().indexOf(textToSearch) >= 0;
         });
       };
     }

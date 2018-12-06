@@ -27,10 +27,6 @@ export default function ExecutionContext(pageObjectNode) {
 }
 
 ExecutionContext.prototype = {
-  run(cb) {
-    return cb(this);
-  },
-
   runAsync(cb) {
     let root = getRoot(this.pageObjectNode);
     let isChained = !root._chainedTree;

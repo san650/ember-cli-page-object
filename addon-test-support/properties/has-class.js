@@ -1,5 +1,5 @@
 import { assign, every } from '../-private/helpers';
-import { getExecutionContext } from '../-private/execution_context';
+import { findElementWithAssert } from '../extend'
 
 /**
  * Validates if an element or a set of elements have a given CSS class.
@@ -97,15 +97,12 @@ export function hasClass(cssClass, selector, userOptions = {}) {
     isDescriptor: true,
 
     get(key) {
-      let executionContext = getExecutionContext(this);
       let options = assign({ pageObjectKey: key }, userOptions);
 
-      return executionContext.run((context) => {
-        let elements = context.findWithAssert(selector, options);
+      let elements = findElementWithAssert(this, selector, options);
 
-        return every(elements, function(element) {
-          return element.hasClass(cssClass);
-        });
+      return every(elements, function(element) {
+        return element.hasClass(cssClass);
       });
     }
   };

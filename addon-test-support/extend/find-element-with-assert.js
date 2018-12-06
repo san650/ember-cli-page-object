@@ -36,9 +36,5 @@ import { getExecutionContext } from '../-private/execution_context';
  * @throws Will throw an error if multiple elements are matched by selector and multiple option is not set
  */
 export function findElementWithAssert(pageObjectNode, targetSelector, options = {}) {
-  let executionContext = getExecutionContext(pageObjectNode);
-
-  return executionContext.run((context) => {
-    return context.findWithAssert(targetSelector, options);
-  });
+  return getExecutionContext(pageObjectNode).findWithAssert(targetSelector, options);
 }

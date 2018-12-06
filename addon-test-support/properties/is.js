@@ -1,5 +1,5 @@
 import { assign, every } from '../-private/helpers';
-import { getExecutionContext } from '../-private/execution_context';
+import { findElementWithAssert } from '../extend';
 
 /**
  * @public
@@ -51,16 +51,11 @@ export function is(testSelector, targetSelector, userOptions = {}) {
     isDescriptor: true,
 
     get(key) {
-      let executionContext = getExecutionContext(this);
       let options = assign({ pageObjectKey: key }, userOptions);
 
-      return executionContext.run((context) => {
-        let elements = context.findWithAssert(targetSelector, options);
+      let elements = findElementWithAssert(this, targetSelector, options);
 
-        return every(elements, function(element) {
-          return element.is(testSelector);
-        });
-      });
+      return every(elements, (element) => element.is(testSelector));
     }
   };
 }

@@ -17,10 +17,6 @@ export default function AcceptanceExecutionContext(pageObjectNode) {
 }
 
 AcceptanceExecutionContext.prototype = {
-  run(cb) {
-    return cb(this);
-  },
-
   runAsync(cb) {
     window.wait().then(() => {
       cb(this);

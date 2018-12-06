@@ -20,10 +20,6 @@ export default function IntegrationExecutionContext(pageObjectNode, testContext)
 }
 
 IntegrationExecutionContext.prototype = {
-  run(cb) {
-    return cb(this);
-  },
-
   runAsync(cb) {
     run(() => {
       cb(this);
