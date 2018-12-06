@@ -22,11 +22,11 @@ import {
 } from '../better-errors';
 import Ceibo from 'ceibo';
 
-export default function ExecutionContext(pageObjectNode) {
-  this.pageObjectNode = pageObjectNode;
-}
+export default class RFC268ExecutionContext {
+  constructor(pageObjectNode) {
+    this.pageObjectNode = pageObjectNode;
+  }
 
-ExecutionContext.prototype = {
   runAsync(cb) {
     let root = getRoot(this.pageObjectNode);
     let isChained = !root._chainedTree;
@@ -43,7 +43,7 @@ ExecutionContext.prototype = {
     }
 
     return this.chainable();
-  },
+  }
 
   chainable() {
     // See explanation in `create.js` -- here instead of returning the node on
@@ -92,19 +92,19 @@ ExecutionContext.prototype = {
       });
       return node;
     }
-  },
+  }
 
   visit(path) {
     return visit(path);
-  },
+  }
 
   click(selector, container, options) {
     return this.invokeHelper(selector, options, click);
-  },
+  }
 
   fillIn(selector, container, options, content) {
     return this.invokeHelper(selector, options, fillIn, content);
-  },
+  }
 
   triggerEvent(selector, container, options, eventName, eventOptions) {
     if (typeof eventOptions.key !== 'undefined' || typeof eventOptions.keyCode !== 'undefined') {
@@ -114,17 +114,17 @@ ExecutionContext.prototype = {
     }
 
     return this.invokeHelper(selector, options, triggerEvent, eventName, eventOptions);
-  },
+  }
 
   focus(selector, options) {
     selector = buildSelector(this.pageObjectNode, selector, options);
     return this.invokeHelper(selector, options, focus);
-  },
+  }
 
   blur(selector, options) {
     selector = buildSelector(this.pageObjectNode, selector, options);
     return this.invokeHelper(selector, options, blur);
-  },
+  }
 
   assertElementExists(selector, options) {
     let result = this.getElements(selector, options);
@@ -137,7 +137,7 @@ ExecutionContext.prototype = {
         { selector }
       );
     }
-  },
+  }
 
   find(selector, options) {
     selector = buildSelector(this.pageObjectNode, selector, options);
@@ -146,7 +146,7 @@ ExecutionContext.prototype = {
     guardMultiple(result, selector, options.multiple);
 
     return result;
-  },
+  }
 
   findWithAssert(selector, options) {
     selector = buildSelector(this.pageObjectNode, selector, options);
@@ -164,7 +164,7 @@ ExecutionContext.prototype = {
     }
 
     return result;
-  },
+  }
 
   getElements(selector, options) {
     let container = options.testContainer || findClosestValue(this.pageObjectNode, 'testContainer');
@@ -173,7 +173,7 @@ ExecutionContext.prototype = {
     } else {
       return $(selector, getContext().element);
     }
-  },
+  }
 
   invokeHelper(selector, options, helper, ...args) {
     let element = this.getElements(selector, options)[0];
@@ -186,4 +186,4 @@ ExecutionContext.prototype = {
       );
     });
   }
-};
+}

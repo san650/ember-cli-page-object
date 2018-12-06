@@ -14,29 +14,29 @@ import {
   throwBetterError
 } from '../better-errors';
 
-export default function IntegrationExecutionContext(pageObjectNode, testContext) {
-  this.pageObjectNode = pageObjectNode;
-  this.testContext = testContext;
-}
+export default class IntegrationExecutionContext {
+  constructor(pageObjectNode, testContext) {
+    this.pageObjectNode = pageObjectNode;
+    this.testContext = testContext;
+  }
 
-IntegrationExecutionContext.prototype = {
   runAsync(cb) {
     run(() => {
       cb(this);
     });
 
     return this.chainable();
-  },
+  }
 
   chainable() {
     return this.pageObjectNode;
-  },
+  }
 
-  visit() {},
+  visit() {}
 
   click(selector, container) {
     this.$(selector, container).click();
-  },
+  }
 
   fillIn(selector, container, options, content) {
     let $selection = this.$(selector, container);
@@ -49,7 +49,7 @@ IntegrationExecutionContext.prototype = {
 
     $selection.trigger('input');
     $selection.change();
-  },
+  }
 
   $(selector, container) {
     if (container) {
@@ -57,7 +57,7 @@ IntegrationExecutionContext.prototype = {
     } else {
       return this.testContext.$(selector);
     }
-  },
+  }
 
   triggerEvent(selector, container, options, eventName, eventOptions) {
     let event = $.Event(eventName, eventOptions);
@@ -67,7 +67,7 @@ IntegrationExecutionContext.prototype = {
     } else {
       this.testContext.$(selector).trigger(event);
     }
-  },
+  }
 
   focus(selector, options) {
     let $selection = this.findWithAssert(selector, options);
@@ -79,7 +79,7 @@ IntegrationExecutionContext.prototype = {
     });
 
     $selection.focus();
-  },
+  }
 
   blur(selector, options) {
     let $selection = this.findWithAssert(selector, options);
@@ -91,7 +91,7 @@ IntegrationExecutionContext.prototype = {
     });
 
     $selection.blur();
-  },
+  }
 
   assertElementExists(selector, options) {
     let result;
@@ -111,7 +111,7 @@ IntegrationExecutionContext.prototype = {
         { selector }
       );
     }
-  },
+  }
 
   find(selector, options) {
     let result;
@@ -128,7 +128,7 @@ IntegrationExecutionContext.prototype = {
     guardMultiple(result, selector, options.multiple);
 
     return result;
-  },
+  }
 
   findWithAssert(selector, options) {
     let result;
@@ -155,4 +155,5 @@ IntegrationExecutionContext.prototype = {
 
     return result;
   }
-};
+
+}

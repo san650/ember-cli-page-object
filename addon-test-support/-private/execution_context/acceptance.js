@@ -12,32 +12,32 @@ import {
   throwBetterError
 } from '../better-errors';
 
-export default function AcceptanceExecutionContext(pageObjectNode) {
-  this.pageObjectNode = pageObjectNode;
-}
+export default class AcceptanceExecutionContext {
+  constructor(pageObjectNode) {
+    this.pageObjectNode = pageObjectNode;
+  }
 
-AcceptanceExecutionContext.prototype = {
   runAsync(cb) {
     window.wait().then(() => {
       cb(this);
     });
 
     return this.chainable();
-  },
+  }
 
   chainable() {
     return this.pageObjectNode;
-  },
+  }
 
   visit(path) {
     /* global visit */
     visit(path);
-  },
+  }
 
   click(selector, container) {
     /* global click */
     click(selector, container);
-  },
+  }
 
   fillIn(selector, container, options, content) {
     let $selection = find(selector, container || findClosestValue(this.pageObjectNode, 'testContainer'));
@@ -54,12 +54,12 @@ AcceptanceExecutionContext.prototype = {
     /* global triggerEvent */
     triggerEvent(selector, container, 'input');
     triggerEvent(selector, container, 'change');
-  },
+  }
 
   triggerEvent(selector, container, options, eventName, eventOptions) {
     /* global triggerEvent */
     triggerEvent(selector, container, eventName, eventOptions);
-  },
+  }
 
   focus(selector, options) {
     let $selection = this.findWithAssert(selector, options);
@@ -71,7 +71,7 @@ AcceptanceExecutionContext.prototype = {
     });
 
     $selection.focus();
-  },
+  }
 
   blur(selector, options) {
     let $selection = this.findWithAssert(selector, options);
@@ -83,7 +83,7 @@ AcceptanceExecutionContext.prototype = {
     });
 
     $selection.blur();
-  },
+  }
 
   assertElementExists(selector, options) {
     /* global find */
@@ -97,7 +97,7 @@ AcceptanceExecutionContext.prototype = {
         { selector }
       );
     }
-  },
+  }
 
   find(selector, options) {
     let result;
@@ -110,7 +110,7 @@ AcceptanceExecutionContext.prototype = {
     guardMultiple(result, selector, options.multiple);
 
     return result;
-  },
+  }
 
   findWithAssert(selector, options) {
     let result;
@@ -133,4 +133,4 @@ AcceptanceExecutionContext.prototype = {
 
     return result;
   }
-};
+}

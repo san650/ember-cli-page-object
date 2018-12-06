@@ -24,24 +24,24 @@ import {
 
 const KEYBOARD_EVENT_TYPES = ['keydown', 'keypress', 'keyup'];
 
-export default function ExecutionContext(pageObjectNode, testContext) {
-  this.pageObjectNode = pageObjectNode;
-  this.testContext = testContext;
-}
+export default class ExecutionContext {
+  constructor(pageObjectNode, testContext) {
+    this.pageObjectNode = pageObjectNode;
+    this.testContext = testContext;
+  }
 
-ExecutionContext.prototype = {
   runAsync() {
     throw new Error('not implemented');
-  },
+  }
 
   chainable() {
     return this.pageObjectNode;
-  },
+  }
 
   click(selector, container) {
     const el = this.$(selector, container)[0];
     click(el);
-  },
+  }
 
   fillIn(selector, container, options, content) {
     let elements = this.$(selector, container).toArray();
@@ -56,7 +56,7 @@ ExecutionContext.prototype = {
       triggerEvent(el, 'input');
       triggerEvent(el, 'change');
     });
-  },
+  }
 
   $(selector, container) {
     if (container) {
@@ -70,7 +70,7 @@ ExecutionContext.prototype = {
 
       return $(selector, testsContainer);
     }
-  },
+  }
 
   triggerEvent(selector, container, options, eventName, eventOptions) {
     const element = this.$(selector, container)[0];
@@ -88,7 +88,7 @@ ExecutionContext.prototype = {
     } else {
       triggerEvent(element, eventName, eventOptions);
     }
-  },
+  }
 
   focus(selector, options) {
     const element = this.findWithAssert(selector, options)[0];
@@ -100,7 +100,7 @@ ExecutionContext.prototype = {
     });
 
     focus(element);
-  },
+  }
 
   blur(selector, options) {
     const element = this.findWithAssert(selector, options)[0];
@@ -112,7 +112,7 @@ ExecutionContext.prototype = {
     });
 
     blur(element);
-  },
+  }
 
   assertElementExists(selector, options) {
     let container = options.testContainer || findClosestValue(this.pageObjectNode, 'testContainer');
@@ -127,7 +127,7 @@ ExecutionContext.prototype = {
         { selector }
       );
     }
-  },
+  }
 
   find(selector, options) {
     let container = options.testContainer || findClosestValue(this.pageObjectNode, 'testContainer');
@@ -139,7 +139,7 @@ ExecutionContext.prototype = {
     guardMultiple(result, selector, options.multiple);
 
     return result;
-  },
+  }
 
   findWithAssert(selector, options) {
     let container = options.testContainer || findClosestValue(this.pageObjectNode, 'testContainer');
@@ -161,5 +161,5 @@ ExecutionContext.prototype = {
 
     return result;
   }
-};
+}
 

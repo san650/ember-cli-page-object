@@ -1,18 +1,20 @@
 import { run } from '@ember/runloop';
 import ExecutionContext from './native-events-context';
 
-export default function IntegrationNativeEventsExecutionContext(pageObjectNode, testContext) {
-  ExecutionContext.call(this, pageObjectNode, testContext);
+export default class IntegrationNativeEventsExecutionContext extends ExecutionContext {
+  constructor(pageObjectNode, testContext) {
+    super(pageObjectNode);
+
+    this.testContext = testContext;
+  }
+
+  visit() {}
+
+  runAsync(cb) {
+    run(() => {
+      cb(this);
+    });
+
+    return this.chainable();
+  }
 }
-
-IntegrationNativeEventsExecutionContext.prototype = Object.create(ExecutionContext.prototype);
-
-IntegrationNativeEventsExecutionContext.prototype.visit = function() {};
-
-IntegrationNativeEventsExecutionContext.prototype.runAsync = function(cb) {
-  run(() => {
-    cb(this);
-  });
-
-  return this.chainable();
-};
