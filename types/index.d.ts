@@ -1,92 +1,104 @@
-interface QueryOptions {
-  resetScope: boolean
-
-  contains: string
-
-  last: boolean
-
-  visible: boolean
-
-  multiple: boolean
-
-  testContainer: Element
-
-  at: number
-
-  pageObjectKey: string
-}
-
-interface TriggerOptions extends QueryOptions {
-  eventProperties: object
-}
-
+// TypeScript Version: 2.8
 declare module 'ember-cli-page-object' {
-  interface KnownProps<T> extends KnownActions<T> {
-    isVisible: boolean
-    isPresent: boolean
-    isHidden: boolean
-    text: string
-    value: string
-    contains(textToSearch: string): boolean
+  function attribute(attributeName?: string, scope?: string): string;
+  function isVisible(scope?: string): boolean;
+  function text(scope?: string): string;
+  function value(scope?: string): string;
+  function property(scope?: string, name?: string): string|number;
+  function hasClass(className: string): boolean;
+  function hasClass(scope: string, className: string): boolean;
+  function contains(): (text: string) => boolean;
+
+  function clickable<T>(scope?: string): (this: T) => Component<T>;
+  function clickOnText<T>(scope?: string, userOptions?: FindOptions): (this: T, text: string) => Component<T>;
+  function fillable<T>(scope?: string, userOptions?: FindOptions): (this: T, content: string) => Component<T>;
+  function fillable<T>(scope?: string, userOptions?: FindOptions): (this: T, clue: string, content: string) => Component<T>;
+  function triggerable<T>(event: string, scope?: string, eventOptions?: TriggerOptions): (this: T) => Component<T>;
+  function focusable<T>(scope?: string): (this: T) => Component<T>;
+  function blurrable<T>(scope?: string): (this: T) => Component<T>;
+  function visitable<T>(path: string): (this: T, dynamicSegmentsAndQueryParams?: {}) => Component<T>;
+
+  function collection<T extends Partial<Definition>>(scope: string, definition?: T): Collection<T>;
+  function create<T extends Partial<Definition>>(definition: T): Component<T>;
+
+  interface Collection<T> {
+    <T>(scope: string, definition?: T): Array<Component<T>>;
+
+    [i: number]: Component<T>;
+
+    filter(callback: (c: Component<T>) => boolean): Array<Component<T>>;
+    forEach(callback: (c: Component<T>) => any): void;
+    map(callback: (c: Component<T>) => any): any[];
+    toArray(): Array<Component<T>>;
+
+    filterBy(propName: string): Array<Component<T>>;
+    mapBy(propName: string): any[];
+    objectAt(i: number): Component<T>;
   }
 
-  interface KnownActions<T> {
-    click(this: T): ActionResult<T>
-    focus(this: T): ActionResult<T>
-    blur(this: T): ActionResult<T>
-    focus(this: T): ActionResult<T>
-    clickOn(this: T, text: string): ActionResult<T>
-    fillIn(this: T, contentOrClue: string, value?: string): ActionResult<T>
+  type Component<T = {}> = DSL<T> & UnpackedDefinition<T> & {
+    [s: string]: any;
+  };
+
+  interface DSL<T> {
+    isHidden: boolean;
+    isPresent: boolean;
+    isVisible: boolean;
+    text: string;
+    value: string;
+
+    blur(this: T): Component<T>;
+    click(this: T): Component<T>;
+    clickOn(this: T, text: string): Component<T>;
+    contains(textToSearch: string): boolean;
+    fillIn(this: T, contentOrClue: string, value?: string): Component<T>;
+    focus(this: T): Component<T>;
   }
 
   type UnpackedDefinition<T> = {
     [k in keyof T]:
       T[k] extends string|boolean|number|Function ? T[k]
-      : T[k] extends Definition ? Component<T[k]>
+      : T[k] extends object ? Component<T[k]>
       : T[k]
-  }
-
-  export type Definition = {
-    scope: string
-    resetScope?: boolean
-    [l: string]: any
-  } | {}
-
-  export type Component<T = {}> = KnownProps<T> & UnpackedDefinition<T> & {
-    [s: string]: any;
   };
-
-  export type ActionResult<T> = KnownActions<T> & UnpackedDefinition<T> & {
-    [s: string]: any
-  }
-
-  export function attribute(selector?: string, name?: string): string
-  export function isVisible(selector?: string): boolean;
-  export function text(selector?: string): string;
-  export function value(selector?: string): string;
-  export function property(selector?: string, name?: string): string|number|boolean
-  export function hasClass(selector: string, className: string): boolean;
-  export function hasClass(className?: string): boolean;
-  export function contains(): (text: string) => boolean;
-
-  export function clickable(selector?: string): <T>(this: T) => ActionResult<T>
-  export function fillable(selector?: string, userOptions?: QueryOptions): <T>(this: T, content: string) => ActionResult<T>
-  export function fillable(selector?: string, userOptions?: QueryOptions): <T>(this: T, clue: string, content: string) => ActionResult<T>
-  export function triggerable(event: string, selector?: string, eventOptions?: TriggerOptions): <T>(this: T) => ActionResult<T>
-  export function focusable(selector?: string): <T>(this: T) => ActionResult<T>
-  export function blurrable(selector?: string): <T>(this: T) => ActionResult<T>
-  export function visitable(path: string): <T>(this: T, dynamicSegmentsAndQueryParams?: {}) => ActionResult<T>;
-
-  export function collection<T extends Partial<Definition>>(selector: string, definition?: T): Component<T>[];
-  export function create<T extends Partial<Definition>>(definition: T): Component<T>
 }
 
 declare module 'ember-cli-page-object/extend' {
-  export function findElement(pageObject: any, selector?: string, options?: QueryOptions): any //JQuery
-  export function findElementWithAssert(pageObject: any, selector?: string, options?: QueryOptions): any // JQuery
+  function findElement(pageObject: any, scope?: string, options?: FindOptions): any; // JQuery
+  function findElementWithAssert(pageObject: any, scope?: string, options?: FindOptions): any; // JQuery
 }
 
 declare module 'ember-cli-page-object/macros' {
-  export function getter<T>(body: (...args: any[]) => T): T
-  export function alias(path: string): any
+  function getter<T>(body: (...args: any[]) => T): T;
+  function alias(path: string): any;
+}
+
+interface Definition {
+  scope?: string;
+  resetScope?: boolean;
+  [l: string]: any;
+}
+
+interface ElementQuery {
+  resetScope?: boolean;
+
+  testContainer?: Element;
+
+  pageObjectKey?: string;
+}
+
+interface FindOptions extends ElementQuery {
+  contains?: string;
+
+  last?: boolean;
+
+  visible?: boolean;
+
+  multiple?: boolean;
+
+  at?: number;
+}
+
+interface TriggerOptions extends ElementQuery {
+  eventProperties: object;
 }

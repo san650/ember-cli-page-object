@@ -29,12 +29,14 @@
     "build": "ember build",
     "lint:hbs": "ember-template-lint .",
     "lint:js": "eslint .",
+    "lint:ts": "dtslint types",
     "start": "ember serve",
     "test": "ember test",
     "test:all": "ember try:each",
     "docs": "node ./docs",
     "nodetest": "mocha node-tests --recursive"
   },
+  "types": "types",
   "dependencies": {
     "broccoli-file-creator": "^2.1.1",
     "broccoli-merge-trees": "^2.0.0",
@@ -51,6 +53,7 @@
     "chai": "^4.1.2",
     "coveralls": "^3.0.0",
     "documentation": "^5.3.3",
+    "dtslint": "^0.5.3",
     "ember-cli": "~3.5.1",
     "ember-cli-addon-tests": "^0.11.0",
     "ember-cli-blueprint-test-helpers": "^0.18.2",
@@ -86,6 +89,7 @@
     "ncp": "^2.0.0",
     "qunit-dom": "^0.8.0",
     "rimraf": "^2.5.2",
+    "typescript": "~3.3.3333",
     "walk-sync": "^0.3.2"
   },
   "engines": {
