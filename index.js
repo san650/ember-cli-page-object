@@ -1,7 +1,7 @@
 'use strict';
 
 module.exports = {
-  name: 'ember-cli-page-object',
+  name: require('./package').name,
 
   options: {
     nodeAssets: {
