@@ -1,7 +1,9 @@
-**/*.min.js
+*.min.js
 # unconventional js
+/_site
 /blueprints/*/files/
 /vendor/
+/node-tests/
 
 # compiled output
 /dist/
