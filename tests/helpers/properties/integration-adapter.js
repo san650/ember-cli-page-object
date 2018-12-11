@@ -1,5 +1,5 @@
 import { run } from '@ember/runloop';
-import $ from 'jquery';
+import $ from '-jquery';
 export { moduleForComponent as moduleForIntegration, test as testForIntegration } from 'ember-qunit';
 import expectEmberError from '../../expect-ember-error';
 import hbs from 'htmlbars-inline-precompile';

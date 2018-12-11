@@ -1,5 +1,5 @@
 import { run } from '@ember/runloop';
-import $ from 'jquery';
+import $ from '-jquery';
 import { moduleForComponent, test } from 'ember-qunit';
 import {
   createCalculatorTemplate,

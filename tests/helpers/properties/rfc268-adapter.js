@@ -1,7 +1,7 @@
 
 export { test as testForAcceptance } from 'qunit';
 
-import $ from 'jquery';
+import $ from '-jquery';
 
 export default function Rfc268Adapter() {}
 
