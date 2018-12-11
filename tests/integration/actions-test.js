@@ -199,11 +199,11 @@ test('fill in by attribute', function(assert) {
     .fillIn('input4', 'input 4')
     .fillIn('input5', 'input 5');
 
-  assert.equal($('.input1-value').val(), 'input 1');
-  assert.equal($('.input2-value').val(), 'input 2');
-  assert.equal($('.input3-value').val(), 'input 3');
-  assert.equal($('.input4-value').val(), 'input 4');
-  assert.equal($('.input5-value').val(), 'input 5');
+  assert.dom('.input1-value').hasValue('input 1');
+  assert.dom('.input2-value').hasValue('input 2');
+  assert.dom('.input3-value').hasValue('input 3');
+  assert.dom('.input4-value').hasValue('input 4');
+  assert.dom('.input5-value').hasValue('input 5');
 
   page
     .fillIn('textarea1', 'textarea 1')
@@ -212,11 +212,11 @@ test('fill in by attribute', function(assert) {
     .fillIn('textarea4', 'textarea 4')
     .fillIn('textarea5', 'textarea 5');
 
-  assert.equal($('.textarea1-value').val(), 'textarea 1');
-  assert.equal($('.textarea2-value').val(), 'textarea 2');
-  assert.equal($('.textarea3-value').val(), 'textarea 3');
-  assert.equal($('.textarea4-value').val(), 'textarea 4');
-  assert.equal($('.textarea5-value').val(), 'textarea 5');
+  assert.dom('.textarea1-value').hasValue('textarea 1');
+  assert.dom('.textarea2-value').hasValue('textarea 2');
+  assert.dom('.textarea3-value').hasValue('textarea 3');
+  assert.dom('.textarea4-value').hasValue('textarea 4');
+  assert.dom('.textarea5-value').hasValue('textarea 5');
 
   page
     .fillIn('contenteditable1', 'contenteditable 1')
@@ -225,11 +225,11 @@ test('fill in by attribute', function(assert) {
     .fillIn('contenteditable4', 'contenteditable 4')
     .fillIn('contenteditable5', 'contenteditable 5');
 
-  assert.equal($('.contenteditable1-content').html(), 'contenteditable 1');
-  assert.equal($('.contenteditable2-content').html(), 'contenteditable 2');
-  assert.equal($('.contenteditable3-content').html(), 'contenteditable 3');
-  assert.equal($('.contenteditable4-content').html(), 'contenteditable 4');
-  assert.equal($('.contenteditable5-content').html(), 'contenteditable 5');
+  assert.dom('.contenteditable1-content').hasText('contenteditable 1');
+  assert.dom('.contenteditable2-content').hasText('contenteditable 2');
+  assert.dom('.contenteditable3-content').hasText('contenteditable 3');
+  assert.dom('.contenteditable4-content').hasText('contenteditable 4');
+  assert.dom('.contenteditable5-content').hasText('contenteditable 5');
 
   page
     .fillIn('select1', 'select 1 option 2')
@@ -238,11 +238,11 @@ test('fill in by attribute', function(assert) {
     .fillIn('select4', 'select 4 option 2')
     .fillIn('select5', 'select 5 option 2');
 
-  assert.equal($('.select1-value').val(), 'select 1 option 2');
-  assert.equal($('.select2-value').val(), 'select 2 option 2');
-  assert.equal($('.select3-value').val(), 'select 3 option 2');
-  assert.equal($('.select4-value').val(), 'select 4 option 2');
-  assert.equal($('.select5-value').val(), 'select 5 option 2');
+  assert.dom('.select1-value').hasValue('select 1 option 2');
+  assert.dom('.select2-value').hasValue('select 2 option 2');
+  assert.dom('.select3-value').hasValue('select 3 option 2');
+  assert.dom('.select4-value').hasValue('select 4 option 2');
+  assert.dom('.select5-value').hasValue('select 5 option 2');
 });
 
 test('Queries and actions handle non-existant elements correctly', function(assert) {
