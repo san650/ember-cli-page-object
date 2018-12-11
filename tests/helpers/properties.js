@@ -20,6 +20,7 @@ import { module, test } from 'qunit';
 
 import { useNativeEvents } from 'ember-cli-page-object/extend';
 
+import Ember from 'ember';
 import require from 'require';
 
 export function moduleForProperty(name, cbOrOptions, cb) {
@@ -32,6 +33,8 @@ export function moduleForProperty(name, cbOrOptions, cb) {
     let moduleNamePrefix = 'Acceptance mode ';
     if (_useNativeEvents) {
       moduleNamePrefix += '[native-events]';
+    } else if (!Ember.hasOwnProperty('$')) {
+      return;
     }
 
     moduleForAcceptance(`${moduleNamePrefix} | Property | ${name}`, {
@@ -93,6 +96,6 @@ export function moduleForProperty(name, cbOrOptions, cb) {
         });
         cb(test, 'rendering');
       });
-    }    
+    }
   }
 }
