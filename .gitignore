@@ -9,6 +9,7 @@
 /bower_components/
 /node_modules/
 yarn.lock
+package-lock.json
 
 # misc
 /.sass-cache
@@ -17,7 +18,6 @@ yarn.lock
 /libpeerconnection.log
 npm-debug.log*
 testem.log
-/yarn-error.log
 LICENSE.md
 /docs
 /_site
