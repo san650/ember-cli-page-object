@@ -20,11 +20,8 @@
 /ember-cli-build.js
 /dist
 /docs
-/docs.js
 /tests
 /tmp
-/node-tests
-/_site
 /testem.js
 /tests/
 /yarn.lock
@@ -34,3 +31,10 @@
 /.node_modules.ember-try/
 /bower.json.ember-try
 /package.json.ember-try
+
+# custom
+/docs.js
+/_site
+/.sass-cache
+/coverage/
+/node-tests
