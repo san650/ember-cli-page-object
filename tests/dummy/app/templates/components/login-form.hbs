@@ -1,6 +1,6 @@
 <h1 class="title">Login page</h1>
 
-<form class="login {{if isError 'is-error'}}">
+<form class="login {{if isError "is-error"}}">
   <label>
     User name
     {{input id="userName" type="text" value=userName}}
@@ -11,7 +11,7 @@
     {{input id="password" type="password" value=password}}
   </label>
 
-  <button {{action 'logIn'}}>Log in</button>
+  <button {{action "logIn"}}>Log in</button>
 </form>
 
 <p class="message">{{message}}</p>
