@@ -115,8 +115,11 @@ export function collection(scope, definition) {
   let descriptor = {
     isDescriptor: true,
 
-    get(key) {
-      return proxyIfSupported(new Collection(scope, definition, this, key));
+    setup(node, key) {
+      // Set the value on the descriptor so that it will be picked up and applied by Ceibo.
+      // This does mutate the descriptor, but because `setup` is always called before the
+      // value is assigned we are guaranteed to get a new, unique Collection instance each time.
+      descriptor.value = proxyIfSupported(new Collection(scope, definition, node, key));
     }
   };
 
