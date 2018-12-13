@@ -16,6 +16,19 @@ moduleForProperty('collection', function(test) {
     assert.equal(page.foo, page.foo);
   });
 
+  test(`returns the same collection's item instance`, async function(assert) {
+    let page = create({
+      foo: collection('span')
+    });
+
+    await this.adapter.createTemplate(this, page, `
+      <span>Lorem</span>
+      <span>Ipsum</span>
+    `);
+
+    assert.equal(page.foo[0], page.foo[0]);
+  });
+
   test('generates a length property', async function(assert) {
     let page = create({
       foo: collection('span')
