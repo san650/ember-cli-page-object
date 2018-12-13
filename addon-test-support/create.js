@@ -1,6 +1,6 @@
 import Ceibo from 'ceibo';
 import { render, setContext, removeContext } from './-private/context';
-import { assign } from './-private/helpers';
+import { assign, getPageObjectDefinition, isPageObject, storePageObjectDefinition } from './-private/helpers';
 import { visitable } from './properties/visitable';
 import dsl from './-private/dsl';
 
@@ -44,16 +44,29 @@ import dsl from './-private/dsl';
 
 // This builder builds the primary tree
 function buildObject(node, blueprintKey, blueprint, defaultBuilder) {
-  blueprint = assign(assign({}, dsl), blueprint);
+  let definition;
 
-  return defaultBuilder(node, blueprintKey, blueprint, defaultBuilder);
-}
+  // to allow page objects to exist in definitions, we store the definition that 
+  // created the page object, allowing us to substitute a page object with its
+  // definition during creation 
+  if (isPageObject(blueprint)) {
+    definition = getPageObjectDefinition(blueprint);
+  } else {
+    definition = blueprint;
+  }
+  let blueprintToStore = assign({}, definition);
+  //the _chainedTree is an implementation detail that shouldn't make it into the stored
+  if(blueprintToStore._chainedTree){
+    delete blueprintToStore._chainedTree;
+  }
+  blueprint = assign({}, dsl, definition);
 
-// This builder builds the chained tree
-function buildChainObject(node, blueprintKey, blueprint, defaultBuilder) {
-  blueprint = assign({}, blueprint);
+  const [ instance, blueprintToApply ] = defaultBuilder(node, blueprintKey, blueprint, defaultBuilder);
 
-  return buildObject(node, blueprintKey, blueprint, defaultBuilder);
+  // persist definition once we have an instance
+  storePageObjectDefinition(instance, blueprintToStore);
+  
+  return [ instance, blueprintToApply ];
 }
 
 /**
@@ -156,18 +169,19 @@ export function create(definitionOrUrl, definitionOrOptions, optionsOrNothing) {
     options = definitionOrOptions || {};
   }
 
-  definition = assign({}, definition);
+  let { context } = definition;
+  // in the instance where the definition is a page object, we must use the stored definition directly
+  // or else we will fire off the Ceibo created getters which will error
+  definition = assign({}, isPageObject(definition) ? getPageObjectDefinition(definition) : definition);
+  delete definition.context;
 
   if (url) {
     definition.visit = visitable(url);
   }
 
-  let { context } = definition;
-  delete definition.context;
-
   // Build the chained tree
   let chainedBuilder = {
-    object: buildChainObject
+    object: buildObject
   };
   let chainedTree = Ceibo.create(definition, assign({ builder: chainedBuilder }, options));
 
