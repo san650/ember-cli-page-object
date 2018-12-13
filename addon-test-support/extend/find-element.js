@@ -34,9 +34,5 @@ import { getExecutionContext } from '../-private/execution_context';
  * @throws Will throw an error if multiple elements are matched by selector and multiple option is not set
  */
 export function findElement(pageObjectNode, targetSelector, options = {}) {
-  let executionContext = getExecutionContext(pageObjectNode);
-
-  return executionContext.run((context) => {
-    return context.find(targetSelector, options);
-  });
+  return getExecutionContext(pageObjectNode).find(targetSelector, options);
 }

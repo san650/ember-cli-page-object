@@ -1,5 +1,5 @@
 import { assign, map, normalizeText } from '../-private/helpers';
-import { getExecutionContext } from '../-private/execution_context';
+import { findElementWithAssert } from '../extend';
 
 function identity(v) {
   return v;
@@ -104,19 +104,13 @@ export function text(selector, userOptions = {}) {
     isDescriptor: true,
 
     get(key) {
-      let executionContext = getExecutionContext(this);
       let options = assign({ pageObjectKey: key }, userOptions);
 
-      return executionContext.run((context) => {
-        let elements = context.findWithAssert(selector, options);
-        let f = options.normalize === false ? identity : normalizeText;
+      let elements = findElementWithAssert(this, selector, options);
 
-        let result = map(elements, function(element) {
-          return f(element.text());
-        });
+      let f = options.normalize === false ? identity : normalizeText;
 
-        return options.multiple ? result : result[0];
-      });
+      return map(elements, element => f(element.text()), options);
     }
   };
 }

@@ -1,5 +1,5 @@
 import { assign, every } from '../-private/helpers';
-import { getExecutionContext } from '../-private/execution_context';
+import { findElement } from '../extend';
 
 /**
  * Validates if an element or set of elements is hidden or does not exist in the DOM.
@@ -104,16 +104,11 @@ export function isHidden(selector, userOptions = {}) {
     isDescriptor: true,
 
     get(key) {
-      let executionContext = getExecutionContext(this);
       let options = assign({ pageObjectKey: key }, userOptions);
 
-      return executionContext.run((context) => {
-        let elements = context.find(selector, options);
+      let elements = findElement(this, selector, options);
 
-        return every(elements, function(element) {
-          return element.is(':hidden');
-        });
-      });
+      return every(elements, element => element.is(':hidden'));
     }
   };
 }

@@ -3,21 +3,21 @@ layout: page
 title: Components
 ---
 
-Group attributes and create new ones
+Describe functional fragments of the DOM
 
-* [Components](#components)
-* [Default attributes](#default-attributes)
-* [Custom helper](#custom-helper)
+* [Definitions](#definitions)
 * [Scopes](#scopes)
+* [Attributes](#attributes)
+  * [Actions](#actions)
+  * [Default attributes](#default-attributes)
 
-## Components
+## Definitions
 
-Components let you group attributes together, they are just plain objects with attributes on it. You can even define these objects in different files and reuse them in multiple places. Components can define a scope.
+Components are created from definitions, which are just plain objects with attributes, methods, and nested definitions on them.
 
 __Example__
 
 ```html
-<h1>New user</h1>
 <form class="awesome-form">
   <input id="firstName" placeholder="First name">
   <input id="lastName" placeholder="Last name">
@@ -27,99 +27,61 @@ __Example__
 
 ```js
 import {
-  create,
-  visitable,
-  text,
-  fillable,
-  clickable
+  clickable,
+  fillable
 } from 'ember-cli-page-object';
 
-const page = create({
-  visit: visitable('/user/create'),
-  title: text('h1'),
+const FormDefinition = {
+  scope: '.awesome-form',
 
-  form: {
-    scope: '.awesome-form',
+  firstName: fillable('#firstName'),
+  lastName: fillable('#lastName'),
+  submit: clickable('button')
+};
+```
 
-    firstName: fillable('#firstName'),
-    lastName: fillable('#lastName'),
-    submit: clickable('button')
-  }
-});
+Component instances are built by the `create` function:
 
-page
-  .visit()
-  .form
+__Usage__
+```js
+import { create } from 'ember-cli-page-object';
+
+const form = create(FormDefinition);
+
+await form
   .firstName('John')
   .lastName('Doe')
   .submit();
-
-andThen(function() {
-  // assert something
-});
 ```
 
-## Default attributes
-
-By default, all components define some handy attributes and methods without being explicitly declared.
-
-* [as](/docs/v1.14.x/api/as)
-* [blur](/docs/v1.14.x/api/blur)
-* [click](/docs/v1.14.x/api/clickable)
-* [clickOn](/docs/v1.14.x/api/click-on-text)
-* [contains](/docs/v1.14.x/api/contains)
-* [fillIn](/docs/v1.14.x/api/fillable)
-* [focus](/docs/v1.14.x/api/focus)
-* [isHidden](/docs/v1.14.x/api/is-hidden)
-* [isPresent](/docs/v1.14.x/api/is-present)
-* [isVisible](/docs/v1.14.x/api/is-visible)
-* [select](/docs/v1.14.x/api/selectable)
-* [text](/docs/v1.14.x/api/text)
-* [value](/docs/v1.14.x/api/value)
-
-<div class="alert alert-warning" role="alert">
-  <strong>Note</strong> that these attributes will use the component scope as their selector.
-</div>
-
-__Example__
-
-Suppose you have a modal dialog
-
-```html
-<div class="modal">
-  Are you sure you want to exit the page?
-  <button>I'm sure</button>
-  <button>No</button>
-</form>
-```
+The best way to describe complex interfaces is through the composition of simpler component definitions.
 
 ```js
 import { create, visitable } from 'ember-cli-page-object';
 
-const page = create({
-  visit: visitable('/'),
+const PageDefinition = {
+  visit: visitable('/users/new'),
 
-  modal: {
-    scope: '.modal'
-  }
-});
+  form: FormDefinition
+}
 
-page.visit();
+const myPage = create(PageDefinition);
 
-andThen(function() {
-  assert.ok(page.modal.contains('Are you sure you want to exit the page?'));
-});
-
-page.modal.clickOn("I'm sure");
+await myPage.visit()
+  .form
+  .firstName('John')
+  .lastName('Doe')
+  .submit();
 ```
 
 ## Scopes
 
-The `scope` attribute can be used to reduce the set of matched elements to the ones enclosed by the given selector.
+The `scope` attribute, which refers to the CSS selector that encloses a component, is used to target the corresponding DOM element during testing. Parent scopes are included when calculating a nested component's selector.
 
 Given the following HTML
 
 ```html
+
 <div class="article">
   <p>Lorem ipsum dolor</p>
 </div>
@@ -134,96 +96,113 @@ the following configuration will match the article paragraph element
 const page = create({
   scope: '.article',
 
-  textBody: text('p'),
-});
-
-andThen(function() {
-  assert.equal(page.textBody, 'Lorem ipsum dolor.');
-});
-```
-
-The attribute's selector can be omited when the scope matches the element we want to use.
-
-Given the following HTML
-
-```html
-<form>
-  <input id="userName" value="a value" />
-  <button>Submit</button>
-</form>
-```
-
-We can define several attributes on the same `input` element as follows
-
-```js
-const page = create({
-  input: {
-    scope: '#userName',
-
-    hasError: hasClass('has-error'),
-    value: value(),
-    fillIn: fillable()
-  },
-
-  submit: clickable('button')
-});
-
-page
-  .input
-  .fillIn('an invalid value');
-
-page.submit();
-
-andThen(function() {
-  assert.ok(page.input.hasError, 'Input has an error');
-});
-```
-
-### A `component` inherits parent scope by default
-
-```html
-<div class="search">
-  <input placeholder="Search...">
-  <button>Search</button>
-</div>
-```
-
-```js
-const page = create({
-  search: {
-    scope: '.search',
-
-    input: {
-      fillIn: fillable('input'),
-      value: value('input')
-    }
+  textBody: {
+    scope: 'p'
   }
 });
+
+assert.equal(page.textBody.text, 'Lorem ipsum dolor.');
 ```
 
-| call                      | translates to                 |
-|:--------------------------|:------------------------------|
-| `page.search.input.value` | `find('.search input').val()` |
-{: .table}
+When `page.textBody.text` is evaluated, each link in the hierarchy of page objects has its scope incorporated into the final selector that's used to find an element whose text is returned (`.article p` in this example).
 
-You can reset parent scope by setting the `scope` and `resetScope` attribute on the component declaration.
+You can avoid applying the parent `scope` to a particular component by setting the `resetScope` attribute on the component's definition to `true`.
 
 ```js
-const page = create({
-  search: {
-    scope: '.search',
+const form = create({
+  scope: '.my-form',
 
-    input: {
-      scope: 'input',
-      resetScope: true,
+  dialog: {
+    scope: '.some-dialog',
 
-      fillIn: fillable()
-    }
+    resetScope: true
   }
 });
+
+await form.clickOn('Cancel');
+
+assert.ok(form.dialog.isVisible);
 ```
 
-| call                      | translates to         |
-|:--------------------------|:----------------------|
-| `page.search.input.value` | `find('input').val()` |
-{: .table}
+## Attributes
+
+Attributes are just Page Object aware wrappers around low level DOM operations. They allow you to configure a component's testable behavior in a declarative fashion.
+
+By default, attribute uses a parent component's `scope`:
+
+```js
+import { create, value } from 'ember-cli-page-object';
+
+const input = create({
+  scope: 'input[name="my-input"]',
+
+  value: value()
+})
+
+assert.equal(input.value, 'some value');
+```
+
+In the assert statement above, the [`value`](./api/value) attribute queries a DOM element with the selector `input[name="my-input"]` and returns its DOM value property.
+
+You can add further specificity by passing a selector as the attribute's argument:
+
+```js
+import { create, text } from 'ember-cli-page-object';
+
+const customSelect = create({
+  scope: '.my-select',
+
+  value: text('.selected')
+})
+
+assert.equal(customSelect.value, 'some value');
+```
+
+In the assert statement above, the [`text`](./api/text) attribute queries a DOM element with the selector `.my-select .trigger` and returns its text value.
+
+### Actions
+
+Actions are a special kind of attribute that allow page objects to perform async operations on the DOM.
+
+```js
+import { create, fillable, triggerable } from 'ember-cli-page-object';
+
+const form = create({
+  scope: 'form.search-form',
+
+  fillIn: fillable('input[type="search"]'),
+
+  submit: triggerable('submit')
+})
+
+await form.fillIn('some text');
+await form.submit();
+```
+
+The result of an action is a `Promise`-like chainable page object node.
+
+Chaining allows you to write scenarios in the following way:
+
+```js
+await form
+  .fillIn('some text')
+  .submit();
+```
+
+### Default attributes
+
+The following commonly used attributes are included in every component page object by default to help reduce the boilerplate.
+
+* [as](./api/as)
+* [blur](./api/blur)
+* [click](./api/clickable)
+* [clickOn](./api/click-on-text)
+* [contains](./api/contains)
+* [fillIn](./api/fillable)
+* [focus](./api/focus)
+* [isHidden](./api/is-hidden)
+* [isPresent](./api/is-present)
+* [isVisible](./api/is-visible)
+* [select](./api/selectable)
+* [text](./api/text)
+* [value](./api/value)

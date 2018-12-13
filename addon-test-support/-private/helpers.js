@@ -162,17 +162,15 @@ export function normalizeText(text) {
 export function every(jqArray, cb) {
   let arr = jqArray.get();
 
-  return A(arr).every(function(element) {
-    return cb($(element));
-  });
+  return A(arr).every((element) => cb($(element)));
 }
 
-export function map(jqArray, cb) {
+export function map(jqArray, cb, options = {}) {
   let arr = jqArray.get();
 
-  return A(arr).map(function(element) {
-    return cb($(element));
-  });
+  const values =  A(arr).map(element => cb($(element)));
+
+  return options.multiple ? values : values[0];
 }
 
 /**
@@ -235,7 +233,7 @@ function getAllValuesForProperty(node, property) {
  * Return full scope of node (includes all ancestors scopes)
  *
  * @param {Ceibo} node - Node of the tree
- * @return {?Object} Full scope of node
+ * @return {string} Full scope of node
  */
 export function fullScope(node) {
   let scopes = getAllValuesForProperty(node, 'scope');

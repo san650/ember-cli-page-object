@@ -93,17 +93,19 @@ export function visitable(path) {
   return {
     isDescriptor: true,
 
-    value(dynamicSegmentsAndQueryParams = {}) {
-      let executionContext = getExecutionContext(this);
+    get() {
+      return function(dynamicSegmentsAndQueryParams = {}) {
+        let executionContext = getExecutionContext(this);
 
-      return executionContext.runAsync((context) => {
-        let params = assign({}, dynamicSegmentsAndQueryParams);
-        let fullPath = fillInDynamicSegments(path, params);
+        return executionContext.runAsync((context) => {
+          let params = assign({}, dynamicSegmentsAndQueryParams);
+          let fullPath = fillInDynamicSegments(path, params);
 
-        fullPath = appendQueryParams(fullPath, params);
+          fullPath = appendQueryParams(fullPath, params);
 
-        return context.visit(fullPath);
-      });
+          return context.visit(fullPath);
+        });
+      }
     }
   };
 }
