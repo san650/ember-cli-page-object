@@ -117,7 +117,8 @@ module.exports = function() {
           npm: {
             devDependencies: {
               'ember-cli-qunit': '4.0.0',
-              'ember-source': null
+              'ember-source': null,
+              'ember-qunit': null
             }
           }
         },
