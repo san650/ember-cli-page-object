@@ -116,7 +116,8 @@ module.exports = function() {
           },
           npm: {
             devDependencies: {
-              'ember-cli-qunit': '4.0.0'
+              'ember-cli-qunit': '4.0.0',
+              'ember-source': null
             }
           }
         },
@@ -132,7 +133,8 @@ module.exports = function() {
           },
           npm: {
             devDependencies: {
-              'ember-cli-qunit': '4.3.0'
+              'ember-cli-qunit': '4.3.0',
+              'ember-source': null
             }
           }
         },
