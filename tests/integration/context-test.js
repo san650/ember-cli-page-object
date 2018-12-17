@@ -1,67 +1,70 @@
+import Ember from 'ember';
 import { moduleForComponent, test } from 'ember-qunit';
 import { createCalculatorTemplate } from './test-helper';
 
 import PageObject from 'ember-cli-page-object';
 
-moduleForComponent('calculating-device', 'Integration | context', {
-  integration: true
-});
-
-test('Test\'s `this` context\'s methods are accessible to the page object', function(assert) {
-  assert.expect(2);
-
-  let page = PageObject.create({
-    context: this
+if (Ember.hasOwnProperty('$')) {
+  moduleForComponent('calculating-device', 'Integration | context', {
+    integration: true
   });
 
-  assert.ok(page.context);
+  test('Test\'s `this` context\'s methods are accessible to the page object', function(assert) {
+    assert.expect(2);
 
-  assert.deepEqual(this, page.context);
-});
+    let page = PageObject.create({
+      context: this
+    });
 
-test('Test\'s `this.$()` is accessible by the page object', function(assert) {
-  assert.expect(2);
+    assert.ok(page.context);
 
-  let page = PageObject.create({
-    context: this
+    assert.deepEqual(this, page.context);
   });
 
-  this.render(createCalculatorTemplate());
+  test('Test\'s `this.$()` is accessible by the page object', function(assert) {
+    assert.expect(2);
 
-  assert.ok(page.context.$());
-  assert.deepEqual(page.context.$(), this.$());
-});
+    let page = PageObject.create({
+      context: this
+    });
 
-test('`setContext(this)` and `removeContext()` set and remove the test context from the page', function(assert) {
-  assert.expect(3);
+    this.render(createCalculatorTemplate());
 
-  let page = PageObject.create({});
+    assert.ok(page.context.$());
+    assert.deepEqual(page.context.$(), this.$());
+  });
 
-  assert.notOk(page.context);
+  test('`setContext(this)` and `removeContext()` set and remove the test context from the page', function(assert) {
+    assert.expect(3);
 
-  page.setContext(this);
+    let page = PageObject.create({});
 
-  assert.deepEqual(page.context, this);
+    assert.notOk(page.context);
 
-  page.removeContext();
+    page.setContext(this);
 
-  assert.notOk(page.context);
-});
+    assert.deepEqual(page.context, this);
 
-test('`render()` throws an error when no context has been set', function(assert) {
-  assert.expect(2);
+    page.removeContext();
 
-  let errorMessage;
+    assert.notOk(page.context);
+  });
 
-  let page = PageObject.create({});
+  test('`render()` throws an error when no context has been set', function(assert) {
+    assert.expect(2);
 
-  assert.notOk(page.context);
+    let errorMessage;
 
-  assert.throws(function() {
-    page.render(createCalculatorTemplate());
-  }, function(err) {
-    errorMessage = err.message;
+    let page = PageObject.create({});
 
-    return errorMessage === 'You must set a context on the page object before calling calling `render()`';
-  }, `render did not throw an error when no context was set. Actual message: ${errorMessage}`);
-});
+    assert.notOk(page.context);
+
+    assert.throws(function() {
+      page.render(createCalculatorTemplate());
+    }, function(err) {
+      errorMessage = err.message;
+
+      return errorMessage === 'You must set a context on the page object before calling calling `render()`';
+    }, `render did not throw an error when no context was set. Actual message: ${errorMessage}`);
+  });
+}

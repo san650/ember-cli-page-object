@@ -1,4 +1,4 @@
-import $ from 'jquery';
+import $ from '-jquery';
 import Rfc268Adapter from './rfc268-adapter';
 import require from 'require';
 import { run } from '@ember/runloop';

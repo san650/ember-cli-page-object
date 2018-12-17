@@ -10,7 +10,7 @@
   </thead>
   <tbody>
     {{#each users as |user|}}
-    <tr class={{if user.admin 'admin'}}>
+      <tr class={{if user.admin "admin"}}>
         <td>{{user.userName}}</td>
         <td>{{user.role}}</td>
         <td>

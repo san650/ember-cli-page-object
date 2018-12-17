@@ -1,26 +1,33 @@
 # See http://help.github.com/ignore-files/ for more about ignoring files.
 
 # compiled output
-/dist
-/tmp
+/dist/
+/tmp/
 /tmp_docs
 
 # dependencies
-/node_modules
-/bower_components
+/bower_components/
+/node_modules/
 yarn.lock
+package-lock.json
 
 # misc
 /.sass-cache
 /connect.lock
-/coverage/*
+/coverage/
 /libpeerconnection.log
 npm-debug.log*
 testem.log
 LICENSE.md
 /docs
 /_site
+/yarn-error.log
 
 # IDE/editor files
 /.idea/
 /*.iml
+
+# ember-try
+/.node_modules.ember-try/
+/bower.json.ember-try
+/package.json.ember-try

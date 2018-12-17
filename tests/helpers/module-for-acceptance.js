@@ -3,12 +3,15 @@ import { resolve } from 'rsvp';
 import startApp from '../helpers/start-app';
 import destroyApp from '../helpers/destroy-app';
 import { useNativeEvents } from 'ember-cli-page-object/extend';
+import Ember from 'ember';
 
 export default function(name, options = {}) {
   [false, true].forEach(_useNativeEvents => {
     let moduleName = name;
     if (_useNativeEvents) {
       moduleName += ' [native-events]';
+    } else if (!Ember.hasOwnProperty('$')) {
+      return;
     }
 
     module(moduleName, {
