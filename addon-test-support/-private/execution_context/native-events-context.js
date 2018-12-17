@@ -29,22 +29,16 @@ export default class NativeDOMExecutionContext extends BaseContext {
       || '#ember-testing';
   }
 
-  chainable() {
-    return this.pageObjectNode;
-  }
-
-  runAsync(cb) {
+  run(cb) {
     if (this.testContext) {
-      run(() => {
+      return run(() => {
         cb(this);
       });
     } else {
-      (window.wait || wait)().then(() => {
+      return (window.wait || wait)().then(() => {
         cb(this);
       });
     }
-
-    return this.chainable()
   }
 
   visit() {

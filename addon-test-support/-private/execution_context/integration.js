@@ -18,16 +18,10 @@ export default class IntegrationExecutionContext extends BaseContext {
       || '#ember-testing';
   }
 
-  chainable() {
-    return this.pageObjectNode;
-  }
-
-  runAsync(cb) {
+  run(cb) {
     run(() => {
       cb(this);
     });
-
-    return this.chainable();
   }
 
   click(selector, container, options) {

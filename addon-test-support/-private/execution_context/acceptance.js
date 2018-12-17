@@ -14,16 +14,10 @@ export default class AcceptanceExecutionContext extends BaseContext {
     return find(selector, container);
   }
 
-  runAsync(cb) {
-    window.wait().then(() => {
+  run(cb) {
+    return window.wait().then(() => {
       cb(this);
     });
-
-    return this.chainable();
-  }
-
-  chainable() {
-    return this.pageObjectNode;
   }
 
   visit(path) {
