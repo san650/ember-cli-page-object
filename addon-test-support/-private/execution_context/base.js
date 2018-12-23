@@ -43,13 +43,14 @@ export default class Adapter {
     return chainable(this.pageObjectNode);
   }
 
-  getElements(selector, options) {
+  _getTestContainer(options) {
     let container = options.testContainer || findClosestValue(this.pageObjectNode, 'testContainer');
-    if (container) {
-      return $(selector, container);
-    } else {
-      return $(selector, this.contextElement);
-    }
+
+    return container || this.contextElement;
+  }
+
+  getElements(selector, options) {
+    return $(selector, this._getTestContainer(options));
   }
 
   find(selector, options) {

@@ -1,5 +1,4 @@
 import BaseContext from './base';
-import { findClosestValue } from '../helpers';
 import { fillElement, assertFocusable } from './helpers';
 
 export default class AcceptanceExecutionContext extends BaseContext {
@@ -9,9 +8,7 @@ export default class AcceptanceExecutionContext extends BaseContext {
   }
 
   getElements(selector, options) {
-    let container = options.testContainer || findClosestValue(this.pageObjectNode, 'testContainer');
-
-    return find(selector, container);
+    return find(selector, this._getTestContainer(options));
   }
 
   run(cb) {
@@ -33,20 +30,20 @@ export default class AcceptanceExecutionContext extends BaseContext {
   }
 
   fillIn(selector, container, options, content) {
-    const el = this.getElements(selector, options)[0];
+    const $selection = this.getElements(selector, options);
 
     /* global focus */
-    focus(el);
+    focus($selection);
 
-    fillElement(el, content, {
+    fillElement($selection, content, {
       selector,
       pageObjectNode: this.pageObjectNode,
       pageObjectKey: options.pageObjectKey
     });
 
     /* global triggerEvent */
-    triggerEvent(selector, container, 'input');
-    triggerEvent(selector, container, 'change');
+    triggerEvent(selector, this._getTestContainer(options), 'input');
+    triggerEvent(selector, this._getTestContainer(options), 'change');
   }
 
   triggerEvent(selector, container, options, eventName, eventOptions) {
