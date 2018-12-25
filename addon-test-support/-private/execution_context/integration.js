@@ -1,23 +1,25 @@
 import $ from '-jquery';
 import { run } from '@ember/runloop';
-import {
-  guardMultiple,
-  buildSelector,
-  findClosestValue
-} from '../helpers';
+import BaseContext from './base';
 import {
   fillElement,
   assertFocusable
 } from './helpers';
-import {
-  ELEMENT_NOT_FOUND,
-  throwBetterError
-} from '../better-errors';
 
-export default class IntegrationExecutionContext {
+export default class IntegrationExecutionContext extends BaseContext {
   constructor(pageObjectNode, testContext) {
-    this.pageObjectNode = pageObjectNode;
+    super(pageObjectNode);
+
     this.testContext = testContext;
+  }
+
+  get contextElement() {
+    return this.testContext && this.testContext._element
+      || '#ember-testing';
+  }
+
+  chainable() {
+    return this.pageObjectNode;
   }
 
   runAsync(cb) {
@@ -28,18 +30,12 @@ export default class IntegrationExecutionContext {
     return this.chainable();
   }
 
-  chainable() {
-    return this.pageObjectNode;
-  }
-
-  visit() {}
-
-  click(selector, container) {
-    this.$(selector, container).click();
+  click(selector, container, options) {
+    this.getElements(selector, options).click();
   }
 
   fillIn(selector, container, options, content) {
-    let $selection = this.$(selector, container);
+    let $selection = this.getElements(selector, options);
 
     fillElement($selection, content, {
       selector,
@@ -51,22 +47,12 @@ export default class IntegrationExecutionContext {
     $selection.change();
   }
 
-  $(selector, container) {
-    if (container) {
-      return $(selector, container);
-    } else {
-      return this.testContext.$(selector);
-    }
-  }
-
   triggerEvent(selector, container, options, eventName, eventOptions) {
+    let $selection = this.getElements(selector, options);
+
     let event = $.Event(eventName, eventOptions);
 
-    if (container) {
-      $(selector, container).trigger(event);
-    } else {
-      this.testContext.$(selector).trigger(event);
-    }
+    $selection.trigger(event);
   }
 
   focus(selector, options) {
@@ -92,68 +78,4 @@ export default class IntegrationExecutionContext {
 
     $selection.blur();
   }
-
-  assertElementExists(selector, options) {
-    let result;
-    let container = options.testContainer || findClosestValue(this.pageObjectNode, 'testContainer');
-
-    if (container) {
-      result = $(selector, container);
-    } else {
-      result = this.testContext.$(selector);
-    }
-
-    if (result.length === 0) {
-      throwBetterError(
-        this.pageObjectNode,
-        options.pageObjectKey,
-        ELEMENT_NOT_FOUND,
-        { selector }
-      );
-    }
-  }
-
-  find(selector, options) {
-    let result;
-    let container = options.testContainer || findClosestValue(this.pageObjectNode, 'testContainer');
-
-    selector = buildSelector(this.pageObjectNode, selector, options);
-
-    if (container) {
-      result = $(selector, container);
-    } else {
-      result = this.testContext.$(selector);
-    }
-
-    guardMultiple(result, selector, options.multiple);
-
-    return result;
-  }
-
-  findWithAssert(selector, options) {
-    let result;
-    let container = options.testContainer || findClosestValue(this.pageObjectNode, 'testContainer');
-
-    selector = buildSelector(this.pageObjectNode, selector, options);
-
-    if (container) {
-      result = $(selector, container);
-    } else {
-      result = this.testContext.$(selector);
-    }
-
-    guardMultiple(result, selector, options.multiple);
-
-    if (result.length === 0) {
-      throwBetterError(
-        this.pageObjectNode,
-        options.pageObjectKey,
-        ELEMENT_NOT_FOUND,
-        { selector }
-      );
-    }
-
-    return result;
-  }
-
 }

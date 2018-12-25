@@ -1,20 +1,17 @@
-import {
-  guardMultiple,
-  buildSelector,
-  findClosestValue
-} from '../helpers';
-import {
-  fillElement,
-  assertFocusable
-} from './helpers';
-import {
-  ELEMENT_NOT_FOUND,
-  throwBetterError
-} from '../better-errors';
+import BaseContext from './base';
+import { findClosestValue } from '../helpers';
+import { fillElement, assertFocusable } from './helpers';
 
-export default class AcceptanceExecutionContext {
-  constructor(pageObjectNode) {
-    this.pageObjectNode = pageObjectNode;
+export default class AcceptanceExecutionContext extends BaseContext {
+  get contextElement() {
+    return this.testContext && this.testContext._element
+      || '#ember-testing';
+  }
+
+  getElements(selector, options) {
+    let container = options.testContainer || findClosestValue(this.pageObjectNode, 'testContainer');
+
+    return find(selector, container);
   }
 
   runAsync(cb) {
@@ -34,18 +31,20 @@ export default class AcceptanceExecutionContext {
     visit(path);
   }
 
-  click(selector, container) {
+  click(selector, container, options) {
+    const el = this.getElements(selector, options)[0];
+
     /* global click */
-    click(selector, container);
+    click(el);
   }
 
   fillIn(selector, container, options, content) {
-    let $selection = find(selector, container || findClosestValue(this.pageObjectNode, 'testContainer'));
+    const el = this.getElements(selector, options)[0];
 
     /* global focus */
-    focus($selection);
+    focus(el);
 
-    fillElement($selection, content, {
+    fillElement(el, content, {
       selector,
       pageObjectNode: this.pageObjectNode,
       pageObjectKey: options.pageObjectKey
@@ -57,8 +56,10 @@ export default class AcceptanceExecutionContext {
   }
 
   triggerEvent(selector, container, options, eventName, eventOptions) {
+    const el = this.getElements(selector, options)[0];
+
     /* global triggerEvent */
-    triggerEvent(selector, container, eventName, eventOptions);
+    triggerEvent(el, eventName, eventOptions);
   }
 
   focus(selector, options) {
@@ -83,54 +84,5 @@ export default class AcceptanceExecutionContext {
     });
 
     $selection.blur();
-  }
-
-  assertElementExists(selector, options) {
-    /* global find */
-    let result = find(selector, options.testContainer || findClosestValue(this.pageObjectNode, 'testContainer'));
-
-    if (result.length === 0) {
-      throwBetterError(
-        this.pageObjectNode,
-        options.pageObjectKey,
-        ELEMENT_NOT_FOUND,
-        { selector }
-      );
-    }
-  }
-
-  find(selector, options) {
-    let result;
-
-    selector = buildSelector(this.pageObjectNode, selector, options);
-
-    /* global find */
-    result = find(selector, options.testContainer || findClosestValue(this.pageObjectNode, 'testContainer'));
-
-    guardMultiple(result, selector, options.multiple);
-
-    return result;
-  }
-
-  findWithAssert(selector, options) {
-    let result;
-
-    selector = buildSelector(this.pageObjectNode, selector, options);
-
-    /* global find */
-    result = find(selector, options.testContainer || findClosestValue(this.pageObjectNode, 'testContainer'));
-
-    if (result.length === 0) {
-      throwBetterError(
-        this.pageObjectNode,
-        options.pageObjectKey,
-        ELEMENT_NOT_FOUND,
-        { selector }
-      );
-    }
-
-    guardMultiple(result, selector, options.multiple);
-
-    return result;
   }
 }

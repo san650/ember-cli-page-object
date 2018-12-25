@@ -5,15 +5,14 @@ import {
   register as registerExecutionContext
 } from '../-private/execution_context';
 
-import IntegrationNativeEventsContext from '../-private/execution_context/integration-native-events';
-import AcceptanceNativeEventsContext from '../-private/execution_context/acceptance-native-events';
+import NativeEventsContext from '../-private/execution_context/native-events-context';
 import IntegrationEmberContext from '../-private/execution_context/integration';
 import AcceptanceEmberContext from '../-private/execution_context/acceptance';
 
 function useNativeEvents(flag = true) {
   if (flag) {
-    registerExecutionContext('integration', IntegrationNativeEventsContext);
-    registerExecutionContext('acceptance', AcceptanceNativeEventsContext);
+    registerExecutionContext('integration', NativeEventsContext);
+    registerExecutionContext('acceptance', NativeEventsContext);
   } else {
     registerExecutionContext('integration', IntegrationEmberContext);
     registerExecutionContext('acceptance', AcceptanceEmberContext);

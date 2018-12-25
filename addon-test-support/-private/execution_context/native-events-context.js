@@ -1,6 +1,6 @@
-import $ from '-jquery';
-
+import { run } from '@ember/runloop';
 import {
+  visit,
   click,
   triggerEvent,
   keyEvent,
@@ -8,43 +8,60 @@ import {
   blur
 } from 'ember-native-dom-helpers';
 
-import {
-  guardMultiple,
-  buildSelector,
-  findClosestValue
-} from '../helpers';
+import BaseContext from './base';
+import { wait } from '../compatibility';
 import {
   fillElement,
   assertFocusable
 } from './helpers';
-import {
-  ELEMENT_NOT_FOUND,
-  throwBetterError
-} from '../better-errors';
 
 const KEYBOARD_EVENT_TYPES = ['keydown', 'keypress', 'keyup'];
 
-export default class ExecutionContext {
+export default class NativeDOMExecutionContext extends BaseContext {
   constructor(pageObjectNode, testContext) {
-    this.pageObjectNode = pageObjectNode;
+    super(pageObjectNode);
+
     this.testContext = testContext;
   }
 
-  runAsync() {
-    throw new Error('not implemented');
+  get contextElement() {
+    return this.testContext && this.testContext._element
+      || '#ember-testing';
   }
 
   chainable() {
     return this.pageObjectNode;
   }
 
-  click(selector, container) {
-    const el = this.$(selector, container)[0];
+  runAsync(cb) {
+    if (this.testContext) {
+      run(() => {
+        cb(this);
+      });
+    } else {
+      (window.wait || wait)().then(() => {
+        cb(this);
+      });
+    }
+
+    return this.chainable()
+  }
+
+  visit() {
+    if (this.testContext) {
+      throw new Error('"visit" is not supported in integration mode');
+    }
+
+    visit(...arguments);
+  }
+
+  click(selector, container, options) {
+    const el = this.getElements(selector, options)[0];
     click(el);
   }
 
   fillIn(selector, container, options, content) {
-    let elements = this.$(selector, container).toArray();
+    let elements = this.getElements(selector, options).toArray();
 
     elements.forEach((el) => {
       fillElement(el, content, {
@@ -58,22 +75,8 @@ export default class ExecutionContext {
     });
   }
 
-  $(selector, container) {
-    if (container) {
-      return $(selector, container);
-    } else {
-      // @todo: we should fixed usage of private `_element`
-      // after https://github.com/emberjs/ember-test-helpers/issues/184 is resolved
-      let testsContainer = this.testContext ?
-        this.testContext._element :
-        '#ember-testing';
-
-      return $(selector, testsContainer);
-    }
-  }
-
   triggerEvent(selector, container, options, eventName, eventOptions) {
-    const element = this.$(selector, container)[0];
+    const element = this.getElements(selector, options)[0];
 
     // `keyCode` is a deprecated property.
     // @see: https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/keyCode
@@ -113,53 +116,4 @@ export default class ExecutionContext {
 
     blur(element);
   }
-
-  assertElementExists(selector, options) {
-    let container = options.testContainer || findClosestValue(this.pageObjectNode, 'testContainer');
-
-    let result = this.$(selector, container);
-
-    if (result.length === 0) {
-      throwBetterError(
-        this.pageObjectNode,
-        options.pageObjectKey,
-        ELEMENT_NOT_FOUND,
-        { selector }
-      );
-    }
-  }
-
-  find(selector, options) {
-    let container = options.testContainer || findClosestValue(this.pageObjectNode, 'testContainer');
-
-    selector = buildSelector(this.pageObjectNode, selector, options);
-
-    let result = this.$(selector, container);
-
-    guardMultiple(result, selector, options.multiple);
-
-    return result;
-  }
-
-  findWithAssert(selector, options) {
-    let container = options.testContainer || findClosestValue(this.pageObjectNode, 'testContainer');
-
-    selector = buildSelector(this.pageObjectNode, selector, options);
-
-    let result = this.$(selector, container);
-
-    if (result.length === 0) {
-      throwBetterError(
-        this.pageObjectNode,
-        options.pageObjectKey,
-        ELEMENT_NOT_FOUND,
-        { selector }
-      );
-    }
-
-    guardMultiple(result, selector, options.multiple);
-
-    return result;
-  }
 }
-
