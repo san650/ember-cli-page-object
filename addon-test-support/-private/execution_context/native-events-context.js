@@ -49,12 +49,12 @@ export default class NativeDOMExecutionContext extends BaseContext {
     visit(...arguments);
   }
 
-  click(selector, container, options) {
+  click(selector, options) {
     const el = this.getElements(selector, options)[0];
     click(el);
   }
 
-  fillIn(selector, container, options, content) {
+  fillIn(selector, options, content) {
     let elements = this.getElements(selector, options).toArray();
 
     elements.forEach((el) => {
@@ -69,7 +69,7 @@ export default class NativeDOMExecutionContext extends BaseContext {
     });
   }
 
-  triggerEvent(selector, container, options, eventName, eventOptions) {
+  triggerEvent(selector, options, eventName, eventOptions) {
     const element = this.getElements(selector, options)[0];
 
     // `keyCode` is a deprecated property.

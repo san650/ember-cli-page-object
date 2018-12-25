@@ -49,7 +49,7 @@ export default class Adapter {
     return container || this.contextElement;
   }
 
-  getElements(selector, options) {
+  getElements(selector, options = {}) {
     return $(selector, this._getTestContainer(options));
   }
 

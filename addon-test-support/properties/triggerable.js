@@ -1,7 +1,6 @@
 import {
   assign,
-  buildSelector,
-  findClosestValue
+  buildSelector
 } from '../-private/helpers';
 import { getExecutionContext } from '../-private/execution_context';
 
@@ -94,12 +93,11 @@ export function triggerable(event, selector, userOptions = {}) {
 
         return executionContext.runAsync((context) => {
           const fullSelector = buildSelector(this, selector, options);
-          const container =  options.testContainer || findClosestValue(this, 'testContainer');
 
           context.assertElementExists(fullSelector, options);
 
           const mergedEventProperties = assign(staticEventProperties, eventProperties);
-          return context.triggerEvent(fullSelector, container, options, event, mergedEventProperties);
+          return context.triggerEvent(fullSelector, options, event, mergedEventProperties);
         });
       };
     }

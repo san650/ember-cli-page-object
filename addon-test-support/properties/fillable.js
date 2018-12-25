@@ -1,7 +1,6 @@
 import {
   assign,
   buildSelector,
-  findClosestValue
 } from '../-private/helpers';
 import { getExecutionContext } from '../-private/execution_context';
 
@@ -136,8 +135,6 @@ export function fillable(selector, userOptions = {}) {
 
         return executionContext.runAsync((context) => {
           let fullSelector = buildSelector(this, selector, options);
-          let container = options.testContainer || findClosestValue(this, 'testContainer');
-
           if (clue) {
             fullSelector = ['input', 'textarea', 'select', '[contenteditable]']
               .map((tag) => [
@@ -153,7 +150,7 @@ export function fillable(selector, userOptions = {}) {
 
           context.assertElementExists(fullSelector, options);
 
-          return context.fillIn(fullSelector, container, options, content);
+          return context.fillIn(fullSelector, options, content);
         });
       };
     }

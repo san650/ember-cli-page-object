@@ -24,11 +24,11 @@ export default class IntegrationExecutionContext extends BaseContext {
     });
   }
 
-  click(selector, container, options) {
+  click(selector, options) {
     this.getElements(selector, options).click();
   }
 
-  fillIn(selector, container, options, content) {
+  fillIn(selector, options, content) {
     let $selection = this.getElements(selector, options);
 
     fillElement($selection, content, {
@@ -41,7 +41,7 @@ export default class IntegrationExecutionContext extends BaseContext {
     $selection.change();
   }
 
-  triggerEvent(selector, container, options, eventName, eventOptions) {
+  triggerEvent(selector, options, eventName, eventOptions) {
     let $selection = this.getElements(selector, options);
 
     let event = $.Event(eventName, eventOptions);

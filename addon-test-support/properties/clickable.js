@@ -1,7 +1,6 @@
 import {
   assign,
-  buildSelector,
-  findClosestValue
+  buildSelector
 } from '../-private/helpers';
 import { getExecutionContext } from '../-private/execution_context';
 
@@ -77,11 +76,10 @@ export function clickable(selector, userOptions = {}) {
 
         return executionContext.runAsync((context) => {
           let fullSelector = buildSelector(this, selector, options);
-          let container = options.testContainer || findClosestValue(this, 'testContainer');
 
           context.assertElementExists(fullSelector, options);
 
-          return context.click(fullSelector, container, options);
+          return context.click(fullSelector, options);
         });
       };
     }

@@ -22,14 +22,14 @@ export default class AcceptanceExecutionContext extends BaseContext {
     visit(path);
   }
 
-  click(selector, container, options) {
+  click(selector, options) {
     const el = this.getElements(selector, options)[0];
 
     /* global click */
     click(el);
   }
 
-  fillIn(selector, container, options, content) {
+  fillIn(selector, options, content) {
     const $selection = this.getElements(selector, options);
 
     /* global focus */
@@ -46,7 +46,7 @@ export default class AcceptanceExecutionContext extends BaseContext {
     triggerEvent(selector, this._getTestContainer(options), 'change');
   }
 
-  triggerEvent(selector, container, options, eventName, eventOptions) {
+  triggerEvent(selector, options, eventName, eventOptions) {
     const el = this.getElements(selector, options)[0];
 
     /* global triggerEvent */

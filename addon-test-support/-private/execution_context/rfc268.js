@@ -33,15 +33,15 @@ export default class RFC268ExecutionContext extends BaseContext {
     return visit(path);
   }
 
-  click(selector, container, options) {
+  click(selector, options) {
     return this.invokeHelper(selector, options, click);
   }
 
-  fillIn(selector, container, options, content) {
+  fillIn(selector, options, content) {
     return this.invokeHelper(selector, options, fillIn, content);
   }
 
-  triggerEvent(selector, container, options, eventName, eventOptions) {
+  triggerEvent(selector, options, eventName, eventOptions) {
     if (typeof eventOptions.key !== 'undefined' || typeof eventOptions.keyCode !== 'undefined') {
       const key = eventOptions.key || eventOptions.keyCode;
 
