@@ -1,5 +1,6 @@
 import $ from '-jquery';
 import { run } from '@ember/runloop';
+import { run as runAction } from '../action';
 import {
   guardMultiple,
   buildSelector,
@@ -13,6 +14,7 @@ import {
   ELEMENT_NOT_FOUND,
   throwBetterError
 } from '../better-errors';
+import wait from 'ember-test-helpers/wait';
 
 export default function IntegrationExecutionContext(pageObjectNode, testContext) {
   this.pageObjectNode = pageObjectNode;
@@ -20,16 +22,16 @@ export default function IntegrationExecutionContext(pageObjectNode, testContext)
 }
 
 IntegrationExecutionContext.prototype = {
-  runAsync(cb) {
+  andThen(cb) {
     run(() => {
-      cb(this);
+      cb(this)
     });
 
-    return this.chainable();
+    return wait();
   },
 
-  chainable() {
-    return this.pageObjectNode;
+  runAsync(cb) {
+    return runAction(this.pageObjectNode, cb);
   },
 
   visit() {},
