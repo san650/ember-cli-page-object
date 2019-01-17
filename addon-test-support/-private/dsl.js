@@ -12,20 +12,14 @@ import { text } from '../properties/text';
 import { value } from '../properties/value';
 
 import { getRoot } from './helpers';
-import { wait } from './compatibility';
 
 const thenDescriptor = {
   isDescriptor: true,
   value() {
-    // In RFC268 tests, we need to wait on the promise returned from the actual
-    // test helper, rather than a global method such as `wait`. So, we store the
-    // promise on the root of the (chained) tree so we can find it here and use
-    // it.
-    let promise = getRoot(this)._promise;
-    if (!promise) {
-      promise = (window.wait || wait)();
-    }
-    return promise.then(...arguments);
+    const root = getRoot(this);
+    const chainedRoot = root._chainedTree || root;
+
+    return chainedRoot._promise.then(...arguments);
   }
 };
 

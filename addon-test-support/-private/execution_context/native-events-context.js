@@ -8,6 +8,7 @@ import {
   blur
 } from 'ember-native-dom-helpers';
 
+import { run } from '../action';
 import {
   guardMultiple,
   buildSelector,
@@ -30,12 +31,8 @@ export default function ExecutionContext(pageObjectNode, testContext) {
 }
 
 ExecutionContext.prototype = {
-  runAsync() {
-    throw new Error('not implemented');
-  },
-
-  chainable() {
-    return this.pageObjectNode;
+  runAsync(cb) {
+    return run(this.pageObjectNode, cb);
   },
 
   click(selector, container) {
