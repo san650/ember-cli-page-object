@@ -1,9 +1,7 @@
+import { visit } from 'ember-native-dom-helpers';
 import ExecutionContext from './native-events-context';
+import { chainable } from './utils';
 import { wait } from '../compatibility';
-
-import {
-  visit
-} from 'ember-native-dom-helpers';
 
 export default function AcceptanceNativeEventsExecutionContext(pageObjectNode) {
   ExecutionContext.call(this, pageObjectNode);
@@ -21,5 +19,5 @@ AcceptanceNativeEventsExecutionContext.prototype.runAsync = function(cb) {
     cb(this);
   });
 
-  return this.chainable();
+  return chainable(this.pageObjectNode);
 };

@@ -1,5 +1,6 @@
 import { run } from '@ember/runloop';
 import ExecutionContext from './native-events-context';
+import { chainable } from './utils';
 
 export default function IntegrationNativeEventsExecutionContext(pageObjectNode, testContext) {
   ExecutionContext.call(this, pageObjectNode, testContext);
@@ -14,5 +15,5 @@ IntegrationNativeEventsExecutionContext.prototype.runAsync = function(cb) {
     cb(this);
   });
 
-  return this.chainable();
+  return chainable(this.pageObjectNode);
 };

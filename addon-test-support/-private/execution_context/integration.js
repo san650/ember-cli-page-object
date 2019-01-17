@@ -13,6 +13,7 @@ import {
   ELEMENT_NOT_FOUND,
   throwBetterError
 } from '../better-errors';
+import { chainable } from './utils';
 
 export default function IntegrationExecutionContext(pageObjectNode, testContext) {
   this.pageObjectNode = pageObjectNode;
@@ -25,11 +26,7 @@ IntegrationExecutionContext.prototype = {
       cb(this);
     });
 
-    return this.chainable();
-  },
-
-  chainable() {
-    return this.pageObjectNode;
+    return chainable(this.pageObjectNode);
   },
 
   visit() {},

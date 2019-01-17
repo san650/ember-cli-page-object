@@ -11,6 +11,7 @@ import {
   ELEMENT_NOT_FOUND,
   throwBetterError
 } from '../better-errors';
+import { chainable } from './utils';
 
 export default function AcceptanceExecutionContext(pageObjectNode) {
   this.pageObjectNode = pageObjectNode;
@@ -22,11 +23,7 @@ AcceptanceExecutionContext.prototype = {
       cb(this);
     });
 
-    return this.chainable();
-  },
-
-  chainable() {
-    return this.pageObjectNode;
+    return chainable(this.pageObjectNode);
   },
 
   visit(path) {
