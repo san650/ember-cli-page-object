@@ -9,10 +9,8 @@ IntegrationNativeEventsExecutionContext.prototype = Object.create(ExecutionConte
 
 IntegrationNativeEventsExecutionContext.prototype.visit = function() {};
 
-IntegrationNativeEventsExecutionContext.prototype.runAsync = function(cb) {
+IntegrationNativeEventsExecutionContext.prototype.andThen = function(cb) {
   run(() => {
     cb(this);
   });
-
-  return this.chainable();
 };

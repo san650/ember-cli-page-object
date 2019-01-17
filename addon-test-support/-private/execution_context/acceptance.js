@@ -1,3 +1,4 @@
+import { run } from '../action';
 import {
   guardMultiple,
   buildSelector,
@@ -17,16 +18,14 @@ export default function AcceptanceExecutionContext(pageObjectNode) {
 }
 
 AcceptanceExecutionContext.prototype = {
-  runAsync(cb) {
+  andThen(cb) {
     window.wait().then(() => {
       cb(this);
     });
-
-    return this.chainable();
   },
 
-  chainable() {
-    return this.pageObjectNode;
+  runAsync(cb) {
+    return run(this.pageObjectNode, cb);
   },
 
   visit(path) {

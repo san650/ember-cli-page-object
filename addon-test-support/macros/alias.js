@@ -3,7 +3,7 @@ import {
   getProperty,
   objectHasProperty
 } from '../-private/helpers';
-import { getExecutionContext } from '../-private/execution_context';
+import { chainable } from '../-private/action'
 
 const ALIASED_PROP_NOT_FOUND = 'PageObject does not contain aliased property';
 
@@ -97,7 +97,7 @@ export function alias(pathToProp, options = {}) {
         // to a property on a child node, then the return value would be that
         // child node rather than this node.
         value(...args);
-        return getExecutionContext(this).chainable();
+        return chainable(this);
       };
     }
   };
