@@ -77,7 +77,11 @@ export function blurrable(selector, userOptions = {}) {
         return getExecutionContext(this).runAsync((context) => {
           const element = findElementWithAssert(this, selector, options).get(0)
 
-          return context.blur(element, options);
+          try {
+            return context.blur(element, options);
+          } catch (e) {
+
+          }
         }).then(_ =>_, (e) => {
           debugger
           throwBetterError(this, pageObjectKey, e, {
