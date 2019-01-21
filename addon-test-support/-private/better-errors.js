@@ -8,14 +8,17 @@ export const ELEMENT_NOT_FOUND = 'Element not found.';
  *
  * @param {Ceibo} node              PageObject node containing the property that triggered the error
  * @param {string} key              Key of PageObject property tht triggered the error
- * @param {string} msg              Error message
+ * @param {Error|string} err        Error or error text
  * @param {Object} options
  * @param {string} options.selector Selector of element targeted by PageObject property
  * @return {Ember.Error}
  */
-export function throwBetterError(node, key, msg, { selector } = {}) {
-  let path = [key];
+export function throwBetterError(node, key, err, { selector } = {}) {
   let current;
+  let path = [key];
+  const msg = typeof err === Error
+    ? err.message
+    : err.toString();
 
   for (current = node; current; current = Ceibo.parent(current)) {
     path.unshift(Ceibo.meta(current).key);

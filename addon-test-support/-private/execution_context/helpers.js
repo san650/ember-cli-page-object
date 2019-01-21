@@ -44,7 +44,7 @@ export function fillElement(selection, content, { selector, pageObjectNode, page
  *
  * @param {Element} element - the element to check
  */
-export function assertFocusable(element, { selector, pageObjectNode, pageObjectKey }) {
+export function assertFocusable(element) {
   let $element = $(element);
 
   let error;
@@ -60,12 +60,6 @@ export function assertFocusable(element, { selector, pageObjectNode, pageObjectK
   }
 
   if (error) {
-    throwBetterError(
-      pageObjectNode,
-      pageObjectKey,
-      `Element is not focusable because it is ${error}`, {
-        selector
-      }
-    );
+    throw new Error(`Element is not focusable because it is ${error}`);
   }
 }

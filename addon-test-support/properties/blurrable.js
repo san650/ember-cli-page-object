@@ -1,5 +1,7 @@
-import { assign } from '../-private/helpers';
+import { assign, buildSelector } from '../-private/helpers';
 import { getExecutionContext } from '../-private/execution_context';
+import { findElementWithAssert } from '../extend/index';
+import { throwBetterError } from '../-private/better-errors';
 
 /**
  *
@@ -68,11 +70,19 @@ export function blurrable(selector, userOptions = {}) {
 
     get(key) {
       return function() {
-        const executionContext = getExecutionContext(this);
-        const options = assign({ pageObjectKey: `${key}()` }, userOptions);
+        const pageObjectKey = `${key}()`;
 
-        return executionContext.runAsync((context) => {
-          return context.blur(selector, options);
+        const options = assign({ pageObjectKey }, userOptions);
+
+        return getExecutionContext(this).runAsync((context) => {
+          const element = findElementWithAssert(this, selector, options).get(0)
+
+          return context.blur(element, options);
+        }).then(_ =>_, (e) => {
+          debugger
+          throwBetterError(this, pageObjectKey, e, {
+            selector: buildSelector(this, selector, options)
+          });
         });
       };
     }
