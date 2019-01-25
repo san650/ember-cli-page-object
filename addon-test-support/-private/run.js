@@ -10,7 +10,7 @@ import Ceibo from 'ceibo';
  * @param {Function} cb Some async activity callback
  * @returns {Ceibo}
  */
-export function run(node, cb) {
+export default function run(node, cb) {
   const chainedRoot = getRoot(node)._chainedTree;
 
   let executionContext;

@@ -3,7 +3,7 @@ import {
   getProperty,
   objectHasProperty
 } from '../-private/helpers';
-import { chainable } from '../-private/action'
+import { chainable } from '../-private/run'
 
 const ALIASED_PROP_NOT_FOUND = 'PageObject does not contain aliased property';
 

@@ -1,3 +1,4 @@
+export { default as action } from './action';
 export { findElement } from './find-element';
 export { findElementWithAssert } from './find-element-with-assert';
 export { buildSelector, getContext, fullScope } from '../-private/helpers';

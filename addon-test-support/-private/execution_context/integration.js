@@ -1,6 +1,6 @@
 import $ from '-jquery';
-import { run } from '@ember/runloop';
-import { run as runAction } from '../action';
+import { run as emberRunloopRun } from '@ember/runloop';
+import run from '../run';
 import {
   guardMultiple,
   buildSelector,
@@ -23,7 +23,7 @@ export default function IntegrationExecutionContext(pageObjectNode, testContext)
 
 IntegrationExecutionContext.prototype = {
   andThen(cb) {
-    run(() => {
+    emberRunloopRun(() => {
       cb(this)
     });
 
@@ -31,7 +31,7 @@ IntegrationExecutionContext.prototype = {
   },
 
   runAsync(cb) {
-    return runAction(this.pageObjectNode, cb);
+    return run(this.pageObjectNode, cb);
   },
 
   visit() {},

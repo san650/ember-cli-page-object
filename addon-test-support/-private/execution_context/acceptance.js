@@ -1,4 +1,4 @@
-import { run } from '../action';
+import run from '../run';
 import {
   guardMultiple,
   buildSelector,
