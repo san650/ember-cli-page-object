@@ -19,6 +19,14 @@ export default function AcceptanceExecutionContext(pageObjectNode) {
 }
 
 AcceptanceExecutionContext.prototype = {
+  run(helper, onFailure) {
+    try {
+      return helper()
+    } catch(e) {
+      onFailure(e);
+    }
+  },
+
   runAsync(cb) {
     window.wait().then(() => {
       cb(this);

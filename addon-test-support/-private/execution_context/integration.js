@@ -21,12 +21,20 @@ export default function IntegrationExecutionContext(pageObjectNode, testContext)
 }
 
 IntegrationExecutionContext.prototype = {
+  run(helper, onFailure) {
+    try {
+      return helper()
+    } catch(e) {
+      onFailure(e);
+    }
+  },
+
   runAsync(cb) {
-    return chainable(this.pageObjectNode).then(() => {
-      return run(() => {
-        cb(this);
-      });
+    run(() => {
+      cb(this);
     });
+
+    return chainable(this.pageObjectNode);
   },
 
   visit() {},

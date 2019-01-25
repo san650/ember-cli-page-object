@@ -10,11 +10,18 @@ IntegrationNativeEventsExecutionContext.prototype = Object.create(ExecutionConte
 
 IntegrationNativeEventsExecutionContext.prototype.visit = function() {};
 
+IntegrationNativeEventsExecutionContext.prototype.run = function(helper, onFailure) {
+  try {
+    return helper()
+  } catch(e) {
+    onFailure(e);
+  }
+};
+
 IntegrationNativeEventsExecutionContext.prototype.runAsync = function(cb) {
-  const r = run(() => {
+  run(() => {
     return cb(this);
   });
-  debugger
 
   return chainable(this.pageObjectNode);
 };

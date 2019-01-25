@@ -14,6 +14,14 @@ AcceptanceNativeEventsExecutionContext.prototype.visit = function() {
   return this.pageObjectNode;
 };
 
+AcceptanceNativeEventsExecutionContext.prototype.run = function(helper, onFailure) {
+  try {
+    return helper()
+  } catch(e) {
+    onFailure(e);
+  }
+},
+
 AcceptanceNativeEventsExecutionContext.prototype.runAsync = function(cb) {
   (window.wait || wait)().then(() => {
     cb(this);
