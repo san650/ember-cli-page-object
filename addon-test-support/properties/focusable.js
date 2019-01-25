@@ -1,7 +1,4 @@
-import { assign, buildSelector } from '../-private/helpers';
-import { getExecutionContext } from '../-private/execution_context';
-import { findElementWithAssert } from '../extend/index';
-import { throwBetterError } from '../-private/better-errors';
+import { assign, run } from '../-private/helpers';
 
 /**
  *
@@ -56,7 +53,7 @@ import { throwBetterError } from '../-private/better-errors';
  *
  * @public
  *
- * @param {string} selector - CSS selector of the element which will be focused
+ * @param {string} scope - CSS selector of the element which will be focused
  * @param {Object} options - Additional options
  * @param {string} options.scope - Nests provided scope within parent's scope
  * @param {number} options.at - Reduce the set of matched elements to the one at the specified index
@@ -64,25 +61,19 @@ import { throwBetterError } from '../-private/better-errors';
  * @param {string} options.testContainer - Context where to search elements in the DOM
  * @return {Descriptor}
 */
-export function focusable(selector, userOptions = {}) {
+export function focusable(scope, userOptions = {}) {
   return {
     isDescriptor: true,
 
     get(key) {
       return function() {
-        const pageObjectKey = `${key}()`;
+        const query = assign({
+          pageObjectKey: `${key}()`,
+        }, userOptions);
 
-        const options = assign({ pageObjectKey }, userOptions);
-
-        return getExecutionContext(this).runAsync((context) => {
-          const element = findElementWithAssert(this, selector, options).get(0)
-
-          return context.focus(element);
-        }).then(_ => _, (e) => {
-          throwBetterError(this, pageObjectKey, e, {
-            selector: buildSelector(this, selector, options)
-          });
-        });
+        return run(this, scope, query,
+          (element, { focus }) => focus(element)
+        )
       };
     }
   };

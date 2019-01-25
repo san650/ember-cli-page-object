@@ -1,7 +1,4 @@
-import { assign, buildSelector } from '../-private/helpers';
-import { getExecutionContext } from '../-private/execution_context';
-import { findElementWithAssert } from '../extend/index';
-import { throwBetterError } from '../-private/better-errors';
+import { assign, run } from '../-private/helpers';
 
 /**
  *
@@ -64,30 +61,19 @@ import { throwBetterError } from '../-private/better-errors';
  * @param {string} options.testContainer - Context where to search elements in the DOM
  * @return {Descriptor}
 */
-export function blurrable(selector, userOptions = {}) {
+export function blurrable(scope, userOptions = {}) {
   return {
     isDescriptor: true,
 
     get(key) {
       return function() {
-        const pageObjectKey = `${key}()`;
+        const query = assign({
+          pageObjectKey: `${key}()`,
+        }, userOptions);
 
-        const options = assign({ pageObjectKey }, userOptions);
-
-        return getExecutionContext(this).runAsync((context) => {
-          const element = findElementWithAssert(this, selector, options).get(0)
-
-          try {
-            return context.blur(element, options);
-          } catch (e) {
-
-          }
-        }).then(_ =>_, (e) => {
-          debugger
-          throwBetterError(this, pageObjectKey, e, {
-            selector: buildSelector(this, selector, options)
-          });
-        });
+        return run(this, scope, query,
+          (element, { blur }) => blur(element)
+        )
       };
     }
   };
