@@ -7,7 +7,7 @@ import {
   getRoot
 } from '../helpers';
 import {
-  getContext,
+  getRootElement,
   visit,
   click,
   fillIn,
@@ -171,7 +171,7 @@ ExecutionContext.prototype = {
     if (container) {
       return $(selector, container);
     } else {
-      return $(selector, getContext().element);
+      return $(selector, getRootElement());
     }
   },
 
