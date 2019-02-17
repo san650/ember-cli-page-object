@@ -8,13 +8,15 @@ export const ELEMENT_NOT_FOUND = 'Element not found.';
  *
  * @param {Ceibo} node              PageObject node containing the property that triggered the error
  * @param {string} key              Key of PageObject property tht triggered the error
- * @param {string} msg              Error message
+ * @param {Error|string} err        Error or error text
  * @param {Object} options
  * @param {string} options.selector Selector of element targeted by PageObject property
  * @return {Ember.Error}
  */
-export function throwBetterError(node, key, msg, { selector } = {}) {
-  let path = [key];
+export function throwBetterError(node, key, err, { selector } = {}) {
+  let fullErrorMessage = typeof err === Error ? err.message : err.toString();
+
+  let path = [];
   let current;
 
   for (current = node; current; current = Ceibo.parent(current)) {
@@ -22,11 +24,16 @@ export function throwBetterError(node, key, msg, { selector } = {}) {
   }
 
   path[0] = 'page';
+  if (key && key.trim().length > 0) {
+    path.push(key);
+  }
 
-  let fullErrorMessage = `${msg}\n\nPageObject: '${path.join('.')}'`;
+  if (path.length > 0) {
+    fullErrorMessage += `\n\nPageObject: '${path.join('.')}'`;
+  }
 
-  if (selector) {
-    fullErrorMessage = `${fullErrorMessage}\n  Selector: '${selector}'`;
+  if (typeof selector === 'string' && selector.trim().length > 0) {
+    fullErrorMessage += `\n  Selector: '${selector}'`;
   }
 
   console.error(fullErrorMessage);
