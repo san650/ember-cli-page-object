@@ -1,5 +1,5 @@
 import { assign } from '../-private/helpers';
-import { getExecutionContext } from '../-private/execution_context';
+import { run } from '../-private/action';
 
 import $ from '-jquery';
 
@@ -95,9 +95,7 @@ export function visitable(path) {
 
     get() {
       return function(dynamicSegmentsAndQueryParams = {}) {
-        let executionContext = getExecutionContext(this);
-
-        return executionContext.runAsync((context) => {
+        return run(this, (context) => {
           let params = assign({}, dynamicSegmentsAndQueryParams);
           let fullPath = fillInDynamicSegments(path, params);
 
