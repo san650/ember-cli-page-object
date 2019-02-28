@@ -66,6 +66,9 @@ if (require.has('ember-test-helpers/wait')) {
 export function getContext(...args) {
   return helpers.getContext(...args);
 }
+export function getRootElement(...args) {
+  return helpers.getRootElement(...args);
+}
 export function visit(...args) {
   return helpers.visit(...args);
 }
