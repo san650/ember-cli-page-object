@@ -80,6 +80,11 @@ module.exports = function() {
             devDependencies: {
               'ember-source': urls[0]
             }
+          },
+          env: {
+            EMBER_OPTIONAL_FEATURES: JSON.stringify({
+              'jquery-integration': false
+            })
           }
         },
         {
@@ -88,6 +93,11 @@ module.exports = function() {
             devDependencies: {
               'ember-source': urls[1]
             }
+          },
+          env: {
+            EMBER_OPTIONAL_FEATURES: JSON.stringify({
+              'jquery-integration': false
+            })
           }
         },
         {
@@ -96,6 +106,11 @@ module.exports = function() {
             devDependencies: {
               'ember-source': urls[2]
             }
+          },
+          env: {
+            EMBER_OPTIONAL_FEATURES: JSON.stringify({
+              'jquery-integration': false
+            })
           }
         },
         {
