@@ -162,10 +162,10 @@ module.exports = function() {
           }
         },
         {
-          name: 'ember-default-without-jquery',
+          name: 'with-jquery',
           env: {
             EMBER_OPTIONAL_FEATURES: JSON.stringify({
-              'jquery-integration': false
+              'jquery-integration': true
             })
           }
         }
