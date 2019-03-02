@@ -45,13 +45,13 @@ jobs:
     - env: EMBER_TRY_SCENARIO=ember-lts-2.12
     - env: EMBER_TRY_SCENARIO=ember-lts-2.16
     - env: EMBER_TRY_SCENARIO=ember-lts-2.18
-    - env: EMBER_TRY_SCENARIO=ember-release COVERAGE=true # Only log coverage from release
+    # keep testing integration and acceptance contexts
+    - env: EMBER_TRY_SCENARIO=with-jquery COVERAGE=true
     - env: EMBER_TRY_SCENARIO=with-ember-test-helpers
     - env: EMBER_TRY_SCENARIO=with-@ember/test-helpers
     - env: EMBER_TRY_SCENARIO=ember-release
     - env: EMBER_TRY_SCENARIO=ember-beta
     - env: EMBER_TRY_SCENARIO=ember-canary
-    - env: EMBER_TRY_SCENARIO=ember-default-without-jquery
 
 before_install:
   - npm config set spin false
