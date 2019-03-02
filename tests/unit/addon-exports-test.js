@@ -1,12 +1,18 @@
 import { test, module } from 'qunit';
+import require from 'require';
 
-module('Unit | Exports');
-
-/* global require */
 const Addon = require('ember-cli-page-object');
-const TestSupport = require('dummy/tests/page-object');
 const Extend = require('ember-cli-page-object/extend');
 const Macros = require('ember-cli-page-object/macros');
+
+let TestSupport;
+module('Unit | Exports', {
+  beforeEach() {
+    // postpone legacy import in order to
+    // avoid deprecation message on tests startup
+    TestSupport = require('dummy/tests/page-object');
+  }
+});
 
 const EXPECTED_METHODS = [
   'attribute',

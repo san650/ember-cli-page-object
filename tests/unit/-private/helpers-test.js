@@ -6,19 +6,24 @@ import {
   objectHasProperty
 } from 'ember-cli-page-object/test-support/-private/helpers';
 
-module('Unit | helpers | fullScope');
+let page;
+module('Unit | helpers | fullScope', {
+  beforeEach() {
+    // postpone legacy collection creation in order to
+    // avoid deprecation message on tests startup
+    page = create({
+      scope: '.calculator',
 
-let page = create({
-  scope: '.calculator',
+      keyboard: {
+        scope: '.keyboard',
 
-  keyboard: {
-    scope: '.keyboard',
+        numbers: collection({
+          scope: '.numbers',
 
-    numbers: collection({
-      scope: '.numbers',
-
-      itemScope: 'button'
-    })
+          itemScope: 'button'
+        })
+      }
+    });
   }
 });
 

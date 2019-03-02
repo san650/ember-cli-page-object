@@ -7,17 +7,22 @@ import {
   visitable
 } from 'ember-cli-page-object';
 
-const page = create({
-  visit: visitable('async-calculator'),
+let page;
+moduleForAcceptance('Acceptance | collection', {
+  beforeEach() {
+    // postpone legacy collection creation in order to
+    // avoid deprecation message on tests startup
+    page = create({
+      visit: visitable('async-calculator'),
 
-  numbers: collection('.numbers button'),
+      numbers: collection('.numbers button'),
 
-  numbersLegacy: collection({
-    itemScope: '.numbers button',
-  })
+      numbersLegacy: collection({
+        itemScope: '.numbers button',
+      })
+    });
+  }
 });
-
-moduleForAcceptance('Acceptance | collection');
 
 test(`allows to traverse nodes while they don't exist`, function(assert) {
   page.visit()

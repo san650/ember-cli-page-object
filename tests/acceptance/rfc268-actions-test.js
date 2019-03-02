@@ -20,52 +20,57 @@ if (require.has('@ember/test-helpers')) {
       visitable
     } = PageObject;
 
-    let page = PageObject.create({
-      visit: visitable('/calculator'),
-      keys: {
-        clickOn: clickOnText('.numbers'),
-        sum: clickable('button', { scope: '.operators', at: 0 }),
-        equal: clickable('button', { scope: '.operators', at: 2 }),
-        asyncEqual: clickable('button', { scope: '.operators', at: 3 })
-      },
+    let page;
+    hooks.beforeEach(function() {
+      // postpone legacy collection creation in order to
+      // avoid deprecation message on tests startup
+      page = PageObject.create({
+        visit: visitable('/calculator'),
+        keys: {
+          clickOn: clickOnText('.numbers'),
+          sum: clickable('button', { scope: '.operators', at: 0 }),
+          equal: clickable('button', { scope: '.operators', at: 2 }),
+          asyncEqual: clickable('button', { scope: '.operators', at: 3 })
+        },
 
-      screen: value('.screen input'),
-      fillValue: fillable('.screen input'),
-      isLoading: isVisible('.loading'),
+        screen: value('.screen input'),
+        fillValue: fillable('.screen input'),
+        isLoading: isVisible('.loading'),
 
-      visitAlias: alias('visit', { chainable: true }),
-      clickKeyAlias: alias('keys.clickOn', { chainable: true }),
-      clickPlusAlias: alias('keys.sum', { chainable: true }),
-      clickEqualAlias: alias('keys.equal', { chainable: true }),
+        visitAlias: alias('visit', { chainable: true }),
+        clickKeyAlias: alias('keys.clickOn', { chainable: true }),
+        clickPlusAlias: alias('keys.sum', { chainable: true }),
+        clickEqualAlias: alias('keys.equal', { chainable: true }),
 
-      // Collections for accessing keys
-      numbers: collection('.numbers button'),
-      operators: collection('.operators button'),
+        // Collections for accessing keys
+        numbers: collection('.numbers button'),
+        operators: collection('.operators button'),
 
-      // Legacy collections for accessing keys
-      legacyNumbers: collection({
-        itemScope: '.numbers button'
-      }),
-      legacyOperators: collection({
-        itemScope: '.operators button'
-      }),
+        // Legacy collections for accessing keys
+        legacyNumbers: collection({
+          itemScope: '.numbers button'
+        }),
+        legacyOperators: collection({
+          itemScope: '.operators button'
+        }),
 
-      // Nested collection for accessing keys
-      keyGroup: collection('.keyboard > div', {
-        keys: collection('button')
-      }),
+        // Nested collection for accessing keys
+        keyGroup: collection('.keyboard > div', {
+          keys: collection('button')
+        }),
 
-      // Nested legacy collections for accessing keys
-      legacyKeyGroup: collection({
-        itemScope: '.keyboard > div',
+        // Nested legacy collections for accessing keys
+        legacyKeyGroup: collection({
+          itemScope: '.keyboard > div',
 
-        item: {
-          keys: collection({
-            itemScope: 'button'
-          })
-        }
-      })
-    });
+          item: {
+            keys: collection({
+              itemScope: 'button'
+            })
+          }
+        })
+      });
+    })
 
     test('works inside collections', async function(assert) {
       await page.visit();
