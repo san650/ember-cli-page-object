@@ -165,7 +165,7 @@ export function create(definitionOrUrl, definitionOrOptions, optionsOrNothing) {
     options = optionsOrNothing || {};
   } else {
     url = false;
-    definition = definitionOrUrl;
+    definition = definitionOrUrl || {};
     options = definitionOrOptions || {};
   }
 
