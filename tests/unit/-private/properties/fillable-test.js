@@ -1,6 +1,9 @@
 import { moduleForProperty } from '../../../helpers/properties';
-import { create, fillable, selectable } from 'ember-cli-page-object';
+import { hookable, create, fillable, selectable } from 'ember-cli-page-object';
 
+window.hookable = hookable;
+
+/* eslint-disable no-console */
 moduleForProperty('fillable', function(test) {
   test("calls fillIn method belonging to execution context", async function(assert) {
     assert.expect(1);
@@ -9,8 +12,12 @@ moduleForProperty('fillable', function(test) {
     let expectedText = 'dummy text';
     let page;
 
+    const customFillable = hookable(fillable, {
+      before() { console.log('before') },
+      after() { console.log('after') },
+    });
     page = create({
-      foo: fillable(expectedSelector)
+      foo: customFillable(expectedSelector)
     });
 
     await this.adapter.createTemplate(this, page, '<input>');
@@ -50,9 +57,13 @@ moduleForProperty('fillable', function(test) {
     test(`looks for ${tagName} with ${attrName}`, async function(assert) {
       let expectedText = 'dummy text';
       let clue = 'clue';
+      const customFillable = hookable(fillable, {
+        before() { console.log('before') },
+        after() { console.log('after') },
+      });
       let page = create({
         scope: '.scope',
-        foo: fillable()
+        foo: customFillable()
       });
 
       await this.adapter.createTemplate(this, page, `<div class="scope">${template}</div>`);
@@ -67,9 +78,13 @@ moduleForProperty('fillable', function(test) {
     test(`looks for [contenteditable] with ${attrName}`, async function(assert) {
       let expectedText = 'dummy text';
       let clue = 'clue';
+      const customFillable = hookable(fillable, {
+        before() { console.log('before') },
+        after() { console.log('after') },
+      });
       let page = create({
         scope: '.scope',
-        foo: fillable()
+        foo: customFillable()
       });
 
       await this.adapter.createTemplate(this, page, `<div class="scope"><div contenteditable ${attrName}="clue"></div></div>`);
@@ -83,8 +98,14 @@ moduleForProperty('fillable', function(test) {
   test('looks for elements inside the scope', async function(assert) {
     assert.expect(1);
 
+    // NOTE: works as expected
+    const customFillable = hookable(fillable, {
+      before() { console.log('before') },
+      after() { console.log('after') },
+    });
+
     let page = create({
-      foo: fillable('input', { scope: '.scope' })
+      foo: customFillable('input', { scope: '.scope' })
     });
 
     await this.adapter.createTemplate(this, page, '<div class="scope"><input></div>');
@@ -97,10 +118,16 @@ moduleForProperty('fillable', function(test) {
   test("looks for elements inside page's scope", async function(assert) {
     assert.expect(1);
 
+    // NOTE: works as expected
+    const customFillable = hookable(fillable, {
+      before() { console.log('before') },
+      after() { console.log('after') },
+    });
+
     let page = create({
       scope: '.scope',
 
-      foo: fillable('input')
+      foo: customFillable('input'),
     });
 
     await this.adapter.createTemplate(this, page, '<div class="scope"><input></div>');
@@ -113,9 +140,13 @@ moduleForProperty('fillable', function(test) {
   test('resets scope', async function(assert) {
     assert.expect(1);
 
+    const customFillable = hookable(fillable, {
+      before() { console.log('before') },
+      after() { console.log('after') },
+    });
     let page = create({
       scope: '.scope',
-      foo: fillable('input', { resetScope: true })
+      foo: customFillable('input', { resetScope: true })
     });
 
     await this.adapter.createTemplate(this, page, '<input>');
@@ -128,8 +159,14 @@ moduleForProperty('fillable', function(test) {
   test('returns chainable object', async function(assert) {
     assert.expect(1);
 
+    // NOTE: works as expected
+    const customFillable = hookable(fillable, {
+      before() { console.log('before') },
+      after() { console.log('after') },
+    });
+
     let page = create({
-      foo: fillable('input')
+      foo: customFillable('input')
     });
 
     await this.adapter.createTemplate(this, page, '<input>');
@@ -143,8 +180,13 @@ moduleForProperty('fillable', function(test) {
     assert.expect(1);
 
     let expectedSelector = 'input:eq(3)';
+
+    const customFillable = hookable(fillable, {
+      before() { console.log('before') },
+      after() { console.log('after') },
+    });
     let page = create({
-      foo: fillable('input', { at: 3 })
+      foo: customFillable('input', { at: 3 })
     });
 
     await this.adapter.createTemplate(this, page, '<input><input><input><input>');
@@ -159,8 +201,12 @@ moduleForProperty('fillable', function(test) {
 
     let expectedSelector = 'input';
     let expectedText = 'dummy text';
+    const customSelectable = hookable(selectable, {
+      before() { console.log('before') },
+      after() { console.log('after') },
+    });
     let page = create({
-      foo: selectable(expectedSelector)
+      foo: customSelectable(expectedSelector)
     });
 
     await this.adapter.createTemplate(this, page, '<input>');
@@ -176,8 +222,12 @@ moduleForProperty('fillable', function(test) {
     let expectedContext = '#alternate-ember-testing';
     let expectedSelector = 'input';
     let expectedText = 'foo';
+    const customFillable = hookable(fillable, {
+      before() { console.log('before') },
+      after() { console.log('after') },
+    });
     let page = create({
-      foo: fillable(expectedSelector, { testContainer: expectedContext })
+      foo: customFillable(expectedSelector, { testContainer: expectedContext })
     });
 
     await this.adapter.createTemplate(this, page, '<input>', { useAlternateContainer: true });
@@ -193,9 +243,13 @@ moduleForProperty('fillable', function(test) {
     let expectedContext = '#alternate-ember-testing';
     let expectedSelector = 'input';
     let expectedText = 'foo';
+    const customFillable = hookable(fillable, {
+      before() { console.log('before') },
+      after() { console.log('after') },
+    });
     let page = create({
       testContainer: expectedContext,
-      foo: fillable(expectedSelector)
+      foo: customFillable(expectedSelector)
     });
 
     await this.adapter.createTemplate(this, page, '<input>', { useAlternateContainer: true });
@@ -207,12 +261,16 @@ moduleForProperty('fillable', function(test) {
 
   test("raises an error when the element doesn't exist", async function(assert) {
     assert.expect(1);
+    const customFillable = hookable(fillable, {
+      before() { console.log('before') },
+      after() { console.log('after') },
+    });
 
     let page = create({
       foo: {
         bar: {
           baz: {
-            qux: fillable('input')
+            qux: customFillable('input')
           }
         }
       }
@@ -226,8 +284,12 @@ moduleForProperty('fillable', function(test) {
   });
 
   test('raises an error when the element has contenteditable="false"', async function(assert) {
+    const customFillable = hookable(fillable, {
+      before() { console.log('before') },
+      after() { console.log('after') },
+    });
     let page = create({
-      foo: fillable('div')
+      foo: customFillable('div')
     });
 
     await this.adapter.createTemplate(this, page, '<div contenteditable="false">');
@@ -237,3 +299,5 @@ moduleForProperty('fillable', function(test) {
     }, /contenteditable/, 'Element should not be fillable because contenteditable="false"');
   });
 });
+
+/* eslint-enable no-console */
