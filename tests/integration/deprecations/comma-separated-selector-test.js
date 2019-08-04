@@ -13,7 +13,6 @@ if (require.has('@ember/test-helpers')) {
 
     test('usage of comma-separated selector in the scope leads to a deprecation', async function(assert) {
       let page = create({
-        context: this,
         scope: '.A, .B'
       });
 
@@ -26,7 +25,6 @@ if (require.has('@ember/test-helpers')) {
 
     test('usage of comma-separated selector in the property leads to a deprecation', async function(assert) {
       let page = create({
-        context: this,
         text: text('.A, .B')
       });
 
@@ -39,7 +37,6 @@ if (require.has('@ember/test-helpers')) {
 
     test('usage of comma-separated selector in the property\'s custom scope leads to a deprecation', async function(assert) {
       let page = create({
-        context: this,
         text: text('.root', {
           scope: '.A, .B'
         })
@@ -56,7 +53,6 @@ if (require.has('@ember/test-helpers')) {
 
     test('don\'t show deprecation when selector doesn\'t use comma-separated selectors', async function(assert) {
       let page = create({
-        context: this,
         scope: '.root',
         propText: text('.A', {
           scope: '.B'
