@@ -1,5 +1,6 @@
 import { run } from '@ember/runloop';
 import ExecutionContext from './native-events-context';
+import wait from 'ember-test-helpers/wait';
 
 export default function IntegrationNativeEventsExecutionContext(pageObjectNode, testContext) {
   ExecutionContext.call(this, pageObjectNode, testContext);
@@ -9,10 +10,10 @@ IntegrationNativeEventsExecutionContext.prototype = Object.create(ExecutionConte
 
 IntegrationNativeEventsExecutionContext.prototype.visit = function() {};
 
-IntegrationNativeEventsExecutionContext.prototype.runAsync = function(cb) {
+IntegrationNativeEventsExecutionContext.prototype.andThen = function(cb) {
   run(() => {
     cb(this);
   });
 
-  return this.chainable();
+  return wait();
 };
