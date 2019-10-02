@@ -1,6 +1,7 @@
 import Ember from 'ember';
-import { moduleForComponent, test } from 'ember-qunit';
-import wait from 'ember-test-helpers/wait';
+import { module, test } from 'qunit';
+import { setupRenderingTest } from 'ember-qunit';
+import { settled } from '@ember/test-helpers';
 import { create } from 'ember-cli-page-object'
 import hbs from 'htmlbars-inline-precompile';
 import { createClickTrackerComponent, ClickTrackerDef } from './helpers';
@@ -40,7 +41,7 @@ if (Ember.hasOwnProperty('$')) {
     node.click()
     node.click();
 
-    return wait().then(() => {
+    return settled().then(() => {
       assert.verifySteps([
         'begin #0',
         'begin #1',
@@ -54,27 +55,27 @@ if (Ember.hasOwnProperty('$')) {
     node.click()
       .click();
 
-    return wait().then(() => {
+    return settled().then(() => {
       assert.verifySteps([
         'begin #0',
         'begin #1',
         'complete #0',
         'complete #1',
       ])
-    })
+    });
   });
 
   test('async chained invocations', async function(assert) {
     await node.click()
       .click();
 
-    return wait().then(() => {
+    return settled().then(() => {
       assert.verifySteps([
         'begin #0',
         'begin #1',
         'complete #0',
         'complete #1'
       ])
-    })
+    });
   });
 }

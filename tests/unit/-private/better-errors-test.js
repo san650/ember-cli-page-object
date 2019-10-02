@@ -15,46 +15,46 @@ const page = create({
   }
 });
 
-module('Unit | throwBetterError');
+module('Unit | throwBetterError', function() {
+  test('shows the expected error message when `selector` is not passed in', function(assert) {
+    assert.expect(1);
 
-test('shows the expected error message when `selector` is not passed in', function(assert) {
-  assert.expect(1);
-
-  const fn = () => {
-    throwBetterError(page.foo.bar, 'focus', 'Oops!');
-  };
-  const expectedError = new EmberError(
-    "Oops!\n\nPageObject: 'page.foo.bar.focus'"
-  );
-
-  assert.throws(fn, expectedError, 'should show message & property path');
-});
-
-test('shows the expected error message when `selector` is passed in', function(assert) {
-  assert.expect(1);
-
-  const fn = () => {
-    throwBetterError(page.foo.bar, 'focus', 'Oops!', { selector: '.foo .bar' });
-  };
-  const expectedError = new EmberError(
-    "Oops!\n\nPageObject: 'page.foo.bar.focus'\n  Selector: '.foo .bar'"
-  );
-
-  assert.throws(fn, expectedError, 'should show message, property path, & selector');
-});
-
-test('logs the error to the console', function(assert) {
-  assert.expect(2);
-
-  const origConsoleError = console.error;
-
-  try {
-    console.error = (msg) => {
-      assert.equal(msg, "Oops!\n\nPageObject: 'page.foo.bar.focus'");
+    const fn = () => {
+      throwBetterError(page.foo.bar, 'focus', 'Oops!');
     };
+    const expectedError = new EmberError(
+      "Oops!\n\nPageObject: 'page.foo.bar.focus'"
+    );
 
-    assert.throws(() => throwBetterError(page.foo.bar, 'focus', 'Oops!'));
-  } finally {
-    console.error = origConsoleError;
-  }
+    assert.throws(fn, expectedError, 'should show message & property path');
+  });
+
+  test('shows the expected error message when `selector` is passed in', function(assert) {
+    assert.expect(1);
+
+    const fn = () => {
+      throwBetterError(page.foo.bar, 'focus', 'Oops!', { selector: '.foo .bar' });
+    };
+    const expectedError = new EmberError(
+      "Oops!\n\nPageObject: 'page.foo.bar.focus'\n  Selector: '.foo .bar'"
+    );
+
+    assert.throws(fn, expectedError, 'should show message, property path, & selector');
+  });
+
+  test('logs the error to the console', function(assert) {
+    assert.expect(2);
+
+    const origConsoleError = console.error;
+
+    try {
+      console.error = (msg) => {
+        assert.equal(msg, "Oops!\n\nPageObject: 'page.foo.bar.focus'");
+      };
+
+      assert.throws(() => throwBetterError(page.foo.bar, 'focus', 'Oops!'));
+    } finally {
+      console.error = origConsoleError;
+    }
+  });
 });
