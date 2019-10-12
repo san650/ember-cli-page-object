@@ -38,9 +38,9 @@ class Selector {
 
     deprecate(
       'Usage of comma separated selectors is deprecated in ember-cli-page-object', selector.indexOf(',') === -1, {
-        "id": "ember-cli-page-object.comma-separated-selectors",
-        "until": "2.0.0",
-        "url": "https://gist.github.com/san650/17174e4b7b1fd80b049a47eb456a7cdc#file-comma-separated-selectors-js",
+        id: 'ember-cli-page-object.comma-separated-selectors',
+        until: "2.0.0",
+        url: 'https://ember-cli-page-object.js.org/docs/v1.16.x/deprecations/#comma-separated-selectors',
       }
     );
 
@@ -325,7 +325,7 @@ export function isPageObject(property){
     return (meta && meta.__poDef__)
   } else{
     return false;
-  } 
+  }
 }
 
 export function getPageObjectDefinition(node){

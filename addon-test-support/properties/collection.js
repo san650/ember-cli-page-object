@@ -155,7 +155,7 @@ export function collection(scopeOrDefinition, definitionOrNothing) {
   deprecate('You are currently using the legacy collection API, check the documentation to see how to upgrade to the new API.', false, {
     id: 'ember-cli-page-object.old-collection-api',
     until: '2.0.0',
-    url: 'https://gist.github.com/san650/17174e4b7b1fd80b049a47eb456a7cdc#file-old-collection-api-js',
+    url: 'https://ember-cli-page-object.js.org/docs/v1.16.x/deprecations/#old-collection-api'
   });
 
   warn(
