@@ -5,7 +5,7 @@ import { create } from '../../create';
 import { count } from '../count';
 import Ceibo from 'ceibo';
 
-const arrayDelegateMethods = ['map', 'filter', 'mapBy', 'filterBy', 'forEach'];
+const arrayDelegateMethods = ['map', 'filter', 'mapBy', 'filterBy', 'find', 'findBy', 'forEach'];
 
 function merge(target, ...objects) {
   objects.forEach((o) => mergeFunction(target, o));

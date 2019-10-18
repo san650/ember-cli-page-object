@@ -563,6 +563,14 @@ moduleForProperty('legacy collection', function(test) {
           assert.ok(true, 'custom filterBy allowed');
         },
 
+        find() {
+          assert.ok(true, 'custom find allowed');
+        },
+
+        findBy() {
+          assert.ok(true, 'custom findBy allowed');
+        },
+
         itemScope: 'span'
       })
     });
@@ -578,6 +586,8 @@ moduleForProperty('legacy collection', function(test) {
     page.foo().forEach();
     page.foo().map();
     page.foo().mapBy();
+    page.foo().find();
+    page.foo().findBy();
     page.foo().filter();
     page.foo().filterBy();
   });

@@ -406,6 +406,36 @@ moduleForProperty('collection', function(test) {
     assert.deepEqual(page.foo.mapBy('text'), ['Lorem', 'Ipsum']);
   });
 
+  test('findBy works correctly', async function(assert) {
+    let page = create({
+      foo: collection('span', {
+        text: text()
+      })
+    });
+
+    await this.adapter.createTemplate(this, page, `
+      <span>Lorem</span>
+      <span>Ipsum</span>
+    `);
+
+    assert.equal(page.foo.findBy('text', 'Lorem').text, 'Lorem');
+  });
+
+  test('find works correctly', async function(assert) {
+    let page = create({
+      foo: collection('span', {
+        text: text()
+      })
+    });
+
+    await this.adapter.createTemplate(this, page, `
+      <span>Lorem</span>
+      <span>Ipsum</span>
+    `);
+
+    assert.equal(page.foo.find(i => i.text === 'Lorem').text, 'Lorem');
+  });
+
   test('filter works correctly', async function(assert) {
     let page = create({
       foo: collection('span', {

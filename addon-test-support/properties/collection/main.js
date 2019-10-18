@@ -68,6 +68,14 @@ export class Collection {
     return this.toArray().mapBy(...args);
   }
 
+  findBy(...args) {
+    return this.toArray().findBy(...args);
+  }
+
+  find(...args) {
+    return this.toArray().find(...args);
+  }
+
   toArray() {
     let { length } = this;
 
