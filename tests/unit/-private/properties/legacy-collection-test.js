@@ -535,7 +535,7 @@ moduleForProperty('legacy collection', function(test) {
   });
 
   test('can provide custom array methods', async function(assert) {
-    assert.expect(6);
+    assert.expect(8);
 
     let page = create({
       foo: collection({
