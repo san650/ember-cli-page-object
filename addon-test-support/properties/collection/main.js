@@ -4,6 +4,7 @@ import { buildSelector, assign, isPageObject, getPageObjectDefinition } from '..
 import { create } from '../../create';
 import { count } from '../count';
 import Ceibo from 'ceibo';
+import { throwBetterError } from "../../-private/better-errors";
 
 export class Collection {
   constructor(scope, definition, parent, key) {
@@ -69,11 +70,30 @@ export class Collection {
   }
 
   findBy(...args) {
-    return this.toArray().findBy(...args);
+    const elements = this.toArray().filterBy(...args);
+    this._assertFoundElements(elements, ...args);
+    return elements[0];
   }
 
   find(...args) {
-    return this.toArray().find(...args);
+    const elements = this.toArray().filter(...args);
+    this._assertFoundElements(elements, ...args);
+    return elements[0];
+  }
+
+  _assertFoundElements(elements, ...args) {
+    const argsToText = args.length === 1 ? 'function': `${args[0]}: "${args[1]}"`;
+    if (elements.length > 1) {
+      throwBetterError(
+        this.parent,
+        this.key,
+        `${elements.length} elements found by ${argsToText}, but expected 1`
+      );
+    }
+
+    if (elements.length === 0) {
+      throwBetterError(this.parent, this.key, `cannot find element by ${argsToText}`);
+    }
   }
 
   toArray() {
@@ -96,7 +116,7 @@ if (typeof (Symbol) !== 'undefined' && Symbol.iterator) {
     let next = () => ({ done: i >= items.length, value: items[i++] });
 
     return { next };
-  }
+  };
 }
 
 function proxyIfSupported(instance) {

@@ -1,5 +1,6 @@
+import EmberError from '@ember/error';
 import { moduleForProperty } from '../../../helpers/properties';
-import { create, collection, text, hasClass } from 'ember-cli-page-object';
+import { collection, create, hasClass, text } from 'ember-cli-page-object';
 import withIteratorSymbolDefined from '../../../helpers/with-iterator-symbol-defined';
 
 moduleForProperty('collection', function(test) {
@@ -421,6 +422,57 @@ moduleForProperty('collection', function(test) {
     assert.equal(page.foo.findBy('text', 'Lorem').text, 'Lorem');
   });
 
+  test('findBy throws error if > 1 elements found', async function(assert) {
+    assert.expect(1);
+    let page = create({
+      foo: collection('span', {
+        text: text()
+      })
+    });
+
+    await this.adapter.createTemplate(this, page, `
+      <span>Lorem</span>
+      <span>Ipsum</span>
+      <span>Ipsum</span>
+      <span>Ipsum</span>
+    `);
+
+    const expectedError = new EmberError(
+      `3 elements found by text: "Ipsum", but expected 1\n\nPageObject: 'page.foo'`
+    );
+
+    assert.throws(
+      () => page.foo.findBy('text', 'Ipsum'),
+      expectedError,
+      'throws error'
+    );
+  });
+
+  test('findBy throws error if no elements found', async function(assert) {
+    assert.expect(1);
+    let page = create({
+      foo: collection('span', {
+        text: text()
+      })
+    });
+
+    await this.adapter.createTemplate(this, page, `
+      <span>Lorem</span>
+      <span>Ipsum</span>
+      <span>Ipsum</span>
+    `);
+
+    const expectedError = new EmberError(
+      `cannot find element by text: "Wrong"\n\nPageObject: 'page.foo'`
+    );
+
+    assert.throws(
+      () => page.foo.findBy('text', 'Wrong'),
+      expectedError,
+      'throws error'
+    );
+  });
+
   test('find works correctly', async function(assert) {
     let page = create({
       foo: collection('span', {
@@ -434,6 +486,56 @@ moduleForProperty('collection', function(test) {
     `);
 
     assert.equal(page.foo.find(i => i.text === 'Lorem').text, 'Lorem');
+  });
+
+  test('find throws error if > 1 elements found', async function(assert) {
+    assert.expect(1);
+    let page = create({
+      foo: collection('span', {
+        text: text()
+      })
+    });
+
+    await this.adapter.createTemplate(this, page, `
+      <span>Lorem</span>
+      <span>Ipsum</span>
+      <span>Ipsum</span>
+    `);
+
+    const expectedError = new EmberError(
+      `2 elements found by function, but expected 1\n\nPageObject: 'page.foo'`
+    );
+
+    assert.throws(
+      () => page.foo.find((e) => e.text === 'Ipsum'),
+      expectedError,
+      'throws error'
+    );
+  });
+
+  test('find throws error if no elements found', async function(assert) {
+    assert.expect(1);
+    let page = create({
+      foo: collection('span', {
+        text: text()
+      })
+    });
+
+    await this.adapter.createTemplate(this, page, `
+      <span>Lorem</span>
+      <span>Ipsum</span>
+      <span>Ipsum</span>
+    `);
+
+    const expectedError = new EmberError(
+      `cannot find element by function\n\nPageObject: 'page.foo'`
+    );
+
+    assert.throws(
+      () => page.foo.find(() => false),
+      expectedError,
+      'throws error'
+    );
   });
 
   test('filter works correctly', async function(assert) {
