@@ -12,6 +12,13 @@ moduleForProperty('is', function(test) {
     assert.equal(page.foo, true);
   });
 
+  test('throws deprecation warning', async function(assert) {
+    const page = create({ foo: is(':checked', ':input') });
+    await this.adapter.createTemplate(this, page, '<input type="checkbox" checked>');
+    page.foo;
+    assert.expectDeprecation(':is property is deprecated');
+  });
+
   test("raises an error when the element doesn't exist", async function(assert) {
     let page = create({
       foo: {
