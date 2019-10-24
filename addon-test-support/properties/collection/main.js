@@ -69,13 +69,13 @@ export class Collection {
     return this.toArray().mapBy(...args);
   }
 
-  findBy(...args) {
+  findOneBy(...args) {
     const elements = this.toArray().filterBy(...args);
     this._assertFoundElements(elements, ...args);
     return elements[0];
   }
 
-  find(...args) {
+  findOne(...args) {
     const elements = this.toArray().filter(...args);
     this._assertFoundElements(elements, ...args);
     return elements[0];

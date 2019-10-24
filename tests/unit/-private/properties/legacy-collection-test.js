@@ -563,12 +563,12 @@ moduleForProperty('legacy collection', function(test) {
           assert.ok(true, 'custom filterBy allowed');
         },
 
-        find() {
-          assert.ok(true, 'custom find allowed');
+        findOne() {
+          assert.ok(true, 'custom findOne allowed');
         },
 
-        findBy() {
-          assert.ok(true, 'custom findBy allowed');
+        findOneBy() {
+          assert.ok(true, 'custom findOneBy allowed');
         },
 
         itemScope: 'span'
@@ -586,8 +586,8 @@ moduleForProperty('legacy collection', function(test) {
     page.foo().forEach();
     page.foo().map();
     page.foo().mapBy();
-    page.foo().find();
-    page.foo().findBy();
+    page.foo().findOne();
+    page.foo().findOneBy();
     page.foo().filter();
     page.foo().filterBy();
   });

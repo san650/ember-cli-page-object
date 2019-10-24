@@ -407,7 +407,7 @@ moduleForProperty('collection', function(test) {
     assert.deepEqual(page.foo.mapBy('text'), ['Lorem', 'Ipsum']);
   });
 
-  test('findBy works correctly', async function(assert) {
+  test('findOneBy works correctly', async function(assert) {
     let page = create({
       foo: collection('span', {
         text: text()
@@ -419,10 +419,10 @@ moduleForProperty('collection', function(test) {
       <span>Ipsum</span>
     `);
 
-    assert.equal(page.foo.findBy('text', 'Lorem').text, 'Lorem');
+    assert.equal(page.foo.findOneBy('text', 'Lorem').text, 'Lorem');
   });
 
-  test('findBy throws error if > 1 elements found', async function(assert) {
+  test('findOneBy throws error if > 1 elements found', async function(assert) {
     assert.expect(1);
     let page = create({
       foo: collection('span', {
@@ -442,13 +442,13 @@ moduleForProperty('collection', function(test) {
     );
 
     assert.throws(
-      () => page.foo.findBy('text', 'Ipsum'),
+      () => page.foo.findOneBy('text', 'Ipsum'),
       expectedError,
       'throws error'
     );
   });
 
-  test('findBy throws error if no elements found', async function(assert) {
+  test('findOneBy throws error if no elements found', async function(assert) {
     assert.expect(1);
     let page = create({
       foo: collection('span', {
@@ -467,13 +467,13 @@ moduleForProperty('collection', function(test) {
     );
 
     assert.throws(
-      () => page.foo.findBy('text', 'Wrong'),
+      () => page.foo.findOneBy('text', 'Wrong'),
       expectedError,
       'throws error'
     );
   });
 
-  test('find works correctly', async function(assert) {
+  test('findOne works correctly', async function(assert) {
     let page = create({
       foo: collection('span', {
         text: text()
@@ -485,10 +485,10 @@ moduleForProperty('collection', function(test) {
       <span>Ipsum</span>
     `);
 
-    assert.equal(page.foo.find(i => i.text === 'Lorem').text, 'Lorem');
+    assert.equal(page.foo.findOne(i => i.text === 'Lorem').text, 'Lorem');
   });
 
-  test('find throws error if > 1 elements found', async function(assert) {
+  test('findOne throws error if > 1 elements found', async function(assert) {
     assert.expect(1);
     let page = create({
       foo: collection('span', {
@@ -507,13 +507,13 @@ moduleForProperty('collection', function(test) {
     );
 
     assert.throws(
-      () => page.foo.find((e) => e.text === 'Ipsum'),
+      () => page.foo.findOne((e) => e.text === 'Ipsum'),
       expectedError,
       'throws error'
     );
   });
 
-  test('find throws error if no elements found', async function(assert) {
+  test('findOne throws error if no elements found', async function(assert) {
     assert.expect(1);
     let page = create({
       foo: collection('span', {
@@ -532,7 +532,7 @@ moduleForProperty('collection', function(test) {
     );
 
     assert.throws(
-      () => page.foo.find(() => false),
+      () => page.foo.findOne(() => false),
       expectedError,
       'throws error'
     );
