@@ -503,7 +503,7 @@ moduleForProperty('collection', function(test) {
     `);
 
     const expectedError = new EmberError(
-      `2 elements found by function, but expected 1\n\nPageObject: 'page.foo'`
+      `2 elements found by condition, but expected 1\n\nPageObject: 'page.foo'`
     );
 
     assert.throws(
@@ -528,7 +528,7 @@ moduleForProperty('collection', function(test) {
     `);
 
     const expectedError = new EmberError(
-      `cannot find element by function\n\nPageObject: 'page.foo'`
+      `cannot find element by condition\n\nPageObject: 'page.foo'`
     );
 
     assert.throws(

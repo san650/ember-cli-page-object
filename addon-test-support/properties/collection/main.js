@@ -82,7 +82,7 @@ export class Collection {
   }
 
   _assertFoundElements(elements, ...args) {
-    const argsToText = args.length === 1 ? 'function': `${args[0]}: "${args[1]}"`;
+    const argsToText = args.length === 1 ? 'condition': `${args[0]}: "${args[1]}"`;
     if (elements.length > 1) {
       throwBetterError(
         this.parent,

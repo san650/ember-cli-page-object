@@ -535,7 +535,7 @@ moduleForProperty('legacy collection', function(test) {
   });
 
   test('can provide custom array methods', async function(assert) {
-    assert.expect(8);
+    assert.expect(6);
 
     let page = create({
       foo: collection({
@@ -563,14 +563,6 @@ moduleForProperty('legacy collection', function(test) {
           assert.ok(true, 'custom filterBy allowed');
         },
 
-        findOne() {
-          assert.ok(true, 'custom findOne allowed');
-        },
-
-        findOneBy() {
-          assert.ok(true, 'custom findOneBy allowed');
-        },
-
         itemScope: 'span'
       })
     });
@@ -586,8 +578,6 @@ moduleForProperty('legacy collection', function(test) {
     page.foo().forEach();
     page.foo().map();
     page.foo().mapBy();
-    page.foo().findOne();
-    page.foo().findOneBy();
     page.foo().filter();
     page.foo().filterBy();
   });
