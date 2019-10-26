@@ -5,6 +5,27 @@ title: Deprecations
 
 This is a list of deprecations introduced in 1.x cycle:
 
+## Set context
+
+**ID**: ember-cli-page-object.set-context
+
+**Until**: 2.0.0
+
+With "@ember@test-helpers@1.0.0" or higher you don't need to set page object context anymore, it would be handled for you:
+
+Bad:
+
+```js
+  page.setContext(this);
+  page.removeContext(this);
+
+  const page = create({
+    context: this
+  });
+```
+
+Good: Make sure you are using the most recent version of "@ember/test-helpers" and remove setting of context from your test suite.
+
 ## Comma-separated Selectors
 
 **ID**: ember-cli-page-object.comma-separated-selectors

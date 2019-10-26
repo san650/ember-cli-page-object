@@ -1,6 +1,6 @@
 import require from 'require';
 import { test, module } from 'qunit';
-import { setupRenderingTest } from 'ember-qunit';
+import { setupRenderingTest, setupTest } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
 import { create } from 'ember-cli-page-object'
 import { createClickTrackerComponent, ClickTrackerDef } from './helpers';
@@ -10,65 +10,97 @@ const node = create(ClickTrackerDef);
 if (require.has('@ember/test-helpers')) {
   const { render, settled } = require('@ember/test-helpers');
 
-  module('Integration | rfc268 context | actions', function(hooks) {
-    setupRenderingTest(hooks);
+  module('Integration | rfc268 context', function() {
+    module('getExecutionContext', function(hooks) {
+      setupTest(hooks);
 
-    hooks.beforeEach(function(assert) {
-      this.owner.register('component:action-tracker', createClickTrackerComponent(assert))
+      let origGetContext;
+      let compatModule;
 
-      return render(hbs`{{action-tracker}}`);
-    })
+      hooks.beforeEach(function() {
+        compatModule = require('ember-cli-page-object/test-support/-private/compatibility');
+        origGetContext = compatModule.getContext;
+      });
 
-    test('sync invocations', async function(assert) {
-      node.click()
-      await node.click();
+      hooks.afterEach(function() {
+        compatModule.getContext = origGetContext;
 
-      await settled();
+        // Make sure we don't leave this module in a mutated state
+        window.require.unsee('ember-cli-page-object/test-support/-private/execution_context');
+      });
 
-      assert.verifySteps([
-        'begin #0',
-        'begin #1',
-        'complete #0',
-        'complete #1'
-      ])
+      test(`fails if can't be used as a fallback context`, async function(assert) {
+        compatModule.getContext = () => null
+
+        const a = create();
+
+        assert.throws(
+          () => a.isVisible,
+          'Can not detect test type. Please make sure you use the latest version of "@ember/test-helpers"'
+        );
+      });
     });
 
-    test('async invocations', async function(assert) {
-      await node.click()
-      await node.click();
+    module('actions', function(hooks) {
+      setupRenderingTest(hooks);
 
-      assert.verifySteps([
-        'begin #0',
-        'complete #0',
-        'begin #1',
-        'complete #1'
-      ])
-    });
+      hooks.beforeEach(function(assert) {
+        this.owner.register('component:action-tracker', createClickTrackerComponent(assert))
 
-    test('async chained invocations', async function(assert) {
-      await node.click().click();
+        return render(hbs`{{action-tracker}}`);
+      })
 
-      assert.verifySteps([
-        'begin #0',
-        'complete #0',
-        'begin #1',
-        'complete #1'
-      ])
-    });
+      test('sync invocations', async function(assert) {
+        node.click()
+        await node.click();
 
-    test('sync chained invocations', async function(assert) {
-      node.click().click();
+        await settled();
 
-      await settled();
-      await settled();
-      await settled();
+        assert.verifySteps([
+          'begin #0',
+          'begin #1',
+          'complete #0',
+          'complete #1'
+        ])
+      });
 
-      assert.verifySteps([
-        'begin #0',
-        'complete #0',
-        'begin #1',
-        'complete #1',
-      ])
+      test('async invocations', async function(assert) {
+        await node.click()
+        await node.click();
+
+        assert.verifySteps([
+          'begin #0',
+          'complete #0',
+          'begin #1',
+          'complete #1'
+        ])
+      });
+
+      test('async chained invocations', async function(assert) {
+        await node.click().click();
+
+        assert.verifySteps([
+          'begin #0',
+          'complete #0',
+          'begin #1',
+          'complete #1'
+        ])
+      });
+
+      test('sync chained invocations', async function(assert) {
+        node.click().click();
+
+        await settled();
+        await settled();
+        await settled();
+
+        assert.verifySteps([
+          'begin #0',
+          'complete #0',
+          'begin #1',
+          'complete #1',
+        ])
+      });
     });
   });
 }
