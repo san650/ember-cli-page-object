@@ -3,6 +3,7 @@ import $ from '-jquery';
 export { moduleForComponent as moduleForIntegration, test as testForIntegration } from 'ember-qunit';
 import expectEmberError from '../../expect-ember-error';
 import hbs from 'htmlbars-inline-precompile';
+import { supportsRfc268 } from 'ember-cli-page-object/test-support/-private/execution_context';
 
 export function IntegrationAdapter(context) {
   this.context = context;
@@ -31,7 +32,9 @@ IntegrationAdapter.prototype = {
       test.set('raw', template);
     }
 
-    page.setContext(test);
+    if (!supportsRfc268()) {
+      page.setContext(test);
+    }
 
     this.context.render(hbs`{{html-render html=raw}}`);
   },

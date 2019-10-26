@@ -30,7 +30,7 @@ export function getExecutionContext(pageObjectNode) {
     contextName = 'integration';
   } else if (isAcceptanceTest()) {
     contextName = 'acceptance';
-  } else if (isRfc268Test()) {
+  } else if (supportsRfc268()) {
     contextName = 'rfc268';
   }
 
@@ -51,7 +51,7 @@ function isAcceptanceTest() {
 /**
  * @private
  */
-export function isRfc268Test() {
+export function supportsRfc268() {
   // `getContext()` returns:
   //  - falsey, if @ember/test-helpers is not available (stubbed in
   //    compatibility.js)
