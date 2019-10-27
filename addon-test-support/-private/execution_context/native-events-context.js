@@ -60,9 +60,7 @@ ExecutionContext.prototype = {
     }
   },
 
-  triggerEvent(selector, container, options, eventName, eventOptions) {
-    const element = this.$(selector, container)[0];
-
+  triggerEvent(element, eventName, eventOptions) {
     // `keyCode` is a deprecated property.
     // @see: https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/keyCode
     // Due to this deprecation `ember-native-dom-helpers` doesn't accept `keyCode` as a `KeyboardEvent` option.

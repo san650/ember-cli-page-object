@@ -41,14 +41,14 @@ ExecutionContext.prototype = {
     return fillIn(selector, content);
   },
 
-  triggerEvent(selector, container, options, eventName, eventOptions) {
+  triggerEvent(element, eventName, eventOptions) {
     if (typeof eventOptions.key !== 'undefined' || typeof eventOptions.keyCode !== 'undefined') {
       const key = eventOptions.key || eventOptions.keyCode;
 
-      return this.invokeHelper(selector, options, triggerKeyEvent, eventName, key, eventOptions);
+      return triggerKeyEvent(element, eventName, key, eventOptions);
     }
 
-    return this.invokeHelper(selector, options, triggerEvent, eventName, eventOptions);
+    return triggerEvent(element, eventName, eventOptions);
   },
 
   focus(selector, options) {
