@@ -33,11 +33,10 @@ AcceptanceExecutionContext.prototype = {
     visit(path);
   },
 
-  click(selector, container) {
+  click(element) {
     /* global click */
-    click(selector, container);
+    click(element);
   },
-
   fillIn(element, content) {
     /* global focus */
     focus(element);

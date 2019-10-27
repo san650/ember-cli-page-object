@@ -1,9 +1,4 @@
-import {
-  assign,
-  buildSelector,
-  findClosestValue
-} from '../-private/helpers';
-import { run } from '../-private/action';
+import action, { invokeHelper } from '../extend/action';
 
 /**
  * Clicks elements matched by a selector.
@@ -67,22 +62,9 @@ import { run } from '../-private/action';
  * @return {Descriptor}
  */
 export function clickable(selector, userOptions = {}) {
-  return {
-    isDescriptor: true,
-
-    get(key) {
-      return function() {
-        let options = assign({ pageObjectKey: `${key}()` }, userOptions);
-
-        return run(this, (context) => {
-          let fullSelector = buildSelector(this, selector, options);
-          let container = options.testContainer || findClosestValue(this, 'testContainer');
-
-          context.assertElementExists(fullSelector, options);
-
-          return context.click(fullSelector, container, options);
-        });
-      };
-    }
-  };
+  return action(function() {
+    return invokeHelper(this, selector, userOptions, ({ click }, element) => {
+      return click(element);
+    });
+  });
 }
