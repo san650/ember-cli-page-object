@@ -40,17 +40,11 @@ IntegrationExecutionContext.prototype = {
     this.$(selector, container).click();
   },
 
-  fillIn(selector, container, options, content) {
-    let $selection = this.$(selector, container);
+  fillIn(element, content) {
+    fillElement(element, content);
 
-    fillElement($selection, content, {
-      selector,
-      pageObjectNode: this.pageObjectNode,
-      pageObjectKey: options.pageObjectKey
-    });
-
-    $selection.trigger('input');
-    $selection.change();
+    $(element).trigger('input');
+    $(element).change();
   },
 
   $(selector, container) {

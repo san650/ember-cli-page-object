@@ -37,8 +37,8 @@ ExecutionContext.prototype = {
     return this.invokeHelper(selector, options, click);
   },
 
-  fillIn(selector, container, options, content) {
-    return this.invokeHelper(selector, options, fillIn, content);
+  fillIn(selector, content) {
+    return fillIn(selector, content);
   },
 
   triggerEvent(selector, container, options, eventName, eventOptions) {

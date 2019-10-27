@@ -38,21 +38,15 @@ AcceptanceExecutionContext.prototype = {
     click(selector, container);
   },
 
-  fillIn(selector, container, options, content) {
-    let $selection = find(selector, container || findClosestValue(this.pageObjectNode, 'testContainer'));
-
+  fillIn(element, content) {
     /* global focus */
-    focus($selection);
+    focus(element);
 
-    fillElement($selection, content, {
-      selector,
-      pageObjectNode: this.pageObjectNode,
-      pageObjectKey: options.pageObjectKey
-    });
+    fillElement(element, content);
 
     /* global triggerEvent */
-    triggerEvent(selector, container, 'input');
-    triggerEvent(selector, container, 'change');
+    triggerEvent(element, 'input');
+    triggerEvent(element, 'change');
   },
 
   triggerEvent(selector, container, options, eventName, eventOptions) {

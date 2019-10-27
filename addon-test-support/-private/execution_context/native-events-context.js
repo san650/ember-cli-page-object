@@ -40,19 +40,11 @@ ExecutionContext.prototype = {
     click(el);
   },
 
-  fillIn(selector, container, options, content) {
-    let elements = this.$(selector, container).toArray();
+  fillIn(element, content) {
+    fillElement(element, content);
 
-    elements.forEach((el) => {
-      fillElement(el, content, {
-        selector,
-        pageObjectNode: this.pageObjectNode,
-        pageObjectKey: options.pageObjectKey
-      });
-
-      triggerEvent(el, 'input');
-      triggerEvent(el, 'change');
-    });
+    triggerEvent(element, 'input');
+    triggerEvent(element, 'change');
   },
 
   $(selector, container) {

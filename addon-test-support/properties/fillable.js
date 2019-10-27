@@ -1,9 +1,7 @@
-import {
-  assign,
-  buildSelector,
-  findClosestValue
-} from '../-private/helpers';
-import { run } from '../-private/action';
+import { findElement, action as _action } from 'ember-cli-page-object/extend';
+import run from '../-private/run';
+import { assign, buildSelector } from '../-private/helpers';
+import { throwBetterError, ELEMENT_NOT_FOUND } from '../-private/better-errors';
 
 /**
  * Alias for `fillable`, which works for inputs, HTML select menus, and
@@ -117,44 +115,68 @@ import { run } from '../-private/action';
  * @param {string} options.testContainer - Context where to search elements in the DOM
  * @return {Descriptor}
  */
-export function fillable(selector, userOptions = {}) {
-  return {
-    isDescriptor: true,
+export function fillable(selector = '', userOptions = {}) {
+  return new Action(function(key, contentOrClue, content) {
+    return run(this, ({ fillIn }) => {
+      let options = assign({ pageObjectKey: `${key}()` }, userOptions);
 
-    get(key) {
-      return function(contentOrClue, content) {
-        let clue;
+      let clue;
+      if (content === undefined) {
+        content = contentOrClue;
+      } else {
+        clue = contentOrClue;
+      }
 
-        if (content === undefined) {
-          content = contentOrClue;
-        } else {
-          clue = contentOrClue;
-        }
+      let scopeSelector = clue
+        ? `${selector} ${getClueSelector(this, selector, options, clue)}`
+        : selector;
 
-        let options = assign({ pageObjectKey: `${key}()` }, userOptions);
+      return _action(this, scopeSelector, options,
+        (element) => fillIn(element, content)
+      );
+    });
+  })
+}
 
-        return run(this, (context) => {
-          let fullSelector = buildSelector(this, selector, options);
-          let container = options.testContainer || findClosestValue(this, 'testContainer');
+class Action {
+  constructor(fn) {
+    this.isDescriptor = true;
 
-          if (clue) {
-            fullSelector = ['input', 'textarea', 'select', '[contenteditable]']
-              .map((tag) => [
-                `${fullSelector} ${tag}[data-test="${clue}"]`,
-                `${fullSelector} ${tag}[aria-label="${clue}"]`,
-                `${fullSelector} ${tag}[placeholder="${clue}"]`,
-                `${fullSelector} ${tag}[name="${clue}"]`,
-                `${fullSelector} ${tag}#${clue}`
-              ])
-              .reduce((total, other) => total.concat(other), [])
-              .join(',');
-          }
+    this.get = function(key) {
+      return function() {
+        return fn.bind(this)(key, ...arguments);
+      }
+    };
+  }
+}
 
-          context.assertElementExists(fullSelector, options);
 
-          return context.fillIn(fullSelector, container, options, content);
-        });
-      };
-    }
-  };
+function getClueSelector(pageObject, selector, options, clue) {
+  let cssClues = ['input', 'textarea', 'select', '[contenteditable]'].map((tag) => [
+    `${tag}[data-test="${clue}"]`,
+    `${tag}[aria-label="${clue}"]`,
+    `${tag}[placeholder="${clue}"]`,
+    `${tag}[name="${clue}"]`,
+    `${tag}#${clue}`
+  ])
+  .reduce((total, other) => total.concat(other), [])
+
+  const clueScope = cssClues.find(extraScope => {
+    return findElement(pageObject, `${selector} ${extraScope}`, options).get(0);
+  });
+
+  if (!clueScope) {
+    const pageObjectSelector = buildSelector(pageObject, '', options);
+    const possibleSelectors = cssClues.map((cssClue) => {
+      const childSelector = `${selector} ${cssClue}`.trim();
+
+      return `${pageObjectSelector} ${childSelector}`;
+    });
+
+    throwBetterError(pageObject, options.pageObjectKey, ELEMENT_NOT_FOUND, {
+      selector: possibleSelectors.join(',')
+    })
+  }
+
+  return clueScope;
 }

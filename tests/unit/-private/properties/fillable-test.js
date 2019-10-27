@@ -222,7 +222,7 @@ moduleForProperty('fillable', function(test) {
 
     this.adapter.throws(assert, function() {
       return page.foo.bar.baz.qux('lorem');
-    }, /page\.foo\.bar\.baz\.qux\(\)/, 'Element not found');
+    }, /page\.foo\.bar\.baz\.qux\("lorem"\)/, 'Element not found');
   });
 
   test('raises an error when the element has contenteditable="false"', async function(assert) {
