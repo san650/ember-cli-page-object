@@ -1,21 +1,20 @@
 import { getExecutionContext } from '../-private/execution_context';
-import { deprecate } from '@ember/application/deprecations';
 
 /**
  * @public
  *
- * Returns a jQuery element (can be an empty jQuery result)
+ * Returns a element
  *
  * @example
  *
- * import { findElement } from 'ember-cli-page-object/extend';
+ * import { findOne } from 'ember-cli-page-object';
  *
  * export default function isDisabled(selector, options = {}) {
  *   return {
  *     isDescriptor: true,
  *
  *     get() {
- *       return findElement(this, selector, options).is(':disabled');
+ *       return findOne(this, selector, options).disabled;
  *     }
  *   };
  * }
@@ -28,17 +27,13 @@ import { deprecate } from '@ember/application/deprecations';
  * @param {number} options.at - Filter by index using :eq(x) pseudo-class
  * @param {boolean} options.last - Filter by using :last pseudo-class
  * @param {boolean} options.visible - Filter by using :visible pseudo-class
- * @param {boolean} options.multiple - Specify if built selector can match multiple elements.
  * @param {string} options.testContainer - Context where to search elements in the DOM
- * @return {Object} jQuery object
+ * @return {Element}
  *
- * @throws Will throw an error if multiple elements are matched by selector and multiple option is not set
+ * @throws If no elements found
+ * @throws If more than one element found
  */
-export function findElement(pageObjectNode, targetSelector, options = {}) {
-  deprecate('findElement is deprecated, please use findOne or findMany instead', false, {
-    id: 'ember-cli-page-object.old-finders',
-    until: '2.0.0'
-  });
-
-  return getExecutionContext(pageObjectNode).find(targetSelector, options);
+export function findOne(pageObjectNode, targetSelector, options = {}) {
+  const opts = Object.assign({}, options, { multiple: false });
+  return getExecutionContext(pageObjectNode).findWithAssert(targetSelector, opts).get(0);
 }

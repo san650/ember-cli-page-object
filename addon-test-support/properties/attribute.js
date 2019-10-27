@@ -1,5 +1,6 @@
-import { assign, map } from '../-private/helpers';
-import { findElementWithAssert } from '../extend';
+import { assign } from '../-private/helpers';
+import { findMany, findOne } from '../extend';
+import { A } from '@ember/array';
 
 /**
  * @public
@@ -82,9 +83,11 @@ export function attribute(attributeName, selector, userOptions = {}) {
     get(key) {
       let options = assign({ pageObjectKey: key }, userOptions);
 
-      let elements = findElementWithAssert(this, selector, options);
-
-      return map(elements, element => element.attr(attributeName), options);
+      if (options.multiple) {
+        return A(findMany(this, selector, options)).map(element => element.getAttribute(attributeName), options);
+      } else {
+        return findOne(this, selector, options).getAttribute(attributeName);
+      }
     }
   };
 }
