@@ -77,20 +77,6 @@ AcceptanceExecutionContext.prototype = {
     $selection.blur();
   },
 
-  assertElementExists(selector, options) {
-    /* global find */
-    let result = find(selector, options.testContainer || findClosestValue(this.pageObjectNode, 'testContainer'));
-
-    if (result.length === 0) {
-      throwBetterError(
-        this.pageObjectNode,
-        options.pageObjectKey,
-        ELEMENT_NOT_FOUND,
-        { selector }
-      );
-    }
-  },
-
   find(selector, options) {
     let result;
 

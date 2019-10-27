@@ -100,21 +100,6 @@ ExecutionContext.prototype = {
     blur(element);
   },
 
-  assertElementExists(selector, options) {
-    let container = options.testContainer || findClosestValue(this.pageObjectNode, 'testContainer');
-
-    let result = this.$(selector, container);
-
-    if (result.length === 0) {
-      throwBetterError(
-        this.pageObjectNode,
-        options.pageObjectKey,
-        ELEMENT_NOT_FOUND,
-        { selector }
-      );
-    }
-  },
-
   find(selector, options) {
     let container = options.testContainer || findClosestValue(this.pageObjectNode, 'testContainer');
 

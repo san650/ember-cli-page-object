@@ -61,19 +61,6 @@ ExecutionContext.prototype = {
     return this.invokeHelper(selector, options, blur);
   },
 
-  assertElementExists(selector, options) {
-    let result = this.getElements(selector, options);
-
-    if (result.length === 0) {
-      throwBetterError(
-        this.pageObjectNode,
-        options.pageObjectKey,
-        ELEMENT_NOT_FOUND,
-        { selector }
-      );
-    }
-  },
-
   find(selector, options) {
     selector = buildSelector(this.pageObjectNode, selector, options);
     let result = this.getElements(selector, options);

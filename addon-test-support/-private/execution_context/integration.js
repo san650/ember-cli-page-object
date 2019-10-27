@@ -85,26 +85,6 @@ IntegrationExecutionContext.prototype = {
     $selection.blur();
   },
 
-  assertElementExists(selector, options) {
-    let result;
-    let container = options.testContainer || findClosestValue(this.pageObjectNode, 'testContainer');
-
-    if (container) {
-      result = $(selector, container);
-    } else {
-      result = this.testContext.$(selector);
-    }
-
-    if (result.length === 0) {
-      throwBetterError(
-        this.pageObjectNode,
-        options.pageObjectKey,
-        ELEMENT_NOT_FOUND,
-        { selector }
-      );
-    }
-  },
-
   find(selector, options) {
     let result;
     let container = options.testContainer || findClosestValue(this.pageObjectNode, 'testContainer');
