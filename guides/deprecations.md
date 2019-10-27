@@ -184,3 +184,35 @@ test('renders component', function(assert) {
   this.render(hbs`{{foo}}`);
 });
 ```
+
+## Old finders
+
+**ID**: ember-cli-page-object.old-finders
+
+**Until**: 2.0.0
+
+Using `findElement` and `findElementWithAssert` is deprecated. Please use `findOne` or `findMany` instead.
+
+```js
+import { findOne, findMany } from 'ember-cli-page-object/extend';
+
+export default function isDisabled(selector, options = {}) {
+  return {
+    isDescriptor: true,
+
+    get() {
+      return findOne(this, selector, options).disabled;
+    }
+  };
+}
+
+export default function count(selector, options = {}) {
+  return {
+    isDescriptor: true,
+
+    get() {
+      return findMany(this, selector, options).length;
+    }
+  };
+}
+```

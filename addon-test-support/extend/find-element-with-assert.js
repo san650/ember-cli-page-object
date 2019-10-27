@@ -39,7 +39,8 @@ import { deprecate } from '@ember/application/deprecations';
 export function findElementWithAssert(pageObjectNode, targetSelector, options = {}) {
   deprecate('findElementWithAssert is deprecated, please use findOne or findMany instead', false, {
     id: 'ember-cli-page-object.old-finders',
-    until: '2.0.0'
+    until: '2.0.0',
+    url: 'https://ember-cli-page-object.js.org/docs/v1.16.x/deprecations/#old-finders'
   });
   return getExecutionContext(pageObjectNode).findWithAssert(targetSelector, options);
 }
