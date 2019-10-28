@@ -166,14 +166,6 @@ export function every(jqArray, cb) {
   return A(arr).every((element) => cb($(element)));
 }
 
-export function map(jqArray, cb, options = {}) {
-  let arr = jqArray.get();
-
-  const values =  A(arr).map(element => cb($(element)));
-
-  return options.multiple ? values : values[0];
-}
-
 /**
  * @public
  *

@@ -1,6 +1,5 @@
 import { assign } from '../-private/helpers';
 import { findMany, findOne } from '../extend';
-import { A } from '@ember/array';
 
 /**
  * @public
@@ -97,7 +96,7 @@ export function value(selector, userOptions = {}) {
       const checkValue = (element) => element.hasAttribute('contenteditable') ? element.innerHTML : element.value;
 
       if (options.multiple) {
-        return A(findMany(this, selector, options)).map(checkValue);
+        return findMany(this, selector, options).map(checkValue);
       } else {
         return checkValue(findOne(this, selector, options));
       }

@@ -1,6 +1,5 @@
 import { assign } from '../-private/helpers';
 import { findMany, findOne } from '../extend';
-import { A } from '@ember/array';
 
 /**
  * @public
@@ -68,7 +67,7 @@ export function property(propertyName, selector, userOptions = {}) {
       let options = assign({ pageObjectKey: key }, userOptions);
 
       if (options.multiple) {
-        return A(findMany(this, selector, options)).map(element => element[propertyName]);
+        return findMany(this, selector, options).map(element => element[propertyName]);
       } else {
         return findOne(this, selector, options)[propertyName];
       }
