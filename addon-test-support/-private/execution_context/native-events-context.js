@@ -76,26 +76,14 @@ ExecutionContext.prototype = {
     }
   },
 
-  focus(selector, options) {
-    const element = this.findWithAssert(selector, options)[0];
-
-    assertFocusable(element, {
-      selector,
-      pageObjectNode: this.pageObjectNode,
-      pageObjectKey: options.pageObjectKey
-    });
+  focus(element) {
+    assertFocusable(element);
 
     focus(element);
   },
 
-  blur(selector, options) {
-    const element = this.findWithAssert(selector, options)[0];
-
-    assertFocusable(element, {
-      selector,
-      pageObjectNode: this.pageObjectNode,
-      pageObjectKey: options.pageObjectKey
-    });
+  blur(element) {
+    assertFocusable(element);
 
     blur(element);
   },

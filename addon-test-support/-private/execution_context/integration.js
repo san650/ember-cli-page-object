@@ -61,28 +61,16 @@ IntegrationExecutionContext.prototype = {
     $(element).trigger(event);
   },
 
-  focus(selector, options) {
-    let $selection = this.findWithAssert(selector, options);
+  focus(element) {
+    assertFocusable(element);
 
-    assertFocusable($selection[0], {
-      selector,
-      pageObjectNode: this.pageObjectNode,
-      pageObjectKey: options.pageObjectKey
-    });
-
-    $selection.focus();
+    $(element).focus();
   },
 
-  blur(selector, options) {
-    let $selection = this.findWithAssert(selector, options);
+  blur(element) {
+    assertFocusable(element);
 
-    assertFocusable($selection[0], {
-      selector,
-      pageObjectNode: this.pageObjectNode,
-      pageObjectKey: options.pageObjectKey
-    });
-
-    $selection.blur();
+    $(element).blur();
   },
 
   find(selector, options) {

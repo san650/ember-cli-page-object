@@ -1,5 +1,4 @@
-import { assign } from '../-private/helpers';
-import { run } from '../-private/action';
+import action, { invokeHelper } from '../extend/action';
 
 /**
  *
@@ -63,17 +62,9 @@ import { run } from '../-private/action';
  * @return {Descriptor}
 */
 export function focusable(selector, userOptions = {}) {
-  return {
-    isDescriptor: true,
-
-    get(key) {
-      return function() {
-        const options = assign({ pageObjectKey: `${key}()` }, userOptions);
-
-        return run(this, (context) => {
-          return context.focus(selector, options);
-        });
-      };
-    }
-  };
+  return action(function() {
+    return invokeHelper(this, selector, userOptions, ({ focus }, element) => {
+      return focus(element);
+    });
+  });
 }
