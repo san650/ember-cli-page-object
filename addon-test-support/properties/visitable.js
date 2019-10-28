@@ -1,5 +1,5 @@
 import { assign } from '../-private/helpers';
-import { run } from '../-private/action';
+import run from '../-private/run';
 
 import $ from '-jquery';
 
@@ -95,14 +95,14 @@ export function visitable(path) {
 
     get() {
       return function(dynamicSegmentsAndQueryParams = {}) {
-        return run(this, (context) => {
+        return run(this, ({ visit }) => {
           let params = assign({}, dynamicSegmentsAndQueryParams);
           let fullPath = fillInDynamicSegments(path, params);
 
           fullPath = appendQueryParams(fullPath, params);
 
-          return context.visit(fullPath);
-        });
+          return visit(fullPath);
+        })
       }
     }
   };
