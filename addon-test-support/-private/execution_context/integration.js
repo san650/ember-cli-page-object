@@ -47,14 +47,6 @@ IntegrationExecutionContext.prototype = {
     $(element).change();
   },
 
-  $(selector, container) {
-    if (container) {
-      return $(selector, container);
-    } else {
-      return this.testContext.$(selector);
-    }
-  },
-
   triggerEvent(element, eventName, eventOptions) {
     let event = $.Event(eventName, eventOptions);
 
