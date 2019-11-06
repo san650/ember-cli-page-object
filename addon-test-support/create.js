@@ -46,9 +46,9 @@ import dsl from './-private/dsl';
 function buildObject(node, blueprintKey, blueprint, defaultBuilder) {
   let definition;
 
-  // to allow page objects to exist in definitions, we store the definition that 
+  // to allow page objects to exist in definitions, we store the definition that
   // created the page object, allowing us to substitute a page object with its
-  // definition during creation 
+  // definition during creation
   if (isPageObject(blueprint)) {
     definition = getPageObjectDefinition(blueprint);
   } else {
@@ -65,7 +65,7 @@ function buildObject(node, blueprintKey, blueprint, defaultBuilder) {
 
   // persist definition once we have an instance
   storePageObjectDefinition(instance, blueprintToStore);
-  
+
   return [ instance, blueprintToApply ];
 }
 
@@ -206,7 +206,9 @@ export function create(definitionOrUrl, definitionOrOptions, optionsOrNothing) {
     page.setContext = setContext;
     page.removeContext = removeContext;
 
-    page.setContext(context);
+    if (typeof context !== 'undefined') {
+      page.setContext(context);
+    }
   }
 
   return page;

@@ -3,10 +3,10 @@ import { setupTest } from 'ember-qunit';
 import require from 'require';
 
 if (require.has('@ember/test-helpers')) {
-  module('Unit | is rfc268 test', function(hooks) {
-    function isRfc268Test() {
+  module('Unit | supports rfc268', function(hooks) {
+    function supportsRfc268() {
       window.require.unsee('ember-cli-page-object/test-support/-private/execution_context');
-      return require('ember-cli-page-object/test-support/-private/execution_context').isRfc268Test();
+      return require('ember-cli-page-object/test-support/-private/execution_context').supportsRfc268();
     }
 
     hooks.afterEach(function() {
@@ -30,18 +30,19 @@ if (require.has('@ember/test-helpers')) {
       });
 
       test('works', function(assert) {
-        assert.ok(isRfc268Test());
+        assert.ok(supportsRfc268());
       });
 
       test('throws without visit() present', function(assert) {
         compatModule.visit = undefined;
-        assert.throws(isRfc268Test);
+
+        assert.throws(() => supportsRfc268());
       });
     });
 
     module('without context', function() {
       test('works', function(assert) {
-        assert.notOk(isRfc268Test());
+        assert.notOk(supportsRfc268());
       });
     });
   });

@@ -1,5 +1,5 @@
 import { getContext as getIntegrationTestContext } from './helpers';
-import { getContext, visit } from './compatibility';
+import { getContext as getEmberTestHelpersContext, visit } from './compatibility';
 import AcceptanceExecutionContext from './execution_context/acceptance';
 import IntegrationExecutionContext from './execution_context/integration';
 import Rfc268Context from './execution_context/rfc268';
@@ -28,10 +28,14 @@ export function getExecutionContext(pageObjectNode) {
   let contextName;
   if (integrationTestContext) {
     contextName = 'integration';
-  } else if (isRfc268Test()) {
-    contextName = 'rfc268';
-  } else {
+  } else if (isAcceptanceTest()) {
     contextName = 'acceptance';
+  } else if (supportsRfc268()) {
+    contextName = 'rfc268';
+  }
+
+  if (!contextName) {
+    throw new Error('Can not detect test type. Please make sure you use the latest version of "@ember/test-helpers".');
   }
 
   return new executioncontexts[contextName](pageObjectNode, integrationTestContext);
@@ -40,7 +44,14 @@ export function getExecutionContext(pageObjectNode) {
 /**
  * @private
  */
-export function isRfc268Test() {
+function isAcceptanceTest() {
+  return window.visit && window.andThen;
+}
+
+/**
+ * @private
+ */
+export function supportsRfc268() {
   // `getContext()` returns:
   //  - falsey, if @ember/test-helpers is not available (stubbed in
   //    compatibility.js)
@@ -53,7 +64,7 @@ export function isRfc268Test() {
   // Note that if `page.setContext(this)` has been called, we'll never get here
   // and will just be running with the integration context (even if the test is
   // an RFC268 test).
-  let hasValidTestContext = Boolean(getContext());
+  let hasValidTestContext = Boolean(getEmberTestHelpersContext());
   if (!hasValidTestContext) {
     return false;
   }
