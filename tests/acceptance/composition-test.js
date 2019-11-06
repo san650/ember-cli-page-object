@@ -33,7 +33,7 @@ let screenPage = create({
 let page = create({
   visit: visitable('/calculator'),
   keys: keyboard,
-  screen: screenPage  
+  screen: screenPage
 });
 
 moduleForAcceptance('Acceptance | composition');
@@ -45,6 +45,8 @@ test('allows compose', async function(assert) {
     .clickOn('1')
     .clickOn('2')
     .sum();
+  assert.equal(page.element.classNames.toString(), 'keyboard');
+
   //click 3
   await page.keys.numbers.objectAt(2).click()
   //click =
@@ -54,7 +56,7 @@ test('allows compose', async function(assert) {
   await page.screen.fillValue('45')
   //click 6
   await page.keys.numbers.objectAt(5).click();
-  
+
   assert.equal(page.screen.value, '456');
 });
 
