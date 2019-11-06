@@ -1,6 +1,5 @@
 export { assign } from '@ember/polyfills';
 import { A } from '@ember/array';
-import { assert } from '@ember/debug';
 import { get } from '@ember/object';
 import { isPresent } from '@ember/utils';
 import Ceibo from 'ceibo';
@@ -92,13 +91,6 @@ class Selector {
   }
 }
 
-export function guardMultiple(items, selector, supportMultiple) {
-  assert(
-    `"${selector}" matched more than one element. If this is not an error use { multiple: true }`,
-    supportMultiple || items.length <= 1
-  );
-}
-
 /**
  * @public
  *
@@ -143,7 +135,12 @@ export function guardMultiple(items, selector, supportMultiple) {
  * @return {string} Fully qualified selector
  */
 export function buildSelector(node, targetSelector, options) {
-  return (new Selector(node, options.scope, targetSelector, options)).toString();
+  return (new Selector(
+    node,
+    options.scope,
+    targetSelector,
+    options
+  )).toString();
 }
 
 /**

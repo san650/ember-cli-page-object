@@ -2,18 +2,9 @@ import $ from '-jquery';
 import { run as emberRunloopRun } from '@ember/runloop';
 import run from '../run';
 import {
-  guardMultiple,
-  buildSelector,
-  findClosestValue
-} from '../helpers';
-import {
   fillElement,
   assertFocusable
 } from './helpers';
-import {
-  ELEMENT_NOT_FOUND,
-  throwBetterError
-} from '../better-errors';
 import wait from 'ember-test-helpers/wait';
 
 export default function IntegrationExecutionContext(pageObjectNode, testContext) {
@@ -22,6 +13,13 @@ export default function IntegrationExecutionContext(pageObjectNode, testContext)
 }
 
 IntegrationExecutionContext.prototype = {
+  get testContainer() {
+    // @todo: fix usage of private `_element`
+    return this.testContext ?
+      this.testContext._element :
+      '#ember-testing';
+  },
+
   andThen(cb) {
     emberRunloopRun(() => {
       cb(this)
@@ -64,47 +62,4 @@ IntegrationExecutionContext.prototype = {
 
     $(element).blur();
   },
-
-  find(selector, options) {
-    let result;
-    let container = options.testContainer || findClosestValue(this.pageObjectNode, 'testContainer');
-
-    selector = buildSelector(this.pageObjectNode, selector, options);
-
-    if (container) {
-      result = $(selector, container);
-    } else {
-      result = this.testContext.$(selector);
-    }
-
-    guardMultiple(result, selector, options.multiple);
-
-    return result;
-  },
-
-  findWithAssert(selector, options) {
-    let result;
-    let container = options.testContainer || findClosestValue(this.pageObjectNode, 'testContainer');
-
-    selector = buildSelector(this.pageObjectNode, selector, options);
-
-    if (container) {
-      result = $(selector, container);
-    } else {
-      result = this.testContext.$(selector);
-    }
-
-    guardMultiple(result, selector, options.multiple);
-
-    if (result.length === 0) {
-      throwBetterError(
-        this.pageObjectNode,
-        options.pageObjectKey,
-        ELEMENT_NOT_FOUND,
-        { selector }
-      );
-    }
-
-    return result;
-  }
 };

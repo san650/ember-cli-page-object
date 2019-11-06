@@ -1,10 +1,4 @@
-import $ from '-jquery';
 import run from '../run';
-import {
-  guardMultiple,
-  buildSelector,
-  findClosestValue,
-} from '../helpers';
 import {
   getRootElement,
   visit,
@@ -15,16 +9,16 @@ import {
   focus,
   blur
 } from '../compatibility';
-import {
-  ELEMENT_NOT_FOUND,
-  throwBetterError
-} from '../better-errors';
 
 export default function ExecutionContext(pageObjectNode) {
   this.pageObjectNode = pageObjectNode;
 }
 
 ExecutionContext.prototype = {
+  get testContainer() {
+    return getRootElement();
+  },
+
   runAsync(cb) {
     return run(this.pageObjectNode, cb);
   },
@@ -58,40 +52,4 @@ ExecutionContext.prototype = {
   blur(element) {
     return blur(element);
   },
-
-  find(selector, options) {
-    selector = buildSelector(this.pageObjectNode, selector, options);
-    let result = this.getElements(selector, options);
-
-    guardMultiple(result, selector, options.multiple);
-
-    return result;
-  },
-
-  findWithAssert(selector, options) {
-    selector = buildSelector(this.pageObjectNode, selector, options);
-    let result = this.getElements(selector, options);
-
-    guardMultiple(result, selector, options.multiple);
-
-    if (result.length === 0) {
-      throwBetterError(
-        this.pageObjectNode,
-        options.pageObjectKey,
-        ELEMENT_NOT_FOUND,
-        { selector }
-      );
-    }
-
-    return result;
-  },
-
-  getElements(selector, options) {
-    let container = options.testContainer || findClosestValue(this.pageObjectNode, 'testContainer');
-    if (container) {
-      return $(selector, container);
-    } else {
-      return $(selector, getRootElement());
-    }
-  }
 };

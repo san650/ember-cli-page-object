@@ -1,4 +1,12 @@
-import { getExecutionContext } from '../-private/execution_context';
+import {
+  buildSelector,
+} from '../-private/helpers';
+import {
+  ELEMENT_NOT_FOUND,
+  throwBetterError
+} from '../-private/better-errors';
+
+import { findElement } from './find-element';
 
 /**
  * @public
@@ -36,5 +44,18 @@ import { getExecutionContext } from '../-private/execution_context';
  * @throws Will throw an error if multiple elements are matched by selector and multiple option is not set
  */
 export function findElementWithAssert(pageObjectNode, targetSelector, options = {}) {
-  return getExecutionContext(pageObjectNode).findWithAssert(targetSelector, options);
+  const result = findElement(pageObjectNode, targetSelector, options);
+  const selector = options.selector
+    || buildSelector(pageObjectNode, targetSelector, options);
+
+  if (result.length === 0) {
+    throwBetterError(
+      pageObjectNode,
+      options.pageObjectKey,
+      ELEMENT_NOT_FOUND,
+      { selector }
+    );
+  }
+
+  return result;
 }

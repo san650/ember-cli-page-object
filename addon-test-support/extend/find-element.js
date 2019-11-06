@@ -1,3 +1,10 @@
+import { assert } from '@ember/debug';
+import $ from '-jquery';
+import {
+  buildSelector,
+  findClosestValue,
+} from '../-private/helpers';
+
 import { getExecutionContext } from '../-private/execution_context';
 
 /**
@@ -34,5 +41,22 @@ import { getExecutionContext } from '../-private/execution_context';
  * @throws Will throw an error if multiple elements are matched by selector and multiple option is not set
  */
 export function findElement(pageObjectNode, targetSelector, options = {}) {
-  return getExecutionContext(pageObjectNode).find(targetSelector, options);
+  const selector = buildSelector(pageObjectNode, targetSelector, options);
+  const container = options.testContainer
+    || findClosestValue(pageObjectNode, 'testContainer')
+    || getExecutionContext(pageObjectNode).testContainer;
+
+  const result = $(selector, container);
+
+  guardMultiple(result, selector, options.multiple);
+
+  return result;
+}
+
+
+function guardMultiple(items, selector, supportMultiple) {
+  assert(
+    `"${selector}" matched more than one element. If this is not an error use { multiple: true }`,
+    supportMultiple || items.length <= 1
+  );
 }
