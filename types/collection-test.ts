@@ -28,6 +28,7 @@ b.items.mapBy('a'); // $ExpectType any[]
 b.items.mapBy('text'); // $ExpectType any[]
 b.items.filterBy('a'); // $ExpectType Component<{ a: number; }>[]
 b.items.filterBy('value'); // $ExpectType Component<{ a: number; }>[]
+b.items.filterBy('value', ''); // $ExpectType Component<{ a: number; }>[]
 b.items.findOne((a) => a.a === 1); // $ExpectType Component<{ a: number; }>
 b.items.findOneBy('value', 1); // $ExpectType Component<{ a: number; }>
 b.items.forEach((node, _i: number) => {

@@ -45,7 +45,7 @@ declare module 'ember-cli-page-object' {
     [Symbol.iterator](): Iterator<Component<T>>;
 
     filter(callback: (c: Component<T>) => boolean): Array<Component<T>>;
-    filterBy(propName: keyof T | keyof DSL<T>): Array<Component<T>>;
+    filterBy(propName: keyof T | keyof DSL<T>, value?: any): Array<Component<T>>;
     findOne(callback: (c: Component<T>) => boolean): Component<T>;
     findOneBy(propName: keyof T | keyof DSL<T>, value: any): Component<T>;
     forEach(callback: (c: Component<T>, i: number) => void): void;
