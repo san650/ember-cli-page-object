@@ -20,11 +20,11 @@ declare module 'ember-cli-page-object' {
   function isPresent(scope?: string, options?: FindOptions): GetterDescriptor<boolean>;
   function text(scope?: string, options?: FindOptions): GetterDescriptor<string>;
   function value(scope?: string, options?: FindOptions): GetterDescriptor<string>;
-  function property(name: string, options?: FindOptions): GetterDescriptor<any>;
+  function property(name: string): GetterDescriptor<any>;
   function property(scope: string, name: string, options?: FindOptions): GetterDescriptor<any>;
-  function hasClass(className: string, options?: FindOptions): GetterDescriptor<boolean>;
+  function hasClass(className: string): GetterDescriptor<boolean>;
   function hasClass(scope: string, className: string, options?: FindOptions): GetterDescriptor<boolean>;
-  function notHasClass(className: string, options?: FindOptions): GetterDescriptor<boolean>;
+  function notHasClass(className: string): GetterDescriptor<boolean>;
   function notHasClass(scope: string, className: string, options?: FindOptions): GetterDescriptor<boolean>;
   function contains(scope?: string, options?: FindOptions): (text: string) => GetterDescriptor<boolean>;
   function count(scope?: string, options?: FindOptions): () => GetterDescriptor<boolean>;
