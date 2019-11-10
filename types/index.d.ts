@@ -14,28 +14,28 @@ declare module 'ember-cli-page-object' {
   function collection<T extends Partial<Definition>>(scope: string, definition?: T): Collection<T>;
 
   // Attributes
-  function attribute(attributeName: string, scope?: string): GetterDescriptor<string>;
-  function isVisible(scope?: string): GetterDescriptor<boolean>;
-  function isHidden(scope?: string): GetterDescriptor<boolean>;
-  function isPresent(scope?: string): GetterDescriptor<boolean>;
-  function text(scope?: string): GetterDescriptor<string>;
-  function value(scope?: string): GetterDescriptor<string>;
+  function attribute(attributeName: string, scope?: string, options?: FindOptions): GetterDescriptor<string>;
+  function isVisible(scope?: string, options?: FindOptions): GetterDescriptor<boolean>;
+  function isHidden(scope?: string, options?: FindOptions): GetterDescriptor<boolean>;
+  function isPresent(scope?: string, options?: FindOptions): GetterDescriptor<boolean>;
+  function text(scope?: string, options?: FindOptions): GetterDescriptor<string>;
+  function value(scope?: string, options?: FindOptions): GetterDescriptor<string>;
   function property(name: string): GetterDescriptor<any>;
-  function property(scope: string, name: string): GetterDescriptor<any>;
+  function property(scope: string, name: string, options?: FindOptions): GetterDescriptor<any>;
   function hasClass(className: string): GetterDescriptor<boolean>;
-  function hasClass(scope: string, className: string): GetterDescriptor<boolean>;
+  function hasClass(scope: string, className: string, options?: FindOptions): GetterDescriptor<boolean>;
   function notHasClass(className: string): GetterDescriptor<boolean>;
-  function notHasClass(scope: string, className: string): GetterDescriptor<boolean>;
-  function contains(scope?: string): (text: string) => GetterDescriptor<boolean>;
-  function count(scope?: string): () => GetterDescriptor<boolean>;
+  function notHasClass(scope: string, className: string, options?: FindOptions): GetterDescriptor<boolean>;
+  function contains(scope?: string, options?: FindOptions): (text: string) => GetterDescriptor<boolean>;
+  function count(scope?: string, options?: FindOptions): () => GetterDescriptor<boolean>;
 
   // Actions
   function clickable(scope?: string, userOptions?: FindOptions): MethodDescriptor<<T>(this: T) => T>;
   function clickOnText(scope?: string, userOptions?: FindOptions): MethodDescriptor<<T>(this: T, text: string) => T>;
   function fillable(scope?: string, userOptions?: FindOptions): MethodDescriptor<<T>(this: T, clueOrContent: string, content?: string) => T>;
-  function triggerable(event: string, scope?: string, eventOptions?: TriggerOptions): MethodDescriptor<<T>(this: T) => T>;
-  function focusable(scope?: string): MethodDescriptor<<T>(this: T) => T>;
-  function blurrable(scope?: string): MethodDescriptor<<T>(this: T) => T>;
+  function triggerable(event: string, scope?: string, eventOptions?: TriggerOptions, options?: FindOptions): MethodDescriptor<<T>(this: T) => T>;
+  function focusable(scope?: string, options?: FindOptions): MethodDescriptor<<T>(this: T) => T>;
+  function blurrable(scope?: string, options?: FindOptions): MethodDescriptor<<T>(this: T) => T>;
   function visitable(path: string): MethodDescriptor<<T>(this: T, dynamicSegmentsAndQueryParams?: {}) => T>;
 
   interface Collection<T> {
