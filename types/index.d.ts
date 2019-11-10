@@ -36,7 +36,7 @@ declare module 'ember-cli-page-object' {
   function triggerable(event: string, scope?: string, eventOptions?: TriggerOptions, options?: FindOptions): MethodDescriptor<<T>(this: T) => T>;
   function focusable(scope?: string, options?: FindOptions): MethodDescriptor<<T>(this: T) => T>;
   function blurrable(scope?: string, options?: FindOptions): MethodDescriptor<<T>(this: T) => T>;
-  function visitable(path: string, options?: FindOptions): MethodDescriptor<<T>(this: T, dynamicSegmentsAndQueryParams?: {}) => T>;
+  function visitable(path: string): MethodDescriptor<<T>(this: T, dynamicSegmentsAndQueryParams?: {}) => T>;
 
   interface Collection<T> {
     (scope: string, definition?: T): Array<Component<T>>;
