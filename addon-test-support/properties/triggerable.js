@@ -3,7 +3,7 @@ import {
   buildSelector,
   findClosestValue
 } from '../-private/helpers';
-import { getExecutionContext } from '../-private/execution_context';
+import { run } from '../-private/action';
 
 /**
  *
@@ -88,11 +88,10 @@ export function triggerable(event, selector, userOptions = {}) {
 
     get(key) {
       return function(eventProperties = {}) {
-        const executionContext = getExecutionContext(this);
         const options = assign({ pageObjectKey: `${key}()` }, userOptions);
         const staticEventProperties = assign({}, options.eventProperties);
 
-        return executionContext.runAsync((context) => {
+        return run(this, (context) => {
           const fullSelector = buildSelector(this, selector, options);
           const container =  options.testContainer || findClosestValue(this, 'testContainer');
 

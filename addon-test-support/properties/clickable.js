@@ -3,7 +3,7 @@ import {
   buildSelector,
   findClosestValue
 } from '../-private/helpers';
-import { getExecutionContext } from '../-private/execution_context';
+import { run } from '../-private/action';
 
 /**
  * Clicks elements matched by a selector.
@@ -72,10 +72,9 @@ export function clickable(selector, userOptions = {}) {
 
     get(key) {
       return function() {
-        let executionContext = getExecutionContext(this);
         let options = assign({ pageObjectKey: `${key}()` }, userOptions);
 
-        return executionContext.runAsync((context) => {
+        return run(this, (context) => {
           let fullSelector = buildSelector(this, selector, options);
           let container = options.testContainer || findClosestValue(this, 'testContainer');
 
