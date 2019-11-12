@@ -11,32 +11,33 @@ import Ceibo from 'ceibo';
  * @returns {Ceibo}
  */
 export function run(node, cb) {
-  const adapter = getExecutionContext(node);
   const chainedRoot = getRoot(node)._chainedTree;
 
-  if (typeof adapter.andThen === 'function') {
+  let executionContext;
+  if (!chainedRoot) {
+    executionContext = getRoot(node).__execution_context__;
+  } else {
+    executionContext = chainedRoot.__execution_context__ = getExecutionContext(node);
+  }
+
+  if (typeof executionContext.andThen === 'function') {
     // With old ember-testing helpers, we don't make the difference between
     // chanined VS independent action invocations. Awaiting for the previous
     // action settlement, before invoke a new action, is a part of
     // the legacy testing helpers adapters for backward compat reasons
-    chainedRoot._promise = adapter.andThen(cb);
-
-    return node;
+    executionContext._promise = executionContext.andThen(cb);
   } else if (!chainedRoot) {
     // Our root is already the root of the chained tree,
     // we need to wait on its promise if it has one so the
     // previous invocations can resolve before we run ours.
-    let root = getRoot(node)
-    root._promise = resolve(root._promise).then(() => cb(adapter));
-
-    return node;
+    executionContext._promise = resolve(executionContext._promise).then(() => cb(executionContext));
   } else {
     // Store our invocation result on the chained root
     // so that chained calls can find it to wait on it.
-    chainedRoot._promise = cb(adapter);
-
-    return chainable(node);
+    executionContext._promise = cb(executionContext);
   }
+
+  return chainable(node);
 }
 
 export function chainable(branch) {

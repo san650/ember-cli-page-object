@@ -19,7 +19,7 @@ export function getExecutionContext(node) {
   if (!chainedRoot) {
     let root = getRoot(node)
 
-    return root.__exectution_context__;
+    return root.__execution_context__;
   } else {
     // Our `getContext(pageObjectNode)` will return a context only if the test
     // called `page.setContext(this)`, which is only supposed to happen in
@@ -45,7 +45,7 @@ export function getExecutionContext(node) {
       throw new Error('Can not detect test type. Please make sure you use the latest version of "@ember/test-helpers".');
     }
 
-    return chainedRoot.__exectution_context__ = new executioncontexts[contextName](node, integrationTestContext);
+    return new executioncontexts[contextName](node, integrationTestContext);
   }
 }
 

@@ -11,15 +11,16 @@ import { isVisible } from '../properties/is-visible';
 import { text } from '../properties/text';
 import { value } from '../properties/value';
 
-import { getRoot } from './helpers';
+import { getExecutionContext } from './execution_context';
 
 const thenDescriptor = {
   isDescriptor: true,
-  value() {
-    const root = getRoot(this);
-    const chainedRoot = root._chainedTree || root;
+  get() {
+    return function() {
+      const { _promise } = getExecutionContext(this);
 
-    return chainedRoot._promise.then(...arguments);
+      return _promise.then(...arguments);
+    }
   }
 };
 
