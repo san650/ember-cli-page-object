@@ -15,11 +15,9 @@ const executioncontexts = {
  * @private
  */
 export function getExecutionContext(node) {
-  const chainedRoot = getRoot(node)._chainedTree;
-  if (!chainedRoot) {
-    let root = getRoot(node)
-
-    return root.__execution_context__;
+  const chainedRoot = getRoot(node)._chainedTree || getRoot(node);
+  if (chainedRoot.__execution_context__) {
+    return chainedRoot.__execution_context__;
   } else {
     // Our `getContext(pageObjectNode)` will return a context only if the test
     // called `page.setContext(this)`, which is only supposed to happen in
