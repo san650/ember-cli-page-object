@@ -85,22 +85,22 @@ import action, { invokeHelper } from '../extend/action';
  * @return {Descriptor}
  */
 export function clickOnText(scope, options = {}) {
-    return action(function(textToClick) {
-      const query = assign({}, options, {
-        contains: textToClick,
-        // we want to find the deepest node containing a text to click.
-        last: true
-      });
-
-      const childSelector = `${scope || ''} `;
-
-      let selector;
-      if (findElement(this, childSelector, query).length) {
-        selector = childSelector;
-      } else {
-        selector = scope;
-      }
-
-      return invokeHelper(this, selector, query, ({click}, element) => click(element));
+  return action(function(textToClick) {
+    const query = assign({}, options, {
+      contains: textToClick,
+      // we want to find the deepest node containing a text to click.
+      last: true
     });
+
+    const childSelector = `${scope || ''} `;
+
+    let selector;
+    if (findElement(this, childSelector, query).length) {
+      selector = childSelector;
+    } else {
+      selector = scope;
+    }
+
+    return invokeHelper(this, selector, query, ({click}, element) => click(element));
+  });
 }
