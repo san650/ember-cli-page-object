@@ -12,6 +12,7 @@ import Ceibo from 'ceibo';
  */
 export default function run(node, cb) {
   const chainedNode = chainable(node);
+  const _cb = cb.bind(chainedNode);
 
   let executionContext;
   if (isChainedNode(node)) {
@@ -29,16 +30,16 @@ export default function run(node, cb) {
     // chanined VS independent action invocations. Awaiting for the previous
     // action settlement, before invoke a new action, is a part of
     // the legacy testing helpers adapters for backward compat reasons
-    executionContext._promise = executionContext.andThen(cb);
+    executionContext._promise = executionContext.andThen(_cb);
   } else if (isChainedNode(node)) {
     // Our root is already the root of the chained tree,
     // we need to wait on its promise if it has one so the
     // previous invocations can resolve before we run ours.
-    executionContext._promise = resolve(executionContext._promise).then(() => cb(executionContext));
+    executionContext._promise = resolve(executionContext._promise).then(() => _cb(executionContext));
   } else {
     // Store our invocation result on the chained root
     // so that chained calls can find it to wait on it.
-    executionContext._promise = cb(executionContext);
+    executionContext._promise = _cb(executionContext);
   }
 
   return chainedNode;
