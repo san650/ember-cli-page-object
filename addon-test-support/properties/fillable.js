@@ -1,7 +1,7 @@
-import { findElement, action as _action } from 'ember-cli-page-object/extend';
-import run from '../-private/run';
-import { assign, buildSelector } from '../-private/helpers';
+import { findElement } from 'ember-cli-page-object/extend';
+import { buildSelector } from 'ember-cli-page-object';
 import { throwBetterError, ELEMENT_NOT_FOUND } from '../-private/better-errors';
+import action, { invokeHelper } from '../extend/action';
 
 /**
  * Alias for `fillable`, which works for inputs, HTML select menus, and
@@ -116,42 +116,27 @@ import { throwBetterError, ELEMENT_NOT_FOUND } from '../-private/better-errors';
  * @return {Descriptor}
  */
 export function fillable(selector = '', userOptions = {}) {
-  return new Action(function(key, contentOrClue, content) {
-    return run(this, ({ fillIn }) => {
-      let options = assign({ pageObjectKey: `${key}()` }, userOptions);
+  return action(function(contentOrClue, content) {
+    let clue;
+    if (content === undefined) {
+      content = contentOrClue;
+    } else {
+      clue = contentOrClue;
+    }
 
-      let clue;
-      if (content === undefined) {
-        content = contentOrClue;
-      } else {
-        clue = contentOrClue;
+    let scopeSelector = clue
+      ? `${selector} ${getSelectorByClue(this, selector, userOptions, clue)}`
+      : selector;
+
+    return invokeHelper(this, scopeSelector, userOptions,
+      ({ fillIn }, element) => {
+        return fillIn(element, content);
       }
-
-      let scopeSelector = clue
-        ? `${selector} ${getClueSelector(this, selector, options, clue)}`
-        : selector;
-
-      return _action(this, scopeSelector, options,
-        (element) => fillIn(element, content)
-      );
-    });
+    );
   })
 }
 
-class Action {
-  constructor(fn) {
-    this.isDescriptor = true;
-
-    this.get = function(key) {
-      return function() {
-        return fn.bind(this)(key, ...arguments);
-      }
-    };
-  }
-}
-
-
-function getClueSelector(pageObject, selector, options, clue) {
+function getSelectorByClue(pageObject, selector, options, clue) {
   let cssClues = ['input', 'textarea', 'select', '[contenteditable]'].map((tag) => [
     `${tag}[data-test="${clue}"]`,
     `${tag}[aria-label="${clue}"]`,
