@@ -1,5 +1,6 @@
 import EmberError from '@ember/error';
 import Ceibo from 'ceibo';
+import { getRoot } from './helpers';
 
 export const ELEMENT_NOT_FOUND = 'Element not found.';
 
@@ -14,6 +15,9 @@ export const ELEMENT_NOT_FOUND = 'Element not found.';
  * @return {Ember.Error}
  */
 export function throwBetterError(node, key, err, { selector } = {}) {
+  const executionContext = getRoot(node).__execution_context__;
+  const _key = key || (executionContext && executionContext.key);
+
   let fullErrorMessage = typeof err === Error ? err.message : err.toString();
 
   let path = [];
@@ -24,8 +28,8 @@ export function throwBetterError(node, key, err, { selector } = {}) {
   }
 
   path[0] = 'page';
-  if (key && key.trim().length > 0) {
-    path.push(key);
+  if (_key && _key.trim().length > 0) {
+    path.push(_key);
   }
 
   if (path.length > 0) {
