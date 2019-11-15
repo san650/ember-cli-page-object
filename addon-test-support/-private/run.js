@@ -11,13 +11,17 @@ import Ceibo from 'ceibo';
  * @returns {Ceibo}
  */
 export default function run(node, cb) {
-  const chainedRoot = getRoot(node)._chainedTree;
+  const chainedNode = chainable(node);
 
   let executionContext;
-  if (!chainedRoot) {
+  if (isChainedNode(node)) {
     executionContext = getRoot(node).__execution_context__;
+    if (!executionContext) {
+      executionContext = getRoot(node).__execution_context__ = getExecutionContext(node);
+    }
   } else {
-    executionContext = chainedRoot.__execution_context__ = getExecutionContext(node);
+    const chainedRoot = getRoot(chainedNode);
+    executionContext = chainedRoot.__execution_context__ = getExecutionContext(chainedNode);
   }
 
   if (typeof executionContext.andThen === 'function') {
@@ -26,7 +30,7 @@ export default function run(node, cb) {
     // action settlement, before invoke a new action, is a part of
     // the legacy testing helpers adapters for backward compat reasons
     executionContext._promise = executionContext.andThen(cb);
-  } else if (!chainedRoot) {
+  } else if (isChainedNode(node)) {
     // Our root is already the root of the chained tree,
     // we need to wait on its promise if it has one so the
     // previous invocations can resolve before we run ours.
@@ -37,7 +41,7 @@ export default function run(node, cb) {
     executionContext._promise = cb(executionContext);
   }
 
-  return chainable(node);
+  return chainedNode;
 }
 
 export function chainable(branch) {

@@ -10,14 +10,14 @@ import { isPresent } from '../properties/is-present';
 import { isVisible } from '../properties/is-visible';
 import { text } from '../properties/text';
 import { value } from '../properties/value';
-
-import { getExecutionContext } from './execution_context';
+import { getRoot } from './helpers';
 
 const thenDescriptor = {
   isDescriptor: true,
   get() {
     return function() {
-      const { _promise } = getExecutionContext(this);
+      // this is a chainable node instance
+      const { _promise } = getRoot(this).__execution_context__;
 
       return _promise.then(...arguments);
     }

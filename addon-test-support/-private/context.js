@@ -1,4 +1,5 @@
 import { deprecate } from '@ember/application/deprecations';
+import { chainable } from './run';
 
 /**
  * @public
@@ -62,6 +63,9 @@ export function setContext(context) {
 
   if (context) {
     this.context = context;
+
+    const chainableNode = chainable(this)
+    chainableNode.context = context;
   }
 
   return this;
@@ -83,6 +87,9 @@ export function setContext(context) {
 export function removeContext() {
   if (this.context) {
     delete this.context;
+
+    const chainableNode = chainable(this)
+    delete chainableNode.context;
   }
 
   return this;

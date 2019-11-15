@@ -3,7 +3,6 @@ import { getContext as getEmberTestHelpersContext, visit } from './compatibility
 import AcceptanceExecutionContext from './execution_context/acceptance';
 import IntegrationExecutionContext from './execution_context/integration';
 import Rfc268Context from './execution_context/rfc268';
-import { getRoot } from './helpers';
 
 const executioncontexts = {
   acceptance: AcceptanceExecutionContext,
@@ -15,36 +14,31 @@ const executioncontexts = {
  * @private
  */
 export function getExecutionContext(node) {
-  const chainedRoot = getRoot(node)._chainedTree || getRoot(node);
-  if (chainedRoot.__execution_context__) {
-    return chainedRoot.__execution_context__;
-  } else {
-    // Our `getContext(pageObjectNode)` will return a context only if the test
-    // called `page.setContext(this)`, which is only supposed to happen in
-    // integration tests (i.e. pre-RFC232/RFC268). However, the integration
-    // context does work with RFC232 (`setupRenderingContext()`) tests, and before
-    // the RFC268 execution context was implemented, some users may have migrated
-    // their tests to RFC232 tests, leaving the `page.setContext(this)` in place.
-    // So, in order to not break those tests, we need to check for that case
-    // first, and only if that hasn't happened, check to see if we're in an
-    // RFC232/RFC268 test, and if not, fall back on assuming a pre-RFC268
-    // acceptance test, which is the only remaining supported scenario.
-    let integrationTestContext = getIntegrationTestContext(node);
-    let contextName;
-    if (integrationTestContext) {
-      contextName = 'integration';
-    } else if (isAcceptanceTest()) {
-      contextName = 'acceptance';
-    } else if (supportsRfc268()) {
-      contextName = 'rfc268';
-    }
-
-    if (!contextName) {
-      throw new Error('Can not detect test type. Please make sure you use the latest version of "@ember/test-helpers".');
-    }
-
-    return new executioncontexts[contextName](node, integrationTestContext);
+  // Our `getContext(pageObjectNode)` will return a context only if the test
+  // called `page.setContext(this)`, which is only supposed to happen in
+  // integration tests (i.e. pre-RFC232/RFC268). However, the integration
+  // context does work with RFC232 (`setupRenderingContext()`) tests, and before
+  // the RFC268 execution context was implemented, some users may have migrated
+  // their tests to RFC232 tests, leaving the `page.setContext(this)` in place.
+  // So, in order to not break those tests, we need to check for that case
+  // first, and only if that hasn't happened, check to see if we're in an
+  // RFC232/RFC268 test, and if not, fall back on assuming a pre-RFC268
+  // acceptance test, which is the only remaining supported scenario.
+  let integrationTestContext = getIntegrationTestContext(node);
+  let contextName;
+  if (integrationTestContext) {
+    contextName = 'integration';
+  } else if (isAcceptanceTest()) {
+    contextName = 'acceptance';
+  } else if (supportsRfc268()) {
+    contextName = 'rfc268';
   }
+
+  if (!contextName) {
+    throw new Error('Can not detect test type. Please make sure you use the latest version of "@ember/test-helpers".');
+  }
+
+  return new executioncontexts[contextName](node, integrationTestContext);
 }
 
 /**
