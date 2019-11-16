@@ -11,13 +11,14 @@ import { isVisible } from '../properties/is-visible';
 import { text } from '../properties/text';
 import { value } from '../properties/value';
 import { getRoot } from './helpers';
+import { chainable } from './run';
 
 const thenDescriptor = {
   isDescriptor: true,
   get() {
     return function() {
       // this is a chainable node instance
-      const { _promise } = getRoot(this).__execution_context__;
+      const { _promise } = getRoot(chainable(this)).__execution_context__;
 
       return _promise.then(...arguments);
     }

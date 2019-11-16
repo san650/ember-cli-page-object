@@ -21,6 +21,8 @@ export default function action(fn) {
 
           context.key = `${key}(${formattedArgs})`;
 
+          getRoot(this).__execution_context__ = context;
+
           return fn.bind(this)(...args);
         });
       }

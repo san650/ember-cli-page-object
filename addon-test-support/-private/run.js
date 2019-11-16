@@ -15,13 +15,10 @@ export default function run(node, cb) {
   const _cb = cb.bind(chainedNode);
 
   let executionContext;
+  const chainedRoot = getRoot(chainedNode);
   if (isChainedNode(node)) {
-    executionContext = getRoot(node).__execution_context__;
-    if (!executionContext) {
-      executionContext = getRoot(node).__execution_context__ = getExecutionContext(node);
-    }
+    executionContext = chainedRoot.__execution_context__;
   } else {
-    const chainedRoot = getRoot(chainedNode);
     executionContext = chainedRoot.__execution_context__ = getExecutionContext(chainedNode);
   }
 
