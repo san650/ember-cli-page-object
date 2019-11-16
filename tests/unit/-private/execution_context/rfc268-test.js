@@ -21,7 +21,7 @@ if (require.has('@ember/test-helpers')) {
 
     test('sync invocations', async function(assert) {
       node.click()
-      await node.click();
+      node.click();
 
       await settled();
 
@@ -59,7 +59,6 @@ if (require.has('@ember/test-helpers')) {
     test('sync chained invocations', async function(assert) {
       node.click().click();
 
-      await settled();
       await settled();
       await settled();
 
