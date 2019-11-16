@@ -1,7 +1,8 @@
 import { assign } from '../-private/helpers';
-import run from '../-private/run';
 
 import $ from '-jquery';
+import { action } from '../extend';
+import { getRoot } from '../-private/helpers';
 
 function fillInDynamicSegments(path, params) {
   return path.split('/').map(function(segment) {
@@ -90,20 +91,14 @@ function appendQueryParams(path, queryParams) {
  * @throws Will throw an error if dynamic segments are not filled
  */
 export function visitable(path) {
-  return {
-    isDescriptor: true,
+  return action(function(dynamicSegmentsAndQueryParams = {}) {
+    const { visit } = getRoot(this).__execution_context__;
 
-    get() {
-      return function(dynamicSegmentsAndQueryParams = {}) {
-        return run(this, ({ visit }) => {
-          let params = assign({}, dynamicSegmentsAndQueryParams);
-          let fullPath = fillInDynamicSegments(path, params);
+    let params = assign({}, dynamicSegmentsAndQueryParams);
+    let fullPath = fillInDynamicSegments(path, params);
 
-          fullPath = appendQueryParams(fullPath, params);
+    fullPath = appendQueryParams(fullPath, params);
 
-          return visit(fullPath);
-        })
-      }
-    }
-  };
+    return visit(fullPath);
+  });
 }
