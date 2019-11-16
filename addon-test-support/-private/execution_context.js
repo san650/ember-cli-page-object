@@ -13,7 +13,7 @@ const executioncontexts = {
 /*
  * @private
  */
-export function getExecutionContext(node) {
+export function getExecutionContext(pageObjectNode) {
   // Our `getContext(pageObjectNode)` will return a context only if the test
   // called `page.setContext(this)`, which is only supposed to happen in
   // integration tests (i.e. pre-RFC232/RFC268). However, the integration
@@ -24,7 +24,7 @@ export function getExecutionContext(node) {
   // first, and only if that hasn't happened, check to see if we're in an
   // RFC232/RFC268 test, and if not, fall back on assuming a pre-RFC268
   // acceptance test, which is the only remaining supported scenario.
-  let integrationTestContext = getIntegrationTestContext(node);
+  let integrationTestContext = getIntegrationTestContext(pageObjectNode);
   let contextName;
   if (integrationTestContext) {
     contextName = 'integration';
@@ -38,7 +38,7 @@ export function getExecutionContext(node) {
     throw new Error('Can not detect test type. Please make sure you use the latest version of "@ember/test-helpers".');
   }
 
-  return new executioncontexts[contextName](node, integrationTestContext);
+  return new executioncontexts[contextName](pageObjectNode, integrationTestContext);
 }
 
 /**
