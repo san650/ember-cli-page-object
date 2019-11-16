@@ -2,6 +2,8 @@ import { test } from 'ember-qunit';
 import moduleForAcceptance from 'dummy/tests/helpers/module-for-acceptance';
 import { create, visitable } from 'ember-cli-page-object'
 import { createClickTrackerComponent, ClickTrackerDef } from './helpers';
+import Component from '@ember/component';
+import hbs from 'htmlbars-inline-precompile';
 
 const node = create(
   Object.assign({}, ClickTrackerDef, {
@@ -9,18 +11,16 @@ const node = create(
   })
 );
 
-moduleForAcceptance('Acceptance | acceptance context | actions', {
-  beforeEach(assert) {
-    this.application.register(
-      'component:test-component',
-      createClickTrackerComponent(assert)
-    );
-
-    return node.visit();
-  }
-});
+moduleForAcceptance('Acceptance | acceptance context | actions');
 
 test('async invocations', async function(assert) {
+  this.application.register(
+    'component:test-component',
+    createClickTrackerComponent(assert)
+  );
+
+  await node.visit();
+
   await node.click()
   await node.click();
 
@@ -33,6 +33,12 @@ test('async invocations', async function(assert) {
 });
 
 test('sync invocations', async function(assert) {
+  this.application.register(
+    'component:test-component',
+    createClickTrackerComponent(assert)
+  );
+
+  await node.visit();
   node.click()
   node.click();
 
@@ -47,6 +53,12 @@ test('sync invocations', async function(assert) {
 });
 
 test('sync chained invocations', async function(assert) {
+  this.application.register(
+    'component:test-component',
+    createClickTrackerComponent(assert)
+  );
+
+  await node.visit();
   node.click()
     .click();
 
@@ -61,6 +73,12 @@ test('sync chained invocations', async function(assert) {
 });
 
 test('async chained invocations', async function(assert) {
+  this.application.register(
+    'component:test-component',
+    createClickTrackerComponent(assert)
+  );
+
+  await node.visit();
   await node.click()
     .click();
 
@@ -74,3 +92,34 @@ test('async chained invocations', async function(assert) {
   })
 });
 
+test('sync errors', async function(assert) {
+  this.application.register(
+    'component:test-component',
+
+    Component.extend({
+      layout: hbs`<div />`,
+    })
+  );
+
+  const node = create({
+    visit: visitable('/'),
+    nonBlurrable: {
+      resetScope: true,
+      scope: 'div'
+    }
+  });
+
+  await node.visit();
+
+  const done = assert.async();
+  assert.rejects(node.nonBlurrable.blur(), /page\.nonBlurrable.blur()/, 'Element is not focusable because it is not a link');
+
+  node.click();
+
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      done();
+      resolve();
+    }, 500);
+  })
+});

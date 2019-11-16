@@ -70,5 +70,28 @@ if (require.has('@ember/test-helpers')) {
         'complete #1',
       ])
     });
+
+    test('sync errors', async function(assert) {
+      await render(hbs`<div />`);
+
+      const node = create({
+        nonBlurrable: {
+          resetScope: true,
+          scope: 'div'
+        }
+      });
+
+      const done = assert.async();
+      assert.rejects(node.nonBlurrable.blur(), /page\.nonBlurrable.blur()/, 'Element is not focusable because it is not a link');
+
+      node.click();
+
+      return new Promise((resolve) => {
+        setTimeout(() => {
+          done();
+          resolve();
+        }, 500);
+      })
+    });
   });
 }
