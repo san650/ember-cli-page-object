@@ -72,12 +72,12 @@ if (require.has('@ember/test-helpers')) {
     });
 
     test('sync errors', async function(assert) {
-      await render(hbs`<div />`);
+      await render(hbs`<div data-test />`);
 
       const node = create({
         nonBlurrable: {
           resetScope: true,
-          scope: 'div'
+          scope: '[data-test]'
         }
       });
 

@@ -97,15 +97,16 @@ test('sync errors', async function(assert) {
     'component:test-component',
 
     Component.extend({
-      layout: hbs`<div />`,
+      layout: hbs`<div data-test />`,
     })
   );
 
   const node = create({
     visit: visitable('/'),
+
     nonBlurrable: {
       resetScope: true,
-      scope: 'div'
+      scope: '[data-test]'
     }
   });
 
