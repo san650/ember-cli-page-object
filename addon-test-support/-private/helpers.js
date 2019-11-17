@@ -175,7 +175,7 @@ export function every(jqArray, cb) {
 export function assertOptionsWhitelisted(options, whitelist) {
   const extra = [];
   for (let [key, value] of Object.entries(options)) {
-    if(!whitelist.includes(key) && value) {
+    if(!whitelist.includes(key) && isPresent(value)) {
       extra.push(key);
     }
   }

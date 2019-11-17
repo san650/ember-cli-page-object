@@ -145,7 +145,7 @@ if (require.has('@ember/test-helpers')) {
       `);
 
 
-      assert.throws(() => findOne(page, '.lorem', { unknownParam: true }),
+      assert.throws(() => findOne(page, '.lorem', { unknownParam: false }),
         'Error: Assertion Failed: Invalid option(s) passed: [unknownParam]');
     });
   });
