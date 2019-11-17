@@ -167,6 +167,23 @@ export function every(jqArray, cb) {
 }
 
 /**
+ * @private
+ *
+ * Check if all options are in whitelist
+ *
+ */
+export function assertOptionsWhitelisted(options, whitelist) {
+  const extra = [];
+  for (let [key, value] of Object.entries(options)) {
+    if(!whitelist.includes(key) && value) {
+      extra.push(key);
+    }
+  }
+
+  assert(`Invalid option(s) passed: [${extra.join(', ')}]`, extra.length === 0);
+}
+
+/**
  * @public
  *
  * Return the root of a node's tree

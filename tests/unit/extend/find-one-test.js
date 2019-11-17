@@ -136,5 +136,17 @@ if (require.has('@ember/test-helpers')) {
 
       assert.equal(findOne(page, '.lorem', { visible: true }), findAll('.lorem')[1]);
     });
+
+    test('pass unpermitted params', async function(assert) {
+      let page = create({});
+
+      await this.render(hbs`
+        <span class="lorem"></span>
+      `);
+
+
+      assert.throws(() => findOne(page, '.lorem', { unknownParam: true }),
+        'Error: Assertion Failed: Invalid option(s) passed: [unknownParam]');
+    });
   });
 }

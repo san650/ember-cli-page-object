@@ -113,5 +113,17 @@ if (require.has('@ember/test-helpers')) {
 
       assert.deepEqual(findMany(page, '.lorem', { visible: true }), findAll('.lorem').slice(1, 3));
     });
+
+    test('pass unpermitted params', async function(assert) {
+      let page = create({});
+
+      await this.render(hbs`
+        <span class="lorem"></span>
+      `);
+
+
+      assert.throws(() => findMany(page, '.lorem', { at: 2, last: true }),
+        'Error: Assertion Failed: Invalid option(s) passed: [at, last]');
+    });
   });
 }
