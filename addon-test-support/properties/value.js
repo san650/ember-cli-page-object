@@ -93,7 +93,7 @@ export function value(selector, userOptions = {}) {
     get(key) {
       let options = assign({ pageObjectKey: key }, userOptions);
 
-      const checkValue = (element) => element.hasAttribute('contenteditable') ? element.innerHTML : element.value;
+      const checkValue = (element) => element.hasAttribute('contenteditable') ? $(element).html() : $(element).val();
 
       if (options.multiple) {
         return findMany(this, selector, options).map(checkValue);

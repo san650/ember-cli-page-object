@@ -1,5 +1,5 @@
 import { getExecutionContext } from '../-private/execution_context';
-import { assertOptionsWhitelisted } from "../-private/helpers";
+import { filterWhitelistedOption } from "../-private/helpers";
 
 /**
  * @public
@@ -37,9 +37,9 @@ import { assertOptionsWhitelisted } from "../-private/helpers";
  * @throws If more than one element found
  */
 export function findOne(pageObjectNode, targetSelector, options = {}) {
-  assertOptionsWhitelisted(options, [
+  const filteredOptions = filterWhitelistedOption(options, [
     'resetScope', 'visible', 'testContainer', 'contains', 'at', 'last', 'scope', 'pageObjectKey'
   ]);
-  const opts = Object.assign({}, options, { multiple: false });
+  const opts = Object.assign({}, filteredOptions, { multiple: false });
   return getExecutionContext(pageObjectNode).findWithAssert(targetSelector, opts).get(0);
 }

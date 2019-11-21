@@ -1,6 +1,7 @@
 import { assign, guardMultiple } from '../-private/helpers';
 import { findMany } from '../extend';
 import { A } from '@ember/array';
+import $ from '-jquery';
 
 /**
  * Validates if an element or set of elements is hidden or does not exist in the DOM.
@@ -112,7 +113,7 @@ export function isHidden(selector, userOptions = {}) {
       guardMultiple(elements, selector, options.multiple);
 
       return elements.length === 0 ||
-        A(elements).every(element => window.getComputedStyle(element).display === "none");
+        A(elements).every(element => $(element).is(':hidden'));
     }
   };
 }

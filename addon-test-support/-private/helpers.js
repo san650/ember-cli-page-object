@@ -172,15 +172,14 @@ export function every(jqArray, cb) {
  * Check if all options are in whitelist
  *
  */
-export function assertOptionsWhitelisted(options, whitelist) {
-  const extra = [];
+export function filterWhitelistedOption(options, whitelist) {
+  const result = {};
   for (let [key, value] of Object.entries(options)) {
-    if(!whitelist.includes(key) && isPresent(value)) {
-      extra.push(key);
+    if(whitelist.includes(key)) {
+      result[key] = value;
     }
   }
-
-  assert(`Invalid option(s) passed: [${extra.join(', ')}]`, extra.length === 0);
+  return result;
 }
 
 /**

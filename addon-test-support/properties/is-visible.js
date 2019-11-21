@@ -1,6 +1,7 @@
 import { assign, guardMultiple } from '../-private/helpers';
 import { findMany } from '../extend';
 import { A } from '@ember/array';
+import $ from '-jquery';
 
 /**
  * Validates if an element or set of elements are visible.
@@ -120,7 +121,7 @@ export function isVisible(selector, userOptions = {}) {
         return false;
       }
 
-      return A(elements).every((element) => window.getComputedStyle(element).display !== 'none');
+      return A(elements).every((element) => $(element).is(':visible'));
     }
   };
 }

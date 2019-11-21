@@ -1,5 +1,6 @@
 import { assign, normalizeText } from '../-private/helpers';
 import { findMany, findOne } from '../extend';
+import $ from '-jquery';
 
 function identity(v) {
   return v;
@@ -108,9 +109,9 @@ export function text(selector, userOptions = {}) {
       let f = options.normalize === false ? identity : normalizeText;
 
       if (options.multiple) {
-        return findMany(this, selector, options).map(element => f(element.textContent));
+        return findMany(this, selector, options).map(element => f($(element).text()));
       } else {
-        return f(findOne(this, selector, options).textContent);
+        return f($(findOne(this, selector, options)).text());
       }
     }
   };

@@ -1,5 +1,5 @@
 import { getExecutionContext } from '../-private/execution_context';
-import { assertOptionsWhitelisted } from '../-private/helpers';
+import { filterWhitelistedOption } from '../-private/helpers';
 /**
  * @public
  *
@@ -30,7 +30,7 @@ import { assertOptionsWhitelisted } from '../-private/helpers';
  * @return {Array} of Element
  */
 export function findMany(pageObjectNode, targetSelector, options = {}) {
-  assertOptionsWhitelisted(options, ['resetScope', 'visible', 'testContainer', 'contains', 'scope']);
-  const opts = Object.assign({}, options, { multiple: true });
+  const filteredOptions = filterWhitelistedOption(options, ['resetScope', 'visible', 'testContainer', 'contains', 'scope']);
+  const opts = Object.assign({}, filteredOptions, { multiple: true });
   return getExecutionContext(pageObjectNode).find(targetSelector, opts).get();
 }
