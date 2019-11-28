@@ -57,10 +57,8 @@ export default function isDisabled(selector, options = {}) {
 -   `options` **Object** Additional options
     -   `options.resetScope` **boolean** Do not use inherited scope
     -   `options.contains` **string** Filter by using :contains('foo') pseudo-class
-    -   `options.last` **boolean** Filter by using :last pseudo-class
     -   `options.visible` **boolean** Filter by using :visible pseudo-class
     -   `options.testContainer` **String** Context where to search elements in the DOM
-    -   `options.at` **number** Filter by index using :eq(x) pseudo-class
     -   `options.pageObjectKey` **String** Used in the error message when the element is not found
 
 **Examples**
