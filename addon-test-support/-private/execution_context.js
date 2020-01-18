@@ -35,7 +35,8 @@ export function getExecutionContext(pageObjectNode) {
   }
 
   if (!contextName) {
-    throw new Error('Can not detect test type. Please make sure you use the latest version of "@ember/test-helpers".');
+    throw new Error(`Looks like you attempt to access page object property outside of test context.
+If that's not the case, please make sure you use the latest version of "@ember/test-helpers".`);
   }
 
   return new executioncontexts[contextName](pageObjectNode, integrationTestContext);
