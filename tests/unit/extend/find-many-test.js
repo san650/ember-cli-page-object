@@ -113,5 +113,29 @@ if (require.has('@ember/test-helpers')) {
 
       assert.deepEqual(findMany(page, '.lorem', { visible: true }), findAll('.lorem').slice(1, 3));
     });
+
+    test('at param', async function(assert) {
+      let page = create({});
+
+      await this.render(hbs`
+        <span class="lorem"></span>
+        <span class="lorem"></span>
+        <span class="lorem"></span>
+      `);
+
+      assert.deepEqual(findMany(page, '.lorem', { at: 1 }), findAll('.lorem')[1]);
+    });
+
+    test('last param', async function(assert) {
+      let page = create({});
+
+      await this.render(hbs`
+        <span class="lorem"></span>
+        <span class="lorem"></span>
+        <span class="lorem"></span>
+      `);
+
+      assert.deepEqual(findMany(page, '.lorem', { last: true }), findAll('.lorem')[2]);
+    });
   });
 }
