@@ -5,6 +5,46 @@ title: Deprecations
 
 This is a list of deprecations introduced in 1.x cycle:
 
+## Is property
+
+**ID**: ember-cli-page-object.is-property
+
+**Until**: 2.0.0
+
+In scope of gradual reducing of jQuery APIs exposed directly to the user, we no longer recommend to use `is` property, and plan to remove it in v2 of page objects.
+
+The most common use cases for `is(` are covered with a `property` helper. Please use it instead.
+
+Bad:
+
+```js
+import { create, is } from 'ember-cli-page-object';
+
+const page = create({
+  scope: 'input',
+
+  isChecked: is(':checked'),
+
+  isDisabled: is(':disabled')
+});
+```
+
+Good:
+
+```js
+import { create, property } from 'ember-cli-page-object';
+
+const page = create({
+  scope: 'input',
+
+  isChecked: property('checked'),
+
+  isDisabled: property('disabled')
+})
+```
+
+In case there is no built-in replacement for `is` in ember-cli-page-object, you can write your custom getter property, to achieve behavior you need.
+
 ## Set context
 
 **ID**: ember-cli-page-object.set-context

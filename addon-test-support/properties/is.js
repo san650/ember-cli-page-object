@@ -54,7 +54,8 @@ export function is(testSelector, targetSelector, userOptions = {}) {
     get(key) {
       deprecate(':is property is deprecated', false, {
         id: 'ember-cli-page-object.is-property',
-        until: '2.0.0'
+        until: '2.0.0',
+        url: 'https://ember-cli-page-object.js.org/docs/v1.16.x/deprecations/#is-property',
       });
 
       let options = assign({ pageObjectKey: key }, userOptions);
