@@ -1,9 +1,15 @@
 import { test, module } from 'qunit';
 import { setupTest } from 'ember-qunit';
 import require from 'require';
+import { create } from 'ember-cli-page-object';
 
 if (require.has('@ember/test-helpers')) {
   module('Unit | supports rfc268', function(hooks) {
+    function getExecutionContext(pageObject) {
+      window.require.unsee('ember-cli-page-object/test-support/-private/execution_context');
+      return require('ember-cli-page-object/test-support/-private/execution_context').getExecutionContext(pageObject);
+    }
+
     function supportsRfc268() {
       window.require.unsee('ember-cli-page-object/test-support/-private/execution_context');
       return require('ember-cli-page-object/test-support/-private/execution_context').supportsRfc268();
@@ -41,8 +47,13 @@ if (require.has('@ember/test-helpers')) {
     });
 
     module('without context', function() {
-      test('works', function(assert) {
-        assert.notOk(supportsRfc268());
+      test('throws', function(assert) {
+        assert.throws(
+          () => getExecutionContext(create()),
+          new Error(`Looks like you attempt to access page object property outside of test context.
+If that's not the case, please make sure you use the latest version of "@ember/test-helpers".`),
+          'Throws with a correct message'
+        );
       });
     });
   });
