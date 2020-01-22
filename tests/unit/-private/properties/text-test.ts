@@ -188,7 +188,7 @@ moduleForProperty('text', function(test) {
       </ul>
     `);
 
-    assert.deepEqual(page.foo, ['lorem', 'ipsum', 'dolor']);
+    assert.deepEqual(page.foo as any, ['lorem', 'ipsum', 'dolor']);
   });
 
   test('looks for elements outside the testing container', async function(assert) {

@@ -2,21 +2,24 @@ import { test } from 'qunit';
 import moduleForAcceptance from '../helpers/module-for-acceptance';
 import {
   create,
-  findElement,
-  findElementWithAssert,
   visitable
 } from 'ember-cli-page-object';
+
+import {
+  findElement,
+  findElementWithAssert
+} from 'ember-cli-page-object/extend';
 
 moduleForAcceptance('Acceptance | extends');
 
 let page = create({
   visit: visitable('/calculator'),
 
-  findElement(selector) {
+  findElement(this: any, selector: string) {
     return findElement(this, selector);
   },
 
-  findElementWithAssert(selector) {
+  findElementWithAssert(this: any, selector: string) {
     return findElementWithAssert(this, selector);
   }
 });

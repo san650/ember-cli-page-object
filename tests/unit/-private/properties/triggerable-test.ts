@@ -28,7 +28,7 @@ moduleForProperty('triggerable', function(test) {
 
     await this.adapter.createTemplate(this, page, '<input />');
 
-    this.adapter.$('input').on('keypress', (e) => assert.equal(e.keyCode, 13));
+    this.adapter.$('input').on('keypress', (e: KeyboardEvent) => assert.equal(e.keyCode, 13));
 
     await this.adapter.await(page.foo());
   });
@@ -42,7 +42,7 @@ moduleForProperty('triggerable', function(test) {
 
     await this.adapter.createTemplate(this, page, '<input />');
 
-    this.adapter.$('input').on('keypress', (e) => assert.equal(e.keyCode, 13));
+    this.adapter.$('input').on('keypress', (e: KeyboardEvent) => assert.equal(e.keyCode, 13));
 
     await this.adapter.await(page.foo({ keyCode: 13 }));
   });
@@ -58,7 +58,7 @@ moduleForProperty('triggerable', function(test) {
 
     await this.adapter.createTemplate(this, page, '<input />');
 
-    this.adapter.$('input').on('keypress', (e) => assert.equal(e.keyCode, 13));
+    this.adapter.$('input').on('keypress', (e: KeyboardEvent) => assert.equal(e.keyCode, 13));
 
     await this.adapter.await(page.foo({ keyCode: 13 }));
   });
