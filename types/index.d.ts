@@ -64,7 +64,7 @@ declare module 'ember-cli-page-object/extend' {
   function findElementWithAssert(pageObject: Component, scope?: string, options?: FindOptions): JQuery;
 
   function findOne(pageObject: Component, scope?: string, options?: FindOneOptions): Element;
-  function findMany(pageObject: Component, scope?: string, options?: FindOptions): Array<Element>;
+  function findMany(pageObject: Component, scope?: string, options?: FindOptions): Element[];
 }
 
 declare module 'ember-cli-page-object/macros' {
