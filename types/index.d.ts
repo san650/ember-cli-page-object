@@ -18,7 +18,7 @@ declare module 'ember-cli-page-object' {
   function isVisible(scope?: string, options?: FindOptions): GetterDescriptor<boolean>;
   function isHidden(scope?: string, options?: FindOptions): GetterDescriptor<boolean>;
   function isPresent(scope?: string, options?: FindOptions): GetterDescriptor<boolean>;
-  function text(scope?: string, options?: FindOptions): GetterDescriptor<string>;
+  function text(scope?: string, options?: FindOptions & { normalize?: boolean }): GetterDescriptor<string>;
   function value(scope?: string, options?: FindOptions): GetterDescriptor<string>;
   function property(name: string): GetterDescriptor<any>;
   function property(scope: string, name: string, options?: FindOptions): GetterDescriptor<any>;
@@ -33,7 +33,8 @@ declare module 'ember-cli-page-object' {
   function clickable(scope?: string, userOptions?: FindOptions): MethodDescriptor<<T>(this: T) => T>;
   function clickOnText(scope?: string, userOptions?: FindOptions): MethodDescriptor<<T>(this: T, text: string) => T>;
   function fillable(scope?: string, userOptions?: FindOptions): MethodDescriptor<<T>(this: T, clueOrContent: string, content?: string) => T>;
-  function triggerable(event: string, scope?: string, eventOptions?: TriggerOptions, options?: FindOptions): MethodDescriptor<<T>(this: T) => T>;
+  function selectable(scope?: string, userOptions?: FindOptions): MethodDescriptor<<T>(this: T, clueOrContent: string, content?: string) => T>;
+  function triggerable(event: string, scope?: string, eventOptions?: TriggerOptions, options?: FindOptions): MethodDescriptor<<T>(this: T, options?: {}) => T>;
   function focusable(scope?: string, options?: FindOptions): MethodDescriptor<<T>(this: T) => T>;
   function blurrable(scope?: string, options?: FindOptions): MethodDescriptor<<T>(this: T) => T>;
   function visitable(path: string): MethodDescriptor<<T>(this: T, dynamicSegmentsAndQueryParams?: {}) => T>;
@@ -51,7 +52,7 @@ declare module 'ember-cli-page-object' {
     forEach(callback: (c: Component<T>, i: number) => void): void;
     map<S>(callback: (c: Component<T>) => S): S[];
     mapBy(propName: keyof T | keyof DSL<T>): any[];
-    objectAt(i: number): Component<T>|undefined;
+    objectAt(i: number): Component<T>;
     toArray(): Array<Component<T>>;
   }
 }
@@ -70,8 +71,8 @@ declare module 'ember-cli-page-object/extend' {
 declare module 'ember-cli-page-object/macros' {
   import { GetterDescriptor } from 'ember-cli-page-object/-private';
 
-  function getter<T>(body: () => T): GetterDescriptor<T>;
-  function alias(path: string): any;
+  function getter<T>(body: (key: string) => T): GetterDescriptor<T>;
+  function alias(path: string, options?: { chainable: boolean }): any;
 }
 
 declare module 'ember-cli-page-object/-private' {
@@ -149,8 +150,8 @@ declare module 'ember-cli-page-object/-private' {
     at?: number;
   }
 
-  interface TriggerOptions extends DomElementQueryOptions {
-    eventProperties: object;
+  interface TriggerOptions extends FindOptions {
+    eventProperties?: object;
   }
 
   interface DomElementQueryOptions extends SelectorQueryOptions {
