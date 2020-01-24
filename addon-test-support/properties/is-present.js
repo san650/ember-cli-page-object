@@ -1,4 +1,5 @@
-import { findElement } from 'ember-cli-page-object';
+import { findMany } from '../extend';
+import { guardMultiple } from "../-private/helpers";
 
 /**
  * Validates if any element matching the target selector is rendered in the DOM.
@@ -17,7 +18,7 @@ import { findElement } from 'ember-cli-page-object';
  * // Lorem <span>ipsum</span>
  *
  * import { create, isPresent } from 'ember-cli-page-object';
- * 
+ *
  * const page = create({
  *   spanIsPresent: isPresent('span')
  * });
@@ -30,7 +31,7 @@ import { findElement } from 'ember-cli-page-object';
  * // <span style="display:none">dolor</span>
  *
  * import { create, isPresent } from 'ember-cli-page-object';
- * 
+ *
  * const page = create({
  *   spanIsPresent: isPresent('span', { multiple: true })
  * });
@@ -44,7 +45,7 @@ import { findElement } from 'ember-cli-page-object';
  * // </head>
  *
  * import { create, isPresent } from 'ember-cli-page-object';
- * 
+ *
  * const page = create({
  *   notIndexed: isPresent(`meta[name='robots'][content='noindex']`, {
  *     testContainer: 'head'
@@ -58,7 +59,7 @@ import { findElement } from 'ember-cli-page-object';
  * // Lorem <strong>ipsum</strong>
  *
  * import { create, isPresent } from 'ember-cli-page-object';
- * 
+ *
  * const page = create({
  *   spanIsPresent: isPresent('span')
  * });
@@ -79,11 +80,13 @@ import { findElement } from 'ember-cli-page-object';
  *
  * @throws Will throw an error if multiple elements are matched by selector and multiple option is not set
  */
-export function isPresent(selector, options) {
+export function isPresent(selector, options = {}) {
   return {
     isDescriptor: true,
     get() {
-      return !!findElement(this, selector, options).length;
+      let elements = findMany(this, selector, options);
+      guardMultiple(elements, selector, options.multiple);
+      return elements.length > 0;
     }
   };
 }

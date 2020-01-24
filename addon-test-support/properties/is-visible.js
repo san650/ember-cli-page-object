@@ -1,5 +1,7 @@
-import { assign, every } from '../-private/helpers';
-import { findElement } from '../extend';
+import { assign, guardMultiple } from '../-private/helpers';
+import { findMany } from '../extend';
+import { A } from '@ember/array';
+import $ from '-jquery';
 
 /**
  * Validates if an element or set of elements are visible.
@@ -112,15 +114,14 @@ export function isVisible(selector, userOptions = {}) {
     get(key) {
       let options = assign({ pageObjectKey: key }, userOptions);
 
-      let elements = findElement(this, selector, options);
+      let elements = findMany(this, selector, options);
+      guardMultiple(elements, selector, options.multiple);
 
       if (elements.length === 0) {
         return false;
       }
 
-      return every(elements, function(element) {
-        return element.is(':visible');
-      });
+      return A(elements).every((element) => $(element).is(':visible'));
     }
   };
 }

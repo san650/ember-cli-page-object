@@ -1,5 +1,6 @@
-import { assign, every } from '../-private/helpers';
-import { findElementWithAssert } from '../extend'
+import { assign } from '../-private/helpers';
+import { findOne, findMany } from '../extend';
+import { A } from '@ember/array';
 
 /**
  * Validates if an element or a set of elements have a given CSS class.
@@ -99,11 +100,9 @@ export function hasClass(cssClass, selector, userOptions = {}) {
     get(key) {
       let options = assign({ pageObjectKey: key }, userOptions);
 
-      let elements = findElementWithAssert(this, selector, options);
+      let elements = options.multiple ? findMany(this, selector, options) : [findOne(this, selector, options)];
 
-      return every(elements, function(element) {
-        return element.hasClass(cssClass);
-      });
+      return A(elements).every((element) => element.classList.contains(cssClass));
     }
   };
 }

@@ -1,5 +1,5 @@
 import { assign } from '../-private/helpers';
-import { findElement } from '../extend';
+import { findMany } from '../extend';
 
 /**
  * @public
@@ -90,7 +90,7 @@ export function count(selector, userOptions = {}) {
 
       options = assign(options, { multiple: true });
 
-      return findElement(this, selector, options).length;
+      return findMany(this, selector, options).length;
     }
   };
 }

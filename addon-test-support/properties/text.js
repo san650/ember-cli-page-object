@@ -1,5 +1,6 @@
-import { assign, map, normalizeText } from '../-private/helpers';
-import { findElementWithAssert } from '../extend';
+import { assign, normalizeText } from '../-private/helpers';
+import { findMany, findOne } from '../extend';
+import $ from '-jquery';
 
 function identity(v) {
   return v;
@@ -105,12 +106,13 @@ export function text(selector, userOptions = {}) {
 
     get(key) {
       let options = assign({ pageObjectKey: key }, userOptions);
-
-      let elements = findElementWithAssert(this, selector, options);
-
       let f = options.normalize === false ? identity : normalizeText;
 
-      return map(elements, element => f(element.text()), options);
+      if (options.multiple) {
+        return findMany(this, selector, options).map(element => f($(element).text()));
+      } else {
+        return f($(findOne(this, selector, options)).text());
+      }
     }
   };
 }

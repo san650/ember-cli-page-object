@@ -37,7 +37,10 @@ const HELPER_METHODS = [
   'findElementWithAssert'
 ];
 
-const EXTEND_METHODS = HELPER_METHODS.concat('registerExecutionContext');
+const EXTEND_METHODS = HELPER_METHODS.concat('registerExecutionContext').concat([
+  'findOne',
+  'findMany'
+]);
 
 const EXPECTED_MACROS = [
   'alias',

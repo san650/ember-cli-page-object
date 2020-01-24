@@ -166,12 +166,20 @@ export function every(jqArray, cb) {
   return A(arr).every((element) => cb($(element)));
 }
 
-export function map(jqArray, cb, options = {}) {
-  let arr = jqArray.get();
-
-  const values =  A(arr).map(element => cb($(element)));
-
-  return options.multiple ? values : values[0];
+/**
+ * @private
+ *
+ * Check if all options are in whitelist
+ *
+ */
+export function filterWhitelistedOption(options, whitelist) {
+  const result = {};
+  for (let [key, value] of Object.entries(options)) {
+    if(whitelist.includes(key)) {
+      result[key] = value;
+    }
+  }
+  return result;
 }
 
 /**

@@ -58,10 +58,13 @@ declare module 'ember-cli-page-object' {
 
 declare module 'ember-cli-page-object/extend' {
   import 'jquery';
-  import { Component, FindOptions } from 'ember-cli-page-object/-private';
+  import { Component, FindOptions, FindOneOptions } from 'ember-cli-page-object/-private';
 
   function findElement(pageObject: Component, scope?: string, options?: FindOptions): JQuery;
   function findElementWithAssert(pageObject: Component, scope?: string, options?: FindOptions): JQuery;
+
+  function findOne(pageObject: Component, scope?: string, options?: FindOneOptions): Element;
+  function findMany(pageObject: Component, scope?: string, options?: FindOptions): Element[];
 }
 
 declare module 'ember-cli-page-object/macros' {
@@ -134,15 +137,15 @@ declare module 'ember-cli-page-object/-private' {
     [l: string]: unknown;
   }
 
-  interface FindOptions extends DomElementQueryOptions {
-    contains?: string;
-
-    last?: boolean;
-
-    visible?: boolean;
-
+  interface FindOptions extends FindOneOptions {
     multiple?: boolean;
+  }
 
+  interface FindOneOptions extends DomElementQueryOptions {
+    contains?: string;
+    scope?: string;
+    last?: boolean;
+    visible?: boolean;
     at?: number;
   }
 

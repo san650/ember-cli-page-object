@@ -1,5 +1,6 @@
-import { assign, map } from '../-private/helpers';
-import { findElementWithAssert } from '../extend';
+import { assign } from '../-private/helpers';
+import { findMany, findOne } from '../extend';
+import $ from '-jquery';
 
 /**
  * @public
@@ -93,15 +94,13 @@ export function value(selector, userOptions = {}) {
     get(key) {
       let options = assign({ pageObjectKey: key }, userOptions);
 
-      let elements = findElementWithAssert(this, selector, options);
+      const checkValue = (element) => element.hasAttribute('contenteditable') ? $(element).html() : $(element).val();
 
-      return map(elements, function(element) {
-        if (element.is('[contenteditable]')) {
-          return element.html();
-        } else {
-          return element.val();
-        }
-      }, options);
+      if (options.multiple) {
+        return findMany(this, selector, options).map(checkValue);
+      } else {
+        return checkValue(findOne(this, selector, options));
+      }
     }
   };
 }

@@ -1,4 +1,5 @@
 import { getExecutionContext } from '../-private/execution_context';
+import { deprecate } from '@ember/application/deprecations';
 
 /**
  * @public
@@ -36,5 +37,10 @@ import { getExecutionContext } from '../-private/execution_context';
  * @throws Will throw an error if multiple elements are matched by selector and multiple option is not set
  */
 export function findElementWithAssert(pageObjectNode, targetSelector, options = {}) {
+  deprecate('findElementWithAssert is deprecated, please use findOne or findMany instead', false, {
+    id: 'ember-cli-page-object.old-finders',
+    until: '2.0.0',
+    url: 'https://ember-cli-page-object.js.org/docs/v1.16.x/deprecations/#old-finders'
+  });
   return getExecutionContext(pageObjectNode).findWithAssert(targetSelector, options);
 }

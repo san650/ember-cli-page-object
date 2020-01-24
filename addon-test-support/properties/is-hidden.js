@@ -1,5 +1,7 @@
-import { assign, every } from '../-private/helpers';
-import { findElement } from '../extend';
+import { assign, guardMultiple } from '../-private/helpers';
+import { findMany } from '../extend';
+import { A } from '@ember/array';
+import $ from '-jquery';
 
 /**
  * Validates if an element or set of elements is hidden or does not exist in the DOM.
@@ -106,9 +108,12 @@ export function isHidden(selector, userOptions = {}) {
     get(key) {
       let options = assign({ pageObjectKey: key }, userOptions);
 
-      let elements = findElement(this, selector, options);
+      let elements = findMany(this, selector, options);
 
-      return every(elements, element => element.is(':hidden'));
+      guardMultiple(elements, selector, options.multiple);
+
+      return elements.length === 0 ||
+        A(elements).every(element => $(element).is(':hidden'));
     }
   };
 }
