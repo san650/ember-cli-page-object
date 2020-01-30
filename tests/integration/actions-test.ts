@@ -98,6 +98,14 @@ if (require.has('@ember/test-helpers')) {
   module('Integration | actions', function(hooks) {
     setupRenderingTest(hooks);
 
+    hooks.beforeEach(function(this: any) {
+      ( page as any ).setContext(this);
+    });
+
+    hooks.afterEach(function() {
+      ( page as any ).removeContext();
+    });
+
     test('Actions work when defined inside collections', async function(assert) {
       let template = createCalculatorTemplate();
 
@@ -105,7 +113,7 @@ if (require.has('@ember/test-helpers')) {
 
       await page
         .numbers
-        .objectAt(0)!
+        .objectAt(0)
         .click();
 
       assert.equal(page.screen.text, '1');
