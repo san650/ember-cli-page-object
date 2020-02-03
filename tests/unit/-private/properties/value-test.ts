@@ -105,19 +105,6 @@ moduleForProperty('value', function(test) {
       /matched more than one element. If this is not an error use { multiple: true }/);
   });
 
-  test('matches multiple elements with multiple: true option', async function(assert) {
-    let page = create({
-      foo: value('input', { multiple: true })
-    });
-
-    await this.adapter.createTemplate(this, page, `
-      <input value="lorem">
-      <input value="ipsum">
-    `);
-
-    assert.deepEqual(page.foo as any, ['lorem', 'ipsum']);
-  });
-
   test('finds element by index', async function(assert) {
     let page = create({
       foo: value('input', { at: 1 })

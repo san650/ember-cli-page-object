@@ -107,32 +107,6 @@ moduleForProperty('notHasClass', function(test) {
       /matched more than one element. If this is not an error use { multiple: true }/);
   });
 
-  test('matches multiple elements with multiple: true option, returns true if no elements have class', async function(assert) {
-    let page = create({
-      foo: notHasClass('other-class', 'span', { multiple: true })
-    });
-
-    await this.adapter.createTemplate(this, page, `
-      <span class="lorem"></span>
-      <span class="ipsum"></span>
-    `);
-
-    assert.ok(page.foo);
-  });
-
-  test('matches multiple elements with multiple: true option, returns false if some elements have class', async function(assert) {
-    let page = create({
-      foo: notHasClass('lorem', 'span', { multiple: true })
-    });
-
-    await this.adapter.createTemplate(this, page, `
-      <span class="lorem"></span>
-      <span class="ipsum"></span>
-    `);
-
-    assert.ok(!page.foo);
-  });
-
   test('finds element by index', async function(assert) {
     let page = create({
       foo: notHasClass('lorem', 'span', { at: 1 })

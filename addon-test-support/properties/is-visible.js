@@ -112,7 +112,7 @@ export function isVisible(selector, userOptions = {}) {
     isDescriptor: true,
 
     get(key) {
-      let options = assign({ pageObjectKey: key }, userOptions);
+      let options = assign({ pageObjectKey: key, __multiple__: true }, userOptions);
 
       let elements = findMany(this, selector, options);
       guardMultiple(elements, selector, options.multiple);

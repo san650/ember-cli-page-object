@@ -96,7 +96,10 @@ export function contains(selector, userOptions = {}) {
 
     get(key) {
       return function(textToSearch) {
-        let options = assign({ pageObjectKey: `${key}("${textToSearch}")` }, userOptions);
+        let options = assign({
+          pageObjectKey: `${key}("${textToSearch}")`,
+          __multiple__: true
+        }, userOptions);
 
         let elements = options.multiple ? findMany(this, selector, options) : [findOne(this, selector, options)];
 

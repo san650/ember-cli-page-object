@@ -103,19 +103,6 @@ moduleForProperty('property', function(test) {
       /matched more than one element. If this is not an error use { multiple: true }/);
   });
 
-  test('matches multiple elements', async function(assert) {
-    let page = create({
-      foo: property('checked', ':input', { multiple: true })
-    });
-
-    await this.adapter.createTemplate(this, page, `
-      <input type="checkbox" checked>
-      <input type="checkbox" >
-    `);
-
-    assert.deepEqual(page.foo, [true, false]);
-  });
-
   test('finds element by index', async function(assert) {
     let page = create({
       foo: property('checked', ':input', { at: 1 })

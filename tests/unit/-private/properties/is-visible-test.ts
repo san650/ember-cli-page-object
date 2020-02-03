@@ -90,33 +90,6 @@ moduleForProperty('isVisible', function(test) {
       /matched more than one element. If this is not an error use { multiple: true }/);
   });
 
-  test('matches multiple elements with multiple: true option, return false if not all elements are visible', async function(assert) {
-    let page = create({
-      foo: isVisible('span', { multiple: true })
-    });
-
-    await this.adapter.createTemplate(this, page, `
-      <span>lorem</span>
-      <span style="display:none"> ipsum </span>
-      <span>dolor</span>
-    `);
-
-    assert.ok(!page.foo);
-  });
-
-  test('matches multiple elements with multiple: true option, return true if all elements are visible', async function(assert) {
-    let page = create({
-      foo: isVisible('span', { multiple: true })
-    });
-
-    await this.adapter.createTemplate(this, page, `
-      <span>lorem</span>
-      <span>dolor</span>
-    `);
-
-    assert.ok(page.foo);
-  });
-
   test('finds element by index', async function(assert) {
     let page = create({
       foo: isVisible('em', { at: 0 }),

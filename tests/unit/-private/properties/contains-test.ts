@@ -92,33 +92,6 @@ moduleForProperty('contains', function(test) {
       /matched more than one element. If this is not an error use { multiple: true }/);
   });
 
-  test('matches multiple elements with multiple: true option, returns false if not all elements contain text', async function(assert) {
-    let page = create({
-      foo: contains('span', { multiple: true })
-    });
-
-    await this.adapter.createTemplate(this, page, `
-      <span>lorem</span>
-      <span>ipsum</span>
-      <span>dolor</span>
-    `);
-
-    assert.ok(!page.foo('lorem'));
-  });
-
-  test('matches multiple elements with multiple: true option, returns true if all elements contain text', async function(assert) {
-    let page = create({
-      foo: contains('span', { multiple: true })
-    });
-
-    await this.adapter.createTemplate(this, page, `
-      <span>lorem</span>
-      <span>lorem</span>
-    `);
-
-    assert.ok(page.foo('lorem'));
-  });
-
   test('finds element by index', async function(assert) {
     let page = create({
       foo: contains('span', { at: 1 })

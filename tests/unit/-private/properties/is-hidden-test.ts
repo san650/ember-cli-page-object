@@ -92,32 +92,6 @@ moduleForProperty('isHidden', function(test) {
       /matched more than one element. If this is not an error use { multiple: true }/);
   });
 
-  test('matches multiple elements with multiple: true option, returns true if all elements are hidden', async function(assert) {
-    let page = create({
-      foo: isHidden('em', { multiple: true })
-    });
-
-    await this.adapter.createTemplate(this, page, `
-      <em style="display:none">ipsum</em>
-      <em style="display:none">dolor</em>
-    `);
-
-    assert.ok(page.foo);
-  });
-
-  test('matches multiple elements with multiple: true option, returns false if some elements are visible', async function(assert) {
-    let page = create({
-      foo: isHidden('em', { multiple: true })
-    });
-
-    await this.adapter.createTemplate(this, page, `
-      <em>ipsum</em>
-      <em style="display:none">dolor</em>
-    `);
-
-    assert.ok(!page.foo);
-  });
-
   test('finds element by index', async function(assert) {
     let page = create({
       foo: isHidden('em', { at: 2 })

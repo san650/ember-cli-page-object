@@ -97,19 +97,6 @@ moduleForProperty('attribute', function(test) {
       /matched more than one element. If this is not an error use { multiple: true }/);
   });
 
-  test('returns multiple values', async function(assert) {
-    let page = create({
-      foo: attribute('placeholder', ':input', { multiple: true })
-    });
-
-    await this.adapter.createTemplate(this, page, `
-      <input placeholder="a value">
-      <input placeholder="other value">
-    `);
-
-    assert.deepEqual(page.foo, ['a value', 'other value']);
-  });
-
   test('finds element by index', async function(assert) {
     let page = create({
       foo: attribute('placeholder', ':input', { at: 1 })

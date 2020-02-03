@@ -90,20 +90,6 @@ moduleForProperty('isPresent', function(test) {
       /matched more than one element. If this is not an error use { multiple: true }/);
   });
 
-  test('matches multiple elements with multiple: true option', async function(assert) {
-    let page = create({
-      foo: isPresent('span', { multiple: true })
-    });
-
-    await this.adapter.createTemplate(this, page, `
-      <span>lorem</span>
-      <span> ipsum </span>
-      <span>dolor</span>
-    `);
-
-    assert.ok(page.foo);
-  });
-
   test('finds element by index', async function(assert) {
     let page = create({
       foo: isPresent('em', { at: 0 }),
