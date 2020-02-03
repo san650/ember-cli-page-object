@@ -115,7 +115,7 @@ moduleForProperty('value', function(test) {
       <input value="ipsum">
     `);
 
-    assert.deepEqual(page.foo, ['lorem', 'ipsum']);
+    assert.deepEqual(page.foo as any, ['lorem', 'ipsum']);
   });
 
   test('finds element by index', async function(assert) {

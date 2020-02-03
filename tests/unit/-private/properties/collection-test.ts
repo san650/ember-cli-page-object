@@ -68,8 +68,8 @@ moduleForProperty('collection', function(test) {
       <span>Ipsum</span>
     `);
 
-    assert.equal(page.foo.objectAt(0).text, 'Lorem');
-    assert.equal(page.foo.objectAt(1).text, 'Ipsum');
+    assert.equal(page.foo.objectAt(0)!.text, 'Lorem');
+    assert.equal(page.foo.objectAt(1)!.text, 'Ipsum');
   });
 
   test('collects an array of items', async function(assert) {
@@ -107,7 +107,7 @@ moduleForProperty('collection', function(test) {
       <span>Ipsum</span>
     `);
 
-    let textContents = [];
+    let textContents: string[] = [];
     withIteratorSymbolDefined(() => {
       for (let item of page.foo) {
         textContents.push(item.text);
@@ -135,7 +135,7 @@ moduleForProperty('collection', function(test) {
       </div>
     `);
 
-    assert.equal(page.foo.objectAt(0).text, 'Ipsum');
+    assert.equal(page.foo.objectAt(0)!.text, 'Ipsum');
   });
 
   test('looks for elements inside multiple scopes', async function(assert) {
@@ -174,7 +174,7 @@ moduleForProperty('collection', function(test) {
       </ul>
     `);
 
-    assert.equal(page.foo.objectAt(1).bar.text, 'Sit');
+    assert.equal(page.foo.objectAt(1)!.bar.text, 'Sit');
   });
 
   test('resets scope for items', async function(assert) {
@@ -194,7 +194,7 @@ moduleForProperty('collection', function(test) {
       </div>
     `);
 
-    assert.equal(page.foo.objectAt(0).text, 'Lorem');
+    assert.equal(page.foo.objectAt(0)!.text, 'Lorem');
   });
 
   test('sets correct scope to child collections', async function(assert) {
@@ -213,7 +213,7 @@ moduleForProperty('collection', function(test) {
       <div class="scope"><span><em>Ipsum</em></span></div>
     `);
 
-    assert.equal(page.foo.objectAt(0).bar.objectAt(0).text, 'Ipsum');
+    assert.equal(page.foo.objectAt(0)!.bar.objectAt(0)!.text, 'Ipsum');
   });
 
   test('iterates over scoped items with a for loop', async function(assert) {
@@ -231,10 +231,10 @@ moduleForProperty('collection', function(test) {
       </div>
     `);
 
-    let textContents = [];
+    let textContents: string[] = [];
 
     for (let i = 0; i < page.foo.length; i++) {
-      let item = page.foo.objectAt(i);
+      let item = page.foo.objectAt(i)!;
       textContents.push(item.text);
     }
 
@@ -256,7 +256,7 @@ moduleForProperty('collection', function(test) {
       </div>
     `);
 
-    let textContents = [];
+    let textContents: string[] = [];
 
     withIteratorSymbolDefined(() => {
       for (let item of page.foo) {
@@ -283,7 +283,7 @@ moduleForProperty('collection', function(test) {
       </div>
     `);
 
-    let textContents = [];
+    let textContents: string[] = [];
 
     page.foo.forEach((item) => {
       textContents.push(item.text);
@@ -338,7 +338,7 @@ moduleForProperty('collection', function(test) {
     );
 
     assert.equal(page.foo.length, 2);
-    assert.equal(page.foo.objectAt(0).text, 'Lorem');
+    assert.equal(page.foo.objectAt(0)!.text, 'Lorem');
   });
 
   test('objectAt returns an item', async function(assert) {
@@ -353,8 +353,8 @@ moduleForProperty('collection', function(test) {
       <span>Ipsum</span>
     `);
 
-    assert.equal(page.foo.objectAt(0).text, 'Lorem');
-    assert.equal(page.foo.objectAt(1).text, 'Ipsum');
+    assert.equal(page.foo.objectAt(0)!.text, 'Lorem');
+    assert.equal(page.foo.objectAt(1)!.text, 'Ipsum');
   });
 
   test('forEach works correctly', async function(assert) {
@@ -369,7 +369,7 @@ moduleForProperty('collection', function(test) {
       <span>Ipsum</span>
     `);
 
-    let textArray = [];
+    let textArray: string[] = [];
     page.foo.forEach((i) => {
       textArray.push(i.text);
     });
@@ -552,7 +552,7 @@ moduleForProperty('collection', function(test) {
     `);
 
     assert.deepEqual(page.foo.filter((i) => i.isSpecial).map((i) => i.text), ['Lorem']);
-    assert.deepEqual(page.foo.filter((i) => i.isFoo).map((i) => i.text), []);
+    assert.deepEqual(page.foo.filter((i) => i.isFoo as any).map((i) => i.text), []);
   });
 
   test('filterBy works correctly', async function(assert) {
@@ -569,7 +569,7 @@ moduleForProperty('collection', function(test) {
     `);
 
     assert.deepEqual(page.foo.filterBy('isSpecial').map((i) => i.text), ['Lorem']);
-    assert.deepEqual(page.foo.filterBy('isFoo').map((i) => i.text), []);
+    assert.deepEqual(page.foo.filterBy('isFoo' as any).map((i) => i.text), []);
   });
 
   test('uses array accessor', async function(assert) {

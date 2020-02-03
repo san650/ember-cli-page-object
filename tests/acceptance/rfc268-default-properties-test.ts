@@ -1,6 +1,6 @@
 import { module, test } from 'qunit';
 import { setupApplicationTest } from 'ember-qunit';
-import PageObject from '../page-object';
+import PageObject from 'ember-cli-page-object';
 import require from 'require';
 
 if (require.has('@ember/test-helpers')) {
@@ -80,5 +80,5 @@ if (require.has('@ember/test-helpers')) {
       assert.equal(page.dummy.isVisible(), 'isVisible');
       assert.equal(page.dummy.text(), 'text');
     });
-  });  
+  });
 }

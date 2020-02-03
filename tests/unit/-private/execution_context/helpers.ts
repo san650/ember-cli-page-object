@@ -2,7 +2,7 @@ import Component from '@ember/component';
 import { later } from '@ember/runloop';
 import hbs from 'htmlbars-inline-precompile';
 
-function spyAction(assert) {
+function spyAction(assert: Assert) {
   let i = 0;
 
   return () => {
@@ -16,7 +16,7 @@ function spyAction(assert) {
   };
 }
 
-export function createClickTrackerComponent(assert) {
+export function createClickTrackerComponent(assert: Assert) {
   const trackAction = spyAction(assert);
 
   const layout = hbs`<input onclick={{action "trackAction"}}>`

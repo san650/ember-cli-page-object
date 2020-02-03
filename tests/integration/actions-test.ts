@@ -1,3 +1,4 @@
+import 'qunit-dom';
 import { run } from '@ember/runloop';
 import $ from '-jquery';
 import { module, test } from 'qunit';
@@ -31,7 +32,7 @@ import require from 'require';
 if (require.has('@ember/test-helpers')) {
   const { render } = require('@ember/test-helpers');
 
-  const button = function(scope) {
+  const button = function(scope: string) {
     return {
       scope,
 
@@ -97,12 +98,12 @@ if (require.has('@ember/test-helpers')) {
   module('Integration | actions', function(hooks) {
     setupRenderingTest(hooks);
 
-    hooks.beforeEach(function() {
-      page.setContext(this);
+    hooks.beforeEach(function(this: any) {
+      ( page as any ).setContext(this);
     });
 
     hooks.afterEach(function() {
-      page.removeContext();
+      ( page as any ).removeContext();
     });
 
     test('Actions work when defined inside collections', async function(assert) {
@@ -259,7 +260,7 @@ if (require.has('@ember/test-helpers')) {
       await render(template);
 
       run(() => {
-        assert.throws(() => page.nonExistant.attribute(), message, 'attribute query did not throw an error');
+        assert.throws(() => page.nonExistant.attribute, message, 'attribute query did not throw an error');
       });
       run(() => {
         expectEmberError(assert, () => page.nonExistant.clickOnText('qux'), message, 'clickOnText action did not throw an error');

@@ -1,11 +1,11 @@
 // Executes the given callback ensuring Symbol.iterator has a value,
 // faking it in pre-ES6 environments.
-export default function withIteratorSymbolDefined(callback) {
+export default function withIteratorSymbolDefined(callback: () => unknown) {
   if ('Symbol' in window) {
     return callback();
   }
 
-  window.Symbol = { iterator: '@@iterator' };
+  ( window.Symbol as any ) = { iterator: '@@iterator' };
   try {
     return callback();
   } finally {

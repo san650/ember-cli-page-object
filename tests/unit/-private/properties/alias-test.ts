@@ -65,7 +65,7 @@ moduleForProperty('alias', function(test) {
     const page = create({
       buttons: collection({
         itemScope: 'button'
-      }),
+      } as any),
       aliasedButtons: alias('buttons')
     });
 
@@ -143,7 +143,7 @@ moduleForProperty('alias', function(test) {
       form: {
         buttons: collection({
           itemScope: 'button'
-        })
+        } as any)
       },
       aliasedButtons: alias('form.buttons')
     });
@@ -227,7 +227,7 @@ moduleForProperty('alias', function(test) {
         controls: {
           buttons: collection({
             itemScope: 'button'
-          })
+          } as any)
         },
         buttons: alias('controls.buttons')
       },
@@ -249,7 +249,7 @@ moduleForProperty('alias', function(test) {
     const page = create({
       form: {
         buttonText: text('button'),
-        isButtonReady: getter(function() {
+        isButtonReady: getter(function(this: any) {
           return this.buttonText === 'Ready to Submit!';
         }),
       },

@@ -29,7 +29,7 @@ moduleForProperty('getter', function(test) {
     const page = create({
       inputValue: value('input'),
       isSubmitButtonDisabled: property('disabled', 'button'),
-      isFormEmpty: getter(function() {
+      isFormEmpty: getter(function(this: any): boolean {
         return !this.inputValue && this.isSubmitButtonDisabled;
       })
     });
@@ -46,7 +46,7 @@ moduleForProperty('getter', function(test) {
     assert.expect(2);
 
     const page = create({
-      foo: getter(function(key) {
+      foo: getter(function(key: string) {
         assert.equal(key, 'foo');
         return true;
       })
@@ -59,7 +59,7 @@ moduleForProperty('getter', function(test) {
     assert.expect(1);
 
     const page = create({
-      foo: getter('not a function')
+      foo: getter('not a function' as any)
     });
 
     assert.throws(

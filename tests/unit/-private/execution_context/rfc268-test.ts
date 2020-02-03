@@ -4,6 +4,7 @@ import { setupRenderingTest } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
 import { create } from 'ember-cli-page-object'
 import { createClickTrackerComponent, ClickTrackerDef } from './helpers';
+import { TestContext } from 'ember-test-helpers';
 
 const node = create(ClickTrackerDef);
 
@@ -13,7 +14,7 @@ if (require.has('@ember/test-helpers')) {
   module('Integration | rfc268 context | actions', function(hooks) {
     setupRenderingTest(hooks);
 
-    hooks.beforeEach(function(assert) {
+    hooks.beforeEach(function(this: TestContext, assert) {
       this.owner.register('component:action-tracker', createClickTrackerComponent(assert))
 
       return render(hbs`{{action-tracker}}`);

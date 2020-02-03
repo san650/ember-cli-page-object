@@ -2,10 +2,12 @@ import { module, test } from 'qunit';
 import { setupApplicationTest } from 'ember-qunit';
 import {
   create,
-  findElement,
-  findElementWithAssert,
   visitable
 } from 'ember-cli-page-object';
+import {
+  findElement,
+  findElementWithAssert
+} from 'ember-cli-page-object/extend';
 import require from 'require';
 
 if (require.has('@ember/test-helpers')) {
@@ -15,11 +17,11 @@ if (require.has('@ember/test-helpers')) {
     let page = create({
       visit: visitable('/calculator'),
 
-      findElement(selector) {
+      findElement(this: any, selector: string) {
         return findElement(this, selector);
       },
 
-      findElementWithAssert(selector) {
+      findElementWithAssert(this: any, selector: string) {
         return findElementWithAssert(this, selector);
       }
     });
