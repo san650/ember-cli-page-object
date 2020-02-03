@@ -7,7 +7,6 @@ import {
   contains,
   create,
   hasClass,
-  is,
   isHidden,
   isPresent,
   isVisible,
