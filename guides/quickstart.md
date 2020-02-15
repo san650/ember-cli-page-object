@@ -111,7 +111,7 @@ For comprehensive testing of our application, we must rely on more than testing 
 
 Suppose we have a search page in our application. Let's generate a page-object for it.
 
-```
+```bash
 $ ember generate page-object search-page
 
 installing
@@ -141,15 +141,26 @@ Let's update the page object as follows:
 
 ```js
 // my-app/tests/pages/my-page.js
-import { create, visitable } from 'ember-cli-page-object';
+import { create, visitable, collection } from 'ember-cli-page-object';
 import SearchForm from 'my-app/tests/pages/components/search-form';
 
 export default create({
   visit: visitable('/'),
 
-  search: SearchForm,
+  results: collection('ol li article'),
 
-  results: collection('ol li article')
+  searchForm: SearchForm,
+
+  /**
+   * Note, we can also declare native methods on definitions,
+   * in order to provide higher level APIs for tests
+   */
+  async search(text) {
+    await this.searchForm.text.fillIn(text);
+    await this.searchForm.submit();
+
+    return this.results;
+  }
 });
 ```
 
@@ -163,11 +174,10 @@ module('Search Page', // ...
   test('it works', async function(assert) {
     await myPage.visit();
 
-    await myPage.search.text.fillIn('some');
-    await myPage.search.submit();
+    const results = await myPage.search('some');
 
-    assert.equal(myPage.results.length, 1);
-    assert.ok(myPage.results[0].contains('Awesome search result!'));
+    assert.equal(results.length, 1);
+    assert.ok(results[0].contains('Awesome search result!'));
   })
 ```
 
