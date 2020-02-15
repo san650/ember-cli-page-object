@@ -10,6 +10,7 @@ Describe functional fragments of the DOM
 * [Attributes](#attributes)
   * [Actions](#actions)
   * [Default attributes](#default-attributes)
+* [Functions and Getters](#functions-and-getters)
 
 ## Definitions
 
@@ -43,6 +44,7 @@ const FormDefinition = {
 Component instances are built by the `create` function:
 
 __Usage__
+
 ```js
 import { create } from 'ember-cli-page-object';
 
@@ -206,3 +208,38 @@ The following commonly used attributes are included in every component page obje
 * [select](./api/selectable)
 * [text](./api/text)
 * [value](./api/value)
+
+## Functions and Getters
+
+You can also use native functions and getters in your declarations, in order to provide higher level APIs for tests:
+
+```js
+import { collection } from 'ember-cli-page-object';
+
+const MyForm = {
+  errors: collection('ul.errors > li'),
+
+  title: {
+    scope: '#firstName'
+  },
+
+  description: {
+    scope: '#lastName'
+  },
+
+  submitButton: {
+    scope: 'button'
+  },
+
+  async submit(data) {
+    await this.title.fillIn(data.username)
+    await this.description.fillIn(data.password)
+
+    return this.submitButton.click();
+  }
+
+  get errorMessages() {
+    return this.errors.map((e) => e.text);
+  }
+}
+```
