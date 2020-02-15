@@ -4,6 +4,16 @@ import { assign, getPageObjectDefinition, isPageObject, storePageObjectDefinitio
 import { visitable } from './properties/visitable';
 import dsl from './-private/dsl';
 
+function assignDescriptors(target, source) {
+  Object.getOwnPropertyNames(source).forEach((key) => {
+    const descriptor = Object.getOwnPropertyDescriptor(source, key);
+
+    Object.defineProperty(target, key, descriptor);
+  });
+
+  return target;
+}
+
 //
 // When running RFC268 tests, we have to play some tricks to support chaining.
 // RFC268 helpers don't wait for things to settle by defaut, but return a
@@ -52,8 +62,22 @@ function buildObject(node, blueprintKey, blueprint, defaultBuilder) {
   if (isPageObject(blueprint)) {
     definition = getPageObjectDefinition(blueprint);
   } else {
+    Object.getOwnPropertyNames(blueprint).forEach((key) => {
+      const { get } = Object.getOwnPropertyDescriptor(blueprint, key);
+
+      if (typeof get === 'function') {
+        Object.defineProperty(blueprint, key, {
+          value: {
+            isDescriptor: true,
+            get
+          }
+        });
+      }
+    });
+
     definition = blueprint;
   }
+
   let blueprintToStore = assign({}, definition);
   //the _chainedTree is an implementation detail that shouldn't make it into the stored
   if(blueprintToStore._chainedTree){
@@ -172,7 +196,10 @@ export function create(definitionOrUrl, definitionOrOptions, optionsOrNothing) {
   let { context } = definition;
   // in the instance where the definition is a page object, we must use the stored definition directly
   // or else we will fire off the Ceibo created getters which will error
-  definition = assign({}, isPageObject(definition) ? getPageObjectDefinition(definition) : definition);
+  definition = isPageObject(definition)
+    ? assign({}, getPageObjectDefinition(definition))
+    : assignDescriptors({}, definition);
+
   delete definition.context;
 
   if (url) {
