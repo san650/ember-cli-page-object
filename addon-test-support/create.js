@@ -1,4 +1,5 @@
 import Ceibo from 'ceibo';
+import { deprecate } from '@ember/application/deprecations';
 import { render, setContext, removeContext } from './-private/context';
 import { assign, getPageObjectDefinition, isPageObject, storePageObjectDefinition } from './-private/helpers';
 import { visitable } from './properties/visitable';
@@ -63,7 +64,7 @@ function buildObject(node, blueprintKey, blueprint, defaultBuilder) {
     definition = getPageObjectDefinition(blueprint);
   } else {
     Object.getOwnPropertyNames(blueprint).forEach((key) => {
-      const { get } = Object.getOwnPropertyDescriptor(blueprint, key);
+      const { get, value } = Object.getOwnPropertyDescriptor(blueprint, key);
 
       if (typeof get === 'function') {
         Object.defineProperty(blueprint, key, {
@@ -72,6 +73,14 @@ function buildObject(node, blueprintKey, blueprint, defaultBuilder) {
             get
           }
         });
+      } else {
+        deprecate('do not use string values on definitions',
+          typeof value !== 'string' || ['scope', 'testContainer'].includes(key), {
+            id: 'ember-cli-page-object.string-properties-on-definition',
+            until: "2.0.0",
+            url: 'https://ember-cli-page-object.js.org/docs/v1.17.x/deprecations/#string-properties-on-definition',
+          }
+        )
       }
     });
 
