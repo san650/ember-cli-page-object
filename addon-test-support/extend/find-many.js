@@ -36,7 +36,7 @@ export function findMany(pageObjectNode, targetSelector, options = {}) {
   deprecate('"multiple" property is deprecated', false === '__multiple__' in options , {
     id: 'ember-cli-page-object.multiple',
     until: '2.0.0',
-    url: 'https://ember-cli-page-object.js.org/docs/v1.16.x/deprecations/#multiple',
+    url: 'https://ember-cli-page-object.js.org/docs/v1.17.x/deprecations/#multiple',
   });
 
   const filteredOptions = filterWhitelistedOption(options, [
