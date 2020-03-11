@@ -94,7 +94,7 @@ class Selector {
 
 export function guardMultiple(items, selector, supportMultiple) {
   assert(
-    `"${selector}" matched more than one element. If this is not an error use { multiple: true }`,
+    `"${selector}" matched more than one element. If you want to select many elements, use collections instead.`,
     supportMultiple || items.length <= 1
   );
 }

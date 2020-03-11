@@ -87,7 +87,7 @@ moduleForProperty('isPresent', function(test) {
     `);
 
     assert.throws(() => page.foo,
-      /matched more than one element. If this is not an error use { multiple: true }/);
+      /matched more than one element. If you want to select many elements, use collections instead./);
   });
 
   test('finds element by index', async function(assert) {
