@@ -173,13 +173,12 @@ export function every(jqArray, cb) {
  *
  */
 export function filterWhitelistedOption(options, whitelist) {
-  const result = {};
-  for (let [key, value] of Object.entries(options)) {
-    if(whitelist.includes(key)) {
-      result[key] = value;
+  return whitelist.reduce((whitelisted, knownKey) => {
+    if (knownKey in options) {
+        whitelisted[knownKey] = options[knownKey];
     }
-  }
-  return result;
+    return whitelisted;
+  }, {});
 }
 
 /**
