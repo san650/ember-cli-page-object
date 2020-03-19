@@ -172,23 +172,7 @@ moduleForProperty('text', function(test) {
     `);
 
     assert.throws(() => page.foo,
-      /matched more than one element. If this is not an error use { multiple: true }/);
-  });
-
-  test('returns multiple values', async function(assert) {
-    let page = create({
-      foo: text('li', { multiple: true })
-    });
-
-    await this.adapter.createTemplate(this, page, `
-      <ul>
-        <li>lorem</li>
-        <li> ipsum </li>
-        <li>dolor</li>
-      </ul>
-    `);
-
-    assert.deepEqual(page.foo as any, ['lorem', 'ipsum', 'dolor']);
+      /matched more than one element. If you want to select many elements, use collections instead./);
   });
 
   test('looks for elements outside the testing container', async function(assert) {

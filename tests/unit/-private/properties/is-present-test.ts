@@ -87,21 +87,7 @@ moduleForProperty('isPresent', function(test) {
     `);
 
     assert.throws(() => page.foo,
-      /matched more than one element. If this is not an error use { multiple: true }/);
-  });
-
-  test('matches multiple elements with multiple: true option', async function(assert) {
-    let page = create({
-      foo: isPresent('span', { multiple: true })
-    });
-
-    await this.adapter.createTemplate(this, page, `
-      <span>lorem</span>
-      <span> ipsum </span>
-      <span>dolor</span>
-    `);
-
-    assert.ok(page.foo);
+      /matched more than one element. If you want to select many elements, use collections instead./);
   });
 
   test('finds element by index', async function(assert) {

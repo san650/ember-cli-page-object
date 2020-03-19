@@ -88,8 +88,6 @@ export function count(selector, userOptions = {}) {
     get(key) {
       let options = assign({ pageObjectKey: key }, userOptions);
 
-      options = assign(options, { multiple: true });
-
       return findMany(this, selector, options).length;
     }
   };

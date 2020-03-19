@@ -1,5 +1,5 @@
 import { findMany } from '../extend';
-import { guardMultiple } from "../-private/helpers";
+import { assign, guardMultiple } from '../-private/helpers';
 
 /**
  * Validates if any element matching the target selector is rendered in the DOM.
@@ -80,10 +80,12 @@ import { guardMultiple } from "../-private/helpers";
  *
  * @throws Will throw an error if multiple elements are matched by selector and multiple option is not set
  */
-export function isPresent(selector, options = {}) {
+export function isPresent(selector, userOptions = {}) {
   return {
     isDescriptor: true,
-    get() {
+    get(key) {
+      let options = assign({ pageObjectKey: key, __multiple__: true }, userOptions);
+
       let elements = findMany(this, selector, options);
       guardMultiple(elements, selector, options.multiple);
       return elements.length > 0;

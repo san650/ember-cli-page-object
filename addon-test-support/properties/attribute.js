@@ -80,7 +80,7 @@ export function attribute(attributeName, selector, userOptions = {}) {
     isDescriptor: true,
 
     get(key) {
-      let options = assign({ pageObjectKey: key }, userOptions);
+      let options = assign({ pageObjectKey: key, __multiple__: true }, userOptions);
 
       if (options.multiple) {
         return findMany(this, selector, options).map(element => element.getAttribute(attributeName), options);

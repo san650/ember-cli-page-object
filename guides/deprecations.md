@@ -5,6 +5,68 @@ title: Deprecations
 
 This is a list of deprecations introduced in 1.x cycle:
 
+## Multiple
+
+**ID**: ember-cli-page-object.multiple
+
+**Until**: 2.0.0
+
+`multiple` option makes our internals significantly more complex, and extends API surface for each attribute without big benefits.
+
+It can also confuse a consumer of page object which uses `multiple`, because when accessing an attribute one may expect to get a scalar value, rather than array.
+
+In order to migrate use collections please:
+
+Bad:
+
+```js
+import { create, is } from 'ember-cli-page-object';
+
+const page = create({
+  scope: 'div',
+
+  tags: text('.tag', { multiple: true }),
+});
+
+// usage
+assert.deepEqual(page.tags, ['one', 'two', 'three'])
+```
+
+Good:
+
+```js
+import { create, collection } from 'ember-cli-page-object';
+
+const page = create({
+  scope: 'div',
+
+  tags: collection('.tag'),
+});
+
+// usage
+assert.deepEqual(page.tags.map((t) => t.text), ['one', 'two', 'three'])
+```
+
+or, if you want to leave your tests unchanged:
+
+```js
+import { create, collection } from 'ember-cli-page-object';
+
+const page = create({
+  scope: 'div',
+
+  _tags: collection('.tag'),
+
+  get tags() {
+    return this._tags.map((t) => t.text);
+  }
+});
+
+// usage
+assert.deepEqual(page.tags, ['one', 'two', 'three'])
+```
+
+
 ## Is property
 
 **ID**: ember-cli-page-object.is-property
