@@ -11,9 +11,9 @@ This is a list of deprecations introduced in 1.x cycle:
 
 **Until**: 2.0.0
 
-In v2 any strings inside definitions, other than `scope` and `testContainer`, would be treated as a `scope`.
+In v2, any string values in definitions, other than `scope` and `testContainer`, would be treated as a `scope` selectors.
 
-Please make sure you don't have plain strings embedded into your definitions.
+Please make sure there are no plain strings used in your definitions.
 
 Bad:
 
