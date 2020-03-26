@@ -5,6 +5,38 @@ title: Deprecations
 
 This is a list of deprecations introduced in 1.x cycle:
 
+## Create URL argument
+
+**ID**: ember-cli-page-object.create-url-argument
+
+**Until**: 2.0.0
+
+In order to align `create(` and `collection(`, we now deprecate accepting an `URL` as the first argument of `create(`.
+
+In order to migrate, use `visitable` attribute please:
+
+Bad:
+
+```js
+import { create } from 'ember-cli-page-object';
+
+const page = create('/some-url', {
+  scope: '.selector',
+});
+```
+
+Good:
+
+```js
+import { create, visitable } from 'ember-cli-page-object';
+
+const page = create({
+  scope: 'input',
+
+  visit: visitable('/some-url')
+});
+```
+
 ## String properties on definition
 
 **ID**: ember-cli-page-object.string-properties-on-definition
