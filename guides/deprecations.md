@@ -5,6 +5,44 @@ title: Deprecations
 
 This is a list of deprecations introduced in 1.x cycle:
 
+## String properties on definition
+
+**ID**: ember-cli-page-object.string-properties-on-definition
+
+**Until**: 2.0.0
+
+In v2, any string values in definitions, other than `scope` and `testContainer`, would be treated as a `scope` selectors.
+
+Please make sure there are no plain strings used in your definitions.
+
+Bad:
+
+```js
+import { create } from 'ember-cli-page-object';
+
+const page = create({
+  scope: 'input',
+
+  propertyName: 'I will become a nested component scope'
+});
+```
+
+If you really need your definition to keep a string, use getter instead:
+
+Good:
+
+```js
+import { create } from 'ember-cli-page-object';
+
+const page = create({
+  scope: 'input',
+
+  get propertyName() {
+    return 'I will not become a scope :(';
+  }
+});
+```
+
 ## Multiple
 
 **ID**: ember-cli-page-object.multiple
@@ -65,7 +103,6 @@ const page = create({
 // usage
 assert.deepEqual(page.tags, ['one', 'two', 'three'])
 ```
-
 
 ## Is property
 
