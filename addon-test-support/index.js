@@ -20,7 +20,6 @@ import { triggerable } from './properties/triggerable';   export { triggerable }
 import { value }       from './properties/value';         export { value };
 import { visitable }   from './properties/visitable';     export { visitable };
 
-export { findElement } from './extend/find-element';
 export { findElementWithAssert } from './extend/find-element-with-assert';
 export { buildSelector, getContext } from './-private/helpers';
 

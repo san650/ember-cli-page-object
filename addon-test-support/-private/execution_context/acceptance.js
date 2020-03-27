@@ -105,19 +105,6 @@ AcceptanceExecutionContext.prototype = {
     }
   },
 
-  find(selector, options) {
-    let result;
-
-    selector = buildSelector(this.pageObjectNode, selector, options);
-
-    /* global find */
-    result = find(selector, options.testContainer || findClosestValue(this.pageObjectNode, 'testContainer'));
-
-    guardMultiple(result, selector, options.multiple);
-
-    return result;
-  },
-
   findWithAssert(selector, options) {
     let result;
 
