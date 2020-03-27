@@ -18,6 +18,13 @@ export default function AcceptanceExecutionContext(pageObjectNode) {
 }
 
 AcceptanceExecutionContext.prototype = {
+  get testContainer() {
+    // @todo: fix usage of private `_element`
+    return this.testContext ?
+      this.testContext._element :
+      '#ember-testing';
+  },
+
   andThen(cb) {
     return window.wait().then(() => {
       cb(this);

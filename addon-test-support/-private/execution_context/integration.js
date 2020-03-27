@@ -22,6 +22,13 @@ export default function IntegrationExecutionContext(pageObjectNode, testContext)
 }
 
 IntegrationExecutionContext.prototype = {
+  get testContainer() {
+    // @todo: fix usage of private `_element`
+    return this.testContext ?
+      this.testContext._element :
+      '#ember-testing';
+  },
+
   andThen(cb) {
     run(() => {
       cb(this)
@@ -121,11 +128,7 @@ IntegrationExecutionContext.prototype = {
 
     selector = buildSelector(this.pageObjectNode, selector, options);
 
-    if (container) {
-      result = $(selector, container);
-    } else {
-      result = this.testContext.$(selector);
-    }
+    result = $(selector, container || this.testContainer);
 
     guardMultiple(result, selector, options.multiple);
 

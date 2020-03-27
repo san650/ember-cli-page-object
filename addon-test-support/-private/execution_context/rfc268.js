@@ -25,6 +25,10 @@ export default function ExecutionContext(pageObjectNode) {
 }
 
 ExecutionContext.prototype = {
+  get testContainer() {
+    return getRootElement();
+  },
+
   runAsync(cb) {
     return run(this.pageObjectNode, cb);
   },
@@ -103,11 +107,8 @@ ExecutionContext.prototype = {
 
   getElements(selector, options) {
     let container = options.testContainer || findClosestValue(this.pageObjectNode, 'testContainer');
-    if (container) {
-      return $(selector, container);
-    } else {
-      return $(selector, getRootElement());
-    }
+
+    return $(selector, container || this.testContainer);
   },
 
   invokeHelper(selector, options, helper, ...args) {

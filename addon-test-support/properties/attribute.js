@@ -1,5 +1,5 @@
 import { assign } from '../-private/helpers';
-import { findMany, findOne } from '../extend';
+import { findOne } from '../extend';
 
 /**
  * @public
@@ -17,19 +17,6 @@ import { findMany, findOne } from '../extend';
  * });
  *
  * assert.equal(page.inputPlaceholder, 'a value');
- *
- * @example
- *
- * // <input placeholder="a value">
- * // <input placeholder="other value">
- *
- * import { create, attribute } from 'ember-cli-page-object';
- *
- * const page = create({
- *   inputPlaceholders: attribute('placeholder', ':input', { multiple: true })
- * });
- *
- * assert.deepEqual(page.inputPlaceholders, ['a value', 'other value']);
  *
  * @example
  *
@@ -80,13 +67,10 @@ export function attribute(attributeName, selector, userOptions = {}) {
     isDescriptor: true,
 
     get(key) {
-      let options = assign({ pageObjectKey: key, __multiple__: true }, userOptions);
+      let options = assign({ pageObjectKey: key }, userOptions);
+      let element = findOne(this, selector, options);
 
-      if (options.multiple) {
-        return findMany(this, selector, options).map(element => element.getAttribute(attributeName), options);
-      } else {
-        return findOne(this, selector, options).getAttribute(attributeName);
-      }
+      return element.getAttribute(attributeName);
     }
   };
 }

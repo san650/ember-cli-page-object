@@ -1,6 +1,5 @@
 import { assign } from '../-private/helpers';
-import { findOne, findMany } from '../extend';
-import { A } from '@ember/array';
+import { findOne } from '../extend';
 
 /**
  * Validates if an element or a set of elements have a given CSS class.
@@ -16,32 +15,6 @@ import { A } from '@ember/array';
  * });
  *
  * assert.ok(page.messageIsSuccess);
- *
- * @example
- *
- * // <span class="success"></span>
- * // <span class="error"></span>
- *
- * import { create, hasClass } from 'ember-cli-page-object';
- *
- * const page = create({
- *   messagesAreSuccessful: hasClass('success', 'span', { multiple: true })
- * });
- *
- * assert.notOk(page.messagesAreSuccessful);
- *
- * @example
- *
- * // <span class="success"></span>
- * // <span class="success"></span>
- *
- * import { create, hasClass } from 'ember-cli-page-object';
- *
- * const page = create({
- *   messagesAreSuccessful: hasClass('success', 'span', { multiple: true })
- * });
- *
- * assert.ok(page.messagesAreSuccessful);
  *
  * @example
  *
@@ -98,11 +71,11 @@ export function hasClass(cssClass, selector, userOptions = {}) {
     isDescriptor: true,
 
     get(key) {
-      let options = assign({ pageObjectKey: key, __multiple__: true }, userOptions);
+      let options = assign({ pageObjectKey: key }, userOptions);
 
-      let elements = options.multiple ? findMany(this, selector, options) : [findOne(this, selector, options)];
+      let element = findOne(this, selector, options);
 
-      return A(elements).every((element) => element.classList.contains(cssClass));
+      return element.classList.contains(cssClass);
     }
   };
 }

@@ -1,6 +1,5 @@
 import { assign, guardMultiple } from '../-private/helpers';
 import { findMany } from '../extend';
-import { A } from '@ember/array';
 import $ from '-jquery';
 
 /**
@@ -17,34 +16,6 @@ import $ from '-jquery';
  * });
  *
  * assert.ok(page.spanIsVisible);
- *
- * @example
- *
- * // <span>ipsum</span>
- * // <span style="display:none">dolor</span>
- *
- * import { create, isVisible } from 'ember-cli-page-object';
- *
- * const page = create({
- *   spansAreVisible: isVisible('span', { multiple: true })
- * });
- *
- * // not all spans are visible
- * assert.notOk(page.spansAreVisible);
- *
- * @example
- *
- * // <span>ipsum</span>
- * // <span>dolor</span>
- *
- * import { create, isVisible } from 'ember-cli-page-object';
- *
- * const page = create({
- *   spansAreVisible: isVisible('span', { multiple: true })
- * });
- *
- * // all spans are visible
- * assert.ok(page.spansAreVisible);
  *
  * @example
  *
@@ -112,16 +83,12 @@ export function isVisible(selector, userOptions = {}) {
     isDescriptor: true,
 
     get(key) {
-      let options = assign({ pageObjectKey: key, __multiple__: true }, userOptions);
+      let options = assign({ pageObjectKey: key }, userOptions);
 
       let elements = findMany(this, selector, options);
       guardMultiple(elements, selector, options.multiple);
 
-      if (elements.length === 0) {
-        return false;
-      }
-
-      return A(elements).every((element) => $(element).is(':visible'));
+      return elements.length === 1 && $(elements[0]).is(':visible');
     }
   };
 }

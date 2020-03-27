@@ -31,6 +31,13 @@ export default function ExecutionContext(pageObjectNode, testContext) {
 }
 
 ExecutionContext.prototype = {
+  get testContainer() {
+    // @todo: fix usage of private `_element`
+    return this.testContext ?
+      this.testContext._element :
+      '#ember-testing';
+  },
+
   runAsync(cb) {
     return run(this.pageObjectNode, cb);
   },
@@ -56,17 +63,7 @@ ExecutionContext.prototype = {
   },
 
   $(selector, container) {
-    if (container) {
-      return $(selector, container);
-    } else {
-      // @todo: we should fixed usage of private `_element`
-      // after https://github.com/emberjs/ember-test-helpers/issues/184 is resolved
-      let testsContainer = this.testContext ?
-        this.testContext._element :
-        '#ember-testing';
-
-      return $(selector, testsContainer);
-    }
+    return $(selector, container || this.testContainer);
   },
 
   triggerEvent(selector, container, options, eventName, eventOptions) {
