@@ -1,4 +1,3 @@
-import EmberError from '@ember/error';
 import { moduleForProperty } from '../../../helpers/properties';
 import { collection, create, hasClass, text } from 'ember-cli-page-object';
 import withIteratorSymbolDefined from '../../../helpers/with-iterator-symbol-defined';
@@ -437,7 +436,7 @@ moduleForProperty('collection', function(test) {
       <span>Ipsum</span>
     `);
 
-    const expectedError = new EmberError(
+    const expectedError = new Error(
       `3 elements found by text: "Ipsum", but expected 1\n\nPageObject: 'page.foo'`
     );
 
@@ -462,7 +461,7 @@ moduleForProperty('collection', function(test) {
       <span>Ipsum</span>
     `);
 
-    const expectedError = new EmberError(
+    const expectedError = new Error(
       `cannot find element by text: "Wrong"\n\nPageObject: 'page.foo'`
     );
 
@@ -502,7 +501,7 @@ moduleForProperty('collection', function(test) {
       <span>Ipsum</span>
     `);
 
-    const expectedError = new EmberError(
+    const expectedError = new Error(
       `2 elements found by condition, but expected 1\n\nPageObject: 'page.foo'`
     );
 
@@ -527,7 +526,7 @@ moduleForProperty('collection', function(test) {
       <span>Ipsum</span>
     `);
 
-    const expectedError = new EmberError(
+    const expectedError = new Error(
       `cannot find element by condition\n\nPageObject: 'page.foo'`
     );
 
