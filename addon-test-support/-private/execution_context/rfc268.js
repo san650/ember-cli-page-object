@@ -55,14 +55,12 @@ ExecutionContext.prototype = {
     return this.invokeHelper(selector, options, triggerEvent, eventName, eventOptions);
   },
 
-  focus(selector, options) {
-    selector = buildSelector(this.pageObjectNode, selector, options);
-    return this.invokeHelper(selector, options, focus);
+  focus(element) {
+    return focus(element);
   },
 
-  blur(selector, options) {
-    selector = buildSelector(this.pageObjectNode, selector, options);
-    return this.invokeHelper(selector, options, blur);
+  blur(element) {
+    return blur(element);
   },
 
   assertElementExists(selector, options) {

@@ -1,5 +1,6 @@
 import { assign } from '../-private/helpers';
 import { getExecutionContext } from '../-private/execution_context';
+import { invokeHelper } from '../-private/action';
 
 /**
  *
@@ -72,7 +73,7 @@ export function blurrable(selector, userOptions = {}) {
         const options = assign({ pageObjectKey: `${key}()` }, userOptions);
 
         return executionContext.runAsync((context) => {
-          return context.blur(selector, options);
+          return invokeHelper(this, selector, options, (element) => context.blur(element))
         });
       };
     }
