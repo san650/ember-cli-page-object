@@ -18,7 +18,6 @@ const EXPECTED_METHODS = [
   'create',
   'fillable',
   'hasClass',
-  'is',
   'isHidden',
   'isPresent',
   'isVisible',
