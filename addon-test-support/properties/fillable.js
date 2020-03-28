@@ -1,9 +1,11 @@
 import {
   assign,
   buildSelector,
-  findClosestValue
 } from '../-private/helpers';
 import { getExecutionContext } from '../-private/execution_context';
+import { throwBetterError, ELEMENT_NOT_FOUND } from '../-private/better-errors';
+import { findMany } from 'ember-cli-page-object/extend';
+import { invokeHelper } from '../-private/action';
 
 /**
  * Alias for `fillable`, which works for inputs, HTML select menus, and
@@ -117,14 +119,15 @@ import { getExecutionContext } from '../-private/execution_context';
  * @param {string} options.testContainer - Context where to search elements in the DOM
  * @return {Descriptor}
  */
-export function fillable(selector, userOptions = {}) {
+export function fillable(selector = '', userOptions = {}) {
   return {
     isDescriptor: true,
 
     get(key) {
       return function(contentOrClue, content) {
-        let clue;
+        let options = assign({ pageObjectKey: `${key}()` }, userOptions);
 
+        let clue;
         if (content === undefined) {
           content = contentOrClue;
         } else {
@@ -132,30 +135,45 @@ export function fillable(selector, userOptions = {}) {
         }
 
         let executionContext = getExecutionContext(this);
-        let options = assign({ pageObjectKey: `${key}()` }, userOptions);
 
-        return executionContext.runAsync((context) => {
-          let fullSelector = buildSelector(this, selector, options);
-          let container = options.testContainer || findClosestValue(this, 'testContainer');
+        return executionContext.runAsync(({ fillIn }) => {
+          let scopeSelector = clue
+            ? `${selector} ${getSelectorByClue(this, selector, options, clue)}`
+            : selector;
 
-          if (clue) {
-            fullSelector = ['input', 'textarea', 'select', '[contenteditable]']
-              .map((tag) => [
-                `${fullSelector} ${tag}[data-test="${clue}"]`,
-                `${fullSelector} ${tag}[aria-label="${clue}"]`,
-                `${fullSelector} ${tag}[placeholder="${clue}"]`,
-                `${fullSelector} ${tag}[name="${clue}"]`,
-                `${fullSelector} ${tag}#${clue}`
-              ])
-              .reduce((total, other) => total.concat(other), [])
-              .join(',');
-          }
-
-          context.assertElementExists(fullSelector, options);
-
-          return context.fillIn(fullSelector, container, options, content);
+          return invokeHelper(this, scopeSelector, options, (element) => fillIn(element, content));
         });
       };
     }
   };
+}
+
+function getSelectorByClue(pageObject, selector, options, clue) {
+  let cssClues = ['input', 'textarea', 'select', '[contenteditable]'].map((tag) => [
+    `${tag}[data-test="${clue}"]`,
+    `${tag}[aria-label="${clue}"]`,
+    `${tag}[placeholder="${clue}"]`,
+    `${tag}[name="${clue}"]`,
+    `${tag}#${clue}`
+  ])
+  .reduce((total, other) => total.concat(other), [])
+
+  const clueScope = cssClues.find(extraScope => {
+    return findMany(pageObject, `${selector} ${extraScope}`, options)[0];
+  });
+
+  if (!clueScope) {
+    const pageObjectSelector = buildSelector(pageObject, '', options);
+    const possibleSelectors = cssClues.map((cssClue) => {
+      const childSelector = `${selector} ${cssClue}`.trim();
+
+      return `${pageObjectSelector} ${childSelector}`;
+    });
+
+    throwBetterError(pageObject, options.pageObjectKey, ELEMENT_NOT_FOUND, {
+      selector: possibleSelectors.join(',')
+    })
+  }
+
+  return clueScope;
 }

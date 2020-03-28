@@ -227,7 +227,7 @@ moduleForProperty('fillable', function(test) {
 
   test('raises an error when the element has contenteditable="false"', async function(assert) {
     let page = create({
-      foo: fillable('div')
+      foo: fillable('[contenteditable]')
     });
 
     await this.adapter.createTemplate(this, page, '<div contenteditable="false">');
