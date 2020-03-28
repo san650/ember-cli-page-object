@@ -37,8 +37,8 @@ ExecutionContext.prototype = {
     return visit(path);
   },
 
-  click(selector, container, options) {
-    return this.invokeHelper(selector, options, click);
+  click(element) {
+    return click(element);
   },
 
   fillIn(selector, container, options, content) {

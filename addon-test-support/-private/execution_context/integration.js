@@ -43,8 +43,8 @@ IntegrationExecutionContext.prototype = {
 
   visit() {},
 
-  click(selector, container) {
-    this.$(selector, container).click();
+  click(element) {
+    $(element).click();
   },
 
   fillIn(selector, container, options, content) {

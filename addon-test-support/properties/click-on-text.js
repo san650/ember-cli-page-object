@@ -1,6 +1,7 @@
-import { assign, findClosestValue } from '../-private/helpers';
+import { assign } from '../-private/helpers';
 import { getExecutionContext } from '../-private/execution_context';
-import { buildSelector } from './click-on-text/helpers';
+import { invokeHelper } from '../-private/action';
+import { findMany } from 'ember-cli-page-object/extend';
 
 /**
  * Clicks on an element containing specified text.
@@ -84,22 +85,32 @@ import { buildSelector } from './click-on-text/helpers';
  * @param {string} options.testContainer - Context where to search elements in the DOM
  * @return {Descriptor}
  */
-export function clickOnText(selector, userOptions = {}) {
+export function clickOnText(scope, userOptions = {}) {
   return {
     isDescriptor: true,
 
     get(key) {
       return function(textToClick) {
+        const options = assign({
+          pageObjectKey: key
+        }, userOptions, {
+          contains: textToClick,
+          // find the deepest node containing a text to click
+          last: true
+        });
+
+        const childSelector = `${scope || ''} `;
+
         let executionContext = getExecutionContext(this);
-        let options = assign({ pageObjectKey: `${key}("${textToClick}")`, contains: textToClick }, userOptions);
+        return executionContext.runAsync(({ click }) => {
+          let selector;
+          if (findMany(this, childSelector, options).length) {
+            selector = childSelector;
+          } else {
+            selector = scope;
+          }
 
-        return executionContext.runAsync((context) => {
-          let fullSelector = buildSelector(this, context, selector, options);
-          let container = options.testContainer || findClosestValue(this, 'testContainer');
-
-          context.assertElementExists(fullSelector, options);
-
-          return context.click(fullSelector, container, options);
+          return invokeHelper(this, selector, options, click);
         });
       };
     }

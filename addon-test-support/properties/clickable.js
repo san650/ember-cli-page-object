@@ -1,9 +1,6 @@
-import {
-  assign,
-  buildSelector,
-  findClosestValue
-} from '../-private/helpers';
+import { assign } from '../-private/helpers';
 import { getExecutionContext } from '../-private/execution_context';
+import { invokeHelper } from '../-private/action';
 
 /**
  * Clicks elements matched by a selector.
@@ -75,13 +72,8 @@ export function clickable(selector, userOptions = {}) {
         let executionContext = getExecutionContext(this);
         let options = assign({ pageObjectKey: `${key}()` }, userOptions);
 
-        return executionContext.runAsync((context) => {
-          let fullSelector = buildSelector(this, selector, options);
-          let container = options.testContainer || findClosestValue(this, 'testContainer');
-
-          context.assertElementExists(fullSelector, options);
-
-          return context.click(fullSelector, container, options);
+        return executionContext.runAsync(({ click }) => {
+          return invokeHelper(this, selector, options, click);
         });
       };
     }

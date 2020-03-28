@@ -42,9 +42,8 @@ ExecutionContext.prototype = {
     return run(this.pageObjectNode, cb);
   },
 
-  click(selector, container) {
-    const el = this.$(selector, container)[0];
-    click(el);
+  click(element) {
+    click(element);
   },
 
   fillIn(selector, container, options, content) {
