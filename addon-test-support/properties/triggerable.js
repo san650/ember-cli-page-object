@@ -1,9 +1,6 @@
-import {
-  assign,
-  buildSelector,
-  findClosestValue
-} from '../-private/helpers';
+import { assign } from '../-private/helpers';
 import { getExecutionContext } from '../-private/execution_context';
+import { invokeHelper } from '../-private/action';
 
 /**
  *
@@ -88,18 +85,15 @@ export function triggerable(event, selector, userOptions = {}) {
 
     get(key) {
       return function(eventProperties = {}) {
+        const options = assign({ pageObjectKey: `${key}()` },  userOptions);
+
+        const mergedEventProperties = assign({}, userOptions.eventProperties, eventProperties);
+
         const executionContext = getExecutionContext(this);
-        const options = assign({ pageObjectKey: `${key}()` }, userOptions);
-        const staticEventProperties = assign({}, options.eventProperties);
-
-        return executionContext.runAsync((context) => {
-          const fullSelector = buildSelector(this, selector, options);
-          const container =  options.testContainer || findClosestValue(this, 'testContainer');
-
-          context.assertElementExists(fullSelector, options);
-
-          const mergedEventProperties = assign(staticEventProperties, eventProperties);
-          return context.triggerEvent(fullSelector, container, options, event, mergedEventProperties);
+        return executionContext.runAsync(({ triggerEvent }) => {
+          return invokeHelper(this, selector, options, (element) => {
+            return triggerEvent(element, event, mergedEventProperties);
+          });
         });
       };
     }

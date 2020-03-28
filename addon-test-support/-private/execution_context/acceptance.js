@@ -63,9 +63,9 @@ AcceptanceExecutionContext.prototype = {
     triggerEvent(selector, container, 'change');
   },
 
-  triggerEvent(selector, container, options, eventName, eventOptions) {
+  triggerEvent(element, eventName, eventOptions) {
     /* global triggerEvent */
-    triggerEvent(selector, container, eventName, eventOptions);
+    triggerEvent(element, eventName, eventOptions);
   },
 
   focus(element) {
