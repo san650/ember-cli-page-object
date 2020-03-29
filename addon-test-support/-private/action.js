@@ -1,7 +1,24 @@
 import { resolve } from 'rsvp';
+import Ceibo from 'ceibo';
 import { getExecutionContext } from './execution_context';
 import { getRoot } from './helpers';
-import Ceibo from 'ceibo';
+import { findOne } from '../extend';
+import { throwBetterError } from './better-errors';
+
+export function invokeHelper(node, selector, query, cb) {
+  const element = findOne(node, selector, query);
+
+  let res;
+  try {
+    res = cb(element);
+  } catch(e) {
+    throwBetterError(node, query.pageObjectKey, e, { selector })
+  }
+
+  return resolve(res).catch((e) => {
+    throwBetterError(node, query.pageObjectKey, e, { selector })
+  });
+}
 
 /**
  * Run action
