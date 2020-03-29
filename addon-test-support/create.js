@@ -2,8 +2,13 @@ import Ceibo from 'ceibo';
 import { deprecate } from '@ember/application/deprecations';
 import { render, setContext, removeContext } from './-private/context';
 import { assign, getPageObjectDefinition, isPageObject, storePageObjectDefinition } from './-private/helpers';
+import registerHelpers from './-private/register-helpers';
 import { visitable } from './properties/visitable';
 import dsl from './-private/dsl';
+
+// register jQuery helpers initially
+
+registerHelpers();
 
 function assignDescriptors(target, source) {
   Object.getOwnPropertyNames(source).forEach((key) => {

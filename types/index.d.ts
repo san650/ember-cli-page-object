@@ -147,6 +147,7 @@ declare module 'ember-cli-page-object/-private' {
     scope?: string;
     last?: boolean;
     visible?: boolean;
+    exact?: boolean;
     at?: number;
   }
 

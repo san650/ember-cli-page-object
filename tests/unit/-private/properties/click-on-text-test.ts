@@ -233,4 +233,33 @@ moduleForProperty('clickOnText', function(test) {
       return page.foo('Click me');
     }, /page\.foo/, 'Element not found');
   });
+
+  test('should click on element matching exact text', async function(assert) {
+    assert.expect(2);
+
+    let page = create({
+      foo: clickOnText('button', { exact: true })
+    });
+
+    await this.adapter.createTemplate(this, page, `
+      <button>foo</button>
+      <button>foobar</button>
+      <button>foobarbaz</button>
+    `);
+
+    this.adapter.$('button:containsExact("foo")').one('click', function() {
+      assert.ok(true);
+    });
+
+    this.adapter.$('button:contains("foobar")').one('click', function() {
+      assert.ok(true);
+    });
+
+    await this.adapter.await(page.foo('foo'));
+
+
+    await this.adapter.throws(assert, function() {
+      return page.foo('fooobar');
+    }, /page\.foo/, 'Element not found');
+  });
 });

@@ -40,7 +40,7 @@ export function findMany(pageObjectNode, targetSelector, options = {}) {
   });
 
   const filteredOptions = filterWhitelistedOption(options, [
-    'resetScope', 'visible', 'testContainer', 'contains', 'scope', 'at', 'last'
+    'resetScope', 'visible', 'testContainer', 'contains', 'scope', 'at', 'last', 'exact'
   ]);
   const opts = Object.assign({}, filteredOptions, { multiple: true });
   return getExecutionContext(pageObjectNode).find(targetSelector, opts).get();

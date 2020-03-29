@@ -56,7 +56,9 @@ class Selector {
     }
 
     if (this.targetFilters.contains) {
-      filters.push(`:contains("${this.targetFilters.contains}")`);
+      const exactFilter = this.targetFilters.exact ? 'Exact': '';
+
+      filters.push(`:contains${exactFilter}("${this.targetFilters.contains}")`);
     }
 
     if (typeof this.targetFilters.at === 'number') {
