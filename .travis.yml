@@ -20,6 +20,7 @@ env:
 branches:
   only:
     - master
+    - v2-beta
 
 jobs:
   fail_fast: true
