@@ -1,15 +1,10 @@
 import $ from '-jquery';
 import { run } from '@ember/runloop';
 import { run as runAction } from '../action';
-import { findClosestValue } from '../helpers';
 import {
   fillElement,
   assertFocusable
 } from './helpers';
-import {
-  ELEMENT_NOT_FOUND,
-  throwBetterError
-} from '../better-errors';
 import wait from 'ember-test-helpers/wait';
 
 export default function IntegrationExecutionContext(pageObjectNode, testContext) {
@@ -74,25 +69,5 @@ IntegrationExecutionContext.prototype = {
     assertFocusable(element);
 
     $(element).blur();
-  },
-
-  assertElementExists(selector, options) {
-    let result;
-    let container = options.testContainer || findClosestValue(this.pageObjectNode, 'testContainer');
-
-    if (container) {
-      result = $(selector, container);
-    } else {
-      result = this.testContext.$(selector);
-    }
-
-    if (result.length === 0) {
-      throwBetterError(
-        this.pageObjectNode,
-        options.pageObjectKey,
-        ELEMENT_NOT_FOUND,
-        { selector }
-      );
-    }
-  },
+  }
 };

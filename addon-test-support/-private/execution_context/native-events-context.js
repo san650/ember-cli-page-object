@@ -9,15 +9,10 @@ import {
 } from 'ember-native-dom-helpers';
 
 import { run } from '../action';
-import { findClosestValue } from '../helpers';
 import {
   fillElement,
   assertFocusable
 } from './helpers';
-import {
-  ELEMENT_NOT_FOUND,
-  throwBetterError
-} from '../better-errors';
 
 const KEYBOARD_EVENT_TYPES = ['keydown', 'keypress', 'keyup'];
 
@@ -80,21 +75,6 @@ ExecutionContext.prototype = {
     assertFocusable(element);
 
     blur(element);
-  },
-
-  assertElementExists(selector, options) {
-    let container = options.testContainer || findClosestValue(this.pageObjectNode, 'testContainer');
-
-    let result = this.$(selector, container);
-
-    if (result.length === 0) {
-      throwBetterError(
-        this.pageObjectNode,
-        options.pageObjectKey,
-        ELEMENT_NOT_FOUND,
-        { selector }
-      );
-    }
   },
 };
 

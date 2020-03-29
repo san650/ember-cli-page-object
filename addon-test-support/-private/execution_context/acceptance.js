@@ -1,14 +1,9 @@
 import $ from '-jquery';
 import { run } from '../action';
-import { findClosestValue } from '../helpers';
 import {
   fillElement,
   assertFocusable
 } from './helpers';
-import {
-  ELEMENT_NOT_FOUND,
-  throwBetterError
-} from '../better-errors';
 
 export default function AcceptanceExecutionContext(pageObjectNode) {
   this.pageObjectNode = pageObjectNode;
@@ -68,19 +63,5 @@ AcceptanceExecutionContext.prototype = {
     assertFocusable(element);
 
     $(element).blur();
-  },
-
-  assertElementExists(selector, options) {
-    /* global find */
-    let result = find(selector, options.testContainer || findClosestValue(this.pageObjectNode, 'testContainer'));
-
-    if (result.length === 0) {
-      throwBetterError(
-        this.pageObjectNode,
-        options.pageObjectKey,
-        ELEMENT_NOT_FOUND,
-        { selector }
-      );
-    }
-  },
+  }
 };
