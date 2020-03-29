@@ -1,5 +1,5 @@
 import { assign } from '../-private/helpers';
-import { findMany, findOne } from '../extend';
+import { findOne } from '../extend';
 import $ from '-jquery';
 
 /**
@@ -65,13 +65,9 @@ export function property(propertyName, selector, userOptions = {}) {
     isDescriptor: true,
 
     get(key) {
-      let options = assign({ pageObjectKey: key, __multiple__: true }, userOptions);
+      let options = assign({ pageObjectKey: key }, userOptions);
 
-      if (options.multiple) {
-        return findMany(this, selector, options).map(element => $(element).prop(propertyName));
-      } else {
-        return $(findOne(this, selector, options)).prop(propertyName);
-      }
+      return $(findOne(this, selector, options)).prop(propertyName);
     }
   };
 }

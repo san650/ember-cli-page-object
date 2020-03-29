@@ -18,6 +18,13 @@ export default function AcceptanceExecutionContext(pageObjectNode) {
 }
 
 AcceptanceExecutionContext.prototype = {
+  get testContainer() {
+    // @todo: fix usage of private `_element`
+    return this.testContext ?
+      this.testContext._element :
+      '#ember-testing';
+  },
+
   andThen(cb) {
     return window.wait().then(() => {
       cb(this);
@@ -96,19 +103,6 @@ AcceptanceExecutionContext.prototype = {
         { selector }
       );
     }
-  },
-
-  find(selector, options) {
-    let result;
-
-    selector = buildSelector(this.pageObjectNode, selector, options);
-
-    /* global find */
-    result = find(selector, options.testContainer || findClosestValue(this.pageObjectNode, 'testContainer'));
-
-    guardMultiple(result, selector, options.multiple);
-
-    return result;
   },
 
   findWithAssert(selector, options) {

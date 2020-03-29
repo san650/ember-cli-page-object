@@ -32,7 +32,6 @@ const EXPECTED_METHODS = [
 const HELPER_METHODS = [
   'buildSelector',
   'getContext',
-  'findElement',
   'findElementWithAssert'
 ];
 
