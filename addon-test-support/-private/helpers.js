@@ -3,7 +3,6 @@ import { assert } from '@ember/debug';
 import { get } from '@ember/object';
 import { isPresent } from '@ember/utils';
 import Ceibo from 'ceibo';
-import { deprecate } from '@ember/application/deprecations';
 import { getContext as getEmberTestHelpersContext } from './compatibility';
 
 import $ from '-jquery';
@@ -36,13 +35,9 @@ class Selector {
       selector = ':first';
     }
 
-    deprecate(
-      'Usage of comma separated selectors is deprecated in ember-cli-page-object', selector.indexOf(',') === -1, {
-        id: 'ember-cli-page-object.comma-separated-selectors',
-        until: "2.0.0",
-        url: 'https://ember-cli-page-object.js.org/docs/v1.16.x/deprecations/#comma-separated-selectors',
-      }
-    );
+    if (selector.indexOf(',') > -1) {
+      throw new Error('Usage of comma separated selectors is not supported. Please make you selector more specific.');
+    }
 
     return selector;
   }
