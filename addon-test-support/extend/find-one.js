@@ -38,7 +38,7 @@ import { filterWhitelistedOption } from "../-private/helpers";
  */
 export function findOne(pageObjectNode, targetSelector, options = {}) {
   const filteredOptions = filterWhitelistedOption(options, [
-    'resetScope', 'visible', 'testContainer', 'contains', 'at', 'last', 'scope', 'pageObjectKey', 'exact'
+    'resetScope', 'visible', 'testContainer', 'contains', 'at', 'last', 'scope', 'pageObjectKey'
   ]);
   const opts = Object.assign({}, filteredOptions, { multiple: false });
   return getExecutionContext(pageObjectNode).findWithAssert(targetSelector, opts).get(0);
