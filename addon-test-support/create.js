@@ -211,6 +211,12 @@ export function create(definitionOrUrl, definitionOrOptions, optionsOrNothing) {
 
   delete definition.context;
 
+  deprecate('Passing an URL argument to `create()` is deprecated', typeof url !== 'string', {
+    id: 'ember-cli-page-object.create-url-argument',
+    until: "2.0.0",
+    url: 'https://ember-cli-page-object.js.org/docs/v1.17.x/deprecations/#create-url-argument',
+  });
+
   if (url) {
     definition.visit = visitable(url);
   }
