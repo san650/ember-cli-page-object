@@ -1,11 +1,7 @@
 import $ from '-jquery';
 import { run } from '@ember/runloop';
 import { run as runAction } from '../action';
-import {
-  guardMultiple,
-  buildSelector,
-  findClosestValue
-} from '../helpers';
+import { findClosestValue } from '../helpers';
 import {
   fillElement,
   assertFocusable
@@ -99,30 +95,4 @@ IntegrationExecutionContext.prototype = {
       );
     }
   },
-
-  findWithAssert(selector, options) {
-    let result;
-    let container = options.testContainer || findClosestValue(this.pageObjectNode, 'testContainer');
-
-    selector = buildSelector(this.pageObjectNode, selector, options);
-
-    if (container) {
-      result = $(selector, container);
-    } else {
-      result = this.testContext.$(selector);
-    }
-
-    guardMultiple(result, selector, options.multiple);
-
-    if (result.length === 0) {
-      throwBetterError(
-        this.pageObjectNode,
-        options.pageObjectKey,
-        ELEMENT_NOT_FOUND,
-        { selector }
-      );
-    }
-
-    return result;
-  }
 };

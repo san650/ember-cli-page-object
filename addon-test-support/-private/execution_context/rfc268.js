@@ -1,10 +1,6 @@
 import $ from '-jquery';
 import { run } from '../action';
-import {
-  guardMultiple,
-  buildSelector,
-  findClosestValue,
-} from '../helpers';
+import { findClosestValue } from '../helpers';
 import {
   getRootElement,
   visit,
@@ -74,24 +70,6 @@ ExecutionContext.prototype = {
         { selector }
       );
     }
-  },
-
-  findWithAssert(selector, options) {
-    selector = buildSelector(this.pageObjectNode, selector, options);
-    let result = this.getElements(selector, options);
-
-    guardMultiple(result, selector, options.multiple);
-
-    if (result.length === 0) {
-      throwBetterError(
-        this.pageObjectNode,
-        options.pageObjectKey,
-        ELEMENT_NOT_FOUND,
-        { selector }
-      );
-    }
-
-    return result;
   },
 
   getElements(selector, options) {

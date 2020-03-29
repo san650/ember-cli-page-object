@@ -9,11 +9,7 @@ import {
 } from 'ember-native-dom-helpers';
 
 import { run } from '../action';
-import {
-  guardMultiple,
-  buildSelector,
-  findClosestValue
-} from '../helpers';
+import { findClosestValue } from '../helpers';
 import {
   fillElement,
   assertFocusable
@@ -100,26 +96,5 @@ ExecutionContext.prototype = {
       );
     }
   },
-
-  findWithAssert(selector, options) {
-    let container = options.testContainer || findClosestValue(this.pageObjectNode, 'testContainer');
-
-    selector = buildSelector(this.pageObjectNode, selector, options);
-
-    let result = this.$(selector, container);
-
-    if (result.length === 0) {
-      throwBetterError(
-        this.pageObjectNode,
-        options.pageObjectKey,
-        ELEMENT_NOT_FOUND,
-        { selector }
-      );
-    }
-
-    guardMultiple(result, selector, options.multiple);
-
-    return result;
-  }
 };
 

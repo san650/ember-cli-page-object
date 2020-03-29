@@ -76,7 +76,7 @@ export default {
   visitable
 };
 
-export { buildSelector, findElementWithAssert, getContext, fullScope } from 'ember-cli-page-object';
+export { buildSelector, getContext, fullScope } from 'ember-cli-page-object';
 
 deprecate(`Importing from "test-support" is now deprecated. Please import directly from the "ember-cli-page-object" module instead.`, false, {
   id: 'ember-cli-page-object.import-from-test-support',

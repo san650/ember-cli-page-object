@@ -202,6 +202,7 @@ moduleForProperty('clickOnText', function(test) {
     await this.adapter.createTemplate(this, page);
 
     await this.adapter.throws(assert, function() {
+      debugger
       return page.foo.bar.baz.qux('Lorem');
     }, /page\.foo\.bar\.baz\.qux/, 'Element not found');
   });
