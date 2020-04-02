@@ -247,7 +247,7 @@ moduleForProperty('clickOnText', function(test) {
       <button>foobarbaz</button>
     `);
 
-    this.adapter.$('button:containsExact("foo")').one('click', function() {
+    this.adapter.$('button:contains("foo")').one('click', function() {
       assert.ok(true);
     });
 

@@ -97,9 +97,9 @@ export function clickOnText(selector, userOptions = {}) {
           let fullSelector = buildSelector(this, context, selector, options);
           let container = options.testContainer || findClosestValue(this, 'testContainer');
 
-          context.assertElementExists(fullSelector, options);
+          const $ele = context.assertElementExists(fullSelector, options);
 
-          return context.click(fullSelector, container, options);
+          return context.click($ele[0], container, options);
         });
       };
     }
