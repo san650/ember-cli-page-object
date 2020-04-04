@@ -174,6 +174,8 @@ if (require.has('@ember/test-helpers')) {
         findElement(page, '.lorem', { multiple: true }).toArray().map((el) => el.innerText),
         ['1', '2', '3']
       );
+
+      ( assert as any ).expectDeprecation('"multiple" property is deprecated');
     });
   });
 }

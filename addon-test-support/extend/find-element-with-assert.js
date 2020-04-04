@@ -42,5 +42,13 @@ export function findElementWithAssert(pageObjectNode, targetSelector, options = 
     until: '2.0.0',
     url: 'https://ember-cli-page-object.js.org/docs/v1.16.x/deprecations/#old-finders'
   });
+
+  const shouldShowMutlipleDeprecation = 'multiple' in options;
+  deprecate('"multiple" property is deprecated', !shouldShowMutlipleDeprecation, {
+    id: 'ember-cli-page-object.multiple',
+    until: '2.0.0',
+    url: 'https://ember-cli-page-object.js.org/docs/v1.17.x/deprecations/#multiple',
+  });
+
   return getExecutionContext(pageObjectNode).findWithAssert(targetSelector, options);
 }
