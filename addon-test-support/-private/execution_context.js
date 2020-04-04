@@ -28,13 +28,11 @@ export function getExecutionContext(pageObjectNode) {
   let contextName;
   if (integrationTestContext) {
     contextName = 'integration';
-  } else if (isAcceptanceTest()) {
-    contextName = 'acceptance';
   } else if (supportsRfc268()) {
     contextName = 'rfc268';
-  }
-
-  if (!contextName) {
+  } else if (isAcceptanceTest()) {
+    contextName = 'acceptance';
+  } else {
     throw new Error(`Looks like you attempt to access page object property outside of test context.
 If that's not the case, please make sure you use the latest version of "@ember/test-helpers".`);
   }
