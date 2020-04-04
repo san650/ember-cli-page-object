@@ -1,3 +1,4 @@
+import $ from '-jquery';
 import { assign } from '../-private/helpers';
 import { findMany, findOne } from '../extend';
 
@@ -83,9 +84,9 @@ export function attribute(attributeName, selector, userOptions = {}) {
       let options = assign({ pageObjectKey: key }, userOptions);
 
       if (options.multiple) {
-        return findMany(this, selector, options).map(element => element.getAttribute(attributeName), options);
+        return findMany(this, selector, options).map(element => $(element).attr(attributeName));
       } else {
-        return findOne(this, selector, options).getAttribute(attributeName);
+        return $(findOne(this, selector, options)).attr(attributeName);
       }
     }
   };
