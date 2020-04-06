@@ -105,7 +105,7 @@ export function text(selector, userOptions = {}) {
     isDescriptor: true,
 
     get(key) {
-      let options = assign({ pageObjectKey: key, __multiple__: true }, userOptions);
+      let options = assign({ pageObjectKey: key }, userOptions);
       let f = options.normalize === false ? identity : normalizeText;
 
       if (options.multiple) {

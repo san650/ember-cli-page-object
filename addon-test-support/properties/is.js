@@ -58,7 +58,7 @@ export function is(testSelector, targetSelector, userOptions = {}) {
         url: 'https://ember-cli-page-object.js.org/docs/v1.16.x/deprecations/#is-property',
       });
 
-      let options = assign({ pageObjectKey: key, __multiple__: true }, userOptions);
+      let options = assign({ pageObjectKey: key }, userOptions);
 
       let elements = findElementWithAssert(this, targetSelector, options);
 

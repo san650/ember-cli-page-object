@@ -106,7 +106,7 @@ export function isHidden(selector, userOptions = {}) {
     isDescriptor: true,
 
     get(key) {
-      let options = assign({ pageObjectKey: key, __multiple__: true }, userOptions);
+      let options = assign({ pageObjectKey: key }, userOptions);
 
       let elements = findMany(this, selector, options);
 

@@ -92,7 +92,7 @@ export function value(selector, userOptions = {}) {
     isDescriptor: true,
 
     get(key) {
-      let options = assign({ pageObjectKey: key, __multiple__: true }, userOptions);
+      let options = assign({ pageObjectKey: key }, userOptions);
 
       const checkValue = (element) => element.hasAttribute('contenteditable') ? $(element).html() : $(element).val();
 

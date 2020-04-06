@@ -84,7 +84,7 @@ export function isPresent(selector, userOptions = {}) {
   return {
     isDescriptor: true,
     get(key) {
-      let options = assign({ pageObjectKey: key, __multiple__: true }, userOptions);
+      let options = assign({ pageObjectKey: key }, userOptions);
 
       let elements = findMany(this, selector, options);
       guardMultiple(elements, selector, options.multiple);
