@@ -106,5 +106,8 @@
   "bugs": "https://github.com/san650/ember-cli-page-object/issues",
   "ember-addon": {
     "configPath": "tests/dummy/config"
+  },
+  "resolutions": {
+    "sort-package-json": "~1.40.0"
   }
 }
