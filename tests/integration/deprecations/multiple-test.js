@@ -149,6 +149,20 @@ if (require.has('@ember/test-helpers')) {
       assert.expectDeprecation('"multiple" property is deprecated');
     });
 
+    test('isVisible: does not trigger deprecation', async function(assert) {
+      const page = create({
+        foo: isVisible('span')
+      });
+
+      await render(hbs`
+        <span>lorem</span>
+      `);
+
+      assert.equal(page.foo, true)
+      assert.expectNoDeprecation();
+    });
+
+
     test('isVisible: return true if all elements are visible', async function(assert) {
       let page = create({
         foo: isVisible('span', { multiple: true })

@@ -65,7 +65,7 @@ export function property(propertyName, selector, userOptions = {}) {
     isDescriptor: true,
 
     get(key) {
-      let options = assign({ pageObjectKey: key, __multiple__: true }, userOptions);
+      let options = assign({ pageObjectKey: key }, userOptions);
 
       if (options.multiple) {
         return findMany(this, selector, options).map(element => $(element).prop(propertyName));

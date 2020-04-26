@@ -69,7 +69,7 @@ export function blurrable(selector, userOptions = {}) {
     get(key) {
       return function() {
         const executionContext = getExecutionContext(this);
-        const options = assign({ pageObjectKey: `${key}()`, __multiple__: true }, userOptions);
+        const options = assign({ pageObjectKey: `${key}()` }, userOptions);
 
         return executionContext.runAsync((context) => {
           return context.blur(selector, options);

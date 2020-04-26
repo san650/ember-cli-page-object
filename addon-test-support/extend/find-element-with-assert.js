@@ -37,10 +37,12 @@ import { deprecate } from '@ember/application/deprecations';
  * @throws Will throw an error if multiple elements are matched by selector and multiple option is not set
  */
 export function findElementWithAssert(pageObjectNode, targetSelector, options = {}) {
-  deprecate('findElementWithAssert is deprecated, please use findOne or findMany instead', false, {
-    id: 'ember-cli-page-object.old-finders',
+  const shouldShowMutlipleDeprecation = 'multiple' in options;
+  deprecate('"multiple" property is deprecated', !shouldShowMutlipleDeprecation, {
+    id: 'ember-cli-page-object.multiple',
     until: '2.0.0',
-    url: 'https://ember-cli-page-object.js.org/docs/v1.16.x/deprecations/#old-finders'
+    url: 'https://ember-cli-page-object.js.org/docs/v1.17.x/deprecations/#multiple',
   });
+
   return getExecutionContext(pageObjectNode).findWithAssert(targetSelector, options);
 }
