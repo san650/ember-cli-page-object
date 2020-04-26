@@ -22,13 +22,6 @@ export default function IntegrationExecutionContext(pageObjectNode, testContext)
 }
 
 IntegrationExecutionContext.prototype = {
-  get testContainer() {
-    // @todo: fix usage of private `_element`
-    return this.testContext ?
-      this.testContext._element :
-      '#ember-testing';
-  },
-
   andThen(cb) {
     run(() => {
       cb(this)
@@ -120,6 +113,23 @@ IntegrationExecutionContext.prototype = {
         { selector }
       );
     }
+  },
+
+  find(selector, options) {
+    let result;
+    let container = options.testContainer || findClosestValue(this.pageObjectNode, 'testContainer');
+
+    selector = buildSelector(this.pageObjectNode, selector, options);
+
+    if (container) {
+      result = $(selector, container);
+    } else {
+      result = this.testContext.$(selector);
+    }
+
+    guardMultiple(result, selector, options.multiple);
+
+    return result;
   },
 
   findWithAssert(selector, options) {

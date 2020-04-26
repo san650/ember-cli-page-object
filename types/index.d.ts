@@ -61,6 +61,7 @@ declare module 'ember-cli-page-object/extend' {
   import 'jquery';
   import { Component, FindOptions, FindOneOptions } from 'ember-cli-page-object/-private';
 
+  function findElement(pageObject: Component, scope?: string, options?: FindOptions): JQuery;
   function findElementWithAssert(pageObject: Component, scope?: string, options?: FindOptions): JQuery;
 
   function findOne(pageObject: Component, scope?: string, options?: FindOneOptions): Element;

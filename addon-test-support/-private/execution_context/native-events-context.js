@@ -31,13 +31,6 @@ export default function ExecutionContext(pageObjectNode, testContext) {
 }
 
 ExecutionContext.prototype = {
-  get testContainer() {
-    // @todo: fix usage of private `_element`
-    return this.testContext ?
-      this.testContext._element :
-      '#ember-testing';
-  },
-
   runAsync(cb) {
     return run(this.pageObjectNode, cb);
   },
@@ -63,7 +56,17 @@ ExecutionContext.prototype = {
   },
 
   $(selector, container) {
-    return $(selector, container || this.testContainer);
+    if (container) {
+      return $(selector, container);
+    } else {
+      // @todo: we should fixed usage of private `_element`
+      // after https://github.com/emberjs/ember-test-helpers/issues/184 is resolved
+      let testsContainer = this.testContext ?
+        this.testContext._element :
+        '#ember-testing';
+
+      return $(selector, testsContainer);
+    }
   },
 
   triggerEvent(selector, container, options, eventName, eventOptions) {
@@ -121,6 +124,18 @@ ExecutionContext.prototype = {
         { selector }
       );
     }
+  },
+
+  find(selector, options) {
+    let container = options.testContainer || findClosestValue(this.pageObjectNode, 'testContainer');
+
+    selector = buildSelector(this.pageObjectNode, selector, options);
+
+    let result = this.$(selector, container);
+
+    guardMultiple(result, selector, options.multiple);
+
+    return result;
   },
 
   findWithAssert(selector, options) {

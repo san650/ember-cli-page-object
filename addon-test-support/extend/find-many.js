@@ -1,10 +1,6 @@
-import $ from '-jquery';
-import {
-  buildSelector,
-  findClosestValue,
-} from '../-private/helpers';
+import { deprecate } from '@ember/application/deprecations';
 import { getExecutionContext } from '../-private/execution_context';
-
+import { filterWhitelistedOption } from '../-private/helpers';
 /**
  * @public
  *
@@ -37,10 +33,15 @@ import { getExecutionContext } from '../-private/execution_context';
  * @return {Array} of Element
  */
 export function findMany(pageObjectNode, targetSelector, options = {}) {
-  const selector = buildSelector(pageObjectNode, targetSelector, options);
-  const container = options.testContainer
-    || findClosestValue(pageObjectNode, 'testContainer')
-    || getExecutionContext(pageObjectNode).testContainer;
+  deprecate('"multiple" property is deprecated', false === '__multiple__' in options , {
+    id: 'ember-cli-page-object.multiple',
+    until: '2.0.0',
+    url: 'https://ember-cli-page-object.js.org/docs/v1.17.x/deprecations/#multiple',
+  });
 
-  return $(selector, container).toArray();
+  const filteredOptions = filterWhitelistedOption(options, [
+    'resetScope', 'visible', 'testContainer', 'contains', 'scope', 'at', 'last'
+  ]);
+  const opts = Object.assign({}, filteredOptions, { multiple: true });
+  return getExecutionContext(pageObjectNode).find(targetSelector, opts).get();
 }

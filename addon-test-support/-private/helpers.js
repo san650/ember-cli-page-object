@@ -1,4 +1,5 @@
 export { assign } from '@ember/polyfills';
+import { A } from '@ember/array';
 import { assert } from '@ember/debug';
 import { get } from '@ember/object';
 import { isPresent } from '@ember/utils';
@@ -91,10 +92,10 @@ class Selector {
   }
 }
 
-export function guardMultiple(items, selector) {
+export function guardMultiple(items, selector, supportMultiple) {
   assert(
     `"${selector}" matched more than one element. If you want to select many elements, use collections instead.`,
-    items.length <= 1
+    supportMultiple || items.length <= 1
   );
 }
 
@@ -143,6 +144,26 @@ export function guardMultiple(items, selector) {
  */
 export function buildSelector(node, targetSelector, options) {
   return (new Selector(node, options.scope, targetSelector, options)).toString();
+}
+
+/**
+ * @private
+ *
+ * Trim whitespaces at both ends and normalize whitespaces inside `text`
+ *
+ * Due to variations in the HTML parsers in different browsers, the text
+ * returned may vary in newlines and other white space.
+ *
+ * @see http://api.jquery.com/text/
+ */
+export function normalizeText(text) {
+  return $.trim(text).replace(/\n/g, ' ').replace(/\s\s*/g, ' ');
+}
+
+export function every(jqArray, cb) {
+  let arr = jqArray.get();
+
+  return A(arr).every((element) => cb($(element)));
 }
 
 /**
