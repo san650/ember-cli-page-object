@@ -1,17 +1,64 @@
 import { resolve } from 'rsvp';
 import { getExecutionContext } from './execution_context';
-import { getRoot } from './helpers';
+import { getRoot, assign, buildSelector } from './helpers';
 import Ceibo from 'ceibo';
+import { throwBetterError } from './better-errors';
+
+export default function action(query, cb) {
+  return {
+    isDescriptor: true,
+
+    get(key) {
+      return function (...args) {
+        let formattedKey = `${key}(${
+          args.length
+            ? `"${args.map((a) => String(a)).join('", "')}"`
+            : ``
+          })`;
+
+        if (typeof query === 'function') {
+          cb = query;
+          query = {
+            key: formattedKey
+          };
+        } else {
+          query = assign({}, query, {
+            key: formattedKey
+          });
+        }
+
+        return run(this, query, (context) => {
+          const selector = buildSelector(this, query.selector, query);
+
+          let res;
+          try {
+            res = cb.bind(context)(...args);
+          } catch(e) {
+            throwBetterError(this, query.key, e, { selector });
+          }
+
+          return resolve(res).catch((e) => {
+            throwBetterError(this, query.key, e, { selector });
+          });
+        })
+      }
+    }
+  }
+}
 
 /**
  * Run action
  *
  * @param {Ceibo} node Page object node to run action on
+ * @param {object} query
  * @param {Function} cb Some async activity callback
  * @returns {Ceibo}
  */
-export function run(node, cb) {
+export function run(node, query, cb) {
   const adapter = getExecutionContext(node);
+  adapter.query = query;
+  adapter.node = adapter.pageObjectNode;
+
   const chainedRoot = getRoot(node)._chainedTree;
 
   if (typeof adapter.andThen === 'function') {
