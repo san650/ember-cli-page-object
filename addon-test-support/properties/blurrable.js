@@ -1,5 +1,6 @@
 import { assign } from '../-private/helpers';
-import { getExecutionContext } from '../-private/execution_context';
+import action from '../-private/action';
+import { findOne } from '../extend';
 
 /**
  *
@@ -62,19 +63,11 @@ import { getExecutionContext } from '../-private/execution_context';
  * @param {string} options.testContainer - Context where to search elements in the DOM
  * @return {Descriptor}
 */
-export function blurrable(selector, userOptions = {}) {
-  return {
-    isDescriptor: true,
+export function blurrable(selector = '', userOptions = {}) {
+  return action(assign({}, userOptions, { selector }), function() {
+    const element = findOne(this.node, this.query.selector, this.query);
 
-    get(key) {
-      return function() {
-        const executionContext = getExecutionContext(this);
-        const options = assign({ pageObjectKey: `${key}()` }, userOptions);
-
-        return executionContext.runAsync((context) => {
-          return context.blur(selector, options);
-        });
-      };
-    }
-  };
+    return this.blur(element);
+  });
 }
+
