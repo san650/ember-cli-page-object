@@ -1,5 +1,6 @@
+import $ from '-jquery';
 import { assign } from '../-private/helpers';
-import { findOne } from '../extend';
+import { findMany, findOne } from '../extend';
 
 /**
  * @public
@@ -17,6 +18,19 @@ import { findOne } from '../extend';
  * });
  *
  * assert.equal(page.inputPlaceholder, 'a value');
+ *
+ * @example
+ *
+ * // <input placeholder="a value">
+ * // <input placeholder="other value">
+ *
+ * import { create, attribute } from 'ember-cli-page-object';
+ *
+ * const page = create({
+ *   inputPlaceholders: attribute('placeholder', ':input', { multiple: true })
+ * });
+ *
+ * assert.deepEqual(page.inputPlaceholders, ['a value', 'other value']);
  *
  * @example
  *
@@ -68,9 +82,12 @@ export function attribute(attributeName, selector, userOptions = {}) {
 
     get(key) {
       let options = assign({ pageObjectKey: key }, userOptions);
-      let element = findOne(this, selector, options);
 
-      return element.getAttribute(attributeName);
+      if (options.multiple) {
+        return findMany(this, selector, options).map(element => $(element).attr(attributeName));
+      } else {
+        return $(findOne(this, selector, options)).attr(attributeName);
+      }
     }
   };
 }

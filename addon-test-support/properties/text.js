@@ -1,5 +1,5 @@
-import { assign } from '../-private/helpers';
-import { findOne } from '../extend';
+import { assign, normalizeText } from '../-private/helpers';
+import { findMany, findOne } from '../extend';
 import $ from '-jquery';
 
 function identity(v) {
@@ -108,21 +108,11 @@ export function text(selector, userOptions = {}) {
       let options = assign({ pageObjectKey: key }, userOptions);
       let f = options.normalize === false ? identity : normalizeText;
 
-      return f($(findOne(this, selector, options)).text());
+      if (options.multiple) {
+        return findMany(this, selector, options).map(element => f($(element).text()));
+      } else {
+        return f($(findOne(this, selector, options)).text());
+      }
     }
   };
-}
-
-/**
- * @private
- *
- * Trim whitespaces at both ends and normalize whitespaces inside `text`
- *
- * Due to variations in the HTML parsers in different browsers, the text
- * returned may vary in newlines and other white space.
- *
- * @see http://api.jquery.com/text/
- */
-function normalizeText(text) {
-  return text.trim().replace(/\n/g, ' ').replace(/\s\s*/g, ' ');
 }

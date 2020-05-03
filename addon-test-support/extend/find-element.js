@@ -4,18 +4,18 @@ import { deprecate } from '@ember/application/deprecations';
 /**
  * @public
  *
- * Returns a jQuery element matched by a selector built from parameters
+ * Returns a jQuery element (can be an empty jQuery result)
  *
  * @example
  *
- * import { findElementWithAssert } from 'ember-cli-page-object/extend';
+ * import { findElement } from 'ember-cli-page-object/extend';
  *
  * export default function isDisabled(selector, options = {}) {
  *   return {
  *     isDescriptor: true,
  *
  *     get() {
- *       return findElementWithAssert(this, selector, options).is(':disabled');
+ *       return findElement(this, selector, options).is(':disabled');
  *     }
  *   };
  * }
@@ -30,13 +30,11 @@ import { deprecate } from '@ember/application/deprecations';
  * @param {boolean} options.visible - Filter by using :visible pseudo-class
  * @param {boolean} options.multiple - Specify if built selector can match multiple elements.
  * @param {string} options.testContainer - Context where to search elements in the DOM
- * @param {string} options.pageObjectKey - Used in the error message when the element is not found
  * @return {Object} jQuery object
  *
- * @throws Will throw an error if no element matches selector
  * @throws Will throw an error if multiple elements are matched by selector and multiple option is not set
  */
-export function findElementWithAssert(pageObjectNode, targetSelector, options = {}) {
+export function findElement(pageObjectNode, targetSelector, options = {}) {
   const shouldShowMutlipleDeprecation = 'multiple' in options;
   deprecate('"multiple" property is deprecated', !shouldShowMutlipleDeprecation, {
     id: 'ember-cli-page-object.multiple',
@@ -44,5 +42,5 @@ export function findElementWithAssert(pageObjectNode, targetSelector, options = 
     url: 'https://ember-cli-page-object.js.org/docs/v1.17.x/deprecations/#multiple',
   });
 
-  return getExecutionContext(pageObjectNode).findWithAssert(targetSelector, options);
+  return getExecutionContext(pageObjectNode).find(targetSelector, options);
 }

@@ -1,5 +1,6 @@
 import { assign, guardMultiple } from '../-private/helpers';
 import { findMany } from '../extend';
+import { A } from '@ember/array';
 import $ from '-jquery';
 
 /**
@@ -16,6 +17,34 @@ import $ from '-jquery';
  * });
  *
  * assert.ok(page.spanIsHidden);
+ *
+ * @example
+ *
+ * // <span>ipsum</span>
+ * // <span style="display:none">dolor</span>
+ *
+ * import { create, isHidden } from 'ember-cli-page-object';
+ *
+ * const page = create({
+ *   spansAreHidden: isHidden('span', { multiple: true })
+ * });
+ *
+ * // not all spans are hidden
+ * assert.notOk(page.spansAreHidden);
+ *
+ * @example
+ *
+ * // <span style="display:none">dolor</span>
+ * // <span style="display:none">dolor</span>
+ *
+ * import { create, isHidden } from 'ember-cli-page-object';
+ *
+ * const page = create({
+ *   spansAreHidden: isHidden('span', { multiple: true })
+ * });
+ *
+ * // all spans are hidden
+ * assert.ok(page.spansAreHidden);
  *
  * @example
  *
@@ -81,9 +110,10 @@ export function isHidden(selector, userOptions = {}) {
 
       let elements = findMany(this, selector, options);
 
-      guardMultiple(elements, selector);
+      guardMultiple(elements, selector, options.multiple);
 
-      return elements.length === 0 || $(elements[0]).is(':hidden');
+      return elements.length === 0 ||
+        A(elements).every(element => $(element).is(':hidden'));
     }
   };
 }

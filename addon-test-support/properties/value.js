@@ -1,5 +1,5 @@
 import { assign } from '../-private/helpers';
-import { findOne } from '../extend';
+import { findMany, findOne } from '../extend';
 import $ from '-jquery';
 
 /**
@@ -32,6 +32,19 @@ import $ from '-jquery';
  * });
  *
  * assert.equal(page.value, '<b>Lorem ipsum</b>');
+ *
+ * @example
+ *
+ * // <input value="lorem">
+ * // <input value="ipsum">
+ *
+ * import { create, value } from 'ember-cli-page-object';
+ *
+ * const page = create({
+ *   value: value('input', { multiple: true })
+ * });
+ *
+ * assert.deepEqual(page.value, ['lorem', 'ipsum']);
  *
  * @example
  *
@@ -81,9 +94,13 @@ export function value(selector, userOptions = {}) {
     get(key) {
       let options = assign({ pageObjectKey: key }, userOptions);
 
-      const element = findOne(this, selector, options);
+      const checkValue = (element) => element.hasAttribute('contenteditable') ? $(element).html() : $(element).val();
 
-      return element.hasAttribute('contenteditable') ? $(element).html() : $(element).val();
+      if (options.multiple) {
+        return findMany(this, selector, options).map(checkValue);
+      } else {
+        return checkValue(findOne(this, selector, options));
+      }
     }
   };
 }

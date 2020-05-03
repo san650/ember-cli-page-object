@@ -1,5 +1,6 @@
 import { assign } from '../-private/helpers';
-import { findOne } from '../extend';
+import { findMany, findOne } from '../extend';
+import { A } from '@ember/array';
 
 /**
  * Returns a boolean representing whether an element or a set of elements contains the specified text.
@@ -15,6 +16,33 @@ import { findOne } from '../extend';
  * });
  *
  * assert.ok(page.spanContains('ipsum'));
+ *
+ * @example
+ *
+ * // <span>lorem</span>
+ * // <span>ipsum</span>
+ * // <span>dolor</span>
+ *
+ * const page = PageObject.create({
+ *   spansContain: PageObject.contains('span', { multiple: true })
+ * });
+ *
+ * // not all spans contain 'lorem'
+ * assert.notOk(page.spansContain('lorem'));
+ *
+ * @example
+ *
+ * // <span>super text</span>
+ * // <span>regular text</span>
+ *
+ * import { create, contains } from 'ember-cli-page-object';
+ *
+ * const page = create({
+ *   spansContain: contains('span', { multiple: true })
+ * });
+ *
+ * // all spans contain 'text'
+ * assert.ok(page.spansContain('text'));
  *
  * @example
  *
@@ -69,10 +97,12 @@ export function contains(selector, userOptions = {}) {
     get(key) {
       return function(textToSearch) {
         let options = assign({
-          pageObjectKey: `${key}("${textToSearch}")`,
+          pageObjectKey: `${key}("${textToSearch}")`
         }, userOptions);
 
-        return findOne(this, selector, options).innerText.indexOf(textToSearch) > -1;
+        let elements = options.multiple ? findMany(this, selector, options) : [findOne(this, selector, options)];
+
+        return A(elements).every((element) => element.innerText.indexOf(textToSearch) >= 0);
       };
     }
   };

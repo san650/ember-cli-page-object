@@ -27,6 +27,19 @@ import { assign, guardMultiple } from '../-private/helpers';
  *
  * @example
  *
+ * // <span>ipsum</span>
+ * // <span style="display:none">dolor</span>
+ *
+ * import { create, isPresent } from 'ember-cli-page-object';
+ *
+ * const page = create({
+ *   spanIsPresent: isPresent('span', { multiple: true })
+ * });
+ *
+ * assert.ok(page.spanIsPresent);
+ *
+ * @example
+ *
  * // <head>
  * //   <meta name='robots' content='noindex'>
  * // </head>
@@ -74,9 +87,8 @@ export function isPresent(selector, userOptions = {}) {
       let options = assign({ pageObjectKey: key }, userOptions);
 
       let elements = findMany(this, selector, options);
-      guardMultiple(elements, selector);
-
-      return elements.length === 1;
+      guardMultiple(elements, selector, options.multiple);
+      return elements.length > 0;
     }
   };
 }
