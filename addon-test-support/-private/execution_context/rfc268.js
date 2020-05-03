@@ -1,9 +1,4 @@
-import $ from '-jquery';
 import { run } from '../action';
-import {
-  buildSelector,
-  findClosestValue,
-} from '../helpers';
 import {
   getRootElement,
   visit,
@@ -14,10 +9,6 @@ import {
   focus,
   blur
 } from '../compatibility';
-import {
-  ELEMENT_NOT_FOUND,
-  throwBetterError
-} from '../better-errors';
 
 export default function ExecutionContext(pageObjectNode) {
   this.pageObjectNode = pageObjectNode;
@@ -60,36 +51,5 @@ ExecutionContext.prototype = {
 
   blur(element) {
     return blur(element);
-  },
-
-  assertElementExists(selector, options) {
-    let result = this.getElements(selector, options);
-
-    if (result.length === 0) {
-      throwBetterError(
-        this.pageObjectNode,
-        options.pageObjectKey,
-        ELEMENT_NOT_FOUND,
-        { selector }
-      );
-    }
-  },
-
-  getElements(selector, options) {
-    let container = options.testContainer || findClosestValue(this.pageObjectNode, 'testContainer');
-
-    return $(selector, container || this.testContainer);
-  },
-
-  invokeHelper(selector, options, helper, ...args) {
-    let element = this.getElements(selector, options)[0];
-    return helper(element, ...args).catch((e) => {
-      throwBetterError(
-        this.pageObjectNode,
-        options.pageObjectKey,
-        e.message || e.toString(),
-        { selector }
-      );
-    });
   }
 };

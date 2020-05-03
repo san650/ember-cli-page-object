@@ -1,5 +1,3 @@
-import $ from '-jquery';
-
 import {
   click,
   triggerEvent,
@@ -10,18 +8,9 @@ import {
 
 import { run } from '../action';
 import {
-  guardMultiple,
-  buildSelector,
-  findClosestValue
-} from '../helpers';
-import {
   fillElement,
   assertFocusable
 } from './helpers';
-import {
-  ELEMENT_NOT_FOUND,
-  throwBetterError
-} from '../better-errors';
 
 const KEYBOARD_EVENT_TYPES = ['keydown', 'keypress', 'keyup'];
 
@@ -54,10 +43,6 @@ ExecutionContext.prototype = {
     triggerEvent(element, 'change');
   },
 
-  $(selector, container) {
-    return $(selector, container || this.testContainer);
-  },
-
   triggerEvent(element, eventName, eventOptions) {
     // `keyCode` is a deprecated property.
     // @see: https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/keyCode
@@ -84,42 +69,6 @@ ExecutionContext.prototype = {
     assertFocusable(element);
 
     blur(element);
-  },
-
-  assertElementExists(selector, options) {
-    let container = options.testContainer || findClosestValue(this.pageObjectNode, 'testContainer');
-
-    let result = this.$(selector, container);
-
-    if (result.length === 0) {
-      throwBetterError(
-        this.pageObjectNode,
-        options.pageObjectKey,
-        ELEMENT_NOT_FOUND,
-        { selector }
-      );
-    }
-  },
-
-  findWithAssert(selector, options) {
-    let container = options.testContainer || findClosestValue(this.pageObjectNode, 'testContainer');
-
-    selector = buildSelector(this.pageObjectNode, selector, options);
-
-    let result = this.$(selector, container);
-
-    if (result.length === 0) {
-      throwBetterError(
-        this.pageObjectNode,
-        options.pageObjectKey,
-        ELEMENT_NOT_FOUND,
-        { selector }
-      );
-    }
-
-    guardMultiple(result, selector, options.multiple);
-
-    return result;
   }
 };
 
