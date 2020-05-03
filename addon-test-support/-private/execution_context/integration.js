@@ -38,7 +38,7 @@ IntegrationExecutionContext.prototype = {
   },
 
   runAsync(cb) {
-    return runAction(this.pageObjectNode, cb);
+    return runAction(this.pageObjectNode, {}, cb);
   },
 
   visit() {},
@@ -68,14 +68,10 @@ IntegrationExecutionContext.prototype = {
     }
   },
 
-  triggerEvent(selector, container, options, eventName, eventOptions) {
+  triggerEvent(element, eventName, eventOptions) {
     let event = $.Event(eventName, eventOptions);
 
-    if (container) {
-      $(selector, container).trigger(event);
-    } else {
-      this.testContext.$(selector).trigger(event);
-    }
+    $(element).trigger(event);
   },
 
   focus(selector, options) {
