@@ -1,9 +1,7 @@
-import {
-  assign,
-  buildSelector,
-  findClosestValue
-} from '../-private/helpers';
-import { getExecutionContext } from '../-private/execution_context';
+import { assign } from '../-private/helpers';
+import { findMany } from 'ember-cli-page-object/extend';
+import action from '../-private/action';
+import { findOne } from '../-private/finders';
 
 /**
  * Alias for `fillable`, which works for inputs, HTML select menus, and
@@ -117,45 +115,40 @@ import { getExecutionContext } from '../-private/execution_context';
  * @param {string} options.testContainer - Context where to search elements in the DOM
  * @return {Descriptor}
  */
-export function fillable(selector, userOptions = {}) {
-  return {
-    isDescriptor: true,
-
-    get(key) {
-      return function(contentOrClue, content) {
-        let clue;
-
-        if (content === undefined) {
-          content = contentOrClue;
-        } else {
-          clue = contentOrClue;
-        }
-
-        let executionContext = getExecutionContext(this);
-        let options = assign({ pageObjectKey: `${key}()` }, userOptions);
-
-        return executionContext.runAsync((context) => {
-          let fullSelector = buildSelector(this, selector, options);
-          let container = options.testContainer || findClosestValue(this, 'testContainer');
-
-          if (clue) {
-            fullSelector = ['input', 'textarea', 'select', '[contenteditable]']
-              .map((tag) => [
-                `${fullSelector} ${tag}[data-test="${clue}"]`,
-                `${fullSelector} ${tag}[aria-label="${clue}"]`,
-                `${fullSelector} ${tag}[placeholder="${clue}"]`,
-                `${fullSelector} ${tag}[name="${clue}"]`,
-                `${fullSelector} ${tag}#${clue}`
-              ])
-              .reduce((total, other) => total.concat(other), [])
-              .join(',');
-          }
-
-          context.assertElementExists(fullSelector, options);
-
-          return context.fillIn(fullSelector, container, options, content);
-        });
-      };
+export function fillable(selector = '', userOptions = {}) {
+  return action(assign({}, userOptions, { selector }), function(contentOrClue, content) {
+    let clue;
+    if (content === undefined) {
+      content = contentOrClue;
+    } else {
+      clue = contentOrClue;
     }
-  };
+
+    let scopeSelector = selector;
+    if (clue) {
+      scopeSelector = findSelectorByClue(this, clue);
+      if (!scopeSelector) {
+        throw new Error(`Can not find element by clue: "${clue}".`);
+      }
+    }
+
+    const element = findOne(this.node, scopeSelector, this.query);
+
+    return this.fillIn(element, content);
+  });
+}
+
+function findSelectorByClue({ node, query }, clue) {
+  let cssClues = ['input', 'textarea', 'select', '[contenteditable]'].map((tag) => [
+    `${tag}[data-test="${clue}"]`,
+    `${tag}[aria-label="${clue}"]`,
+    `${tag}[placeholder="${clue}"]`,
+    `${tag}[name="${clue}"]`,
+    `${tag}#${clue}`
+  ])
+  .reduce((total, other) => total.concat(other), [])
+
+  return cssClues.find(extraScope => {
+    return findMany(node, `${query.selector} ${extraScope}`, query)[0];
+  });
 }

@@ -205,6 +205,21 @@ moduleForProperty('fillable', function(test) {
     assert.equal(this.adapter.$(expectedSelector, expectedContext).val(), expectedText);
   });
 
+  test(`raises an error when can't find an element by clue`, async function(assert) {
+    let clue = 'clue';
+
+    let page = create({
+      scope: '.scope',
+      fillInByClue: fillable()
+    });
+
+    await this.adapter.createTemplate(this, page, ``);
+
+    return this.adapter.throws(assert, () => {
+      return page.fillInByClue(clue, 'dummy text');
+    }, /Can\ not\ find\ element\ by\ clue:\ \"clue\"\./);
+  });
+
   test("raises an error when the element doesn't exist", async function(assert) {
     assert.expect(1);
 
@@ -222,12 +237,12 @@ moduleForProperty('fillable', function(test) {
 
     this.adapter.throws(assert, function() {
       return page.foo.bar.baz.qux('lorem');
-    }, /page\.foo\.bar\.baz\.qux\(\)/, 'Element not found');
+    }, /page\.foo\.bar\.baz\.qux\("lorem"\)/, 'Element not found');
   });
 
   test('raises an error when the element has contenteditable="false"', async function(assert) {
     let page = create({
-      foo: fillable('div')
+      foo: fillable('[contenteditable]')
     });
 
     await this.adapter.createTemplate(this, page, '<div contenteditable="false">');
