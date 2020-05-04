@@ -68,21 +68,6 @@ moduleForProperty('count', function(test) {
     assert.equal(page.foo, 1);
   });
 
-  test('resets multiple value', async function(assert) {
-    let page = create({
-      scope: '.scope',
-
-      foo: count('span', { multiple: false })
-    });
-
-    await this.adapter.createTemplate(this, page, `
-      <div><span></span></div>
-      <div class="scope"><span></span><span></span></div>
-    `);
-
-    assert.equal(page.foo, 2);
-  });
-
   test('looks for elements outside the testing container', async function(assert) {
     let page = create({
       foo: count('span', { testContainer: '#alternate-ember-testing' })

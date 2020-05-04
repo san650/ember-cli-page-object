@@ -1,6 +1,5 @@
 import { assign, guardMultiple } from '../-private/helpers';
 import { findMany } from '../extend';
-import { A } from '@ember/array';
 import $ from '-jquery';
 
 /**
@@ -17,34 +16,6 @@ import $ from '-jquery';
  * });
  *
  * assert.ok(page.spanIsVisible);
- *
- * @example
- *
- * // <span>ipsum</span>
- * // <span style="display:none">dolor</span>
- *
- * import { create, isVisible } from 'ember-cli-page-object';
- *
- * const page = create({
- *   spansAreVisible: isVisible('span', { multiple: true })
- * });
- *
- * // not all spans are visible
- * assert.notOk(page.spansAreVisible);
- *
- * @example
- *
- * // <span>ipsum</span>
- * // <span>dolor</span>
- *
- * import { create, isVisible } from 'ember-cli-page-object';
- *
- * const page = create({
- *   spansAreVisible: isVisible('span', { multiple: true })
- * });
- *
- * // all spans are visible
- * assert.ok(page.spansAreVisible);
  *
  * @example
  *
@@ -101,11 +72,10 @@ import $ from '-jquery';
  * @param {string} options.scope - Nests provided scope within parent's scope
  * @param {number} options.at - Reduce the set of matched elements to the one at the specified index
  * @param {boolean} options.resetScope - Override parent's scope
- * @param {boolean} options.multiple - Check if all elements matched by selector are visible
  * @param {string} options.testContainer - Context where to search elements in the DOM
  * @return {Descriptor}
  *
- * @throws Will throw an error if multiple elements are matched by selector and multiple option is not set
+ * @throws Will throw an error if multiple elements are matched by selector
  */
 export function isVisible(selector, userOptions = {}) {
   return {
@@ -117,11 +87,7 @@ export function isVisible(selector, userOptions = {}) {
       let elements = findMany(this, selector, options);
       guardMultiple(elements, selector, options.multiple);
 
-      if (elements.length === 0) {
-        return false;
-      }
-
-      return A(elements).every((element) => $(element).is(':visible'));
+      return elements.length === 1 && $(elements[0]).is(':visible');
     }
   };
 }

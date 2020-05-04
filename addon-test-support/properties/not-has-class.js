@@ -1,6 +1,5 @@
 import { assign } from '../-private/helpers';
-import { findOne, findMany } from '../extend';
-import { A } from '@ember/array';
+import { findOne } from '../extend';
 
 /**
  * @public
@@ -18,34 +17,6 @@ import { A } from '@ember/array';
  * });
  *
  * assert.ok(page.messageIsSuccess);
- *
- * @example
- *
- * // <span class="success"></span>
- * // <span class="error"></span>
- *
- * import { create, notHasClass } from 'ember-cli-page-object';
- *
- * const page = create({
- *   messagesAreSuccessful: notHasClass('error', 'span', { multiple: true })
- * });
- *
- * // one span has error class
- * assert.notOk(page.messagesAreSuccessful);
- *
- * @example
- *
- * // <span class="success"></span>
- * // <span class="success"></span>
- *
- * import { create, notHasClass } from 'ember-cli-page-object';
- *
- * const page = create({
- *   messagesAreSuccessful: notHasClass('error', 'span', { multiple: true })
- * });
- *
- * // no spans have error class
- * assert.ok(page.messagesAreSuccessful);
  *
  * @example
  *
@@ -90,12 +61,11 @@ import { A } from '@ember/array';
  * @param {string} options.scope - Nests provided scope within parent's scope
  * @param {number} options.at - Reduce the set of matched elements to the one at the specified index
  * @param {boolean} options.resetScope - Override parent's scope
- * @param {boolean} options.multiple - Check if all elements matched by selector don't have the CSS class
  * @param {string} options.testContainer - Context where to search elements in the DOM
  * @return {Descriptor}
  *
  * @throws Will throw an error if no element matches selector
- * @throws Will throw an error if multiple elements are matched by selector and multiple option is not set
+ * @throws Will throw an error if multiple elements are matched by selector
  */
 export function notHasClass(cssClass, selector, userOptions = {}) {
   return {
@@ -104,9 +74,9 @@ export function notHasClass(cssClass, selector, userOptions = {}) {
     get(key) {
       let options = assign({ pageObjectKey: key }, userOptions);
 
-      let elements = options.multiple ? findMany(this, selector, options) : [findOne(this, selector, options)];
+      let element = findOne(this, selector, options);
 
-      return A(elements).every((element) => !element.classList.contains(cssClass));
+      return !element.classList.contains(cssClass);
     }
   };
 }
