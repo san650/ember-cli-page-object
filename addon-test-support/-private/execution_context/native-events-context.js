@@ -6,7 +6,6 @@ import {
   blur
 } from 'ember-native-dom-helpers';
 
-import { run } from '../action';
 import {
   fillElement,
   assertFocusable
@@ -25,10 +24,6 @@ ExecutionContext.prototype = {
     return this.testContext && this.testContext._element ?
       this.testContext._element :
       '#ember-testing';
-  },
-
-  runAsync(cb) {
-    return run(this.pageObjectNode, {}, cb);
   },
 
   click(element) {

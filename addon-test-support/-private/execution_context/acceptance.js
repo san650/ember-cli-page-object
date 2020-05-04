@@ -1,5 +1,4 @@
 import $ from '-jquery';
-import { run } from '../action';
 import {
   fillElement,
   assertFocusable
@@ -18,10 +17,6 @@ AcceptanceExecutionContext.prototype = {
     return window.wait().then(() => {
       cb(this);
     });
-  },
-
-  runAsync(cb) {
-    return run(this.pageObjectNode, {}, cb);
   },
 
   visit(path) {

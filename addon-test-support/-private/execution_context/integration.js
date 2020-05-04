@@ -1,6 +1,5 @@
 import $ from '-jquery';
 import { run } from '@ember/runloop';
-import { run as runAction } from '../action';
 import {
   fillElement,
   assertFocusable
@@ -26,10 +25,6 @@ IntegrationExecutionContext.prototype = {
     });
 
     return wait();
-  },
-
-  runAsync(cb) {
-    return runAction(this.pageObjectNode, {}, cb);
   },
 
   visit() {},

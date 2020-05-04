@@ -1,4 +1,3 @@
-import { run } from '../action';
 import {
   getRootElement,
   visit,
@@ -17,10 +16,6 @@ export default function ExecutionContext(pageObjectNode) {
 ExecutionContext.prototype = {
   get testContainer() {
     return getRootElement();
-  },
-
-  runAsync(cb) {
-    return run(this.pageObjectNode, {}, cb);
   },
 
   visit(path) {
