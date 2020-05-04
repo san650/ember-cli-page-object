@@ -1,12 +1,11 @@
 import $ from '-jquery';
 import { assign } from '../-private/helpers';
-import { findMany, findOne } from '../extend';
+import { findOne } from '../extend';
 
 /**
  * @public
  *
- * Returns the value of an attribute from the matched element, or an array of
- * values from multiple matched elements.
+ * Returns the value of an attribute from the matched element
  *
  * @example
  * // <input placeholder="a value">
@@ -18,19 +17,6 @@ import { findMany, findOne } from '../extend';
  * });
  *
  * assert.equal(page.inputPlaceholder, 'a value');
- *
- * @example
- *
- * // <input placeholder="a value">
- * // <input placeholder="other value">
- *
- * import { create, attribute } from 'ember-cli-page-object';
- *
- * const page = create({
- *   inputPlaceholders: attribute('placeholder', ':input', { multiple: true })
- * });
- *
- * assert.deepEqual(page.inputPlaceholders, ['a value', 'other value']);
  *
  * @example
  *
@@ -69,12 +55,11 @@ import { findMany, findOne } from '../extend';
  * @param {string} options.scope - Nests provided scope within parent's scope
  * @param {boolean} options.resetScope - Override parent's scope
  * @param {number} options.at - Reduce the set of matched elements to the one at the specified index
- * @param {boolean} options.multiple - If set, the function will return an array of values
  * @param {string} options.testContainer - Context where to search elements in the DOM
  * @return {Descriptor}
  *
  * @throws Will throw an error if no element matches selector
- * @throws Will throw an error if multiple elements are matched by selector and multiple option is not set
+ * @throws Will throw an error if multiple elements are matched by selector
  */
 export function attribute(attributeName, selector, userOptions = {}) {
   return {
@@ -83,11 +68,7 @@ export function attribute(attributeName, selector, userOptions = {}) {
     get(key) {
       let options = assign({ pageObjectKey: key }, userOptions);
 
-      if (options.multiple) {
-        return findMany(this, selector, options).map(element => $(element).attr(attributeName));
-      } else {
-        return $(findOne(this, selector, options)).attr(attributeName);
-      }
+      return $(findOne(this, selector, options)).attr(attributeName);
     }
   };
 }
