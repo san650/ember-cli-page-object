@@ -147,21 +147,6 @@ export function buildSelector(node, targetSelector, options) {
 
 
 /**
- * @private
- *
- * Check if all options are in whitelist
- *
- */
-export function filterWhitelistedOption(options, whitelist) {
-  return whitelist.reduce((whitelisted, knownKey) => {
-    if (knownKey in options) {
-        whitelisted[knownKey] = options[knownKey];
-    }
-    return whitelisted;
-  }, {});
-}
-
-/**
  * @public
  *
  * Return the root of a node's tree

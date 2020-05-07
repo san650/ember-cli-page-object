@@ -1,3 +1,9 @@
+import $ from '-jquery';
+import {
+  buildSelector,
+  findClosestValue,
+  guardMultiple
+} from '../-private/helpers';
 import { getExecutionContext } from '../-private/execution_context';
 
 /**
@@ -34,5 +40,18 @@ import { getExecutionContext } from '../-private/execution_context';
  * @throws Will throw an error if multiple elements are matched by selector and multiple option is not set
  */
 export function findElement(pageObjectNode, targetSelector, options = {}) {
-  return getExecutionContext(pageObjectNode).find(targetSelector, options);
+  const selector = buildSelector(pageObjectNode, targetSelector, options);
+  const container = getContainer(pageObjectNode, options);
+
+  let $elements = $(selector, container);
+
+  guardMultiple($elements, selector, options.multiple);
+
+  return $elements;
+}
+
+function getContainer(pageObjectNode, options) {
+  return options.testContainer
+    || findClosestValue(pageObjectNode, 'testContainer')
+    || getExecutionContext(pageObjectNode).testContainer;
 }

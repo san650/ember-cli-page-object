@@ -54,6 +54,14 @@ if (require.has('@ember/test-helpers')) {
         /Error: Assertion Failed: ".lorem" matched more than one element. If you want to select many elements, use collections instead./);
     });
 
+    test('throws error if no elements found', async function(assert) {
+      let page = create({});
+
+      await this.render(hbs``);
+
+      assert.throws(() => findElementWithAssert(page, '.lorem', {}), /Error: Element not found\./);
+    });
+
     test('testContainer param', async function(assert) {
       let page = create({});
 
