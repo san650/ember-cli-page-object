@@ -1,12 +1,3 @@
-import $ from '-jquery';
-import {
-  buildSelector,
-  findClosestValue,
-  guardMultiple
-} from '../-private/helpers';
-import { getExecutionContext } from '../-private/execution_context';
-import { throwBetterError, ELEMENT_NOT_FOUND } from '../-private/better-errors';
-
 /**
  * @public
  * @deprecated
@@ -43,28 +34,4 @@ import { throwBetterError, ELEMENT_NOT_FOUND } from '../-private/better-errors';
  * @throws Will throw an error if no element matches selector
  * @throws Will throw an error if multiple elements are matched by selector and multiple option is not set
  */
-export function findElementWithAssert(pageObjectNode, targetSelector, options = {}) {
-  const selector = buildSelector(pageObjectNode, targetSelector, options);
-  const container = getContainer(pageObjectNode, options);
-
-  let $elements = $(selector, container);
-
-  guardMultiple($elements, selector, options.multiple);
-
-  if ($elements.length === 0) {
-    throwBetterError(
-      pageObjectNode,
-      options.pageObjectKey,
-      ELEMENT_NOT_FOUND,
-      { selector }
-    );
-  }
-
-  return $elements;
-}
-
-function getContainer(pageObjectNode, options) {
-  return options.testContainer
-    || findClosestValue(pageObjectNode, 'testContainer')
-    || getExecutionContext(pageObjectNode).testContainer;
-}
+export { findElementWithAssert } from '../-private/finders';

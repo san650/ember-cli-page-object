@@ -1,12 +1,3 @@
-import $ from '-jquery';
-import {
-  buildSelector,
-  findClosestValue,
-  guardMultiple
-} from '../-private/helpers';
-import { getExecutionContext } from '../-private/execution_context';
-import { throwBetterError, ELEMENT_NOT_FOUND } from '../-private/better-errors';
-
 /**
  * @public
  *
@@ -42,28 +33,4 @@ import { throwBetterError, ELEMENT_NOT_FOUND } from '../-private/better-errors';
  * @throws If no elements found
  * @throws If more than one element found
  */
-export function findOne(pageObjectNode, targetSelector, options = {}) {
-  const selector = buildSelector(pageObjectNode, targetSelector, options);
-  const container = getContainer(pageObjectNode, options);
-
-  const elements = $(selector, container).toArray();
-
-  guardMultiple(elements, selector);
-
-  if (elements.length === 0) {
-    throwBetterError(
-      pageObjectNode,
-      options.pageObjectKey,
-      ELEMENT_NOT_FOUND,
-      { selector }
-    );
-  }
-
-  return elements[0];
-}
-
-function getContainer(pageObjectNode, options) {
-  return options.testContainer
-    || findClosestValue(pageObjectNode, 'testContainer')
-    || getExecutionContext(pageObjectNode).testContainer;
-}
+export { findOne } from '../-private/finders';

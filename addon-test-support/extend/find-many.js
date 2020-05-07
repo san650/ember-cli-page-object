@@ -1,10 +1,3 @@
-import $ from '-jquery';
-import {
-  buildSelector,
-  findClosestValue
-} from '../-private/helpers';
-import { getExecutionContext } from '../-private/execution_context';
-
 /**
  * @public
  *
@@ -36,15 +29,4 @@ import { getExecutionContext } from '../-private/execution_context';
  * @param {string} options.testContainer - Context where to search elements in the DOM
  * @return {Array} of Element
  */
-export function findMany(pageObjectNode, targetSelector, options = {}) {
-  const selector = buildSelector(pageObjectNode, targetSelector, options);
-  const container = getContainer(pageObjectNode, options);
-
-  return $(selector, container).toArray();
-}
-
-function getContainer(pageObjectNode, options) {
-  return options.testContainer
-    || findClosestValue(pageObjectNode, 'testContainer')
-    || getExecutionContext(pageObjectNode).testContainer;
-}
+export { findMany } from '../-private/finders';
