@@ -85,6 +85,22 @@ if (require.has('@ember/test-helpers')) {
       assert.deepEqual(finished, [1]);
     });
 
+    test('this is frozen', async function(assert) {
+      const p = create({
+        scope: 'it works',
+
+        run: action(function() {
+          executionContext = this;
+        })
+      });
+
+      await p.run();
+
+      assert.throws(() => {
+        executionContext.test = 1;
+      })
+    });
+
     test('it handles sync errors', async function(assert) {
       const p = create({
         scope: '.Scope',

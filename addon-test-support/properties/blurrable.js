@@ -67,7 +67,7 @@ export function blurrable(selector = '', userOptions = {}) {
   return action(assign({}, userOptions, { selector }), function() {
     const element = findOne(this.node, this.query.selector, this.query);
 
-    return this.blur(element);
+    return this.adapter.blur(element);
   });
 }
 

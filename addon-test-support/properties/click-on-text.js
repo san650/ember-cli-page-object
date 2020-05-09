@@ -100,6 +100,6 @@ export function clickOnText(scope, userOptions = {}) {
 
     const element = findOne(this.node, selector, this.query);
 
-    return this.click(element);
+    return this.adapter.click(element);
   });
 }

@@ -88,7 +88,7 @@ export function triggerable(event, selector, userOptions = {}) {
 
     const element = findOne(this.node, this.query.selector, this.query);
 
-    return this.triggerEvent(element, event, mergedEventProperties);
+    return this.adapter.triggerEvent(element, event, mergedEventProperties);
   });
 }
 

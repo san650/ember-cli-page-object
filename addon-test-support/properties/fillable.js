@@ -134,7 +134,7 @@ export function fillable(selector = '', userOptions = {}) {
 
     const element = findOne(this.node, scopeSelector, this.query);
 
-    return this.fillIn(element, content);
+    return this.adapter.fillIn(element, content);
   });
 }
 

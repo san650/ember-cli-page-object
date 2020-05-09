@@ -96,6 +96,6 @@ export function visitable(path) {
 
     fullPath = appendQueryParams(fullPath, params);
 
-    return this.visit(fullPath);
+    return this.adapter.visit(fullPath);
   });
 }

@@ -69,6 +69,6 @@ export function focusable(selector = '', userOptions = {}) {
   return action(query, function() {
     const element = findOne(this.node, this.query.selector, this.query);
 
-    return this.focus(element);
+    return this.adapter.focus(element);
   });
 }

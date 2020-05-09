@@ -54,10 +54,13 @@ export default function action(query, cb) {
  * @param {Function} cb Some async activity callback
  * @returns {Ceibo}
  */
-export function run(node, query, cb) {
+function run(node, query, cb) {
   const adapter = getExecutionContext(node);
-  adapter.query = query;
-  adapter.node = adapter.pageObjectNode;
+  const executionContext = Object.freeze({
+    query,
+    node,
+    adapter
+  });
 
   const chainedRoot = getRoot(node)._chainedTree;
 
@@ -66,7 +69,7 @@ export function run(node, query, cb) {
     // chanined VS independent action invocations. Awaiting for the previous
     // action settlement, before invoke a new action, is a part of
     // the legacy testing helpers adapters for backward compat reasons
-    chainedRoot._promise = adapter.andThen(cb);
+    chainedRoot._promise = adapter.andThen.bind(executionContext)(cb);
 
     return node;
   } else if (!chainedRoot) {
@@ -74,13 +77,13 @@ export function run(node, query, cb) {
     // we need to wait on its promise if it has one so the
     // previous invocations can resolve before we run ours.
     let root = getRoot(node)
-    root._promise = resolve(root._promise).then(() => cb(adapter));
+    root._promise = resolve(root._promise).then(() => cb(executionContext));
 
     return node;
   } else {
     // Store our invocation result on the chained root
     // so that chained calls can find it to wait on it.
-    chainedRoot._promise = cb(adapter);
+    chainedRoot._promise = cb(executionContext);
 
     return chainable(node);
   }

@@ -67,6 +67,6 @@ export function clickable(selector, userOptions = {}) {
   return action(assign({}, userOptions, { selector }), function() {
     const element = findOne(this.node, this.query.selector, this.query);
 
-    return this.click(element);
+    return this.adapter.click(element);
   });
 }
