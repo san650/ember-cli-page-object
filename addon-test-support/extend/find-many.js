@@ -1,6 +1,3 @@
-import { deprecate } from '@ember/application/deprecations';
-import { getExecutionContext } from '../-private/execution_context';
-import { filterWhitelistedOption } from '../-private/helpers';
 /**
  * @public
  *
@@ -32,17 +29,4 @@ import { filterWhitelistedOption } from '../-private/helpers';
  * @param {string} options.testContainer - Context where to search elements in the DOM
  * @return {Array} of Element
  */
-export function findMany(pageObjectNode, targetSelector, options = {}) {
-  const shouldShowMutlipleDeprecation = 'multiple' in options;
-  deprecate('"multiple" property is deprecated', !shouldShowMutlipleDeprecation, {
-    id: 'ember-cli-page-object.multiple',
-    until: '2.0.0',
-    url: 'https://ember-cli-page-object.js.org/docs/v1.17.x/deprecations/#multiple',
-  });
-
-  const filteredOptions = filterWhitelistedOption(options, [
-    'resetScope', 'visible', 'testContainer', 'contains', 'scope', 'at', 'last'
-  ]);
-  const opts = Object.assign({}, filteredOptions, { multiple: true });
-  return getExecutionContext(pageObjectNode).find(targetSelector, opts).get();
-}
+export { findMany } from '../-private/finders';
