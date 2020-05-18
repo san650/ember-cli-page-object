@@ -297,11 +297,12 @@ export function getProperty(object, pathToProp) {
   return typeof value === 'function' ? value.bind(propOwner) : value;
 }
 
-export function isPageObject(property){
-  if(property && typeof(property) === 'object'){
+export function isPageObject(property) {
+  if (property && typeof property === 'object') {
     let meta = Ceibo.meta(property);
-    return (meta && meta.__poDef__)
-  } else{
+
+    return Boolean(meta && meta.__poDef__);
+  } else {
     return false;
   }
 }

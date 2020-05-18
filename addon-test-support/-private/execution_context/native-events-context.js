@@ -1,5 +1,3 @@
-import $ from '-jquery';
-
 import {
   click,
   triggerEvent,
@@ -8,20 +6,10 @@ import {
   blur
 } from 'ember-native-dom-helpers';
 
-import { run } from '../action';
-import {
-  guardMultiple,
-  buildSelector,
-  findClosestValue
-} from '../helpers';
 import {
   fillElement,
   assertFocusable
 } from './helpers';
-import {
-  ELEMENT_NOT_FOUND,
-  throwBetterError
-} from '../better-errors';
 
 const KEYBOARD_EVENT_TYPES = ['keydown', 'keypress', 'keyup'];
 
@@ -38,37 +26,19 @@ ExecutionContext.prototype = {
       '#ember-testing';
   },
 
-  runAsync(cb) {
-    return run(this.pageObjectNode, cb);
+  click(element) {
+    click(element);
   },
 
-  click(selector, container) {
-    const el = this.$(selector, container)[0];
-    click(el);
+  fillIn(element, content) {
+
+    fillElement(element, content);
+
+    triggerEvent(element, 'input');
+    triggerEvent(element, 'change');
   },
 
-  fillIn(selector, container, options, content) {
-    let elements = this.$(selector, container).toArray();
-
-    elements.forEach((el) => {
-      fillElement(el, content, {
-        selector,
-        pageObjectNode: this.pageObjectNode,
-        pageObjectKey: options.pageObjectKey
-      });
-
-      triggerEvent(el, 'input');
-      triggerEvent(el, 'change');
-    });
-  },
-
-  $(selector, container) {
-    return $(selector, container || this.testContainer);
-  },
-
-  triggerEvent(selector, container, options, eventName, eventOptions) {
-    const element = this.$(selector, container)[0];
-
+  triggerEvent(element, eventName, eventOptions) {
     // `keyCode` is a deprecated property.
     // @see: https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/keyCode
     // Due to this deprecation `ember-native-dom-helpers` doesn't accept `keyCode` as a `KeyboardEvent` option.
@@ -84,64 +54,16 @@ ExecutionContext.prototype = {
     }
   },
 
-  focus(selector, options) {
-    const element = this.findWithAssert(selector, options)[0];
-
-    assertFocusable(element, {
-      selector,
-      pageObjectNode: this.pageObjectNode,
-      pageObjectKey: options.pageObjectKey
-    });
+  focus(element) {
+    assertFocusable(element);
 
     focus(element);
   },
 
-  blur(selector, options) {
-    const element = this.findWithAssert(selector, options)[0];
-
-    assertFocusable(element, {
-      selector,
-      pageObjectNode: this.pageObjectNode,
-      pageObjectKey: options.pageObjectKey
-    });
+  blur(element) {
+    assertFocusable(element);
 
     blur(element);
-  },
-
-  assertElementExists(selector, options) {
-    let container = options.testContainer || findClosestValue(this.pageObjectNode, 'testContainer');
-
-    let result = this.$(selector, container);
-
-    if (result.length === 0) {
-      throwBetterError(
-        this.pageObjectNode,
-        options.pageObjectKey,
-        ELEMENT_NOT_FOUND,
-        { selector }
-      );
-    }
-  },
-
-  findWithAssert(selector, options) {
-    let container = options.testContainer || findClosestValue(this.pageObjectNode, 'testContainer');
-
-    selector = buildSelector(this.pageObjectNode, selector, options);
-
-    let result = this.$(selector, container);
-
-    if (result.length === 0) {
-      throwBetterError(
-        this.pageObjectNode,
-        options.pageObjectKey,
-        ELEMENT_NOT_FOUND,
-        { selector }
-      );
-    }
-
-    guardMultiple(result, selector, options.multiple);
-
-    return result;
   }
 };
 

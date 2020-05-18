@@ -1,17 +1,8 @@
-import { run } from '../action';
-import {
-  guardMultiple,
-  buildSelector,
-  findClosestValue
-} from '../helpers';
+import $ from '-jquery';
 import {
   fillElement,
   assertFocusable
 } from './helpers';
-import {
-  ELEMENT_NOT_FOUND,
-  throwBetterError
-} from '../better-errors';
 
 export default function AcceptanceExecutionContext(pageObjectNode) {
   this.pageObjectNode = pageObjectNode;
@@ -28,99 +19,41 @@ AcceptanceExecutionContext.prototype = {
     });
   },
 
-  runAsync(cb) {
-    return run(this.pageObjectNode, cb);
-  },
-
   visit(path) {
     /* global visit */
     visit(path);
   },
 
-  click(selector, container) {
+  click(element) {
     /* global click */
-    click(selector, container);
+    click(element);
   },
 
-  fillIn(selector, container, options, content) {
-    let $selection = find(selector, container || findClosestValue(this.pageObjectNode, 'testContainer'));
-
+  fillIn(element, content) {
     /* global focus */
-    focus($selection);
+    focus(element);
 
-    fillElement($selection, content, {
-      selector,
-      pageObjectNode: this.pageObjectNode,
-      pageObjectKey: options.pageObjectKey
-    });
+    fillElement(element, content);
 
     /* global triggerEvent */
-    triggerEvent(selector, container, 'input');
-    triggerEvent(selector, container, 'change');
+    triggerEvent(element, 'input');
+    triggerEvent(element, 'change');
   },
 
-  triggerEvent(selector, container, options, eventName, eventOptions) {
+  triggerEvent(element, eventName, eventOptions) {
     /* global triggerEvent */
-    triggerEvent(selector, container, eventName, eventOptions);
+    triggerEvent(element, eventName, eventOptions);
   },
 
-  focus(selector, options) {
-    let $selection = this.findWithAssert(selector, options);
+  focus(element) {
+    assertFocusable(element);
 
-    assertFocusable($selection[0], {
-      selector,
-      pageObjectNode: this.pageObjectNode,
-      pageObjectKey: options.pageObjectKey
-    });
-
-    $selection.focus();
+    $(element).focus();
   },
 
-  blur(selector, options) {
-    let $selection = this.findWithAssert(selector, options);
+  blur(element) {
+    assertFocusable(element);
 
-    assertFocusable($selection[0], {
-      selector,
-      pageObjectNode: this.pageObjectNode,
-      pageObjectKey: options.pageObjectKey
-    });
-
-    $selection.blur();
-  },
-
-  assertElementExists(selector, options) {
-    /* global find */
-    let result = find(selector, options.testContainer || findClosestValue(this.pageObjectNode, 'testContainer'));
-
-    if (result.length === 0) {
-      throwBetterError(
-        this.pageObjectNode,
-        options.pageObjectKey,
-        ELEMENT_NOT_FOUND,
-        { selector }
-      );
-    }
-  },
-
-  findWithAssert(selector, options) {
-    let result;
-
-    selector = buildSelector(this.pageObjectNode, selector, options);
-
-    /* global find */
-    result = find(selector, options.testContainer || findClosestValue(this.pageObjectNode, 'testContainer'));
-
-    if (result.length === 0) {
-      throwBetterError(
-        this.pageObjectNode,
-        options.pageObjectKey,
-        ELEMENT_NOT_FOUND,
-        { selector }
-      );
-    }
-
-    guardMultiple(result, selector, options.multiple);
-
-    return result;
+    $(element).blur();
   }
 };
