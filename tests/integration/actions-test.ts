@@ -2,7 +2,7 @@ import 'qunit-dom';
 import { run } from '@ember/runloop';
 import $ from '-jquery';
 import { module, test } from 'qunit';
-import { setupRenderingTest } from 'ember-qunit';
+import { setupRenderingTest } from '../helpers';
 import {
   createCalculatorTemplate,
   createInputsTemplate
@@ -97,14 +97,6 @@ if (require.has('@ember/test-helpers')) {
 
   module('Integration | actions', function(hooks) {
     setupRenderingTest(hooks);
-
-    hooks.beforeEach(function(this: any) {
-      ( page as any ).setContext(this);
-    });
-
-    hooks.afterEach(function() {
-      ( page as any ).removeContext();
-    });
 
     test('Actions work when defined inside collections', async function(assert) {
       let template = createCalculatorTemplate();
@@ -307,7 +299,6 @@ if (require.has('@ember/test-helpers')) {
       $('#alternate-ember-testing').html('<button>lorem</button><input>');
 
       let page = create({
-        context: this,
         clickOnText: clickOnText('button', { testContainer: '#alternate-ember-testing' }),
         clickable: clickable('button', { testContainer: '#alternate-ember-testing' }),
         fillable: fillable('input', { testContainer: '#alternate-ember-testing' })
@@ -325,7 +316,6 @@ if (require.has('@ember/test-helpers')) {
       $('#alternate-ember-testing').html('<button>lorem</button><input>');
 
       let page = create({
-        context: this,
         testContainer: '#alternate-ember-testing',
         clickOnText: clickOnText('button'),
         clickable: clickable('button'),

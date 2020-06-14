@@ -1,5 +1,5 @@
 import { module, test } from 'qunit';
-import { setupRenderingTest } from 'ember-qunit';
+import { setupRenderingTest } from '../../helpers';
 import hbs from 'htmlbars-inline-precompile';
 
 import { create, text } from 'dummy/tests/page-object';

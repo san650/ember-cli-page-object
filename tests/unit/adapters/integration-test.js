@@ -1,29 +1,28 @@
 import Ember from 'ember';
-import hbs from 'htmlbars-inline-precompile';
 import { moduleForComponent, test } from 'ember-qunit';
 import wait from 'ember-test-helpers/wait';
 import { create } from 'ember-cli-page-object'
-import { useNativeEvents } from 'ember-cli-page-object/extend'
+import hbs from 'htmlbars-inline-precompile';
 import { createClickTrackerComponent, ClickTrackerDef } from './helpers';
-
-const node = create(ClickTrackerDef);
+import { setAdapter } from 'ember-cli-page-object/test-support/adapters';
+import ModuleForComponentAdapter from 'ember-cli-page-object/test-support/adapters/integration';
 
 if (Ember.hasOwnProperty('$')) {
-  moduleForComponent('', 'Integration | integration context | actions [native-events]', {
+  const node = create(ClickTrackerDef);
+
+  moduleForComponent('', 'Integration | integration context | actions', {
     integration: true,
 
     beforeEach(assert) {
       this.register('component:action-tracker', createClickTrackerComponent(assert))
 
-      node.setContext(this);
+      setAdapter(new ModuleForComponentAdapter());
 
       this.render(hbs`{{action-tracker}}`);
     },
 
     afterEach() {
-      node.removeContext();
-
-      useNativeEvents(false);
+      setAdapter(null);
     }
   });
 
@@ -53,15 +52,15 @@ if (Ember.hasOwnProperty('$')) {
     });
   });
 
-  test('chained sync invocations', async function(assert) {
+  test('sync chained invocations', async function(assert) {
     node.click()
       .click();
 
     return wait().then(() => {
       assert.verifySteps([
         'begin #0',
-        'begin #1',
         'complete #0',
+        'begin #1',
         'complete #1',
       ])
     })
@@ -74,8 +73,8 @@ if (Ember.hasOwnProperty('$')) {
     return wait().then(() => {
       assert.verifySteps([
         'begin #0',
-        'begin #1',
         'complete #0',
+        'begin #1',
         'complete #1'
       ])
     })

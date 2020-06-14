@@ -37,12 +37,20 @@ AcceptanceAdapter.prototype = {
     return window.currentURL();
   },
 
-  throws(assert, block, expected, message) {
-    let done = assert.async();
+  async throws(assert, block, expected, message) {
+    let error;
 
-    block().then().catch((error) => {
-      assert.ok(expected.test(error.toString()), message);
-    }).finally(done);
+    try {
+      await block();
+    } catch (e) {
+      error = e;
+    }
+
+    assert.throws(() => {
+      if (error) {
+        throw error;
+      }
+    }, expected, message);
   },
 
   async await() {

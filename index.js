@@ -50,7 +50,6 @@ module.exports = {
       'index',
       'extend',
       'macros',
-      '-private/execution_context' // @see: https://github.com/san650/ember-cli-page-object/pull/400#issuecomment-384021927
     ].map(publicModuleName =>
       writeFile(
         `/${this.moduleName()}/${publicModuleName}.js`,

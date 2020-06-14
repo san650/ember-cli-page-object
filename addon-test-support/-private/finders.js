@@ -4,13 +4,13 @@ import {
   findClosestValue,
   guardMultiple
 } from './helpers';
-import { getExecutionContext } from './execution_context';
+import { getAdapter } from '../adapters';
 import { throwBetterError, ELEMENT_NOT_FOUND } from './better-errors';
 
 function getContainer(pageObjectNode, options) {
   return options.testContainer
     || findClosestValue(pageObjectNode, 'testContainer')
-    || getExecutionContext(pageObjectNode).testContainer;
+    || getAdapter().testContainer;
 }
 
 /**

@@ -1,6 +1,6 @@
 import require from 'require';
 import { test, module } from 'qunit';
-import { setupRenderingTest } from 'ember-qunit';
+import { setupRenderingTest } from '../../helpers';
 import hbs from 'htmlbars-inline-precompile';
 import { create } from 'ember-cli-page-object'
 import { createClickTrackerComponent, ClickTrackerDef } from './helpers';
