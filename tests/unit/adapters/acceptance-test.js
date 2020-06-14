@@ -39,25 +39,11 @@ test('sync invocations', async function(assert) {
   return window.andThen(() => {
     assert.verifySteps([
       'begin #0',
-      'complete #0',
       'begin #1',
+      'complete #0',
       'complete #1'
     ])
   });
-});
-
-test('sync chained invocations', async function(assert) {
-  node.click()
-    .click();
-
-  return window.andThen(() => {
-    assert.verifySteps([
-      'begin #0',
-      'complete #0',
-      'begin #1',
-      'complete #1',
-    ])
-  })
 });
 
 test('async chained invocations', async function(assert) {

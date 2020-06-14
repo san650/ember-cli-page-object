@@ -1,6 +1,15 @@
 import Ceibo from 'ceibo';
+import { buildSelector } from './helpers';
 
 export const ELEMENT_NOT_FOUND = 'Element not found.';
+
+export function throwContextualError(context, e) {
+  const { query, node } = context;
+
+  const selector = buildSelector(node, query.selector, query);
+
+  throwBetterError(node, query.key, e, { selector });
+}
 
 /**
  * Throws an error with a descriptive message.

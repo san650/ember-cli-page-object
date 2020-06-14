@@ -4,7 +4,6 @@ import { get } from '@ember/object';
 import { isPresent } from '@ember/utils';
 import Ceibo from 'ceibo';
 import { deprecate } from '@ember/application/deprecations';
-import { getContext as getEmberTestHelpersContext } from './compatibility';
 
 import $ from '-jquery';
 
@@ -164,30 +163,6 @@ export function getRoot(node) {
   }
 
   return root;
-}
-
-/**
- * @public
- *
- * Return a test context if one was provided during `create()` or via `setContext()`
- *
- * @param {Ceibo} node - Node of the tree
- * @return {Object} `moduleForComponent` test's `this` context, or null
- */
-export function getContext(node) {
-  let root = getRoot(node);
-  let { context } = root;
-
-  if (typeof context === 'object' && context !== null && typeof context.$ === 'function') {
-    return context;
-  }
-
-  context = getEmberTestHelpersContext();
-  if (typeof context === 'object' && context !== null && typeof context.$ === 'function' && !context.element) {
-    return context
-  }
-
-  return null;
 }
 
 function getAllValuesForProperty(node, property) {

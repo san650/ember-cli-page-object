@@ -2,8 +2,10 @@ import { module } from 'qunit';
 import { resolve } from 'rsvp';
 import startApp from '../helpers/start-app';
 import destroyApp from '../helpers/destroy-app';
-import { useNativeEvents } from 'ember-cli-page-object/extend';
 import Ember from 'ember';
+import { setAdapter } from 'ember-cli-page-object/test-support/adapters';
+import ModuleForAcceptanceAdapter from 'ember-cli-page-object/test-support/adapters/acceptance';
+import ModuleForAcceptanceNativeDOMAdapter from 'ember-cli-page-object/test-support/adapters/acceptance-native-events';
 
 export default function(name, options = {}) {
   [false, true].forEach(_useNativeEvents => {
@@ -18,7 +20,11 @@ export default function(name, options = {}) {
       beforeEach() {
         this.application = startApp();
 
-        useNativeEvents(_useNativeEvents);
+        if (_useNativeEvents) {
+          setAdapter(new ModuleForAcceptanceNativeDOMAdapter());
+        } else {
+          setAdapter(new ModuleForAcceptanceAdapter());
+        }
 
         if (options.beforeEach) {
           return options.beforeEach.apply(this, arguments);
@@ -26,7 +32,7 @@ export default function(name, options = {}) {
       },
 
       afterEach() {
-        useNativeEvents(false);
+        setAdapter(null);
 
         let afterEach = options.afterEach && options.afterEach.apply(this, arguments);
         return resolve(afterEach).then(() => destroyApp(this.application));

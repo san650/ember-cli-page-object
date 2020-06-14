@@ -4,30 +4,30 @@ import {
   assertFocusable
 } from './helpers';
 
-export default function AcceptanceExecutionContext(pageObjectNode) {
-  this.pageObjectNode = pageObjectNode;
-}
+import Adapter from "../adapter";
 
-AcceptanceExecutionContext.prototype = {
+export default class AcceptanceAdapter extends Adapter {
   get testContainer() {
     return  '#ember-testing';
-  },
+  }
 
-  andThen(cb) {
-    return window.wait().then(() => {
-      cb(this);
-    });
-  },
+  wait() {
+    return window.wait();
+  }
 
   visit(path) {
     /* global visit */
     visit(path);
-  },
+
+    return this.wait();
+  }
 
   click(element) {
     /* global click */
     click(element);
-  },
+
+    return this.wait();
+  }
 
   fillIn(element, content) {
     /* global focus */
@@ -38,22 +38,30 @@ AcceptanceExecutionContext.prototype = {
     /* global triggerEvent */
     triggerEvent(element, 'input');
     triggerEvent(element, 'change');
-  },
+
+    return this.wait();
+  }
 
   triggerEvent(element, eventName, eventOptions) {
     /* global triggerEvent */
     triggerEvent(element, eventName, eventOptions);
-  },
+
+    return this.wait();
+  }
 
   focus(element) {
     assertFocusable(element);
 
     $(element).focus();
-  },
+
+    return this.wait();
+  }
 
   blur(element) {
     assertFocusable(element);
 
     $(element).blur();
+
+    return this.wait();
   }
-};
+}

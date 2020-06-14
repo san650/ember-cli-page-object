@@ -1,8 +1,10 @@
 import { module, test } from 'qunit';
-import { setupApplicationTest } from 'ember-qunit';
 import require from 'require';
 import PageObject from '../page-object';
 import { alias } from 'ember-cli-page-object/macros';
+// intentionally not using our local extension in order to make
+// sure, RFC268 works by default, w/o Adapter being set.
+import { setupApplicationTest } from 'ember-qunit';
 
 if (require.has('@ember/test-helpers')) {
   const { settled, waitUntil } = require('@ember/test-helpers');

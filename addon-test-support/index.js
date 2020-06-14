@@ -22,7 +22,7 @@ import { visitable }   from './properties/visitable';     export { visitable };
 
 export { findElement } from './extend/find-element';
 export { findElementWithAssert } from './extend/find-element-with-assert';
-export { buildSelector, getContext } from './-private/helpers';
+export { buildSelector } from './-private/helpers';
 
 export default {
   attribute,

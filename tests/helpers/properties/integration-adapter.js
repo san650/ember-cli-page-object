@@ -3,7 +3,19 @@ import $ from '-jquery';
 export { moduleForComponent as moduleForIntegration, test as testForIntegration } from 'ember-qunit';
 import expectEmberError from '../../expect-ember-error';
 import hbs from 'htmlbars-inline-precompile';
-import { supportsRfc268 } from 'ember-cli-page-object/test-support/-private/execution_context';
+import require from 'require';
+
+function render(test, ...args) {
+  if ('render' in test) {
+    return test.render(...args);
+  } else if (require.has('@ember/test-helpers')) {
+    return require('@ember/test-helpers').render(...args);
+  } else if (require.has('ember-test-helpers')) {
+    return require('ember-test-helpers').getContext().render(...args);
+  }
+
+  throw "can not figure out `render`"
+}
 
 export function IntegrationAdapter(context) {
   this.context = context;
@@ -16,7 +28,7 @@ IntegrationAdapter.prototype = {
     return $(selector, isAlternative ? '#alternate-ember-testing' : '#ember-testing');
   },
 
-  createTemplate(test, page, template, options) {
+  async createTemplate(test, page, template, options) {
     template = template || '';
 
     if (!(test && page)) {
@@ -32,11 +44,7 @@ IntegrationAdapter.prototype = {
       test.set('raw', template);
     }
 
-    if (!supportsRfc268()) {
-      page.setContext(test);
-    }
-
-    this.context.render(hbs`{{html-render html=raw}}`);
+    await render(test, hbs`{{html-render html=raw}}`);
   },
 
   throws(assert, block, expected, message) {

@@ -31,12 +31,11 @@ const EXPECTED_METHODS = [
 
 const HELPER_METHODS = [
   'buildSelector',
-  'getContext',
   'findElement',
   'findElementWithAssert'
 ];
 
-const EXTEND_METHODS = HELPER_METHODS.concat('registerExecutionContext').concat([
+const EXTEND_METHODS = HELPER_METHODS.concat([
   'findOne',
   'findMany'
 ]);
