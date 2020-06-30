@@ -45,7 +45,7 @@
     "ember-cli-babel": "^6.16.0",
     "ember-cli-node-assets": "^0.2.2",
     "ember-native-dom-helpers": "^0.6.3",
-    "jquery": "3.4.1",
+    "jquery": "^3.4.1",
     "rsvp": "^4.7.0"
   },
   "devDependencies": {
