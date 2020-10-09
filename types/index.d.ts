@@ -28,6 +28,7 @@ declare module 'ember-cli-page-object' {
   function notHasClass(scope: string, className: string, options?: FindOptions): GetterDescriptor<boolean>;
   function contains(scope?: string, options?: FindOptions): (text: string) => GetterDescriptor<boolean>;
   function count(scope?: string, options?: FindOptions): () => GetterDescriptor<boolean>;
+  function is(stateSelector: string, options?: FindOptions): GetterDescriptor<boolean>;
 
   // Actions
   function clickable(scope?: string, userOptions?: FindOptions): MethodDescriptor<<T>(this: T) => T>;
