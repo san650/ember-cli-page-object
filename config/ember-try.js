@@ -155,6 +155,23 @@ module.exports = function() {
           }
         },
         {
+          name: 'with-ember-qunit@5.0.0-beta',
+          bower: {
+            dependencies: {
+              'ember': 'components/ember#release'
+            },
+            resolutions: {
+              'ember': 'release'
+            }
+          },
+          npm: {
+            devDependencies: {
+              'ember-qunit': '5.0.0-beta.4',
+              'ember-source': null
+            }
+          }
+        },
+        {
           name: 'node-tests',
           command: 'npm run nodetest',
           bower: {

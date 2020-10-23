@@ -49,6 +49,7 @@ jobs:
     - env: EMBER_TRY_SCENARIO=with-jquery COVERAGE=true
     - env: EMBER_TRY_SCENARIO=with-ember-test-helpers
     - env: EMBER_TRY_SCENARIO=with-@ember/test-helpers
+    - env: EMBER_TRY_SCENARIO=with-ember-qunit@5.0.0-beta
     - env: EMBER_TRY_SCENARIO=ember-release
     - env: EMBER_TRY_SCENARIO=ember-beta
     - env: EMBER_TRY_SCENARIO=ember-canary
