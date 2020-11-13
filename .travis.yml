@@ -1,4 +1,3 @@
----
 language: node_js
 node_js:
   - 12
@@ -6,7 +5,7 @@ node_js:
 addons:
   chrome: stable
 
-sudo: false
+os: linux
 dist: trusty
 
 cache:
@@ -22,7 +21,7 @@ branches:
     - master
 
 jobs:
-  fail_fast: true
+  fast_finish: true
   allow_failures:
     - env: EMBER_TRY_SCENARIO=ember-canary
 
