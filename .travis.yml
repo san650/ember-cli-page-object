@@ -1,6 +1,6 @@
 language: node_js
 node_js:
-  - 12
+  - lts/*
 
 addons:
   chrome: stable
@@ -39,11 +39,16 @@ jobs:
     # as well as latest stable release (bonus points to beta/canary)
     - stage: "Additional Tests"
       env: EMBER_TRY_SCENARIO=node-tests
-    - env: EMBER_TRY_SCENARIO=ember-lts-2.4
-    - env: EMBER_TRY_SCENARIO=ember-lts-2.8
-    - env: EMBER_TRY_SCENARIO=ember-lts-2.12
-    - env: EMBER_TRY_SCENARIO=ember-lts-2.16
-    - env: EMBER_TRY_SCENARIO=ember-lts-2.18
+    - node_js: 6
+      env: EMBER_TRY_SCENARIO=ember-lts-2.4
+    - node_js: 0.12
+      env: EMBER_TRY_SCENARIO=ember-lts-2.8
+    - node_js: 7
+      env: EMBER_TRY_SCENARIO=ember-lts-2.12
+    - node_js: 8
+      env: EMBER_TRY_SCENARIO=ember-lts-2.16
+    - node_js: 9
+      env: EMBER_TRY_SCENARIO=ember-lts-2.18
     # keep testing integration and acceptance contexts
     - env: EMBER_TRY_SCENARIO=with-jquery COVERAGE=true
     - env: EMBER_TRY_SCENARIO=with-ember-test-helpers
