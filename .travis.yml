@@ -16,6 +16,10 @@ env:
     # See https://git.io/vdao3 for details.
     - JOBS=1
 
+branches:
+  only:
+    - master
+
 jobs:
   fast_finish: true
   allow_failures:
