@@ -38,7 +38,7 @@ class Selector {
     }
 
     deprecate(
-      'Usage of comma separated selectors is deprecated in ember-cli-page-object', selector.indexOf(',') === -1, {
+      'Usage of comma separated selectors is deprecated in ember-cli-page-object', !this.isCommaSeparated(selector), {
         id: 'ember-cli-page-object.comma-separated-selectors',
         until: "2.0.0",
         url: 'https://ember-cli-page-object.js.org/docs/v1.16.x/deprecations/#comma-separated-selectors',
@@ -66,6 +66,13 @@ class Selector {
     }
 
     return filters.join('');
+  }
+
+  isCommaSeparated(selector) {
+    if (this.targetFilters.contains) {
+      selector = selector.replace(this.targetFilters.contains, '');
+    }
+    return selector.indexOf(',') > -1;
   }
 
   calculateScope(node, targetScope) {
