@@ -1,3 +1,5 @@
+import { getExecutionContext } from '../-private/execution_context';
+
 /**
  * @public
  * @deprecated
@@ -34,4 +36,6 @@
  * @throws Will throw an error if no element matches selector
  * @throws Will throw an error if multiple elements are matched by selector and multiple option is not set
  */
-export { findElementWithAssert } from '../-private/finders';
+export function findElementWithAssert(pageObjectNode, targetSelector, options = {}) {
+  return getExecutionContext(pageObjectNode).findWithAssert(targetSelector, options);
+}
