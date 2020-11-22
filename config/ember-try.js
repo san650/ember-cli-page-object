@@ -22,7 +22,9 @@ module.exports = function() {
           },
           npm: {
             devDependencies: {
-              'ember-source': null
+              'ember-source': null,
+              'ember-cli-qunit': '^4.0.0',
+              'ember-qunit': null
             }
           }
         },
@@ -46,7 +48,9 @@ module.exports = function() {
           name: 'ember-lts-2.12',
           npm: {
             devDependencies: {
-              'ember-source': '~2.12.0'
+              'ember-source': '~2.12.0',
+              'ember-cli-qunit': '^4.0.0',
+              'ember-qunit': null
             }
           }
         },
@@ -58,7 +62,9 @@ module.exports = function() {
           npm: {
             devDependencies: {
               '@ember/jquery': '^0.5.1',
-              'ember-source': '~2.16.0'
+              'ember-source': '~2.16.0',
+              'ember-cli-qunit': '^4.0.0',
+              'ember-qunit': null
             }
           }
         },
