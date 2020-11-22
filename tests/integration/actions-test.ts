@@ -7,7 +7,6 @@ import {
   createCalculatorTemplate,
   createInputsTemplate
 } from './test-helper';
-import expectEmberError from '../expect-ember-error';
 import { alias } from 'ember-cli-page-object/macros';
 
 import {
@@ -255,16 +254,16 @@ if (require.has('@ember/test-helpers')) {
         assert.throws(() => page.nonExistant.attribute, message, 'attribute query did not throw an error');
       });
       run(() => {
-        expectEmberError(assert, () => page.nonExistant.clickOnText('qux'), message, 'clickOnText action did not throw an error');
+        assert.throws(() => page.nonExistant.clickOnText('qux'), message, 'clickOnText action did not throw an error');
       });
       run(() => {
-        expectEmberError(assert, () => page.nonExistant.clickable(), message, 'clickable action did not throw an error');
+        assert.throws(() => page.nonExistant.clickable(), message, 'clickable action did not throw an error');
       });
       run(() => {
         assert.throws(() => page.nonExistant.contains('something'), message, 'contains action did not throw an error');
       });
       run(() => {
-        expectEmberError(assert, () => page.nonExistant.fillable('baz'), message, 'fillable action did not throw an error');
+        assert.throws(() => page.nonExistant.fillable('baz'), message, 'fillable action did not throw an error');
       });
       run(() => {
         assert.throws(() => page.nonExistant.hasClass, message, 'hasClass query did not throw an error');
