@@ -1,5 +1,4 @@
 /* global Symbol */
-import { A } from '@ember/array';
 import { buildSelector, assign, isPageObject, getPageObjectDefinition } from '../../-private/helpers';
 import { create } from '../../create';
 import { count } from '../count';
@@ -53,8 +52,14 @@ export class Collection {
     return this.toArray().filter(...args);
   }
 
-  filterBy(...args) {
-    return this.toArray().filterBy(...args);
+  filterBy(propertyKey, value) {
+    return this.toArray().filter((i) => {
+      if (typeof value !== 'undefined') {
+        return i[propertyKey] === value;
+      } else {
+        return Boolean(i[propertyKey]);
+      }
+    });
   }
 
   forEach(...args) {
@@ -65,18 +70,20 @@ export class Collection {
     return this.toArray().map(...args);
   }
 
-  mapBy(...args) {
-    return this.toArray().mapBy(...args);
+  mapBy(propertyKey) {
+    return this.toArray().map((i) => {
+      return i[propertyKey];
+    });
   }
 
   findOneBy(...args) {
-    const elements = this.toArray().filterBy(...args);
+    const elements = this.filterBy(...args);
     this._assertFoundElements(elements, ...args);
     return elements[0];
   }
 
   findOne(...args) {
-    const elements = this.toArray().filter(...args);
+    const elements = this.filter(...args);
     this._assertFoundElements(elements, ...args);
     return elements[0];
   }
@@ -99,7 +106,7 @@ export class Collection {
   toArray() {
     let { length } = this;
 
-    let array = A();
+    let array = [];
 
     for (let i = 0; i < length; i++) {
       array.push(this.objectAt(i));
