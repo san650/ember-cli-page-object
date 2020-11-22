@@ -2,7 +2,7 @@ import { module, test } from 'qunit';
 import { setupRenderingTest } from '../../helpers';
 import hbs from 'htmlbars-inline-precompile';
 
-import { create, text } from 'dummy/tests/page-object';
+import { create, text, clickOnText } from 'dummy/tests/page-object';
 
 import require from 'require';
 if (require.has('@ember/test-helpers')) {
@@ -66,6 +66,20 @@ if (require.has('@ember/test-helpers')) {
       </div>`);
 
       page.text;
+
+      assert.expectNoDeprecation();
+    });
+
+    test('don\'t show deprecation when the selector contains text with comma', async function(assert) {
+      let page = create({
+        clickOnButton: clickOnText('button')
+      });
+
+      await render(hbs`<fieldset>
+        <button>Lorem, Ipsum</button>
+      </fieldset>`);
+
+      page.clickOnButton('Lorem, Ipsum');
 
       assert.expectNoDeprecation();
     });

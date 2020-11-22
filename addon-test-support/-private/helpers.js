@@ -26,6 +26,15 @@ class Selector {
       scope = this.calculateScope(this.targetNode, this.targetScope);
     }
 
+    deprecate(
+      'Usage of comma separated selectors is deprecated in ember-cli-page-object',
+      `${scope} ${this.targetSelector}`.indexOf(',') === -1, {
+        id: 'ember-cli-page-object.comma-separated-selectors',
+        until: "2.0.0",
+        url: 'https://ember-cli-page-object.js.org/docs/v1.16.x/deprecations/#comma-separated-selectors',
+      }
+    );
+
     filters = this.calculateFilters(this.targetFilters);
 
     let selector = `${scope} ${this.targetSelector}${filters}`.trim();
@@ -35,14 +44,6 @@ class Selector {
       // testing container.
       selector = ':first';
     }
-
-    deprecate(
-      'Usage of comma separated selectors is deprecated in ember-cli-page-object', selector.indexOf(',') === -1, {
-        id: 'ember-cli-page-object.comma-separated-selectors',
-        until: "2.0.0",
-        url: 'https://ember-cli-page-object.js.org/docs/v1.16.x/deprecations/#comma-separated-selectors',
-      }
-    );
 
     return selector;
   }
