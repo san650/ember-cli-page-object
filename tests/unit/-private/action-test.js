@@ -128,20 +128,29 @@ PageObject: 'page.run("1")'
   });
 
   test('it handles async errors', async function(assert) {
-    const p = create({
-      scope: '.Scope',
+    // when test against some old `ember-cli-qunit`-only scenarios, QUnit@1 is installed.
+    // There is no `assert.rejects(` support, so we just ignore the test in such cases.
+    // It's still tested on newer scenarios with QUnit@2, even against old "ember-test-helpers" scenarios.
+    //
+    // @todo: remove after `ember-cli-qunit` support is removed.
+    if (typeof assert.rejects === 'function') {
+      const p = create({
+        scope: '.Scope',
 
-      run: action({ selector: '.Selector' }, function() {
-        return next().then(() => {
-          throw new Error('bed time');
+        run: action({ selector: '.Selector' }, function() {
+          return next().then(() => {
+            throw new Error('bed time');
+          })
         })
       })
-    })
 
-    assert.rejects(p.run(1), new Error(`bed time
+      assert.rejects(p.run(1), new Error(`bed time
 
 PageObject: 'page.run("1")'
   Selector: '.Scope .Selector'`));
+    } else {
+      assert.expect(0);
+    }
   });
 
   module('chainability', function() {
@@ -301,26 +310,35 @@ PageObject: 'page.run("1")'
     });
 
     test('it handles errors', async function(assert) {
-      const p = create({
-        scope: '.root',
+      // when test against some old `ember-cli-qunit`-only scenarios, QUnit@1 is installed.
+      // There is no `assert.rejects(` support, so we just ignore the test in such cases.
+      // It's still tested on newer scenarios with QUnit@2, even against old "ember-test-helpers" scenarios.
+      //
+      // @todo: remove after `ember-cli-qunit` support is removed.
+      if (typeof assert.rejects === 'function') {
+        const p = create({
+          scope: '.root',
 
-        emptyRun: action({ selector: '.Selector1' }, () => {}),
+          emptyRun: action({ selector: '.Selector1' }, () => {}),
 
-        child: {
-          scope: '.child',
+          child: {
+            scope: '.child',
 
-          run: action({ selector: '.Selector2' }, function() {
-            return next().then(() => {
-              throw new Error('bed time');
+            run: action({ selector: '.Selector2' }, function() {
+              return next().then(() => {
+                throw new Error('bed time');
+              })
             })
-          })
-        }
-      })
+          }
+        })
 
-      assert.rejects(p.emptyRun().child.run(1), new Error(`bed time
+        assert.rejects(p.emptyRun().child.run(1), new Error(`bed time
 
 PageObject: 'page.child.run("1")'
   Selector: '.root .child .Selector2'`));
+      } else {
+        assert.expect(0);
+      }
     });
   });
 });
