@@ -11,7 +11,7 @@ class DummyAdapter extends Adapter {}
 // However, since Promises are not supported in IE11, for async we rely on "RSVP" library,
 // Unfortunatelly, for some of old "ember" versions there are timing lags coming from "RSVP",
 // so we use a value larger than "0" to appease out test matrix.
-const DEFAULT_NEXT_TICK_TIMEOUT = 10;
+const DEFAULT_NEXT_TICK_TIMEOUT = 20;
 
 const next = (timeout = DEFAULT_NEXT_TICK_TIMEOUT) => {
   return new Promise((r) => setTimeout(r, timeout));
