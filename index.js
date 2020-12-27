@@ -46,16 +46,33 @@ module.exports = {
     // `import { clickable } from 'ember-cli-page-object/test-support';`
     //
     // which is a default behavior in ember-cli
-    const reexportsTree = mergeTrees([
-      'index',
-      'extend',
-      'macros',
-    ].map(publicModuleName =>
-      writeFile(
-        `/${this.moduleName()}/${publicModuleName}.js`,
-        `export * from '${this.moduleName()}/test-support/${publicModuleName}';`
+    const reexportsTree = mergeTrees(
+      [
+        'index',
+        'extend',
+        'macros',
+        'adapter',
+        'adapters',
+      ].map(publicModuleName =>
+        writeFile(
+          `/${this.moduleName()}/${publicModuleName}.js`,
+          `export * from '${this.moduleName()}/test-support/${publicModuleName}';`
+        )
+      ).concat(
+        [
+          'adapters/acceptance-native-events',
+          'adapters/acceptance',
+          'adapters/integration-native-events',
+          'adapters/integration',
+          'adapters/rfc268',
+        ].map(publicModuleName =>
+          writeFile(
+            `/${this.moduleName()}/${publicModuleName}.js`,
+            `export { default } from '${this.moduleName()}/test-support/${publicModuleName}';`
+          )
+        )
       )
-    ));
+    );
 
     return mergeTrees([
       testSupportTree,
