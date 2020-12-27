@@ -1,28 +1,28 @@
 import { module, test } from 'qunit';
 import require from 'require';
-import PageObject from '../page-object';
+import {
+  clickable,
+  clickOnText,
+  collection,
+  create,
+  fillable,
+  isVisible,
+  value,
+  visitable
+} from 'ember-cli-page-object';
 import { alias } from 'ember-cli-page-object/macros';
-// intentionally not using our local extension in order to make
-// sure, RFC268 works by default, w/o Adapter being set.
-import { setupApplicationTest } from 'ember-qunit';
 
 if (require.has('@ember/test-helpers')) {
   const { settled, waitUntil } = require('@ember/test-helpers');
 
+  // intentionally not using our local extension in order to make
+  // sure, RFC268 works by default, w/o Adapter being set.
+  const { setupApplicationTest } = require('ember-qunit');
+
   module('Acceptance | actions [rfc268]', function(hooks) {
     setupApplicationTest(hooks);
 
-    let {
-      clickOnText,
-      clickable,
-      collection,
-      fillable,
-      isVisible,
-      value,
-      visitable
-    } = PageObject;
-
-    let page = PageObject.create({
+    let page = create({
       visit: visitable('/calculator'),
       keys: {
         clickOn: clickOnText('.numbers'),
@@ -233,7 +233,7 @@ if (require.has('@ember/test-helpers')) {
     });
 
     test('fill in by attribute', async function(assert) {
-      let page = PageObject.create({
+      let page = create({
         visit: visitable('/inputs'),
         fillIn: fillable()
       });
