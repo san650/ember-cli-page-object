@@ -4,8 +4,6 @@ import { setAdapter } from 'ember-cli-page-object/adapters';
 import { create, value, visitable } from 'ember-cli-page-object';
 
 if (require.has('@ember/test-helpers')) {
-  // intentionally not using our local extension in order to make
-  // sure, RFC268 works by default, w/o Adapter being set.
   const { setupApplicationTest } = require('ember-qunit');
 
   const Rfc268Adapter = require('ember-cli-page-object/adapters/rfc268').default;
