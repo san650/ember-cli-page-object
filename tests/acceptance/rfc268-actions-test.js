@@ -12,12 +12,10 @@ import {
 } from 'ember-cli-page-object';
 import { alias } from 'ember-cli-page-object/macros';
 
+import { setupApplicationTest } from 'dummy/tests/helpers'
+
 if (require.has('@ember/test-helpers')) {
   const { settled, waitUntil } = require('@ember/test-helpers');
-
-  // intentionally not using our local extension in order to make
-  // sure, RFC268 works by default, w/o Adapter being set.
-  const { setupApplicationTest } = require('ember-qunit');
 
   module('Acceptance | actions [rfc268]', function(hooks) {
     setupApplicationTest(hooks);
