@@ -51,7 +51,7 @@ if (require.has('@ember/test-helpers')) {
       await this.render(hbs`<em class="lorem"></em><em class="lorem"></em><span class="ipsum"></span>`);
 
       assert.throws(() => findElementWithAssert(page, '.lorem', {}),
-        /Error: Assertion Failed: ".lorem" matched more than one element. If you want to select many elements, use collections instead./);
+        /Error: ".lorem" matched more than one element. If you want to select many elements, use collections instead./);
     });
 
     test('throws error if no elements found', async function(assert) {

@@ -1,5 +1,4 @@
 export { assign } from '@ember/polyfills';
-import { assert } from '@ember/debug';
 import { get } from '@ember/object';
 import { isPresent } from '@ember/utils';
 import Ceibo from 'ceibo';
@@ -91,10 +90,9 @@ class Selector {
 }
 
 export function guardMultiple(items, selector, supportMultiple) {
-  assert(
-    `"${selector}" matched more than one element. If you want to select many elements, use collections instead.`,
-    supportMultiple || items.length <= 1
-  );
+  if (items.length > 1 && !supportMultiple) {
+    throw new Error(`"${selector}" matched more than one element. If you want to select many elements, use collections instead.`);
+  }
 }
 
 /**
