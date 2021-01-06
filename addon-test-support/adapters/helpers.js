@@ -1,7 +1,3 @@
-import {
-  throwBetterError
-} from '../better-errors';
-
 import $ from '-jquery';
 
 /**
@@ -19,19 +15,13 @@ import $ from '-jquery';
  *
  * @throws Will throw an error if called on a contenteditable element that has `contenteditable="false"`
  */
-export function fillElement(selection, content, { selector, pageObjectNode, pageObjectKey }) {
+export function fillElement(selection, content) {
   const $selection = $(selection);
 
   if ($selection.is('[contenteditable][contenteditable!="false"]')) {
     $selection.html(content);
   } else if ($selection.is('[contenteditable="false"]')) {
-    throwBetterError(
-      pageObjectNode,
-      pageObjectKey,
-      'Element cannot be filled because it has `contenteditable="false"`.', {
-        selector
-      }
-    );
+    throw new Error('Element cannot be filled because it has `contenteditable="false"`.');
   } else {
     $selection.val(content);
   }
@@ -44,7 +34,7 @@ export function fillElement(selection, content, { selector, pageObjectNode, page
  *
  * @param {Element} element - the element to check
  */
-export function assertFocusable(element, { selector, pageObjectNode, pageObjectKey }) {
+export function assertFocusable(element) {
   let $element = $(element);
 
   let error;
@@ -60,12 +50,6 @@ export function assertFocusable(element, { selector, pageObjectNode, pageObjectK
   }
 
   if (error) {
-    throwBetterError(
-      pageObjectNode,
-      pageObjectKey,
-      `Element is not focusable because it is ${error}`, {
-        selector
-      }
-    );
+    throw new Error(`Element is not focusable because it is ${error}`);
   }
 }

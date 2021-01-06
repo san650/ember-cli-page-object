@@ -1,5 +1,5 @@
 import { module, test } from 'qunit';
-import { setupRenderingTest } from 'ember-qunit';
+import { setupRenderingTest } from '../helpers';
 import { createCalculatorTemplate } from './test-helper';
 
 import { create } from 'ember-cli-page-object';
@@ -13,8 +13,6 @@ if (require.has('@ember/test-helpers')) {
 
     test('Adds default properties', async function(assert) {
       let page = create({
-        context: this,
-
         one: {
           scope: '.numbers button:nth-of-type(1)'
         },
@@ -41,8 +39,6 @@ if (require.has('@ember/test-helpers')) {
 
     test('Overrides default properties', function(assert) {
       let page = create({
-        context: this,
-
         dummy: {
           click() {
             return 'click';

@@ -1,8 +1,18 @@
 import { module, test } from 'qunit';
-import { setupApplicationTest } from 'ember-qunit';
 import require from 'require';
-import PageObject from '../page-object';
+import {
+  clickable,
+  clickOnText,
+  collection,
+  create,
+  fillable,
+  isVisible,
+  value,
+  visitable
+} from 'ember-cli-page-object';
 import { alias } from 'ember-cli-page-object/macros';
+
+import { setupApplicationTest } from 'dummy/tests/helpers'
 
 if (require.has('@ember/test-helpers')) {
   const { settled, waitUntil } = require('@ember/test-helpers');
@@ -10,17 +20,7 @@ if (require.has('@ember/test-helpers')) {
   module('Acceptance | actions [rfc268]', function(hooks) {
     setupApplicationTest(hooks);
 
-    let {
-      clickOnText,
-      clickable,
-      collection,
-      fillable,
-      isVisible,
-      value,
-      visitable
-    } = PageObject;
-
-    let page = PageObject.create({
+    let page = create({
       visit: visitable('/calculator'),
       keys: {
         clickOn: clickOnText('.numbers'),
@@ -231,7 +231,7 @@ if (require.has('@ember/test-helpers')) {
     });
 
     test('fill in by attribute', async function(assert) {
-      let page = PageObject.create({
+      let page = create({
         visit: visitable('/inputs'),
         fillIn: fillable()
       });

@@ -1,9 +1,6 @@
-import {
-  assign,
-  buildSelector,
-  findClosestValue
-} from '../-private/helpers';
-import { getExecutionContext } from '../-private/execution_context';
+import { assign } from '../-private/helpers';
+import action from '../-private/action';
+import { findOne } from '../extend';
 
 /**
  *
@@ -83,25 +80,15 @@ import { getExecutionContext } from '../-private/execution_context';
  * @return {Descriptor}
 */
 export function triggerable(event, selector, userOptions = {}) {
-  return {
-    isDescriptor: true,
+  return action(assign({},
+    userOptions, {
+    selector
+  }), function (eventProperties = {}) {
+    const mergedEventProperties = assign({}, userOptions.eventProperties, eventProperties);
 
-    get(key) {
-      return function(eventProperties = {}) {
-        const executionContext = getExecutionContext(this);
-        const options = assign({ pageObjectKey: `${key}()` }, userOptions);
-        const staticEventProperties = assign({}, options.eventProperties);
+    const element = findOne(this.node, this.query.selector, this.query);
 
-        return executionContext.runAsync((context) => {
-          const fullSelector = buildSelector(this, selector, options);
-          const container =  options.testContainer || findClosestValue(this, 'testContainer');
-
-          context.assertElementExists(fullSelector, options);
-
-          const mergedEventProperties = assign(staticEventProperties, eventProperties);
-          return context.triggerEvent(fullSelector, container, options, event, mergedEventProperties);
-        });
-      };
-    }
-  };
+    return this.adapter.triggerEvent(element, event, mergedEventProperties);
+  });
 }
+

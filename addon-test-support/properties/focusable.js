@@ -1,5 +1,6 @@
 import { assign } from '../-private/helpers';
-import { getExecutionContext } from '../-private/execution_context';
+import action from '../-private/action';
+import { findOne } from '../extend';
 
 /**
  *
@@ -62,19 +63,12 @@ import { getExecutionContext } from '../-private/execution_context';
  * @param {string} options.testContainer - Context where to search elements in the DOM
  * @return {Descriptor}
 */
-export function focusable(selector, userOptions = {}) {
-  return {
-    isDescriptor: true,
+export function focusable(selector = '', userOptions = {}) {
+  const query = assign({}, userOptions, { selector });
 
-    get(key) {
-      return function() {
-        const executionContext = getExecutionContext(this);
-        const options = assign({ pageObjectKey: `${key}()` }, userOptions);
+  return action(query, function() {
+    const element = findOne(this.node, this.query.selector, this.query);
 
-        return executionContext.runAsync((context) => {
-          return context.focus(selector, options);
-        });
-      };
-    }
-  };
+    return this.adapter.focus(element);
+  });
 }

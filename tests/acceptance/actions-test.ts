@@ -83,7 +83,7 @@ test('fill in by attribute', async function(assert) {
     fillIn: fillable()
   });
 
-  page.visit();
+  await page.visit();
 
   await page
     .fillIn('input1', 'input 1')

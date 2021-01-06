@@ -64,7 +64,6 @@ moduleForProperty('create', function(test, adapter) {
   test('does not mutate definition object', async function(assert) {
     let prop = text('.baz');
     let expected = {
-      context: '.a-context',
       scope: '.a-scope',
       foo: {
         baz: prop
@@ -73,7 +72,6 @@ moduleForProperty('create', function(test, adapter) {
       bar: prop
     };
     let actual = {
-      context: '.a-context',
       scope: '.a-scope',
       foo: {
         baz: prop
@@ -95,5 +93,11 @@ moduleForProperty('create', function(test, adapter) {
     await this.adapter.createTemplate(this, page, '<p>Lorem ipsum</p>');
 
     assert.ok(page.contains('ipsum'));
+  });
+
+  test('"context" key is not allowed', async function(assert) {
+    assert.throws(() => create({
+      context: {}
+    }), new Error('"context" key is not allowed to be passed at definition root.'));
   });
 });

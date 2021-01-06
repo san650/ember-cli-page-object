@@ -1,12 +1,11 @@
 import { assign } from '../-private/helpers';
-import { findMany, findOne } from '../extend';
+import { findOne } from '../extend';
 import $ from '-jquery';
 
 /**
  * @public
  *
- * Returns the value of a property from the matched element, or an array of
- * values from multiple matched elements.
+ * Returns the value of a property from the matched element.
  *
  * @example
  * // <input type="checkbox" checked="checked">
@@ -18,19 +17,6 @@ import $ from '-jquery';
  * });
  *
  * assert.ok(page.isChecked);
- *
- * @example
- *
- * // <input type="checkbox" checked="checked">
- * // <input type="checkbox" checked="">
- *
- * import { create, property } from 'ember-cli-page-object';
- *
- * const page = create({
- *   inputsChecked: property('checked', 'input', { multiple: true })
- * });
- *
- * assert.deepEqual(page.inputsChecked, [true, false]);
  *
  * @example
  *
@@ -54,11 +40,10 @@ import $ from '-jquery';
  * @param {string} options.scope - Nests provided scope within parent's scope
  * @param {boolean} options.resetScope - Override parent's scope
  * @param {number} options.at - Reduce the set of matched elements to the one at the specified index
- * @param {boolean} options.multiple - If set, the function will return an array of values
  * @return {Descriptor}
  *
  * @throws Will throw an error if no element matches selector
- * @throws Will throw an error if multiple elements are matched by selector and multiple option is not set
+ * @throws Will throw an error if multiple elements are matched by selector
  */
 export function property(propertyName, selector, userOptions = {}) {
   return {
@@ -67,11 +52,7 @@ export function property(propertyName, selector, userOptions = {}) {
     get(key) {
       let options = assign({ pageObjectKey: key }, userOptions);
 
-      if (options.multiple) {
-        return findMany(this, selector, options).map(element => $(element).prop(propertyName));
-      } else {
-        return $(findOne(this, selector, options)).prop(propertyName);
-      }
+      return $(findOne(this, selector, options)).prop(propertyName);
     }
   };
 }

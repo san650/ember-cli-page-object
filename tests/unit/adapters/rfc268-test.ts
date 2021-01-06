@@ -1,6 +1,6 @@
 import require from 'require';
 import { test, module } from 'qunit';
-import { setupRenderingTest } from 'ember-qunit';
+import { setupRenderingTest } from '../../helpers';
 import hbs from 'htmlbars-inline-precompile';
 import { create } from 'ember-cli-page-object'
 import { createClickTrackerComponent, ClickTrackerDef } from './helpers';
@@ -9,9 +9,9 @@ import { TestContext } from 'ember-test-helpers';
 const node = create(ClickTrackerDef);
 
 if (require.has('@ember/test-helpers')) {
-  const { render, settled } = require('@ember/test-helpers');
+  const { render } = require('@ember/test-helpers');
 
-  module('Integration | rfc268 context | actions', function(hooks) {
+  module('Integration | rfc268 adapter | actions', function(hooks) {
     setupRenderingTest(hooks);
 
     hooks.beforeEach(function(this: TestContext, assert) {
@@ -22,9 +22,9 @@ if (require.has('@ember/test-helpers')) {
 
     test('sync invocations', async function(assert) {
       node.click()
-      await node.click();
+      node.click();
 
-      await settled();
+      await node;
 
       assert.verifySteps([
         'begin #0',
@@ -60,9 +60,7 @@ if (require.has('@ember/test-helpers')) {
     test('sync chained invocations', async function(assert) {
       node.click().click();
 
-      await settled();
-      await settled();
-      await settled();
+      await node;
 
       assert.verifySteps([
         'begin #0',

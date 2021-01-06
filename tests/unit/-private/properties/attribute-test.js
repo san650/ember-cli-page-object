@@ -131,16 +131,4 @@ moduleForProperty('attribute', function(test) {
     assert.equal(page.foo, 'disabled');
     assert.strictEqual(page.nonExisting, undefined);
   });
-
-  test('normalizes value with multiple', async function(assert) {
-    let page = create({
-      foo: attribute('disabled', 'span', { multiple: true }),
-      nonExisting: attribute('non-existing', 'span', { multiple: true })
-    });
-
-    await this.adapter.createTemplate(this, page, '<span disabled>');
-
-    assert.deepEqual(page.foo, ['disabled']);
-    assert.deepEqual(page.nonExisting, [undefined]);
-  });
 });

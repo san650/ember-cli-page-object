@@ -27,19 +27,6 @@ import { assign, guardMultiple } from '../-private/helpers';
  *
  * @example
  *
- * // <span>ipsum</span>
- * // <span style="display:none">dolor</span>
- *
- * import { create, isPresent } from 'ember-cli-page-object';
- *
- * const page = create({
- *   spanIsPresent: isPresent('span', { multiple: true })
- * });
- *
- * assert.ok(page.spanIsPresent);
- *
- * @example
- *
  * // <head>
  * //   <meta name='robots' content='noindex'>
  * // </head>
@@ -74,11 +61,10 @@ import { assign, guardMultiple } from '../-private/helpers';
  * @param {string} options.scope - Nests provided scope within parent's scope
  * @param {number} options.at - Reduce the set of matched elements to the one at the specified index
  * @param {boolean} options.resetScope - Override parent's scope
- * @param {boolean} options.multiple - Check if all elements matched by selector are visible
  * @param {string} options.testContainer - Context where to search elements in the DOM
  * @return {Descriptor}
  *
- * @throws Will throw an error if multiple elements are matched by selector and multiple option is not set
+ * @throws Will throw an error if multiple elements are matched by selector
  */
 export function isPresent(selector, userOptions = {}) {
   return {
@@ -87,8 +73,9 @@ export function isPresent(selector, userOptions = {}) {
       let options = assign({ pageObjectKey: key }, userOptions);
 
       let elements = findMany(this, selector, options);
-      guardMultiple(elements, selector, options.multiple);
-      return elements.length > 0;
+      guardMultiple(elements, selector);
+
+      return elements.length === 1;
     }
   };
 }

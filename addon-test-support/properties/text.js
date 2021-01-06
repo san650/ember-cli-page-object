@@ -1,5 +1,5 @@
-import { assign, normalizeText } from '../-private/helpers';
-import { findMany, findOne } from '../extend';
+import { assign } from '../-private/helpers';
+import { findOne } from '../extend';
 import $ from '-jquery';
 
 function identity(v) {
@@ -22,20 +22,6 @@ function identity(v) {
  * });
  *
  * assert.equal(page.text, 'world!');
- *
- * @example
- *
- * // <span>lorem</span>
- * // <span> ipsum </span>
- * // <span>dolor</span>
- *
- * import { create, text } from 'ember-cli-page-object';
- *
- * const page = create({
- *   texts: text('span', { multiple: true })
- * });
- *
- * assert.deepEqual(page.texts, ['lorem', 'ipsum', 'dolor']);
  *
  * @example
  *
@@ -92,13 +78,12 @@ function identity(v) {
  * @param {string} options.scope - Nests provided scope within parent's scope
  * @param {number} options.at - Reduce the set of matched elements to the one at the specified index
  * @param {boolean} options.resetScope - Override parent's scope
- * @param {boolean} options.multiple - Return an array of values
  * @param {boolean} options.normalize - Set to `false` to avoid text normalization
  * @param {string} options.testContainer - Context where to search elements in the DOM
  * @return {Descriptor}
  *
  * @throws Will throw an error if no element matches selector
- * @throws Will throw an error if multiple elements are matched by selector and multiple option is not set
+ * @throws Will throw an error if multiple elements are matched by selector
  */
 export function text(selector, userOptions = {}) {
   return {
@@ -108,11 +93,21 @@ export function text(selector, userOptions = {}) {
       let options = assign({ pageObjectKey: key }, userOptions);
       let f = options.normalize === false ? identity : normalizeText;
 
-      if (options.multiple) {
-        return findMany(this, selector, options).map(element => f($(element).text()));
-      } else {
-        return f($(findOne(this, selector, options)).text());
-      }
+      return f($(findOne(this, selector, options)).text());
     }
   };
+}
+
+/**
+ * @private
+ *
+ * Trim whitespaces at both ends and normalize whitespaces inside `text`
+ *
+ * Due to variations in the HTML parsers in different browsers, the text
+ * returned may vary in newlines and other white space.
+ *
+ * @see http://api.jquery.com/text/
+ */
+function normalizeText(text) {
+  return text.trim().replace(/\n/g, ' ').replace(/\s\s*/g, ' ');
 }

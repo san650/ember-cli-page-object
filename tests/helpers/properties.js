@@ -18,10 +18,13 @@ import {
 } from 'ember-qunit'
 import { module, test } from 'qunit';
 
-import { useNativeEvents } from 'ember-cli-page-object/extend';
-
 import Ember from 'ember';
 import require from 'require';
+import { setAdapter } from 'ember-cli-page-object/test-support/adapters';
+import ModuleForAcceptanceAdapter from 'ember-cli-page-object/test-support/adapters/acceptance';
+import ModuleForIntegrationAdapter from 'ember-cli-page-object/test-support/adapters/integration';
+import ModuleForAcceptanceNativeDOMAdapter from 'ember-cli-page-object/test-support/adapters/acceptance-native-events';
+import ModuleForIntegrationNativeDOMAdapter from 'ember-cli-page-object/test-support/adapters/integration-native-events';
 
 export function moduleForProperty(name, cbOrOptions, cb) {
   let options = cb ? cbOrOptions : {};
@@ -39,13 +42,17 @@ export function moduleForProperty(name, cbOrOptions, cb) {
 
     moduleForAcceptance(`${moduleNamePrefix} | Property | ${name}`, {
       beforeEach() {
-        useNativeEvents(_useNativeEvents);
+        if (_useNativeEvents) {
+          setAdapter(new ModuleForAcceptanceNativeDOMAdapter());
+        } else {
+          setAdapter(new ModuleForAcceptanceAdapter());
+        }
 
         this.adapter = new AcceptanceAdapter(this);
       },
 
       afterEach() {
-        useNativeEvents(false);
+        setAdapter(null);
       }
     });
     cb(testForAcceptance, 'acceptance');
@@ -61,12 +68,16 @@ export function moduleForProperty(name, cbOrOptions, cb) {
       moduleForIntegration('html-render', `${moduleNamePrefix} | Property | ${name}`, {
         integration: true,
         beforeEach() {
-          useNativeEvents(_useNativeEvents);
+          if (_useNativeEvents) {
+            setAdapter(new ModuleForIntegrationNativeDOMAdapter());
+          } else {
+            setAdapter(new ModuleForIntegrationAdapter());
+          }
 
           this.adapter = new IntegrationAdapter(this);
         },
         afterEach() {
-          useNativeEvents(false);
+        setAdapter(null);
         }
       });
       cb(testForIntegration, 'integration');
@@ -76,12 +87,15 @@ export function moduleForProperty(name, cbOrOptions, cb) {
   if (require.has('@ember/test-helpers')) {
     // Generate rfc268 tests
 
+    const Rfc268Adapter = require('ember-cli-page-object/test-support/adapters/rfc268').default;
+
     module(`Application mode | Property | ${name}`, function(hooks) {
       setupApplicationTest(hooks);
 
       let adapter = new ApplicationAdapter(hooks);
       hooks.beforeEach(function() {
         this.adapter = adapter;
+        setAdapter(new Rfc268Adapter());
       });
       cb(test, 'application');
     });
@@ -93,6 +107,7 @@ export function moduleForProperty(name, cbOrOptions, cb) {
         let adapter = new RenderingAdapter(hooks);
         hooks.beforeEach(function() {
           this.adapter = adapter;
+          setAdapter(new Rfc268Adapter());
         });
         cb(test, 'rendering');
       });

@@ -1,5 +1,5 @@
 import { assign } from '../-private/helpers';
-import { findMany, findOne } from '../extend';
+import { findOne } from '../extend';
 import $ from '-jquery';
 
 /**
@@ -35,19 +35,6 @@ import $ from '-jquery';
  *
  * @example
  *
- * // <input value="lorem">
- * // <input value="ipsum">
- *
- * import { create, value } from 'ember-cli-page-object';
- *
- * const page = create({
- *   value: value('input', { multiple: true })
- * });
- *
- * assert.deepEqual(page.value, ['lorem', 'ipsum']);
- *
- * @example
- *
  * // <div><input value="lorem"></div>
  * // <div class="scope"><input value="ipsum"></div>
  *
@@ -80,12 +67,11 @@ import $ from '-jquery';
  * @param {string} options.scope - Nests provided scope within parent's scope
  * @param {boolean} options.resetScope - Override parent's scope
  * @param {number} options.at - Reduce the set of matched elements to the one at the specified index
- * @param {boolean} options.multiple - If set, the function will return an array of values
  * @param {string} options.testContainer - Context where to search elements in the DOM
  * @return {Descriptor}
  *
  * @throws Will throw an error if no element matches selector
- * @throws Will throw an error if multiple elements are matched by selector and multiple option is not set
+ * @throws Will throw an error if multiple elements are matched by selector
  */
 export function value(selector, userOptions = {}) {
   return {
@@ -94,13 +80,9 @@ export function value(selector, userOptions = {}) {
     get(key) {
       let options = assign({ pageObjectKey: key }, userOptions);
 
-      const checkValue = (element) => element.hasAttribute('contenteditable') ? $(element).html() : $(element).val();
+      const element = findOne(this, selector, options);
 
-      if (options.multiple) {
-        return findMany(this, selector, options).map(checkValue);
-      } else {
-        return checkValue(findOne(this, selector, options));
-      }
+      return element.hasAttribute('contenteditable') ? $(element).html() : $(element).val();
     }
   };
 }

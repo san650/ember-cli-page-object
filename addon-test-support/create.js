@@ -1,6 +1,5 @@
 import Ceibo from 'ceibo';
 import { deprecate } from '@ember/application/deprecations';
-import { render, setContext, removeContext } from './-private/context';
 import { assign, getPageObjectDefinition, isPageObject, storePageObjectDefinition } from './-private/helpers';
 import { visitable } from './properties/visitable';
 import dsl from './-private/dsl';
@@ -202,14 +201,18 @@ export function create(definitionOrUrl, definitionOrOptions, optionsOrNothing) {
     options = definitionOrOptions || {};
   }
 
-  let { context } = definition;
   // in the instance where the definition is a page object, we must use the stored definition directly
   // or else we will fire off the Ceibo created getters which will error
   definition = isPageObject(definition)
     ? assign({}, getPageObjectDefinition(definition))
     : assignDescriptors({}, definition);
 
-  delete definition.context;
+  if (definition.context) {
+    // this is supposed to prevent an infinite recursion, for users who has not migrated
+    // from the ModuleForComponent tests yet.
+    // @todo: cover by test
+    throw new Error('"context" key is not allowed to be passed at definition root.');
+  }
 
   deprecate('Passing an URL argument to `create()` is deprecated', typeof url !== 'string', {
     id: 'ember-cli-page-object.create-url-argument',
@@ -241,17 +244,5 @@ export function create(definitionOrUrl, definitionOrOptions, optionsOrNothing) {
     object: buildObject
   };
 
-  let page = Ceibo.create(definition, assign({ builder }, options));
-
-  if (page) {
-    page.render = render;
-    page.setContext = setContext;
-    page.removeContext = removeContext;
-
-    if (typeof context !== 'undefined') {
-      page.setContext(context);
-    }
-  }
-
-  return page;
+  return Ceibo.create(definition, assign({ builder }, options));
 }

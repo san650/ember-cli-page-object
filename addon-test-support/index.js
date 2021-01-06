@@ -10,7 +10,6 @@ import { count }       from './properties/count';         export { count };
 import { fillable }    from './properties/fillable';      export { fillable }; export const selectable = fillable;
 import { focusable }   from './properties/focusable';     export { focusable };
 import { hasClass }    from './properties/has-class';     export { hasClass };
-import { is }          from './properties/is';            export { is };
 import { isHidden }    from './properties/is-hidden';     export { isHidden };
 import { isPresent }   from './properties/is-present';    export { isPresent };
 import { isVisible }   from './properties/is-visible';    export { isVisible };
@@ -23,7 +22,7 @@ import { visitable }   from './properties/visitable';     export { visitable };
 
 export { findElement } from './extend/find-element';
 export { findElementWithAssert } from './extend/find-element-with-assert';
-export { buildSelector, getContext } from './-private/helpers';
+export { buildSelector } from './-private/helpers';
 
 export default {
   attribute,
@@ -37,7 +36,6 @@ export default {
   fillable,
   focusable,
   hasClass,
-  is,
   isHidden,
   isPresent,
   isVisible,

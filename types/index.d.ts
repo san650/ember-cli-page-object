@@ -75,15 +75,24 @@ declare module 'ember-cli-page-object/macros' {
   function alias(path: string, options?: { chainable: boolean }): any;
 }
 
+declare module 'ember-cli-page-object/adapter' {
+  export default class Adapter {}
+}
+
+declare module 'ember-cli-page-object/adapters/rfc268' {
+  import Adapter from 'ember-cli-page-object/adapter';
+
+  export default class RFC268Adapter extends Adapter {}
+}
+
+declare module 'ember-cli-page-object/adapters' {
+  import Adapter from 'ember-cli-page-object/adapter';
+
+  export function setAdapter(adapter: Adapter): void
+}
+
 declare module 'ember-cli-page-object/-private' {
   import 'jquery';
-  import {
-    clickable,
-    clickOnText,
-    fillable,
-    focusable,
-    blurrable
-  } from 'ember-cli-page-object';
 
   interface GetterDescriptor<T> {
     isGetter: true;

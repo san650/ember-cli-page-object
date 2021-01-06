@@ -1,11 +1,9 @@
 export { assign } from '@ember/polyfills';
-import { A } from '@ember/array';
 import { assert } from '@ember/debug';
 import { get } from '@ember/object';
 import { isPresent } from '@ember/utils';
 import Ceibo from 'ceibo';
 import { deprecate } from '@ember/application/deprecations';
-import { getContext as getEmberTestHelpersContext } from './compatibility';
 
 import $ from '-jquery';
 
@@ -147,40 +145,6 @@ export function buildSelector(node, targetSelector, options) {
   return (new Selector(node, options.scope, targetSelector, options)).toString();
 }
 
-/**
- * @private
- *
- * Trim whitespaces at both ends and normalize whitespaces inside `text`
- *
- * Due to variations in the HTML parsers in different browsers, the text
- * returned may vary in newlines and other white space.
- *
- * @see http://api.jquery.com/text/
- */
-export function normalizeText(text) {
-  return $.trim(text).replace(/\n/g, ' ').replace(/\s\s*/g, ' ');
-}
-
-export function every(jqArray, cb) {
-  let arr = jqArray.get();
-
-  return A(arr).every((element) => cb($(element)));
-}
-
-/**
- * @private
- *
- * Check if all options are in whitelist
- *
- */
-export function filterWhitelistedOption(options, whitelist) {
-  return whitelist.reduce((whitelisted, knownKey) => {
-    if (knownKey in options) {
-        whitelisted[knownKey] = options[knownKey];
-    }
-    return whitelisted;
-  }, {});
-}
 
 /**
  * @public
@@ -200,30 +164,6 @@ export function getRoot(node) {
   }
 
   return root;
-}
-
-/**
- * @public
- *
- * Return a test context if one was provided during `create()` or via `setContext()`
- *
- * @param {Ceibo} node - Node of the tree
- * @return {Object} `moduleForComponent` test's `this` context, or null
- */
-export function getContext(node) {
-  let root = getRoot(node);
-  let { context } = root;
-
-  if (typeof context === 'object' && context !== null && typeof context.$ === 'function') {
-    return context;
-  }
-
-  context = getEmberTestHelpersContext();
-  if (typeof context === 'object' && context !== null && typeof context.$ === 'function' && !context.element) {
-    return context
-  }
-
-  return null;
 }
 
 function getAllValuesForProperty(node, property) {
@@ -333,11 +273,12 @@ export function getProperty(object, pathToProp) {
   return typeof value === 'function' ? value.bind(propOwner) : value;
 }
 
-export function isPageObject(property){
-  if(property && typeof(property) === 'object'){
+export function isPageObject(property) {
+  if (property && typeof property === 'object') {
     let meta = Ceibo.meta(property);
-    return (meta && meta.__poDef__)
-  } else{
+
+    return Boolean(meta && meta.__poDef__);
+  } else {
     return false;
   }
 }

@@ -1,5 +1,3 @@
-import { getExecutionContext } from '../-private/execution_context';
-
 /**
  * @public
  *
@@ -33,6 +31,4 @@ import { getExecutionContext } from '../-private/execution_context';
  *
  * @throws Will throw an error if multiple elements are matched by selector and multiple option is not set
  */
-export function findElement(pageObjectNode, targetSelector, options = {}) {
-  return getExecutionContext(pageObjectNode).find(targetSelector, options);
-}
+export { findElement } from '../-private/finders';

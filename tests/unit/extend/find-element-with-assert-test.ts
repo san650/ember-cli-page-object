@@ -1,5 +1,5 @@
 import { module, test } from 'qunit';
-import { setupRenderingTest } from 'ember-qunit';
+import { setupRenderingTest } from '../../helpers';
 import { create } from 'ember-cli-page-object';
 import { findElementWithAssert } from 'ember-cli-page-object/extend';
 import hbs from 'htmlbars-inline-precompile';
@@ -52,6 +52,14 @@ if (require.has('@ember/test-helpers')) {
 
       assert.throws(() => findElementWithAssert(page, '.lorem', {}),
         /Error: Assertion Failed: ".lorem" matched more than one element. If you want to select many elements, use collections instead./);
+    });
+
+    test('throws error if no elements found', async function(assert) {
+      let page = create({});
+
+      await this.render(hbs``);
+
+      assert.throws(() => findElementWithAssert(page, '.lorem', {}), /Error: Element not found\./);
     });
 
     test('testContainer param', async function(assert) {

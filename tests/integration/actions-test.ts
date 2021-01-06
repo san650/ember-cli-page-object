@@ -2,12 +2,11 @@ import 'qunit-dom';
 import { run } from '@ember/runloop';
 import $ from '-jquery';
 import { module, test } from 'qunit';
-import { setupRenderingTest } from 'ember-qunit';
+import { setupRenderingTest } from '../helpers';
 import {
   createCalculatorTemplate,
   createInputsTemplate
 } from './test-helper';
-import expectEmberError from '../expect-ember-error';
 import { alias } from 'ember-cli-page-object/macros';
 
 import {
@@ -97,14 +96,6 @@ if (require.has('@ember/test-helpers')) {
 
   module('Integration | actions', function(hooks) {
     setupRenderingTest(hooks);
-
-    hooks.beforeEach(function(this: any) {
-      ( page as any ).setContext(this);
-    });
-
-    hooks.afterEach(function() {
-      ( page as any ).removeContext();
-    });
 
     test('Actions work when defined inside collections', async function(assert) {
       let template = createCalculatorTemplate();
@@ -263,16 +254,16 @@ if (require.has('@ember/test-helpers')) {
         assert.throws(() => page.nonExistant.attribute, message, 'attribute query did not throw an error');
       });
       run(() => {
-        expectEmberError(assert, () => page.nonExistant.clickOnText('qux'), message, 'clickOnText action did not throw an error');
+        assert.throws(() => page.nonExistant.clickOnText('qux'), message, 'clickOnText action did not throw an error');
       });
       run(() => {
-        expectEmberError(assert, () => page.nonExistant.clickable(), message, 'clickable action did not throw an error');
+        assert.throws(() => page.nonExistant.clickable(), message, 'clickable action did not throw an error');
       });
       run(() => {
         assert.throws(() => page.nonExistant.contains('something'), message, 'contains action did not throw an error');
       });
       run(() => {
-        expectEmberError(assert, () => page.nonExistant.fillable('baz'), message, 'fillable action did not throw an error');
+        assert.throws(() => page.nonExistant.fillable('baz'), message, 'fillable action did not throw an error');
       });
       run(() => {
         assert.throws(() => page.nonExistant.hasClass, message, 'hasClass query did not throw an error');
@@ -307,7 +298,6 @@ if (require.has('@ember/test-helpers')) {
       $('#alternate-ember-testing').html('<button>lorem</button><input>');
 
       let page = create({
-        context: this,
         clickOnText: clickOnText('button', { testContainer: '#alternate-ember-testing' }),
         clickable: clickable('button', { testContainer: '#alternate-ember-testing' }),
         fillable: fillable('input', { testContainer: '#alternate-ember-testing' })
@@ -325,7 +315,6 @@ if (require.has('@ember/test-helpers')) {
       $('#alternate-ember-testing').html('<button>lorem</button><input>');
 
       let page = create({
-        context: this,
         testContainer: '#alternate-ember-testing',
         clickOnText: clickOnText('button'),
         clickable: clickable('button'),

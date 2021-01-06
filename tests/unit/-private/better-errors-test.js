@@ -1,4 +1,3 @@
-import EmberError from '@ember/error';
 import { test, module } from 'qunit';
 import { create } from 'ember-cli-page-object';
 import {
@@ -23,24 +22,24 @@ test('shows the expected error message when `selector` is not passed in', functi
   const fn = () => {
     throwBetterError(page.foo.bar, 'focus', 'Oops!');
   };
-  const expectedError = new EmberError(
+  const expectedError = new Error(
     "Oops!\n\nPageObject: 'page.foo.bar.focus'"
   );
 
   assert.throws(fn, expectedError, 'should show message & property path');
 });
 
-test('shows the expected error message when `selector` is passed in', function(assert) {
-  assert.expect(1);
+test('accepts Error instance', function(assert) {
+  assert.expect(2);
 
-  const fn = () => {
-    throwBetterError(page.foo.bar, 'focus', 'Oops!', { selector: '.foo .bar' });
-  };
-  const expectedError = new EmberError(
-    "Oops!\n\nPageObject: 'page.foo.bar.focus'\n  Selector: '.foo .bar'"
-  );
+  const sourceError = new Error('Oops!');
 
-  assert.throws(fn, expectedError, 'should show message, property path, & selector');
+  try {
+    throwBetterError(page.foo.bar, 'focus', sourceError, { selector: '.foo .bar' });
+  } catch (e) {
+    assert.equal(e.message, "Oops!\n\nPageObject: 'page.foo.bar.focus'\n  Selector: '.foo .bar'",);
+    assert.equal(e.stack, sourceError.stack, 'stack is preserved', );
+  }
 });
 
 test('logs the error to the console', function(assert) {

@@ -1,5 +1,5 @@
 import { assign } from '../-private/helpers';
-import { getExecutionContext } from '../-private/execution_context';
+import action from '../-private/action'
 
 import $ from '-jquery';
 
@@ -90,22 +90,12 @@ function appendQueryParams(path, queryParams) {
  * @throws Will throw an error if dynamic segments are not filled
  */
 export function visitable(path) {
-  return {
-    isDescriptor: true,
+  return action(function(dynamicSegmentsAndQueryParams = {}) {
+    let params = assign({}, dynamicSegmentsAndQueryParams);
+    let fullPath = fillInDynamicSegments(path, params);
 
-    get() {
-      return function(dynamicSegmentsAndQueryParams = {}) {
-        let executionContext = getExecutionContext(this);
+    fullPath = appendQueryParams(fullPath, params);
 
-        return executionContext.runAsync((context) => {
-          let params = assign({}, dynamicSegmentsAndQueryParams);
-          let fullPath = fillInDynamicSegments(path, params);
-
-          fullPath = appendQueryParams(fullPath, params);
-
-          return context.visit(fullPath);
-        });
-      }
-    }
-  };
+    return this.adapter.visit(fullPath);
+  });
 }
