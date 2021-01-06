@@ -246,9 +246,7 @@ moduleForProperty('dsl', function(test) {
     assert.expect(2);
 
     let page = create({
-      items: collection({
-        itemScope: 'ul li'
-      })
+      items: collection('ul li')
     });
 
     await this.adapter.createTemplate(this, page, `
@@ -258,11 +256,11 @@ moduleForProperty('dsl', function(test) {
       </ul>
     `);
 
-    page.items(0).as(item => {
+    page.items[0].as(item => {
       assert.equal(item.text, 'foo');
     });
 
-    page.items(1).as(item => {
+    page.items[1].as(item => {
       assert.equal(item.text, 'bar');
     });
   });

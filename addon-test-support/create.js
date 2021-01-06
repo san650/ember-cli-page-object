@@ -123,9 +123,9 @@ function buildObject(node, blueprintKey, blueprint, defaultBuilder) {
  *
  * // <div class="title">My title</div>
  *
- * import PageObject, { text } from 'ember-cli-page-object';
+ * import { create, text } from 'ember-cli-page-object';
  *
- * const page = PageObject.create({
+ * const page = create({
  *   title: text('.title')
  * });
  *
@@ -138,7 +138,7 @@ function buildObject(node, blueprintKey, blueprint, defaultBuilder) {
  * //   <button>Press Me</button>
  * // </div>
  *
- * const page = PageObject.create({
+ * const page = create({
  *   scope: '#my-page'
  * });
  *
@@ -163,21 +163,18 @@ function buildObject(node, blueprintKey, blueprint, defaultBuilder) {
  *
  * @example Defining path
  *
- * const usersPage = PageObject.create('/users');
+ * const usersPage = create('/users');
  *
  * // visits user page
  * usersPage.visit();
  *
- * const userTasksPage = PageObject.create('/users/tasks', {
- *  tasks: collection({
- *    itemScope: '.tasks li',
- *    item: {}
- *  });
+ * const userTasksPage = create('/users/tasks', {
+ *  tasks: collection('.tasks li');
  * });
  *
  * // get user's tasks
  * userTasksPage.visit();
- * userTasksPage.tasks().count
+ * userTasksPage.tasks.length
  *
  * @public
  *

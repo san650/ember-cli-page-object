@@ -1,15 +1,11 @@
-import { deprecate } from '@ember/application/deprecations';
-import { warn } from '@ember/debug';
-
-import { collection as mainCollection } from './collection/main';
-import { collection as legacyCollection } from './collection/legacy';
+/* global Symbol */
+import Ceibo from 'ceibo';
+import { buildSelector, assign, isPageObject, getPageObjectDefinition } from '../-private/helpers';
+import { create } from '../create';
+import { count } from './count';
+import { throwBetterError } from "../-private/better-errors";
 
 /**
- *  <div class="alert alert-warning" role="alert">
- *   <strong>Note:</strong> v1.14.x introduces the new collection API.
- *   You can see the legacy collection API in the <a href="/docs/v1.13.x/api/collection">v1.13.x docs</a>
- * </div>
- *
  * Creates a enumerable that represents a collection of items. The collection is zero-indexed
  * and has the following public methods and properties:
  *
@@ -146,25 +142,167 @@ import { collection as legacyCollection } from './collection/legacy';
  * @param {boolean} definition.resetScope - Override parent's scope
  * @return {Descriptor}
  */
-export function collection(scopeOrDefinition, definitionOrNothing) {
-
-  if (typeof scopeOrDefinition === 'string') {
-    return mainCollection(scopeOrDefinition, definitionOrNothing);
+export function collection(scope, definition) {
+  if (typeof scope !== 'string') {
+    throw new Error('collection requires `scope` as the first argument');
   }
 
-  deprecate('You are currently using the legacy collection API, check the documentation to see how to upgrade to the new API.', false, {
-    id: 'ember-cli-page-object.old-collection-api',
-    until: '2.0.0',
-    url: 'https://ember-cli-page-object.js.org/docs/v1.16.x/deprecations/#old-collection-api'
-  });
+  if(isPageObject(definition)){
+    //extract the stored definition from the page object
+    definition = getPageObjectDefinition(definition);
+  }
 
-  warn(
-    'Legacy page object collection definition is invalid. Please, make sure you include a `itemScope` selector.',
-    scopeOrDefinition.itemScope,
-    {
-      id: 'ember-cli-page-object.legacy-collection-missing-item-scope'
+  let descriptor = {
+    isDescriptor: true,
+
+    setup(node, key) {
+      // Set the value on the descriptor so that it will be picked up and applied by Ceibo.
+      // This does mutate the descriptor, but because `setup` is always called before the
+      // value is assigned we are guaranteed to get a new, unique Collection instance each time.
+      descriptor.value = proxyIfSupported(new Collection(scope, definition, node, key));
     }
-  );
+  };
 
-  return legacyCollection(scopeOrDefinition);
+  return descriptor;
+}
+
+export class Collection {
+  constructor(scope, definition, parent, key) {
+    this.scope = scope;
+    this.definition = definition || {};
+    this.parent = parent;
+    this.key = key;
+
+    this._itemCounter = create({
+      count: count(scope, {
+        resetScope: this.definition.resetScope,
+        testContainer: this.definition.testContainer
+      })
+    }, { parent });
+
+    this._items = [];
+  }
+
+  get length() {
+    return this._itemCounter.count;
+  }
+
+  objectAt(index) {
+    let { key } = this;
+
+    if (typeof this._items[index] === 'undefined') {
+      let { scope, definition, parent } = this;
+      let itemScope = buildSelector({}, scope, { at: index });
+
+      let finalizedDefinition = assign({}, definition);
+
+      finalizedDefinition.scope = itemScope;
+
+      let tree = create(finalizedDefinition, { parent });
+
+      // Change the key of the root node
+      Ceibo.meta(tree).key = `${key}[${index}]`;
+
+      this._items[index] = tree;
+    }
+
+    return this._items[index];
+  }
+
+  filter(...args) {
+    return this.toArray().filter(...args);
+  }
+
+  filterBy(propertyKey, value) {
+    return this.toArray().filter((i) => {
+      if (typeof value !== 'undefined') {
+        return i[propertyKey] === value;
+      } else {
+        return Boolean(i[propertyKey]);
+      }
+    });
+  }
+
+  forEach(...args) {
+    return this.toArray().forEach(...args);
+  }
+
+  map(...args) {
+    return this.toArray().map(...args);
+  }
+
+  mapBy(propertyKey) {
+    return this.toArray().map((i) => {
+      return i[propertyKey];
+    });
+  }
+
+  findOneBy(...args) {
+    const elements = this.filterBy(...args);
+    this._assertFoundElements(elements, ...args);
+    return elements[0];
+  }
+
+  findOne(...args) {
+    const elements = this.filter(...args);
+    this._assertFoundElements(elements, ...args);
+    return elements[0];
+  }
+
+  _assertFoundElements(elements, ...args) {
+    const argsToText = args.length === 1 ? 'condition': `${args[0]}: "${args[1]}"`;
+    if (elements.length > 1) {
+      throwBetterError(
+        this.parent,
+        this.key,
+        `${elements.length} elements found by ${argsToText}, but expected 1`
+      );
+    }
+
+    if (elements.length === 0) {
+      throwBetterError(this.parent, this.key, `cannot find element by ${argsToText}`);
+    }
+  }
+
+  toArray() {
+    let { length } = this;
+
+    let array = [];
+
+    for (let i = 0; i < length; i++) {
+      array.push(this.objectAt(i));
+    }
+
+    return array;
+  }
+}
+
+if (typeof (Symbol) !== 'undefined' && Symbol.iterator) {
+  Collection.prototype[Symbol.iterator] = function() {
+    let i = 0;
+    let items = this.toArray();
+    let next = () => ({ done: i >= items.length, value: items[i++] });
+
+    return { next };
+  };
+}
+
+function proxyIfSupported(instance) {
+  if (window.Proxy) {
+    return new window.Proxy(instance, {
+      get: function (target, name) {
+        if (typeof (name) === 'number' || typeof (name) === 'string') {
+          let index = parseInt(name, 10);
+
+          if (!isNaN(index)) {
+            return target.objectAt(index);
+          }
+        }
+
+        return target[name];
+      }
+    });
+  } else {
+    return instance;
+  }
 }
