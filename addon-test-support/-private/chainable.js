@@ -36,8 +36,7 @@ export function chainable(branch) {
 
 function getChildNode(node, key) {
   // Normally an item's key is just its property name, but collection
-  // items' keys also include their index. Collection item keys look like
-  // `foo[2]` and legacy collection item keys look like `foo(2)`.
+  // items' keys also include their index, like `foo[2]`.
   let match;
   if ((match = /\[(\d+)\]$/.exec(key))) {
     // This is a collection item
@@ -45,12 +44,6 @@ function getChildNode(node, key) {
     let name = key.slice(0, -indexStr.length);
 
     return node[name].objectAt(parseInt(index, 10));
-  } else if ((match = /\((\d+)\)$/.exec(key))) {
-    // This is a legacy collection item
-    let [ indexStr, index ] = match;
-    let name = key.slice(0, -indexStr.length);
-
-    return node[name](parseInt(index, 10));
   } else {
     return node[key];
   }

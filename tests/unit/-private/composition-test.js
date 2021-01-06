@@ -138,11 +138,11 @@ test('can compose from page object nested within another page object', function(
 
   let fooDefFromBar = getPageObjectDefinition(bar.foo);
   assert.ok(fooDefFromBar);
-  
-  // cannot do a true deep equal since foo is a page object 
+
+  // cannot do a true deep equal since foo is a page object
   assert.deepEqual(Object.keys(barDefinition), ["foo"]);
   assert.deepEqual(fooDefFromBar, {
-    scope: '.foo' 
+    scope: '.foo'
   });
 });
 
@@ -152,24 +152,25 @@ test('getPageObjectDefinition errors if node is not a page object', function(ass
     'cannot get the page object definition from a node that is not a page object'
   );
 });
+
 moduleForProperty('all properties via compsition', function(test){
   test('can alias through composition', async function(assert) {
     assert.expect(1);
-  
+
     const aliasPage = create({
       isButtonVisible: isVisible('button'),
       aliasedIsButtonVisible: alias('isButtonVisible')
     });
-  
-  
+
     let page = create({
       scope: '.container',
       aliasPage: aliasPage
     });
     await this.adapter.createTemplate(this, page, '<div class="container"><button>Look at me</button></div>');
-  
+
     assert.ok(page.aliasPage.aliasedIsButtonVisible);
   });
+
   test('new pages can be composed from pages containing collections', async function(assert) {
     let collectionPage = create({
       foo: collection('span', {
@@ -251,74 +252,6 @@ moduleForProperty('all properties via compsition', function(test){
     });
 
     await this.adapter.await(page.triggerPage.foo());
-  });
-  test('legacy collections support composition', async function(assert) {
-    let collectionPage = create({
-      foo: collection({
-        itemScope: 'span',
-
-        item: {
-          text: text()
-        }
-      })
-    });
-    let page = create({
-      scope: '.container',
-      collectionPage: collectionPage
-    });
-    await this.adapter.createTemplate(this, page, `
-      <div class="container">
-        <span>Lorem</span>
-        <span>Ipsum</span>
-      </div>
-    `);
-
-    assert.equal(page.collectionPage.foo(0).text, 'Lorem');
-    assert.equal(page.collectionPage.foo(1).text, 'Ipsum');
-  });
-  test('legacy collections support taking a page object as the "item" definition directly', async function(assert) {
-    let textPage = {
-      text: text()
-    };
-    let page = create({
-      foo: collection({
-        itemScope: 'span',
-
-        item: textPage
-      })
-    });
-    await this.adapter.createTemplate(this, page, `
-      <div class="container">
-        <span>Lorem</span>
-        <span>Ipsum</span>
-      </div>
-    `);
-
-    assert.equal(page.foo(0).text, 'Lorem');
-    assert.equal(page.foo(1).text, 'Ipsum');
-  });
-  test('legacy collections support an item definition that contains nested page objects', async function(assert) {
-    let textPage = {
-      text: text()
-    };
-    let page = create({
-      foo: collection({
-        itemScope: 'span',
-
-        item: {
-          textPage
-        }
-      })
-    });
-    await this.adapter.createTemplate(this, page, `
-      <div class="container">
-        <span>Lorem</span>
-        <span>Ipsum</span>
-      </div>
-    `);
-
-    assert.equal(page.foo(0).textPage.text, 'Lorem');
-    assert.equal(page.foo(1).textPage.text, 'Ipsum');
   });
 
   test('new pages can be composed from pages containing custom getters', function(assert) {

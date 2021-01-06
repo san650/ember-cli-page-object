@@ -60,12 +60,8 @@ moduleForProperty('alias', function(test) {
   });
 
   test('can alias a top-level collection', async function(assert) {
-    assert.expect(1);
-
     const page = create({
-      buttons: collection({
-        itemScope: 'button'
-      } as any),
+      buttons: collection('button'),
       aliasedButtons: alias('buttons')
     });
 
@@ -74,7 +70,7 @@ moduleForProperty('alias', function(test) {
       <button>Button 2</button>
     `);
 
-    assert.equal(page.aliasedButtons().count, 2);
+    assert.equal(page.aliasedButtons.length, 2);
   });
 
   test('can alias a nested property', async function(assert) {
@@ -141,9 +137,7 @@ moduleForProperty('alias', function(test) {
 
     const page = create({
       form: {
-        buttons: collection({
-          itemScope: 'button'
-        } as any)
+        buttons: collection('button')
       },
       aliasedButtons: alias('form.buttons')
     });
@@ -154,7 +148,7 @@ moduleForProperty('alias', function(test) {
       '<button>Button 1</button><button>Button 2</button>'
     );
 
-    assert.equal(page.aliasedButtons().count, 2);
+    assert.equal(page.aliasedButtons.length, 2);
   });
 
   test('can alias an aliased property', async function(assert) {
@@ -225,9 +219,7 @@ moduleForProperty('alias', function(test) {
     const page = create({
       form: {
         controls: {
-          buttons: collection({
-            itemScope: 'button'
-          } as any)
+          buttons: collection('button')
         },
         buttons: alias('controls.buttons')
       },
@@ -240,7 +232,7 @@ moduleForProperty('alias', function(test) {
       '<button>Button 1</button><button>Button 2</button>'
     );
 
-    assert.equal(page.aliasedButtons().count, 2);
+    assert.equal(page.aliasedButtons.length, 2);
   });
 
   test('can alias a property created with the `getter` macro', async function(assert) {

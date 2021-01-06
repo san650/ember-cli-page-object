@@ -14,18 +14,14 @@ let page = create({
   keyboard: {
     scope: '.keyboard',
 
-    numbers: collection({
-      scope: '.numbers',
-
-      itemScope: 'button'
-    })
+    numbers: collection('.numbers button')
   }
 });
 
 test('calculates full scope for components', function(assert) {
   assert.equal(fullScope(page), '.calculator');
   assert.equal(fullScope(page.keyboard), '.calculator .keyboard');
-  assert.equal(fullScope(page.keyboard.numbers(0)), '.calculator .keyboard .numbers button:eq(0)');
+  assert.equal(fullScope(page.keyboard.numbers[0]), '.calculator .keyboard .numbers button:eq(0)');
 });
 
 module('Unit | helpers | objectHasProperty');
