@@ -110,9 +110,6 @@
   },
   "homepage": "http://ember-cli-page-object.js.org",
   "bugs": "https://github.com/san650/ember-cli-page-object/issues",
-  "ember": {
-    "edition": "octane"
-  },
   "ember-addon": {
     "configPath": "tests/dummy/config"
   },
