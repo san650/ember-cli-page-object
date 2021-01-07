@@ -1,11 +1,9 @@
-import { test } from 'qunit';
-import moduleForAcceptance from '../helpers/module-for-acceptance';
-
 import {
   create,
   collection,
   visitable
 } from 'ember-cli-page-object';
+import { moduleForProperty } from '../helpers/properties';
 
 const page = create({
   visit: visitable('async-calculator'),
@@ -13,13 +11,13 @@ const page = create({
   numbers: collection('.numbers button'),
 });
 
-moduleForAcceptance('Acceptance | collection');
+moduleForProperty('Acceptance | collection', { needsVisit: true }, function(test) {
+  test(`allows to traverse nodes while they don't exist`, async function(assert) {
+    await page.visit()
+      .numbers
+      .objectAt(2)
+      .click();
 
-test(`allows to traverse nodes while they don't exist`, function(assert) {
-  page.visit()
-    .numbers
-    .objectAt(2)
-    .click();
-
-  assert.ok(1, 'exception is not thrown');
+    assert.ok(1, 'exception is not thrown');
+  });
 });

@@ -81,49 +81,6 @@ module.exports = async function() {
           dependencies: {}
         }
       },
-      {
-        name: 'with-jquery',
-        env: {
-          EMBER_OPTIONAL_FEATURES: JSON.stringify({
-            'jquery-integration': true
-          })
-        }
-      },
-      {
-        name: 'with-ember-test-helpers',
-        bower: {
-          dependencies: {
-            'ember': 'components/ember#release'
-          },
-          resolutions: {
-            'ember': 'release'
-          }
-        },
-        npm: {
-          devDependencies: {
-            'ember-cli-qunit': '4.0.0',
-            'ember-source': null,
-            'ember-qunit': null
-          }
-        }
-      },
-      {
-        name: 'with-@ember/test-helpers',
-        bower: {
-          dependencies: {
-            'ember': 'components/ember#release'
-          },
-          resolutions: {
-            'ember': 'release'
-          }
-        },
-        npm: {
-          devDependencies: {
-            'ember-cli-qunit': '4.3.0',
-            'ember-source': null
-          }
-        }
-      },
     ]
   };
 };
