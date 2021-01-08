@@ -1,7 +1,7 @@
-import { moduleForProperty } from '../../../helpers/properties';
+import { setupTestModuleForProperty } from '../../../helpers/properties';
 import { create, text } from 'ember-cli-page-object';
 
-moduleForProperty('text', function(test) {
+setupTestModuleForProperty('text', function(test) {
   test('returns the inner text of the element', async function(assert) {
     let page = create({
       foo: text('span')

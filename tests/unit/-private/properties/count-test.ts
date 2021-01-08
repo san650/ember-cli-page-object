@@ -1,7 +1,7 @@
-import { moduleForProperty } from '../../../helpers/properties';
+import { setupTestModuleForProperty } from '../../../helpers/properties';
 import { create, count } from 'ember-cli-page-object';
 
-moduleForProperty('count', function(test) {
+setupTestModuleForProperty('count', function(test) {
   test('returns the number of elements that match the selector', async function(assert) {
     let page = create({
       foo: count('span')

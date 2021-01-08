@@ -10,7 +10,7 @@ import Ember from 'ember';
 import require from 'require';
 import { setAdapter } from 'ember-cli-page-object/test-support/adapters';
 
-export function moduleForProperty(name, cbOrOptions, cb) {
+export function setupTestModuleForProperty(name, cbOrOptions, cb) {
   let options = cb ? cbOrOptions : {};
   cb = cb || cbOrOptions;
 

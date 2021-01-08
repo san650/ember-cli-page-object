@@ -1,6 +1,6 @@
 import { test, module } from 'qunit';
 import { isPageObject, getPageObjectDefinition } from 'ember-cli-page-object/test-support/-private/helpers';
-import { moduleForProperty } from '../../helpers/properties';
+import { setupTestModuleForProperty } from '../../helpers/properties';
 import {
   create,
   triggerable,
@@ -153,7 +153,7 @@ test('getPageObjectDefinition errors if node is not a page object', function(ass
   );
 });
 
-moduleForProperty('all properties via compsition', function(test){
+setupTestModuleForProperty('all properties via compsition', function(test){
   test('can alias through composition', async function(assert) {
     assert.expect(1);
 

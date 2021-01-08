@@ -1,4 +1,4 @@
-import { moduleForProperty } from '../../../helpers/properties';
+import { setupTestModuleForProperty } from '../../../helpers/properties';
 import {
   create,
   clickable,
@@ -11,7 +11,7 @@ import {
   getter
 } from 'ember-cli-page-object/macros';
 
-moduleForProperty('alias', function(test) {
+setupTestModuleForProperty('alias', function(test) {
   test('can alias a top-level property', async function(assert) {
     assert.expect(1);
 

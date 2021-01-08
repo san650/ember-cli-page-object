@@ -3,7 +3,7 @@ import {
   collection,
   visitable
 } from 'ember-cli-page-object';
-import { moduleForProperty } from '../helpers/properties';
+import { setupTestModuleForProperty } from '../helpers/properties';
 
 const page = create({
   visit: visitable('async-calculator'),
@@ -11,7 +11,7 @@ const page = create({
   numbers: collection('.numbers button'),
 });
 
-moduleForProperty('Acceptance | collection', { needsVisit: true }, function(test) {
+setupTestModuleForProperty('Acceptance | collection', { needsVisit: true }, function(test) {
   test(`allows to traverse nodes while they don't exist`, async function(assert) {
     await page.visit()
       .numbers
