@@ -1,6 +1,6 @@
 import { run } from '@ember/runloop';
 import ExecutionContext from './native-events-context';
-import wait from 'ember-test-helpers/wait';
+import { wait } from '../compatibility';
 
 export default function IntegrationNativeEventsExecutionContext(pageObjectNode, testContext) {
   ExecutionContext.call(this, pageObjectNode, testContext);
