@@ -1,18 +1,30 @@
-<h1 class="title">Login page</h1>
+<div class="login-form" ...attributes>
+  <h1 class="title">Login page</h1>
 
-<form class="login {{if isError "is-error"}}">
-  <label>
-    User name
-    {{input id="userName" type="text" value=userName}}
-  </label>
+  <form class="login {{if this.isError "is-error"}}"
+    {{on "submit" this.logIn}}
+  >
+    <label>
+      User name
+      <Input
+        id="userName"
+        @type="text"
+        @value={{@userName}}
+      />
+    </label>
 
-  <label>
-    Password
-    {{input id="password" type="password" value=password}}
-  </label>
+    <label>
+      Password
+      <Input
+        id="password"
+        @type="password"
+        @value={{@password}}
+      />
+    </label>
 
-  <button {{action "logIn"}}>Log in</button>
-</form>
+    <button type="submit">Log in</button>
+  </form>
 
-<p class="message">{{message}}</p>
+  <p class="message">{{this.message}}</p>
 
+</div>
