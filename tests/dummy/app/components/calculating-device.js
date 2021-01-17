@@ -1,43 +1,42 @@
-import Component from '@ember/component';
-import { computed as c } from '@ember/object';
+import Component from '@glimmer/component';
+import { action } from '@ember/object';
+import { tracked } from '@glimmer/tracking';
+import { A } from '@ember/array';
 
-export default Component.extend({
-  result: '',
-  op: '',
+export default class CalculatinDevice extends Component {
+  @tracked
+  result = '';
 
-  stack: c({
-    get() {
-      return [];
+  @tracked
+  op = '';
+
+  @tracked
+  stack = A([]);
+
+  @action
+  onKeyPress(key) {
+    let { result, stack, op } = this;
+
+    switch (key) {
+      case '+':
+      case '-':
+      case '=':
+        stack.push(parseInt(op + result));
+        this.result = '';
+        break;
+      default:
+        this.result = result + key.toString();
+        break;
     }
-  }),
 
-  actions: {
-    keyPress(key) {
-      let result = this.get('result');
-      let stack = this.get('stack');
-      let op = this.get('op');
-
-      switch (key) {
-        case '+':
-        case '-':
-        case '=':
-          stack.push(parseInt(op + result));
-          this.set('result', '');
-          break;
-        default:
-          this.set('result', result + key.toString());
-          break;
-      }
-
-      switch (key) {
-        case '-':
-          this.set('op', '-');
-          break;
-        case '=':
-          result = stack.reduce((result, value) => result + value , 0);
-          this.set('result', result.toString());
-          break;
-      }
+    switch (key) {
+      case '-':
+        this.op = '-';
+        break;
+      case '=':
+        result = stack.reduce((result, value) => result + value , 0);
+        this.result = result.toString();
+        break;
     }
   }
-});
+}
