@@ -1,4 +1,3 @@
-/* global Symbol */
 import Ceibo from 'ceibo';
 import { buildSelector, assign, isPageObject, getPageObjectDefinition } from '../-private/helpers';
 import { create } from '../create';

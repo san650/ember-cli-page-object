@@ -231,7 +231,7 @@ export function objectHasProperty(object, pathToProp) {
 
   for (let i = 0; i < pathSegments.length; i++) {
     const key = pathSegments[i];
-    if (object === null || object === undefined || !object.hasOwnProperty(key)) {
+    if (object === null || object === undefined || !Object.prototype.hasOwnProperty.call(object, key)) {
       return false;
     } else {
       object = object[key];
