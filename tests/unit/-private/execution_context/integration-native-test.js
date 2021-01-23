@@ -1,14 +1,19 @@
 import Ember from 'ember';
 import hbs from 'htmlbars-inline-precompile';
-import { moduleForComponent, test } from 'ember-qunit';
-import wait from 'ember-test-helpers/wait';
+import {
+  moduleForIntegration as moduleForComponent,
+  testForIntegration as test
+} from 'dummy/tests/helpers/properties/integration-adapter';
 import { create } from 'ember-cli-page-object'
 import { useNativeEvents } from 'ember-cli-page-object/extend'
 import { createClickTrackerComponent, ClickTrackerDef } from './helpers';
 
 const node = create(ClickTrackerDef);
 
-if (Ember.hasOwnProperty('$')) {
+import require from 'require';
+const { wait } = require.has('ember-test-helpers') && require('ember-test-helpers');
+
+if (wait && Ember.hasOwnProperty('$')) {
   moduleForComponent('', 'Integration | integration context | actions [native-events]', {
     integration: true,
 

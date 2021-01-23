@@ -1,5 +1,7 @@
-import { moduleForComponent, test } from 'ember-qunit';
-
+import {
+  moduleForIntegration as moduleForComponent,
+  testForIntegration as test
+} from 'dummy/tests/helpers/properties/integration-adapter';
 import hbs from 'htmlbars-inline-precompile';
 import { create } from 'ember-cli-page-object';
 
