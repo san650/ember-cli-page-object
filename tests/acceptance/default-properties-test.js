@@ -1,5 +1,5 @@
-import { test } from 'qunit';
 import moduleForAcceptance from '../helpers/module-for-acceptance';
+import { testForAcceptance as test } from '../helpers/properties/acceptance-adapter';
 import PageObject from 'ember-cli-page-object';
 
 moduleForAcceptance('Acceptance | default properties');

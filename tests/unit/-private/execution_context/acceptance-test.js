@@ -1,5 +1,5 @@
-import { test } from 'qunit';
 import moduleForAcceptance from 'dummy/tests/helpers/module-for-acceptance';
+import { testForAcceptance as test } from 'dummy/tests/helpers/properties/acceptance-adapter';
 import { create, visitable } from 'ember-cli-page-object'
 import { createClickTrackerComponent, ClickTrackerDef } from './helpers';
 
