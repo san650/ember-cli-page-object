@@ -1,5 +1,5 @@
-import { test } from 'qunit';
 import moduleForAcceptance from '../helpers/module-for-acceptance';
+import { testForAcceptance as test } from '../helpers/properties/acceptance-adapter';
 import PageObject from 'ember-cli-page-object';
 import { alias } from 'ember-cli-page-object/macros';
 
@@ -74,7 +74,7 @@ test('action chains act like a promise', function(assert) {
       assert.equal(page.screen, '12');
     });
 
-  return ( window as any ).wait();
+  return window.wait();
 });
 
 test('fill in by attribute', async function(assert) {

@@ -3,7 +3,20 @@ import { run } from '@ember/runloop';
 import startApp from '../start-app';
 import { module as qunitModule } from 'qunit';
 
-export { test as testForAcceptance } from 'qunit';
+import { test } from 'qunit';
+import require from 'require';
+
+let testForAcceptance;
+if (require('ember-qunit').moduleForComponent) {
+  testForAcceptance = test;
+} else {
+  testForAcceptance =
+    (() => {
+      // I'm no-op in the latest versions of enber-qunit
+    });
+}
+
+export { testForAcceptance };
 
 let noop = function() {};
 

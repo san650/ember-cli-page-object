@@ -1,5 +1,5 @@
-import { test } from 'qunit';
 import moduleForAcceptance from '../helpers/module-for-acceptance';
+import { testForAcceptance as test } from '../helpers/properties/acceptance-adapter';
 import {
   create,
   visitable
@@ -15,11 +15,11 @@ moduleForAcceptance('Acceptance | extends');
 let page = create({
   visit: visitable('/calculator'),
 
-  findElement(this: any, selector: string) {
+  findElement(selector) {
     return findElement(this, selector);
   },
 
-  findElementWithAssert(this: any, selector: string) {
+  findElementWithAssert(selector) {
     return findElementWithAssert(this, selector);
   }
 });
