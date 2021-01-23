@@ -1,9 +1,24 @@
 import { run } from '@ember/runloop';
 import $ from '-jquery';
-export { moduleForComponent as moduleForIntegration, test as testForIntegration } from 'ember-qunit';
+import { test } from 'qunit';
 import expectEmberError from '../../expect-ember-error';
 import hbs from 'htmlbars-inline-precompile';
 import { supportsRfc268 } from 'ember-cli-page-object/test-support/-private/execution_context';
+import require from 'require'
+
+let moduleForIntegration,
+  testForIntegration;
+if (require('ember-qunit').moduleForComponent) {
+  moduleForIntegration = require('ember-qunit').moduleForComponent;
+  testForIntegration = test;
+} else {
+  moduleForIntegration = testForIntegration =
+    (() => {
+      // I'm no-op in the latest versions of enber-qunit
+    });
+}
+
+export { moduleForIntegration, testForIntegration };
 
 export function IntegrationAdapter(context) {
   this.context = context;

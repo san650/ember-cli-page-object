@@ -1,4 +1,4 @@
-import { module, test } from 'ember-qunit';
+import { module, test } from 'qunit';
 import { setupTest } from 'ember-qunit';
 
 import { create, collection } from 'ember-cli-page-object';

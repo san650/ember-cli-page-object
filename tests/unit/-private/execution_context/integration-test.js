@@ -1,11 +1,16 @@
 import Ember from 'ember';
-import { moduleForComponent, test } from 'ember-qunit';
-import wait from 'ember-test-helpers/wait';
+import {
+  moduleForIntegration as moduleForComponent,
+  testForIntegration as test
+} from 'dummy/tests/helpers/properties/integration-adapter';
 import { create } from 'ember-cli-page-object'
 import hbs from 'htmlbars-inline-precompile';
 import { createClickTrackerComponent, ClickTrackerDef } from './helpers';
 
-if (Ember.hasOwnProperty('$')) {
+import require from 'require';
+const { wait } = require.has('ember-test-helpers') && require('ember-test-helpers');
+
+if (wait && Ember.hasOwnProperty('$')) {
   const node = create(ClickTrackerDef);
 
   moduleForComponent('', 'Integration | integration context | actions', {

@@ -1,5 +1,8 @@
 import Ember from 'ember';
-import { moduleForComponent, test } from 'ember-qunit';
+import {
+  moduleForIntegration as moduleForComponent,
+  testForIntegration as test
+} from 'dummy/tests/helpers/properties/integration-adapter';
 import { createCalculatorTemplate } from './test-helper';
 
 import PageObject from 'ember-cli-page-object';
