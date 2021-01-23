@@ -11,6 +11,10 @@
 // so doesn't have a new version).
 //
 import require from 'require';
+import * as QUnit from 'qunit';
+import { setup } from 'qunit-dom';
+
+setup(QUnit.assert);
 
 if (require.has('@ember/test-helpers')) {
   require('./new-test-helper');

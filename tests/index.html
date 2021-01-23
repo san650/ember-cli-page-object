@@ -20,6 +20,23 @@
   <body>
     {{content-for "body"}}
     {{content-for "test-body"}}
+
+    <!--
+      ember-qunit@5 requires DOM fixtures to be explicitly provided by the host,
+      see https://github.com/emberjs/ember-qunit/blob/master/docs/migration.md#dom-fixtures.
+
+      Seems there is no an easy way to customize `contentFor` via the ember-cli-build.js,
+      to add it conditionally only for the ember-qunit@5 test scenario. So we just hardcode it here,
+      which results to duplicated test fixtures for the older versions of the ember-qunit.
+      Though, it does not seem to cause any issue in testing.
+     -->
+    <div id="qunit"></div>
+    <div id="qunit-fixture">
+      <div id="ember-testing-container">
+        <div id="ember-testing"></div>
+      </div>
+    </div>
+
     <div id="alternate-ember-testing"></div>
 
     <script src="/testem.js" integrity=""></script>
