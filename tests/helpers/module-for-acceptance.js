@@ -4,8 +4,13 @@ import startApp from '../helpers/start-app';
 import destroyApp from '../helpers/destroy-app';
 import { useNativeEvents } from 'ember-cli-page-object/extend';
 import Ember from 'ember';
+import require from 'require'
 
 export default function(name, options = {}) {
+  if (!require('ember-qunit').moduleForComponent) {
+    return;
+  }
+
   [false, true].forEach(_useNativeEvents => {
     let moduleName = name;
     if (_useNativeEvents) {
