@@ -155,6 +155,24 @@ module.exports = function() {
           }
         },
         {
+          name: 'with-ember-qunit@5',
+          npm: {
+            devDependencies: {
+              'ember-source': urls[0],
+              'ember-qunit': '^5.0.0',
+              'qunit': '~2.13.0',
+              '@ember/test-helpers': '^2.0.0',
+              'ember-qunit-nice-errors': null,
+              'ember-qunit-source-map': null,
+            }
+          },
+          env: {
+            EMBER_OPTIONAL_FEATURES: JSON.stringify({
+              'jquery-integration': false
+            })
+          }
+        },
+        {
           name: 'node-tests',
           command: 'npm run nodetest',
           bower: {

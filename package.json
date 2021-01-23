@@ -94,7 +94,7 @@
     "mkdirp": "^0.5.1",
     "mocha": "^4.0.1",
     "ncp": "^2.0.0",
-    "qunit-dom": "^0.8.0",
+    "qunit-dom": "^1.6.0",
     "rimraf": "^2.5.2",
     "typescript": "^3.7.5",
     "walk-sync": "^0.3.2"
