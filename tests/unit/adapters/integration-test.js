@@ -1,5 +1,8 @@
 import Ember from 'ember';
-import { moduleForComponent, test } from 'ember-qunit';
+import {
+  moduleForIntegration as moduleForComponent,
+  testForIntegration as test
+} from 'dummy/tests/helpers/properties/integration-adapter';
 import { create } from 'ember-cli-page-object'
 import hbs from 'htmlbars-inline-precompile';
 import { createClickTrackerComponent, ClickTrackerDef } from './helpers';

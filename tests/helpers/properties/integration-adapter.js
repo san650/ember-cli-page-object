@@ -1,8 +1,21 @@
 import { $ } from './helpers';
 import { run } from '@ember/runloop';
-export { moduleForComponent as moduleForIntegration, test as testForIntegration } from 'ember-qunit';
+import { test } from 'qunit';
 import hbs from 'htmlbars-inline-precompile';
 import require from 'require';
+let moduleForIntegration,
+  testForIntegration;
+if (require('ember-qunit').moduleForComponent) {
+  moduleForIntegration = require('ember-qunit').moduleForComponent;
+  testForIntegration = test;
+} else {
+  moduleForIntegration = testForIntegration =
+    (() => {
+      // I'm no-op in the latest versions of enber-qunit
+    });
+}
+
+export { moduleForIntegration, testForIntegration };
 
 function render(test, ...args) {
   if ('render' in test) {
