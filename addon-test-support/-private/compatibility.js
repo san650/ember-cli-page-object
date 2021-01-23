@@ -58,8 +58,16 @@ if (require.has('ember-test-helpers/wait')) {
   // at this point, so its exports are still undefined.
   waitFn = (...args) => require('ember-test-helpers/wait').default(...args);
 } else if (require.has('@ember/test-helpers')) {
-  waitFn = (...args) => require('@ember/test-helpers').wait(...args);
-} else {
+  const { wait, settled } = require('@ember/test-helpers')
+
+  if (settled) {
+    waitFn = (...args) => settled(...args);
+  } else if (wait) {
+    waitFn = (...args) => wait(...args);
+  }
+}
+
+if (!waitFn) {
   waitFn = () => {
     throw new Error('ember-test-helpers or @ember/test-helpers must be installed');
   };
