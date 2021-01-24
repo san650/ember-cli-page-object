@@ -23,12 +23,8 @@ module.exports = {
 
     this.import('vendor/ceibo/index.js', { type: 'test' });
 
-    if (!this.project.findAddonByName('@ember/jquery') && !this.app.vendorFiles['jquery.js']) {
-      this.import('vendor/ecpo-jquery/dist/jquery.js', { type: 'test' });
-      this.import('vendor/shims/ecpo-jquery.js', { type: 'test' });
-    } else {
-      this.import('vendor/shims/project-jquery.js', { type: 'test' });
-    }
+    this.import('vendor/ecpo-jquery/dist/jquery.js', { type: 'test' });
+    this.import('vendor/shims/ecpo-jquery.js', { type: 'test' });
 
     this._super.included.apply(this, arguments);
   },
