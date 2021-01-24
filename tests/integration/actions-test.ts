@@ -10,7 +10,12 @@ import {
 import { alias } from 'ember-cli-page-object/macros';
 import require from 'require';
 
-const $ = require('jquery').default;
+// unfortunately, seems we can't import from 'jquery' directly,
+// cause looks like `shouldIgnoreJQuery` ember-cli-babel setting
+// does not respect test files for some reason.
+//
+// @todo: though, feels like we can get rid of jqury entirely in this test module
+import { $ } from 'ember-cli-page-object/test-support/-private/helpers';
 
 import {
   create,

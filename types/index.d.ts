@@ -91,6 +91,10 @@ declare module 'ember-cli-page-object/adapters' {
   export function setAdapter(adapter: Adapter): void
 }
 
+declare module 'ember-cli-page-object/test-support/-private/helpers' {
+  export { default as $ } from 'jquery';
+}
+
 declare module 'ember-cli-page-object/-private' {
   import 'jquery';
 

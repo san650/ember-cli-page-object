@@ -2,23 +2,7 @@ export { assign } from '@ember/polyfills';
 import { get } from '@ember/object';
 import Ceibo from 'ceibo';
 import { deprecate } from '@ember/application/deprecations';
-
-// @todo: get tid of this, in favour of regular `import` statements
-//
-// For some reason all the imports of "jquery", are transpiled
-// to `Ember.$` by the ember build pipeline. So when the `jquery-integration`
-// optional feature is disabled, we have the `Ember.$` equal to undefined.
-// Which means we can't neither import "jquery"(which is our direct dependency),
-// not rely on `Ember.$`.
-//
-// We are working around it here with `require(` coming from the `loader.js`.
-// However, it may become a problem for Node.js environments,
-// so we should probably find a better way to handle it.
-//
-// see: https://github.com/san650/ember-cli-page-object/issues/512
-import require from 'require';
-const $ = require('-jquery').default;
-export { $ };
+export { default as $ } from 'jquery';
 
 function isPresent(value) {
   return typeof value !== 'undefined';
@@ -44,7 +28,7 @@ class Selector {
 
     filters = this.calculateFilters(this.targetFilters);
 
-    let selector = $.trim(`${scope} ${this.targetSelector}${filters}`);
+    let selector = `${scope} ${this.targetSelector}${filters}`.trim();
 
     if (!selector.length) {
       // When an empty selector is resolved take the first direct child of the
@@ -89,7 +73,7 @@ class Selector {
     scopes.reverse();
     scopes.push(targetScope);
 
-    return $.trim(scopes.join(' '));
+    return scopes.join(' ').trim();
   }
 
   getScopes(node) {
