@@ -9,10 +9,9 @@ dist: xenial
 addons:
   chrome: stable
 
-os: linux
-
 cache:
-  yarn: true
+  directories:
+    - $HOME/.npm
 
 env:
   global:
@@ -36,32 +35,21 @@ jobs:
     - stage: "Tests"
       name: "Tests"
       script:
-        - yarn lint
-        - yarn test:ember
+        - npm run lint
+        - npm run test:ember
     - stage: "Additional Tests"
-      name: "Floating Dependencies"
-      install:
-        - yarn install --no-lockfile --non-interactive
-      script:
-        - yarn test:ember
-
     # we recommend new addons test the current and previous LTS
     # as well as latest stable release (bonus points to beta/canary)
     - env: EMBER_TRY_SCENARIO=node-tests
-    - env: EMBER_TRY_SCENARIO=ember-lts-3.16
+    - env: EMBER_TRY_SCENARIO=ember-lts-3.16 COVERAGE=true
     - env: EMBER_TRY_SCENARIO=ember-lts-3.20
     # keep testing integration and acceptance contexts
-    - env: EMBER_TRY_SCENARIO=with-jquery COVERAGE=true
     - env: EMBER_TRY_SCENARIO=with-ember-test-helpers
     - env: EMBER_TRY_SCENARIO=with-@ember/test-helpers
     - env: EMBER_TRY_SCENARIO=ember-release
     - env: EMBER_TRY_SCENARIO=ember-beta
     - env: EMBER_TRY_SCENARIO=ember-canary
-
-before_install:
-  - npm config set spin false
-  - npm install -g npm@4
-  - npm --version
+    - env: EMBER_TRY_SCENARIO=ember-default-with-jquery
 
 script:
   - node_modules/.bin/ember try:one $EMBER_TRY_SCENARIO
