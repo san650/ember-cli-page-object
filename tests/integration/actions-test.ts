@@ -10,13 +10,6 @@ import {
 import { alias } from 'ember-cli-page-object/macros';
 import require from 'require';
 
-// unfortunately, seems we can't import from 'jquery' directly,
-// cause looks like `shouldIgnoreJQuery` ember-cli-babel setting
-// does not respect test files for some reason.
-//
-// @todo: though, feels like we can get rid of jqury entirely in this test module
-import { $ } from 'ember-cli-page-object/test-support/-private/helpers';
-
 import {
   create,
   collection,
@@ -296,13 +289,19 @@ if (require.has('@ember/test-helpers')) {
     setupRenderingTest(hooks);
 
     hooks.afterEach(function() {
-      $('#alternate-ember-testing').html('');
+      const element = document.getElementById('alternate-ember-testing');
+      if (element) {
+        element.innerHTML = '';
+      }
     });
 
     test('looks for elements outside the testing container', async function(assert) {
       assert.expect(0);
 
-      $('#alternate-ember-testing').html('<button>lorem</button><input>');
+      const element = document.getElementById('alternate-ember-testing');
+      if (element) {
+        element.innerHTML = '<button>lorem</button><input>';
+      }
 
       let page = create({
         clickOnText: clickOnText('button', { testContainer: '#alternate-ember-testing' }),
@@ -319,7 +318,10 @@ if (require.has('@ember/test-helpers')) {
     test('looks for elements within test container specified at node level', async function(assert) {
       assert.expect(0);
 
-      $('#alternate-ember-testing').html('<button>lorem</button><input>');
+      const element = document.getElementById('alternate-ember-testing');
+      if (element) {
+        element.innerHTML = '<button>lorem</button><input>';
+      }
 
       let page = create({
         testContainer: '#alternate-ember-testing',
