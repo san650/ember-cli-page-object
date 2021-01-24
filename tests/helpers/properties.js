@@ -6,7 +6,6 @@ import {
 } from 'ember-qunit'
 import { module, test } from 'qunit';
 
-import Ember from 'ember';
 import require from 'require';
 import { setAdapter } from 'ember-cli-page-object/test-support/adapters';
 

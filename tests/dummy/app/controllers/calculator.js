@@ -1,65 +1,64 @@
 import { later } from '@ember/runloop';
+import { action } from '@ember/object';
 import Controller from '@ember/controller';
-import { computed as c } from '@ember/object';
+import { tracked } from '@glimmer/tracking';
+import { A } from '@ember/array';
 
-export default Controller.extend({
-  init() {
-    this._super(...arguments);
+export default class Calculator extends Controller {
+  @tracked
+  result = '';
 
-    this.setProperties({
-      result: '',
-      expression: '',
-      op: '',
-      loading: false
-    });
-  },
+  @tracked
+  op = '';
 
-  stack: c({
-    get() {
-      return [];
+  @tracked
+  loading = false;
+
+  @tracked
+  stack = A([]);
+
+  @tracked
+  expression = '';
+
+  @action
+  onKeyPress(key, asyncOp) {
+    let exec = () => {
+      let result = this.expression;
+      let stack = this.stack;
+      let op = this.op;
+
+      switch (key) {
+        case '+':
+        case '-':
+        case '=':
+          stack.push(parseInt(op + result));
+          this.result = result;
+          this.expression = '';
+          break;
+        default:
+          this.expression = result + key.toString();
+          break;
+      }
+
+      switch (key) {
+        case '-':
+          this.op = '-';
+          break;
+        case '=':
+          result = stack.reduce((result, value) => result + value , 0);
+          this.expression = result.toString();
+          break;
+      }
     }
-  }),
 
-  actions: {
-    keyPress(key, asyncOp) {
-      let exec = () => {
-        let result = this.get('expression');
-        let stack = this.get('stack');
-        let op = this.get('op');
-
-        switch (key) {
-          case '+':
-          case '-':
-          case '=':
-            stack.push(parseInt(op + result));
-            this.set('result', result);
-            this.set('expression', '');
-            break;
-          default:
-            this.set('expression', result + key.toString());
-            break;
-        }
-
-        switch (key) {
-          case '-':
-            this.set('op', '-');
-            break;
-          case '=':
-            result = stack.reduce((result, value) => result + value , 0);
-            this.set('expression', result.toString());
-            break;
-        }
-      }
-
-      if (asyncOp) {
-        this.set('loading', true);
-        later(() => {
-          this.set('loading', false);
-          exec();
-        }, 50);
-      } else {
+    if (asyncOp) {
+      this.loading = true;
+      later(() => {
+        this.loading = false;
         exec();
-      }
+      }, 50);
+    } else {
+      exec();
     }
   }
-});
+}

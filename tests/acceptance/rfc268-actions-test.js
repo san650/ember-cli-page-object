@@ -48,17 +48,6 @@ if (require.has('@ember/test-helpers')) {
       }),
     });
 
-    test('works inside collections', async function(assert) {
-      await page.visit();
-      await page.numbers.objectAt(0).click();
-      await page.numbers.objectAt(1).click();
-      await page.operators.objectAt(0).click();
-      await page.numbers.objectAt(2).click();
-      await page.operators.objectAt(3).click();
-
-      assert.equal(page.screen, '15');
-    });
-
     test('works inside nested collections', async function(assert) {
       await page.visit();
       await page.keyGroup.objectAt(0).keys.objectAt(0).click();
@@ -166,63 +155,6 @@ if (require.has('@ember/test-helpers')) {
         .then(function() {
           assert.equal(page.screen, '12');
         });
-    });
-
-    test('fill in by attribute', async function(assert) {
-      let page = create({
-        visit: visitable('/inputs'),
-        fillIn: fillable()
-      });
-
-      await page.visit();
-
-      await page.fillIn('input1', 'input 1');
-      await page.fillIn('input2', 'input 2')
-      await page.fillIn('input3', 'input 3');
-      await page.fillIn('input4', 'input 4');
-      await page.fillIn('input5', 'input 5');
-
-      assert.dom('.input1-value').hasValue('input 1');
-      assert.dom('.input2-value').hasValue('input 2');
-      assert.dom('.input3-value').hasValue('input 3');
-      assert.dom('.input4-value').hasValue('input 4');
-      assert.dom('.input5-value').hasValue('input 5');
-
-      await page.fillIn('textarea1', 'textarea 1');
-      await page.fillIn('textarea2', 'textarea 2');
-      await page.fillIn('textarea3', 'textarea 3');
-      await page.fillIn('textarea4', 'textarea 4');
-      await page.fillIn('textarea5', 'textarea 5');
-
-      assert.dom('.textarea1-value').hasValue('textarea 1');
-      assert.dom('.textarea2-value').hasValue('textarea 2');
-      assert.dom('.textarea3-value').hasValue('textarea 3');
-      assert.dom('.textarea4-value').hasValue('textarea 4');
-      assert.dom('.textarea5-value').hasValue('textarea 5');
-
-      await page.fillIn('contenteditable1', 'contenteditable 1');
-      await page.fillIn('contenteditable2', 'contenteditable 2');
-      await page.fillIn('contenteditable3', 'contenteditable 3');
-      await page.fillIn('contenteditable4', 'contenteditable 4');
-      await page.fillIn('contenteditable5', 'contenteditable 5');
-
-      assert.dom('.contenteditable1-content').hasText('contenteditable 1');
-      assert.dom('.contenteditable2-content').hasText('contenteditable 2');
-      assert.dom('.contenteditable3-content').hasText('contenteditable 3');
-      assert.dom('.contenteditable4-content').hasText('contenteditable 4');
-      assert.dom('.contenteditable5-content').hasText('contenteditable 5');
-
-      await page.fillIn('select1', 'select 1 option 2');
-      await page.fillIn('select2', 'select 2 option 2');
-      await page.fillIn('select3', 'select 3 option 2');
-      await page.fillIn('select4', 'select 4 option 2');
-      await page.fillIn('select5', 'select 5 option 2');
-
-      assert.dom('.select1-value').hasValue('select 1 option 2');
-      assert.dom('.select2-value').hasValue('select 2 option 2');
-      assert.dom('.select3-value').hasValue('select 3 option 2');
-      assert.dom('.select4-value').hasValue('select 4 option 2');
-      assert.dom('.select5-value').hasValue('select 5 option 2');
     });
   });
 }
