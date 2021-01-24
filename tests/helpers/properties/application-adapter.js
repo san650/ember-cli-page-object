@@ -1,7 +1,7 @@
-import $ from '-jquery';
 import Rfc268Adapter from './rfc268-adapter';
 import require from 'require';
 import { run } from '@ember/runloop';
+import { $ } from 'ember-cli-page-object/test-support/-private/helpers';
 
 function visit(...args) {
   return require('@ember/test-helpers').visit(...args);

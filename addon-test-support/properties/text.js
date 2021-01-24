@@ -1,6 +1,5 @@
-import { assign } from '../-private/helpers';
+import { assign, $ } from '../-private/helpers';
 import { findOne } from '../extend';
-import $ from '-jquery';
 
 function identity(v) {
   return v;
@@ -92,7 +91,6 @@ export function text(selector, userOptions = {}) {
     get(key) {
       let options = assign({ pageObjectKey: key }, userOptions);
       let f = options.normalize === false ? identity : normalizeText;
-
       return f($(findOne(this, selector, options)).text());
     }
   };
