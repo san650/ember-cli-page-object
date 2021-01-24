@@ -1,6 +1,6 @@
 import 'qunit-dom';
 import { run } from '@ember/runloop';
-import $ from '-jquery';
+
 import { module, test } from 'qunit';
 import { setupRenderingTest } from '../helpers';
 import {
@@ -8,6 +8,9 @@ import {
   createInputsTemplate
 } from './test-helper';
 import { alias } from 'ember-cli-page-object/macros';
+import require from 'require';
+
+const $ = require('jquery').default;
 
 import {
   create,
@@ -27,7 +30,6 @@ import {
   isVisible
 } from 'ember-cli-page-object';
 
-import require from 'require';
 if (require.has('@ember/test-helpers')) {
   const { render } = require('@ember/test-helpers');
 

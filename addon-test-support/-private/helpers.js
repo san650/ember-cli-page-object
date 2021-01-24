@@ -3,7 +3,22 @@ import { get } from '@ember/object';
 import Ceibo from 'ceibo';
 import { deprecate } from '@ember/application/deprecations';
 
-import $ from '-jquery';
+// @todo: get tid of this, in favour of regular `import` statements
+//
+// For some reason all the imports of "jquery", are transpiled
+// to `Ember.$` by the ember build pipeline. So when the `jquery-integration`
+// optional feature is disabled, we have the `Ember.$` equal to undefined.
+// Which means we can't neither import "jquery"(which is our direct dependency),
+// not rely on `Ember.$`.
+//
+// We are working around it here with `require(` coming from the `loader.js`.
+// However, it may become a problem for Node.js environments,
+// so we should probably find a better way to handle it.
+//
+// see: https://github.com/san650/ember-cli-page-object/issues/512
+import require from 'require';
+const $ = require('-jquery').default;
+export { $ };
 
 function isPresent(value) {
   return typeof value !== 'undefined';
