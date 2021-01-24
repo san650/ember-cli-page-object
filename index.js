@@ -4,6 +4,9 @@ module.exports = {
   name: require('./package').name,
 
   options: {
+    'ember-cli-babel': {
+      useBabelConfig: true
+    },
     nodeAssets: {
       ceibo: {
         vendor: ['index.js']

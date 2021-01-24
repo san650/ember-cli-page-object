@@ -28,6 +28,7 @@ module.exports = {
         'docs.js',
         '.eslintrc.js',
         '.template-lintrc.js',
+        'babel.config.js',
         'ember-cli-build.js',
         'index.js',
         'testem.js',
