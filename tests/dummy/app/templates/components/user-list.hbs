@@ -9,7 +9,7 @@
     </tr>
   </thead>
   <tbody>
-    {{#each users as |user|}}
+    {{#each @users as |user|}}
       <tr class={{if user.admin "admin"}}>
         <td>{{user.userName}}</td>
         <td>{{user.role}}</td>
