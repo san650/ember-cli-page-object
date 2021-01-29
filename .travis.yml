@@ -37,15 +37,13 @@ jobs:
       script:
         - npm run lint
         - npm run test:ember
+
     - stage: "Additional Tests"
     # we recommend new addons test the current and previous LTS
     # as well as latest stable release (bonus points to beta/canary)
-    - env: EMBER_TRY_SCENARIO=node-tests
+      env: EMBER_TRY_SCENARIO=node-tests
     - env: EMBER_TRY_SCENARIO=ember-lts-3.16 COVERAGE=true
     - env: EMBER_TRY_SCENARIO=ember-lts-3.20
-    # keep testing integration and acceptance contexts
-    - env: EMBER_TRY_SCENARIO=with-ember-test-helpers
-    - env: EMBER_TRY_SCENARIO=with-@ember/test-helpers
     - env: EMBER_TRY_SCENARIO=ember-release
     - env: EMBER_TRY_SCENARIO=ember-beta
     - env: EMBER_TRY_SCENARIO=ember-canary
