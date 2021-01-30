@@ -1,4 +1,7 @@
-import $ from '-jquery';
+/* global Ember */
+/* eslint-disable ember/new-module-imports */
+const { $ } = Ember;
+
 import {
   fillElement,
   assertFocusable

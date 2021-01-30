@@ -1,4 +1,5 @@
-import $ from '-jquery';
+/* eslint-disable ember/new-module-imports */
+import { $ } from '../-private/helpers';
 
 /**
  * @private

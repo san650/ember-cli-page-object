@@ -1,7 +1,7 @@
 
 export { test as testForAcceptance } from 'qunit';
 
-import { $ } from 'ember-cli-page-object/test-support/-private/helpers';
+import { $ } from './helpers';
 
 export default function Rfc268Adapter() {}
 

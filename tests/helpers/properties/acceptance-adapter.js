@@ -1,4 +1,4 @@
-import $ from '-jquery';
+import { $ } from './helpers';
 import { run } from '@ember/runloop';
 import startApp from '../start-app';
 import { module as qunitModule } from 'qunit';
