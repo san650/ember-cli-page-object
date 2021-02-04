@@ -160,7 +160,7 @@ module.exports = function() {
             devDependencies: {
               'ember-source': urls[0],
               'ember-qunit': '^5.0.0',
-              'qunit': '~2.13.0',
+              'qunit': '~2.14.0',
               '@ember/test-helpers': '^2.0.0',
               'ember-qunit-source-map': null,
             }
