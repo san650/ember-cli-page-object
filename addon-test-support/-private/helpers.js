@@ -1,11 +1,14 @@
 export { assign } from '@ember/polyfills';
 import { assert } from '@ember/debug';
 import { get } from '@ember/object';
-import { isPresent } from '@ember/utils';
 import Ceibo from 'ceibo';
 import { deprecate } from '@ember/application/deprecations';
 
 import $ from '-jquery';
+
+function isPresent(value) {
+  return typeof value !== 'undefined';
+}
 
 class Selector {
   constructor(node, scope, selector, filters) {
