@@ -197,7 +197,6 @@ export function create(definitionOrUrl, definitionOrOptions, optionsOrNothing) {
     definition = definitionOrOptions || {};
     options = optionsOrNothing || {};
   } else {
-    url = false;
     definition = definitionOrUrl || {};
     options = definitionOrOptions || {};
   }
@@ -211,7 +210,7 @@ export function create(definitionOrUrl, definitionOrOptions, optionsOrNothing) {
 
   delete definition.context;
 
-  deprecate('Passing an URL argument to `create()` is deprecated', typeof url !== 'string', {
+  deprecate('Passing an URL argument to `create()` is deprecated', url !== undefined && typeof url !== 'string', {
     id: 'ember-cli-page-object.create-url-argument',
     until: "2.0.0",
     url: 'https://ember-cli-page-object.js.org/docs/v1.17.x/deprecations/#create-url-argument',
