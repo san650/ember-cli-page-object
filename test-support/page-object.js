@@ -1,4 +1,4 @@
-import { deprecate } from '@ember/application/deprecations';
+import deprecate from 'ember-cli-page-object/test-support/-private/deprecate';
 
 import {
   alias,
@@ -78,8 +78,9 @@ export default {
 
 export { buildSelector, findElementWithAssert, findElement, getContext, fullScope } from 'ember-cli-page-object';
 
-deprecate(`Importing from "test-support" is now deprecated. Please import directly from the "ember-cli-page-object" module instead.`, false, {
-  id: 'ember-cli-page-object.import-from-test-support',
-  until: '2.0.0',
-  url: 'https://ember-cli-page-object.js.org/docs/v1.16.x/deprecations/#import-from-test-support',
-})
+deprecate(
+  'import-from-test-support',
+  `Importing from "test-support" is now deprecated. Please import directly from the "ember-cli-page-object" module instead.`,
+  '1.16.0',
+  '2.0.0',
+)
