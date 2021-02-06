@@ -1,4 +1,3 @@
-import { assign } from '../-private/helpers';
 import { findOne } from '../extend';
 
 /**
@@ -67,9 +66,10 @@ export function contains(selector, userOptions = {}) {
 
     get(key) {
       return function(textToSearch) {
-        let options = assign({
-          pageObjectKey: `${key}("${textToSearch}")`
-        }, userOptions);
+        let options = {
+          pageObjectKey: `${key}("${textToSearch}")`,
+          ...userOptions
+        };
 
         return findOne(this, selector, options).innerText.indexOf(textToSearch) > -1;
       };

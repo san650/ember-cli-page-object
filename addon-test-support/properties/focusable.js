@@ -1,4 +1,3 @@
-import { assign } from '../-private/helpers';
 import action from '../-private/action';
 import { findOne } from '../extend';
 
@@ -64,7 +63,7 @@ import { findOne } from '../extend';
  * @return {Descriptor}
 */
 export function focusable(selector = '', userOptions = {}) {
-  const query = assign({}, userOptions, { selector });
+  const query = { ...userOptions,  selector };
 
   return action(query, function() {
     const element = findOne(this.node, this.query.selector, this.query);

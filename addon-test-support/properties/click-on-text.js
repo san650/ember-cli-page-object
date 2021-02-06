@@ -1,4 +1,3 @@
-import { assign } from '../-private/helpers';
 import action from '../-private/action';
 import { findOne, findMany } from '../extend';
 
@@ -85,7 +84,10 @@ import { findOne, findMany } from '../extend';
  * @return {Descriptor}
  */
 export function clickOnText(scope, userOptions = {}) {
-  return action(assign({}, userOptions, { selector: scope }), function(textToClick) {
+  return action({
+    ...userOptions,
+     selector: scope
+  }, function(textToClick) {
     this.query.contains = textToClick;
     // find the deepest node containing a text to click
     this.query.last = true;

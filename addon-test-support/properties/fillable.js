@@ -1,4 +1,3 @@
-import { assign } from '../-private/helpers';
 import { findMany } from 'ember-cli-page-object/extend';
 import action from '../-private/action';
 import { findOne } from '../-private/finders';
@@ -116,25 +115,27 @@ import { findOne } from '../-private/finders';
  * @return {Descriptor}
  */
 export function fillable(selector = '', userOptions = {}) {
-  return action(assign({}, userOptions, { selector }), function(contentOrClue, content) {
-    let clue;
-    if (content === undefined) {
-      content = contentOrClue;
-    } else {
-      clue = contentOrClue;
-    }
-
-    let scopeSelector = selector;
-    if (clue) {
-      scopeSelector = findSelectorByClue(this, clue);
-      if (!scopeSelector) {
-        throw new Error(`Can not find element by clue: "${clue}".`);
+  return action(
+    { ...userOptions, selector },
+    function(contentOrClue, content) {
+      let clue;
+      if (content === undefined) {
+        content = contentOrClue;
+      } else {
+        clue = contentOrClue;
       }
-    }
 
-    const element = findOne(this.node, scopeSelector, this.query);
+      let scopeSelector = selector;
+      if (clue) {
+        scopeSelector = findSelectorByClue(this, clue);
+        if (!scopeSelector) {
+          throw new Error(`Can not find element by clue: "${clue}".`);
+        }
+      }
 
-    return this.adapter.fillIn(element, content);
+      const element = findOne(this.node, scopeSelector, this.query);
+
+      return this.adapter.fillIn(element, content);
   });
 }
 

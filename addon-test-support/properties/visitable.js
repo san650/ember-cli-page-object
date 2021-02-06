@@ -1,4 +1,4 @@
-import { assign, $ } from '../-private/helpers';
+import { $ } from '../-private/helpers';
 import action from '../-private/action'
 
 function fillInDynamicSegments(path, params) {
@@ -89,7 +89,7 @@ function appendQueryParams(path, queryParams) {
  */
 export function visitable(path) {
   return action(function(dynamicSegmentsAndQueryParams = {}) {
-    let params = assign({}, dynamicSegmentsAndQueryParams);
+    let params = { ...dynamicSegmentsAndQueryParams };
     let fullPath = fillInDynamicSegments(path, params);
 
     fullPath = appendQueryParams(fullPath, params);

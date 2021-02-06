@@ -1,4 +1,4 @@
-import { assign, guardMultiple, $ } from '../-private/helpers';
+import { guardMultiple, $ } from '../-private/helpers';
 import { findMany } from '../extend';
 
 /**
@@ -75,7 +75,10 @@ export function isHidden(selector, userOptions = {}) {
     isDescriptor: true,
 
     get(key) {
-      let options = assign({ pageObjectKey: key }, userOptions);
+      let options = {
+        pageObjectKey: key,
+        ...userOptions
+      };
 
       let elements = findMany(this, selector, options);
 

@@ -1,4 +1,3 @@
-import { assign } from '../-private/helpers';
 import { findOne } from '../extend';
 
 /**
@@ -72,7 +71,10 @@ export function notHasClass(cssClass, selector, userOptions = {}) {
     isDescriptor: true,
 
     get(key) {
-      let options = assign({ pageObjectKey: key }, userOptions);
+      let options = {
+        pageObjectKey: key,
+        ...userOptions
+      };
 
       let element = findOne(this, selector, options);
 

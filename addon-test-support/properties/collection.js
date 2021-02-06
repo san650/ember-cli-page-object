@@ -1,6 +1,6 @@
 /* global Symbol */
 import Ceibo from 'ceibo';
-import { buildSelector, assign, isPageObject, getPageObjectDefinition } from '../-private/helpers';
+import { buildSelector, isPageObject, getPageObjectDefinition } from '../-private/helpers';
 import { create } from '../create';
 import { count } from './count';
 import { throwBetterError } from "../-private/better-errors";
@@ -194,7 +194,7 @@ export class Collection {
       let { scope, definition, parent } = this;
       let itemScope = buildSelector({}, scope, { at: index });
 
-      let finalizedDefinition = assign({}, definition);
+      let finalizedDefinition = { ...definition };
 
       finalizedDefinition.scope = itemScope;
 

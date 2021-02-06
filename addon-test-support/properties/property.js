@@ -1,4 +1,4 @@
-import { assign, $ } from '../-private/helpers';
+import { $ } from '../-private/helpers';
 import { findOne } from '../extend';
 
 /**
@@ -49,7 +49,11 @@ export function property(propertyName, selector, userOptions = {}) {
     isDescriptor: true,
 
     get(key) {
-      let options = assign({ pageObjectKey: key }, userOptions);
+      let options = {
+        pageObjectKey: key,
+        ...userOptions
+      };
+
 
       return $(findOne(this, selector, options)).prop(propertyName);
     }

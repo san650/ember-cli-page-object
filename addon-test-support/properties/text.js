@@ -1,4 +1,4 @@
-import { assign, $ } from '../-private/helpers';
+import { $ } from '../-private/helpers';
 import { findOne } from '../extend';
 
 function identity(v) {
@@ -89,7 +89,11 @@ export function text(selector, userOptions = {}) {
     isDescriptor: true,
 
     get(key) {
-      let options = assign({ pageObjectKey: key }, userOptions);
+      let options = {
+        pageObjectKey: key,
+        ...userOptions
+      };
+
       let f = options.normalize === false ? identity : normalizeText;
       return f($(findOne(this, selector, options)).text());
     }

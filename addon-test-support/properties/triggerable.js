@@ -1,4 +1,3 @@
-import { assign } from '../-private/helpers';
 import action from '../-private/action';
 import { findOne } from '../extend';
 
@@ -80,11 +79,11 @@ import { findOne } from '../extend';
  * @return {Descriptor}
 */
 export function triggerable(event, selector, userOptions = {}) {
-  return action(assign({},
-    userOptions, {
+  return action(({
+    ...userOptions,
     selector
   }), function (eventProperties = {}) {
-    const mergedEventProperties = assign({}, userOptions.eventProperties, eventProperties);
+    const mergedEventProperties = { ...userOptions.eventProperties, ...eventProperties };
 
     const element = findOne(this.node, this.query.selector, this.query);
 

@@ -1,4 +1,4 @@
-import { assign, $ } from '../-private/helpers';
+import { $ } from '../-private/helpers';
 import { findOne } from '../extend';
 
 /**
@@ -77,7 +77,10 @@ export function value(selector, userOptions = {}) {
     isDescriptor: true,
 
     get(key) {
-      let options = assign({ pageObjectKey: key }, userOptions);
+      let options = {
+        pageObjectKey: key,
+        ...userOptions
+      };
 
       const element = findOne(this, selector, options);
 

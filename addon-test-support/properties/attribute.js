@@ -1,4 +1,4 @@
-import { assign, $ } from '../-private/helpers';
+import { $ } from '../-private/helpers';
 import { findOne } from '../extend';
 
 /**
@@ -65,7 +65,10 @@ export function attribute(attributeName, selector, userOptions = {}) {
     isDescriptor: true,
 
     get(key) {
-      let options = assign({ pageObjectKey: key }, userOptions);
+      let options = {
+        pageObjectKey: key,
+        ...userOptions
+      };
 
       return $(findOne(this, selector, options)).attr(attributeName);
     }

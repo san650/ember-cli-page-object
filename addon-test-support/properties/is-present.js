@@ -1,5 +1,5 @@
 import { findMany } from '../extend';
-import { assign, guardMultiple } from '../-private/helpers';
+import { guardMultiple } from '../-private/helpers';
 
 /**
  * Validates if any element matching the target selector is rendered in the DOM.
@@ -70,7 +70,10 @@ export function isPresent(selector, userOptions = {}) {
   return {
     isDescriptor: true,
     get(key) {
-      let options = assign({ pageObjectKey: key }, userOptions);
+      let options = {
+        pageObjectKey: key,
+        ...userOptions
+      };
 
       let elements = findMany(this, selector, options);
       guardMultiple(elements, selector);
