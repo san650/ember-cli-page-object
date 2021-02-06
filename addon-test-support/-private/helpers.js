@@ -1,4 +1,3 @@
-export { assign } from '@ember/polyfills';
 import { get } from '@ember/object';
 import Ceibo from 'ceibo';
 import deprecate from './deprecate';

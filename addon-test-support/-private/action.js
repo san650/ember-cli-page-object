@@ -1,4 +1,3 @@
-import { assign } from './helpers';
 import { run } from './run';
 
 export default function action(query, cb) {
@@ -28,9 +27,10 @@ function normalizeArgs(key, query, cb, args) {
       key: formattedKey
     };
   } else {
-    query = assign({}, query, {
+    query = {
+      ...query,
       key: formattedKey
-    });
+    };
   }
 
   return { query, cb };

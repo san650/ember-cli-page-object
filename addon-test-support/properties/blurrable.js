@@ -1,4 +1,3 @@
-import { assign } from '../-private/helpers';
 import action from '../-private/action';
 import { findOne } from '../extend';
 
@@ -64,10 +63,16 @@ import { findOne } from '../extend';
  * @return {Descriptor}
 */
 export function blurrable(selector = '', userOptions = {}) {
-  return action(assign({}, userOptions, { selector }), function() {
-    const element = findOne(this.node, this.query.selector, this.query);
+  return action(
+    {
+      ...userOptions,
+      selector
+    },
+    function() {
+      const element = findOne(this.node, this.query.selector, this.query);
 
-    return this.adapter.blur(element);
-  });
+      return this.adapter.blur(element);
+    }
+  );
 }
 
