@@ -1,7 +1,7 @@
-import { moduleForProperty } from '../../../helpers/properties';
+import { setupTestModuleForProperty } from '../../../helpers/properties';
 import { create, hasClass } from 'ember-cli-page-object';
 
-moduleForProperty('hasClass', function(test) {
+setupTestModuleForProperty('hasClass', function(test) {
   test('returns true when the element has the class', async function(assert) {
     let page = create({
       foo: hasClass('ipsum', 'span')

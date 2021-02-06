@@ -3,8 +3,7 @@ import { get } from '@ember/object';
 import { isPresent } from '@ember/utils';
 import Ceibo from 'ceibo';
 import { deprecate } from '@ember/application/deprecations';
-
-import $ from '-jquery';
+export { default as $ } from 'jquery';
 
 class Selector {
   constructor(node, scope, selector, filters) {
@@ -26,7 +25,7 @@ class Selector {
 
     filters = this.calculateFilters(this.targetFilters);
 
-    let selector = $.trim(`${scope} ${this.targetSelector}${filters}`);
+    let selector = `${scope} ${this.targetSelector}${filters}`.trim();
 
     if (!selector.length) {
       // When an empty selector is resolved take the first direct child of the
@@ -71,7 +70,7 @@ class Selector {
     scopes.reverse();
     scopes.push(targetScope);
 
-    return $.trim(scopes.join(' '));
+    return scopes.join(' ').trim();
   }
 
   getScopes(node) {
@@ -229,7 +228,7 @@ export function objectHasProperty(object, pathToProp) {
 
   for (let i = 0; i < pathSegments.length; i++) {
     const key = pathSegments[i];
-    if (object === null || object === undefined || !object.hasOwnProperty(key)) {
+    if (object === null || object === undefined || !Object.prototype.hasOwnProperty.call(object, key)) {
       return false;
     } else {
       object = object[key];

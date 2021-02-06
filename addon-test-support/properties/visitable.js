@@ -1,7 +1,5 @@
-import { assign } from '../-private/helpers';
+import { assign, $ } from '../-private/helpers';
 import action from '../-private/action'
-
-import $ from '-jquery';
 
 function fillInDynamicSegments(path, params) {
   return path.split('/').map(function(segment) {

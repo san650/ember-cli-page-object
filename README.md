@@ -30,6 +30,15 @@ Let's work together to improve this addon!
 
 You can find us on the [official Ember Discord server](https://discord.gg/zT3asNS), or [open an issue on Github](https://github.com/san650/ember-cli-page-object/issues) to request features, report bugs or just to ask any question.
 
+
+Compatibility
+------------------------------------------------------------------------------
+
+* Ember.js v3.16 or above
+* Ember CLI v2.13 or above
+* Node.js v10 or above
+
+
 Installation
 ------------------------------------------------------------------------------
 

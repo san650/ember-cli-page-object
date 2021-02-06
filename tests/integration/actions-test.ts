@@ -1,6 +1,6 @@
 import 'qunit-dom';
 import { run } from '@ember/runloop';
-import $ from '-jquery';
+
 import { module, test } from 'qunit';
 import { setupRenderingTest } from '../helpers';
 import {
@@ -8,6 +8,7 @@ import {
   createInputsTemplate
 } from './test-helper';
 import { alias } from 'ember-cli-page-object/macros';
+import require from 'require';
 
 import {
   create,
@@ -27,7 +28,6 @@ import {
   isVisible
 } from 'ember-cli-page-object';
 
-import require from 'require';
 if (require.has('@ember/test-helpers')) {
   const { render } = require('@ember/test-helpers');
 
@@ -289,13 +289,19 @@ if (require.has('@ember/test-helpers')) {
     setupRenderingTest(hooks);
 
     hooks.afterEach(function() {
-      $('#alternate-ember-testing').html('');
+      const element = document.getElementById('alternate-ember-testing');
+      if (element) {
+        element.innerHTML = '';
+      }
     });
 
     test('looks for elements outside the testing container', async function(assert) {
       assert.expect(0);
 
-      $('#alternate-ember-testing').html('<button>lorem</button><input>');
+      const element = document.getElementById('alternate-ember-testing');
+      if (element) {
+        element.innerHTML = '<button>lorem</button><input>';
+      }
 
       let page = create({
         clickOnText: clickOnText('button', { testContainer: '#alternate-ember-testing' }),
@@ -312,7 +318,10 @@ if (require.has('@ember/test-helpers')) {
     test('looks for elements within test container specified at node level', async function(assert) {
       assert.expect(0);
 
-      $('#alternate-ember-testing').html('<button>lorem</button><input>');
+      const element = document.getElementById('alternate-ember-testing');
+      if (element) {
+        element.innerHTML = '<button>lorem</button><input>';
+      }
 
       let page = create({
         testContainer: '#alternate-ember-testing',

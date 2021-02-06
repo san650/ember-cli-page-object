@@ -1,7 +1,7 @@
-import { moduleForProperty } from '../../../helpers/properties';
+import { setupTestModuleForProperty } from '../../../helpers/properties';
 import { create, text } from 'ember-cli-page-object';
 
-moduleForProperty('create', function(test, adapter) {
+setupTestModuleForProperty('create', function(test, adapter) {
   test('creates new page object', async function(assert) {
     let page = create({
       foo: 'a value',

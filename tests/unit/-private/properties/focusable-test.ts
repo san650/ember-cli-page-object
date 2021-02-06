@@ -1,7 +1,7 @@
-import { moduleForProperty } from '../../../helpers/properties';
+import { setupTestModuleForProperty } from '../../../helpers/properties';
 import { create, focusable } from 'ember-cli-page-object';
 
-moduleForProperty('focusable', function(test, adapter) {
+setupTestModuleForProperty('focusable', function(test, adapter) {
   test('calls focus with proper args', async function(assert) {
     assert.expect(1);
 

@@ -1,8 +1,8 @@
-import { moduleForProperty } from '../../../helpers/properties';
+import { setupTestModuleForProperty } from '../../../helpers/properties';
 import { collection, create, hasClass, text } from 'ember-cli-page-object';
 import withIteratorSymbolDefined from '../../../helpers/with-iterator-symbol-defined';
 
-moduleForProperty('collection', function(test) {
+setupTestModuleForProperty('collection', function(test) {
   test('returns the same collection instance', async function(assert) {
     let page = create({
       foo: collection('span')

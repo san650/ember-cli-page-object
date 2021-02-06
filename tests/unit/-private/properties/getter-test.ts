@@ -1,4 +1,4 @@
-import { moduleForProperty } from '../../../helpers/properties';
+import { setupTestModuleForProperty } from '../../../helpers/properties';
 import {
   create,
   property,
@@ -6,7 +6,7 @@ import {
 } from 'ember-cli-page-object';
 import { getter } from 'ember-cli-page-object/macros';
 
-moduleForProperty('getter', function(test) {
+setupTestModuleForProperty('getter', function(test) {
   test('returns the result of the passed-in function', function(assert) {
     assert.expect(2);
 

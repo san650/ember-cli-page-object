@@ -4,7 +4,3 @@ declare module 'ember-cli-page-object/templates/*' {
   const tmpl: TemplateFactory;
   export default tmpl;
 }
-
-declare module '-jquery' {
-  export { default } from "jquery";
-}

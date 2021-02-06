@@ -1,7 +1,7 @@
-import { moduleForProperty } from '../../../helpers/properties';
+import { setupTestModuleForProperty } from '../../../helpers/properties';
 import { create, collection } from 'ember-cli-page-object';
 
-moduleForProperty('dsl', function(test) {
+setupTestModuleForProperty('dsl', function(test) {
   test('generates .isVisible', async function(assert) {
     let page = create({
       scope: 'span',

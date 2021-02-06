@@ -1,7 +1,7 @@
-import { moduleForProperty } from '../../../helpers/properties';
+import { setupTestModuleForProperty } from '../../../helpers/properties';
 import { create, isVisible } from 'ember-cli-page-object';
 
-moduleForProperty('isVisible', function(test) {
+setupTestModuleForProperty('isVisible', function(test) {
   test('returns true when the element is visible', async function(assert) {
     let page = create({
       foo: isVisible('span')

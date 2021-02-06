@@ -1,43 +1,58 @@
-import Component from '@ember/component';
-import { computed as c } from '@ember/object';
+import Component from '@glimmer/component';
+import { action } from '@ember/object';
+import { tracked } from '@glimmer/tracking';
+import { A } from '@ember/array';
+import { later } from '@ember/runloop';
 
-export default Component.extend({
-  result: '',
-  op: '',
+export default class CalculatinDevice extends Component {
+  @tracked
+  result = '';
 
-  stack: c({
-    get() {
-      return [];
-    }
-  }),
+  @tracked
+  op = '';
 
-  actions: {
-    keyPress(key) {
-      let result = this.get('result');
-      let stack = this.get('stack');
-      let op = this.get('op');
+  @tracked
+  stack = A([]);
+
+  @tracked
+  loading = false;
+
+  @action
+  onKeyPress(key, event, asyncOp) {
+    let exec = () => {
+      let { result, stack, op } = this;
 
       switch (key) {
         case '+':
         case '-':
         case '=':
           stack.push(parseInt(op + result));
-          this.set('result', '');
+          this.result = '';
           break;
         default:
-          this.set('result', result + key.toString());
+          this.result = result + key.toString();
           break;
       }
 
       switch (key) {
         case '-':
-          this.set('op', '-');
+          this.op = '-';
           break;
         case '=':
           result = stack.reduce((result, value) => result + value , 0);
-          this.set('result', result.toString());
+          this.result = result.toString();
           break;
       }
     }
+
+    if (asyncOp) {
+      this.loading = true;
+      later(() => {
+        this.loading = false;
+        exec();
+      }, 50);
+    } else {
+      exec();
+    }
   }
-});
+}

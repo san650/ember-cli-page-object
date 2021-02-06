@@ -1,6 +1,5 @@
-import { assign, guardMultiple } from '../-private/helpers';
+import { assign, guardMultiple, $ } from '../-private/helpers';
 import { findMany } from '../extend';
-import $ from '-jquery';
 
 /**
  * Validates if an element or set of elements are visible.

@@ -8,4 +8,4 @@ type TestCallback = (testName: string, cb: (this: TestContext, assert: Assert) =
 
 type ModuleCallback = (callback: TestCallback, adapter: any) => any;
 
-export function moduleForProperty(name: string, cbOrOptions: ModuleCallback|object, cb?: ModuleCallback): void;
+export function setupTestModuleForProperty(name: string, cbOrOptions: ModuleCallback|object, cb?: ModuleCallback): void;

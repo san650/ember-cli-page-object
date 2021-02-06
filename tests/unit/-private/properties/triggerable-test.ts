@@ -1,7 +1,7 @@
-import { moduleForProperty } from '../../../helpers/properties';
+import { setupTestModuleForProperty } from '../../../helpers/properties';
 import { create, triggerable } from 'ember-cli-page-object';
 
-moduleForProperty('triggerable', function(test) {
+setupTestModuleForProperty('triggerable', function(test) {
   test("calls Ember's triggerEvent helper with proper args", async function(assert) {
     assert.expect(1);
 

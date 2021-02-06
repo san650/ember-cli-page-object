@@ -1,6 +1,6 @@
 import Rfc268Adapter from './rfc268-adapter';
 import hbs from 'htmlbars-inline-precompile';
-import $ from '-jquery';
+import { $ } from 'ember-cli-page-object/test-support/-private/helpers';
 import require from 'require';
 
 function render(...args) {

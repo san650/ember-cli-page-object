@@ -1,5 +1,5 @@
-import $ from '-jquery';
 import {
+  $,
   buildSelector,
   findClosestValue,
   guardMultiple

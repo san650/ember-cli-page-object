@@ -1,10 +1,10 @@
 <div class="calculator">
   <div class="screen">
-    {{input value=expression}}
+    <Input @value={{this.expression}} />
     <div class="result">
-      {{result}}
+      {{this.result}}
     </div>
-    {{#if loading}}
+    {{#if this.loading}}
       <div class="loading">
         loading...
       </div>
@@ -12,22 +12,22 @@
   </div>
   <div class="keyboard">
     <div class="numbers">
-      <button {{action "keyPress" "1"}}>1</button>
-      <button {{action "keyPress" "2"}}>2</button>
-      <button {{action "keyPress" "3"}}>3</button>
-      <button {{action "keyPress" "4"}}>4</button>
-      <button {{action "keyPress" "5"}}>5</button>
-      <button {{action "keyPress" "6"}}>6</button>
-      <button {{action "keyPress" "7"}}>7</button>
-      <button {{action "keyPress" "8"}}>8</button>
-      <button {{action "keyPress" "9"}}>9</button>
-      <button {{action "keyPress" "0"}}>0</button>
+      <button {{on "click" (fn this.onKeyPress "1")}} type="button">1</button>
+      <button {{on "click" (fn this.onKeyPress "2")}} type="button">2</button>
+      <button {{on "click" (fn this.onKeyPress "3")}} type="button">3</button>
+      <button {{on "click" (fn this.onKeyPress "4")}} type="button">4</button>
+      <button {{on "click" (fn this.onKeyPress "5")}} type="button">5</button>
+      <button {{on "click" (fn this.onKeyPress "6")}} type="button">6</button>
+      <button {{on "click" (fn this.onKeyPress "7")}} type="button">7</button>
+      <button {{on "click" (fn this.onKeyPress "8")}} type="button">8</button>
+      <button {{on "click" (fn this.onKeyPress "9")}} type="button">9</button>
+      <button {{on "click" (fn this.onKeyPress "0")}} type="button">0</button>
     </div>
     <div class="operators">
-      <button {{action "keyPress" "+"}}>+</button>
-      <button {{action "keyPress" "-"}}>-</button>
-      <button {{action "keyPress" "="}}>=</button>
-      <button {{action "keyPress" "=" true}}>async=</button>
+      <button {{on "click" (fn this.onKeyPress "+")}} type="button">+</button>
+      <button {{on "click" (fn this.onKeyPress "-")}} type="button">-</button>
+      <button {{on "click" (fn this.onKeyPress "=")}} type="button">=</button>
+      <button {{on "click" (fn this.onKeyPress "=" true)}} type="button">async=</button>
     </div>
   </div>
 </div>

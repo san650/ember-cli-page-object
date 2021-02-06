@@ -1,7 +1,7 @@
-import { moduleForProperty } from '../../../helpers/properties';
+import { setupTestModuleForProperty } from '../../../helpers/properties';
 import { create, property } from 'ember-cli-page-object';
 
-moduleForProperty('property', function(test) {
+setupTestModuleForProperty('property', function(test) {
   test('returns property value', async function(assert) {
     let page = create({
       foo: property('checked', ':input')

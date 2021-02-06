@@ -1,7 +1,7 @@
-import { moduleForProperty } from '../../../helpers/properties';
+import { setupTestModuleForProperty } from '../../../helpers/properties';
 import { create, blurrable } from 'ember-cli-page-object';
 
-moduleForProperty('blurrable', function(test, adapter) {
+setupTestModuleForProperty('blurrable', function(test, adapter) {
   test('calls blur with proper args', async function(assert) {
     assert.expect(1);
 

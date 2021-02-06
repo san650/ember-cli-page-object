@@ -1,7 +1,7 @@
-import { moduleForProperty } from '../../../helpers/properties';
+import { setupTestModuleForProperty } from '../../../helpers/properties';
 import { create, attribute } from 'ember-cli-page-object';
 
-moduleForProperty('attribute', function(test) {
+setupTestModuleForProperty('attribute', function(test) {
   test('returns attribute value', async function(assert) {
     let page = create({
       foo: attribute('placeholder', ':input')

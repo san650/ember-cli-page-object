@@ -1,7 +1,7 @@
-import { moduleForProperty } from '../../../helpers/properties';
+import { setupTestModuleForProperty } from '../../../helpers/properties';
 import { create, isHidden } from 'ember-cli-page-object';
 
-moduleForProperty('isHidden', function(test) {
+setupTestModuleForProperty('isHidden', function(test) {
   test('returns true when the element is hidden', async function(assert) {
     let page = create({
       foo: isHidden('span')

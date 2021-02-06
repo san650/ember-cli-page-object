@@ -1,7 +1,7 @@
-import { moduleForProperty } from '../../../helpers/properties';
+import { setupTestModuleForProperty } from '../../../helpers/properties';
 import { create, fillable, selectable } from 'ember-cli-page-object';
 
-moduleForProperty('fillable', function(test) {
+setupTestModuleForProperty('fillable', function(test) {
   test("calls fillIn method belonging to execution context", async function(assert) {
     assert.expect(1);
 

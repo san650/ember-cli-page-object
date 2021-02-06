@@ -1,7 +1,7 @@
-import { moduleForProperty } from '../../../helpers/properties';
+import { setupTestModuleForProperty } from '../../../helpers/properties';
 import { create, contains } from 'ember-cli-page-object';
 
-moduleForProperty('contains', function(test) {
+setupTestModuleForProperty('contains', function(test) {
   test('returns true when the element contains the text', async function(assert) {
     let page = create({
       foo: contains('span')

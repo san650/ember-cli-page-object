@@ -1,7 +1,7 @@
-import { moduleForProperty } from '../../../helpers/properties';
+import { setupTestModuleForProperty } from '../../../helpers/properties';
 import { create, visitable } from 'ember-cli-page-object';
 
-moduleForProperty('visitable', { needsVisit: true }, function(test) {
+setupTestModuleForProperty('visitable', { needsVisit: true }, function(test) {
   test("calls Ember's visit helper", async function(assert) {
     assert.expect(1);
 

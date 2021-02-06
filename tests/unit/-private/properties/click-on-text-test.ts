@@ -1,7 +1,7 @@
-import { moduleForProperty } from '../../../helpers/properties';
+import { setupTestModuleForProperty } from '../../../helpers/properties';
 import { create, clickOnText } from 'ember-cli-page-object';
 
-moduleForProperty('clickOnText', function(test) {
+setupTestModuleForProperty('clickOnText', function(test) {
   test('calls click helper', async function(assert) {
     assert.expect(2);
 
