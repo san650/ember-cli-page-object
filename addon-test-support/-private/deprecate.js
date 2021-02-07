@@ -1,11 +1,13 @@
-import { deprecate as emberDeprecate } from '@ember/application/deprecations';
+import { deprecate } from '@ember/application/deprecations';
 
 const NAMESPACE = 'ember-cli-page-object';
 
-export default function deprecate(name, message, since, until) {
+// @todo: remove `_` after getting rid of the ember deprecate
+// for some reason renaming of the import leads to runrime issues
+export default function _deprecate(name, message, since, until) {
   const [major, minor] = since.split('.');
 
-  emberDeprecate(message, false, {
+  deprecate(message, false, {
     id: `${NAMESPACE}.${name}`,
     for: NAMESPACE,
     since: {
