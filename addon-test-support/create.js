@@ -1,5 +1,5 @@
 import Ceibo from 'ceibo';
-import { deprecate } from '@ember/application/deprecations';
+import deprecate from './-private/deprecate';
 import { assign, getPageObjectDefinition, isPageObject, storePageObjectDefinition } from './-private/helpers';
 import { visitable } from './properties/visitable';
 import dsl from './-private/dsl';
@@ -72,14 +72,13 @@ function buildObject(node, blueprintKey, blueprint, defaultBuilder) {
             get
           }
         });
-      } else {
-        deprecate('do not use string values on definitions',
-          typeof value !== 'string' || ['scope', 'testContainer'].includes(key), {
-            id: 'ember-cli-page-object.string-properties-on-definition',
-            until: "2.0.0",
-            url: 'https://ember-cli-page-object.js.org/docs/v1.17.x/deprecations/#string-properties-on-definition',
-          }
-        )
+      } else if (typeof value === 'string' && !['scope', 'testContainer'].includes(key)) {
+        deprecate(
+          'string-properties-on-definition',
+          'do not use string values on definitions',
+          '1.17.0',
+          '2.0.0'
+        );
       }
     });
 
@@ -211,11 +210,14 @@ export function create(definitionOrUrl, definitionOrOptions, optionsOrNothing) {
     throw new Error('"context" key is not allowed to be passed at definition root.');
   }
 
-  deprecate('Passing an URL argument to `create()` is deprecated', typeof url !== 'string', {
-    id: 'ember-cli-page-object.create-url-argument',
-    until: "2.0.0",
-    url: 'https://ember-cli-page-object.js.org/docs/v1.17.x/deprecations/#create-url-argument',
-  });
+  if (typeof url === 'string') {
+    deprecate(
+      'create-url-argument',
+      'Passing an URL argument to `create()` is deprecated',
+      '1.17.0',
+      "2.0.0",
+    );
+  }
 
   if (url) {
     definition.visit = visitable(url);
