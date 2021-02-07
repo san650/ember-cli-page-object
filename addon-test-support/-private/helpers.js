@@ -1,6 +1,6 @@
 import Ceibo from 'ceibo';
 import deprecate from './deprecate';
-export { default as $ } from 'jquery';
+export { $ } from './finders';
 
 function isPresent(value) {
   return typeof value !== 'undefined';

@@ -1,16 +1,26 @@
 import {
-  $,
   buildSelector,
   findClosestValue,
   guardMultiple
 } from './helpers';
 import { getAdapter } from '../adapters';
 import { throwBetterError, ELEMENT_NOT_FOUND } from './better-errors';
+import jQuery from 'jquery';
 
 function getContainer(pageObjectNode, options) {
   return options.testContainer
     || findClosestValue(pageObjectNode, 'testContainer')
     || getAdapter().testContainer;
+}
+
+export function $(selector, container) {
+  const { window } = getAdapter();
+
+  if (window) {
+    return jQuery(window)(selector, container)
+  } else {
+    return jQuery(selector, container);
+  }
 }
 
 /**
