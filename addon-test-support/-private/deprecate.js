@@ -8,7 +8,9 @@ export default function deprecate(name, message, since, until) {
   emberDeprecate(message, false, {
     id: `${NAMESPACE}.${name}`,
     for: NAMESPACE,
-    since,
+    since: {
+      enabled: since
+    },
     until,
     url: `https://ember-cli-page-object.js.org/docs/v${major}.${minor}.x/deprecations#${name}`,
   });
