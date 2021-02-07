@@ -1,4 +1,4 @@
-import { deprecate } from '@ember/application/deprecations';
+import deprecate from '../-private/deprecate';
 import { warn } from '@ember/debug';
 
 import { collection as mainCollection } from './collection/main';
@@ -152,11 +152,12 @@ export function collection(scopeOrDefinition, definitionOrNothing) {
     return mainCollection(scopeOrDefinition, definitionOrNothing);
   }
 
-  deprecate('You are currently using the legacy collection API, check the documentation to see how to upgrade to the new API.', false, {
-    id: 'ember-cli-page-object.old-collection-api',
-    until: '2.0.0',
-    url: 'https://ember-cli-page-object.js.org/docs/v1.16.x/deprecations/#old-collection-api'
-  });
+  deprecate(
+    'old-collection-api',
+    'You are currently using the legacy collection API, check the documentation to see how to upgrade to the new API.',
+    '1.16.0',
+    '2.0.0',
+  );
 
   warn(
     'Legacy page object collection definition is invalid. Please, make sure you include a `itemScope` selector.',

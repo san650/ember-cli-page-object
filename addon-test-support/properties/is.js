@@ -1,4 +1,4 @@
-import { deprecate } from '@ember/application/deprecations';
+import deprecate from '../-private/deprecate';
 import { assign, every } from '../-private/helpers';
 import { findElementWithAssert } from '../extend';
 
@@ -52,11 +52,7 @@ export function is(testSelector, targetSelector, userOptions = {}) {
     isDescriptor: true,
 
     get(key) {
-      deprecate(':is property is deprecated', false, {
-        id: 'ember-cli-page-object.is-property',
-        until: '2.0.0',
-        url: 'https://ember-cli-page-object.js.org/docs/v1.16.x/deprecations/#is-property',
-      });
+      deprecate('is-property', ':is property is deprecated', '1.16.0', '2.0.0');
 
       let options = assign({ pageObjectKey: key }, userOptions);
 

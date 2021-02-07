@@ -1,4 +1,4 @@
-import { deprecate } from '@ember/application/deprecations';
+import deprecate from './deprecate';
 
 /**
  * @public
@@ -19,11 +19,12 @@ import { deprecate } from '@ember/application/deprecations';
  * @return {PageObject} - the page object
  */
 export function render(template) {
-  deprecate('PageObject.render() is deprecated. Please use "htmlbars-inline-precompile" instead.', false, {
-    id: 'ember-cli-page-object.page-render',
-    until: '2.0.0',
-    url: 'https://ember-cli-page-object.js.org/docs/v1.16.x/deprecations/#page-render'
-  });
+  deprecate(
+    'page-render',
+    'PageObject.render() is deprecated. Please use "htmlbars-inline-precompile" instead.',
+    '1.16.0',
+    '2.0.0',
+  );
 
   if (!this.context) {
     let message = 'You must set a context on the page object before calling calling `render()`';
@@ -54,11 +55,12 @@ export function render(template) {
  * @return {PageObject} - the page object
  */
 export function setContext(context) {
-  deprecate('setContext() is deprecated. Please make sure you use "@ember/test-helpers" of v1 or higher.', false, {
-    id: 'ember-cli-page-object.set-context',
-    until: '2.0.0',
-    url: 'https://ember-cli-page-object.js.org/docs/v1.16.x/deprecations/#set-context',
-  });
+  deprecate(
+    'set-context',
+    'setContext() is deprecated. Please make sure you use "@ember/test-helpers" of v1 or higher.',
+    '1.16.0',
+    '2.0.0',
+  );
 
   if (context) {
     this.context = context;

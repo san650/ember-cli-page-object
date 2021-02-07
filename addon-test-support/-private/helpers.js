@@ -4,7 +4,7 @@ import { assert } from '@ember/debug';
 import { get } from '@ember/object';
 import { isPresent } from '@ember/utils';
 import Ceibo from 'ceibo';
-import { deprecate } from '@ember/application/deprecations';
+import deprecate from './deprecate';
 import { getContext as getEmberTestHelpersContext } from './compatibility';
 
 import $ from '-jquery';
@@ -27,14 +27,14 @@ class Selector {
       scope = this.calculateScope(this.targetNode, this.targetScope);
     }
 
-    deprecate(
-      'Usage of comma separated selectors is deprecated in ember-cli-page-object',
-      `${scope} ${this.targetSelector}`.indexOf(',') === -1, {
-        id: 'ember-cli-page-object.comma-separated-selectors',
-        until: "2.0.0",
-        url: 'https://ember-cli-page-object.js.org/docs/v1.16.x/deprecations/#comma-separated-selectors',
-      }
-    );
+    if (`${scope} ${this.targetSelector}`.indexOf(',') > -1) {
+      deprecate(
+        'comma-separated-selectors',
+        'Usage of comma separated selectors is deprecated in ember-cli-page-object',
+        '1.16.0',
+        '2.0.0',
+      );
+    }
 
     filters = this.calculateFilters(this.targetFilters);
 
