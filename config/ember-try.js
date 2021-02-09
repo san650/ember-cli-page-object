@@ -162,7 +162,7 @@ module.exports = function() {
         },
         {
           name: 'node-tests',
-          command: 'npm run nodetest',
+          command: 'npm run test:ember-node',
           bower: {
             dependencies: {}
           }

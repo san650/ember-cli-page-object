@@ -4,8 +4,9 @@
 import { create, visitable } from 'ember-cli-page-object';
 import Adapter from 'ember-cli-page-object/adapter';
 import { setAdapter } from 'ember-cli-page-object/adapters';
-
 import jsdom from 'jsdom';
+import QUnit from 'qunit';
+const { module, test } = QUnit;
 
 const RESPONSE_FIXTURE = `<html>
   <body>
@@ -32,19 +33,21 @@ class NodeJSAdapter extends Adapter {
   }
 }
 
-setAdapter(new NodeJSAdapter());
+module('node.js', function(hooks) {
+  hooks.beforeEach(function() {
+    setAdapter(new NodeJSAdapter());
+  });
 
-const a = create({
-  scope: '.test',
+  test('it works!', async function(assert) {
+    const a = create({
+      scope: '.test',
 
-  visit: visitable(''),
+      visit: visitable(''),
+    });
+
+    await a.visit();
+
+    assert.strictEqual(a.isVisible, false);
+    assert.strictEqual(a.isPresent, true);
+  });
 });
-
-test();
-
-async function test() {
-  await a.visit('test/12?param=1');
-
-  console.log('isVisible', a.isVisible);
-  console.log('isPresent', a.isPresent);
-}
