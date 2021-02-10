@@ -1,4 +1,4 @@
-import { deprecate as emberDeprecate } from '@ember/application/deprecations';
+import { deprecate as emberDeprecate } from '@ember/debug';
 
 const NAMESPACE = 'ember-cli-page-object';
 
