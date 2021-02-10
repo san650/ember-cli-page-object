@@ -1,11 +1,11 @@
-import { deprecate as emberDeprecate } from '@ember/debug';
+import { deprecate } from '@ember/debug';
 
 const NAMESPACE = 'ember-cli-page-object';
 
-export default function deprecate(name, message, since, until) {
+export default function deprecateWrapper(name, message, since, until) {
   const [major, minor] = since.split('.');
 
-  emberDeprecate(message, false, {
+  deprecate(message, false, {
     id: `${NAMESPACE}.${name}`,
     for: NAMESPACE,
     since: {
