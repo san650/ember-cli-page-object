@@ -1,6 +1,6 @@
 language: node_js
 node_js:
-  - 10
+  - 13
 
 addons:
   chrome: stable
@@ -34,8 +34,8 @@ jobs:
       script:
         - npm run lint:hbs
         - npm run lint:js
-        - npm test
         - npm test:node
+        - npm test
 
     # we recommend new addons test the current and previous LTS
     # as well as latest stable release (bonus points to beta/canary)
