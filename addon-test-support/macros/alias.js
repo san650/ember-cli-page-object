@@ -1,4 +1,3 @@
-import { get } from '@ember/object';
 import { throwBetterError } from '../-private/better-errors';
 import { chainable } from '../-private/chainable';
 
@@ -76,54 +75,29 @@ const ALIASED_PROP_NOT_FOUND = 'PageObject does not contain aliased property';
  */
 export function alias(pathToProp, options = {}) {
   return {
-  isDescriptor: true,
+    isDescriptor: true,
 
     get(key) {
-      if (!objectHasProperty(this, pathToProp)) {
-        throwBetterError(this, key, `${ALIASED_PROP_NOT_FOUND} \`${pathToProp}\`.`);
+      try {
+        const value = getProperty(this, pathToProp);
+
+        if (typeof value !== 'function' || !options.chainable) {
+          return value;
+        }
+
+        return function(...args) {
+          // We can't just return value(...args) here because if the alias points
+          // to a property on a child node, then the return value would be that
+          // child node rather than this node.
+          value(...args);
+
+          return chainable(this);
+        };
+      } catch (e) {
+        throwBetterError(this, key, e);
       }
-
-      const value = getProperty(this, pathToProp);
-
-      if (typeof value !== 'function' || !options.chainable) {
-        return value;
-      }
-
-      return function(...args) {
-        // We can't just return value(...args) here because if the alias points
-        // to a property on a child node, then the return value would be that
-        // child node rather than this node.
-        value(...args);
-
-        return chainable(this);
-      };
     }
   };
-}
-
-/**
- * @private
- *
- * Returns a boolean indicating whether an object contains a given property.
- * The path to a nested property should be indicated by a dot-separated string.
- *
- * @param {Object} object - object to check for the target property
- * @param {string} pathToProp - dot-separated path to property
- * @return {Boolean}
- */
-function objectHasProperty(object, pathToProp) {
-  const pathSegments = pathToProp.split('.');
-
-  for (let i = 0; i < pathSegments.length; i++) {
-    const key = pathSegments[i];
-    if (object === null || object === undefined || !object.hasOwnProperty(key)) {
-      return false;
-    } else {
-      object = object[key];
-    }
-  }
-
-  return true;
 }
 
 /**
@@ -139,20 +113,21 @@ function objectHasProperty(object, pathToProp) {
 function getProperty(object, pathToProp) {
   const pathSegments = pathToProp.split('.');
 
-  if (pathSegments.length === 1) {
-    const value = get(object, pathToProp);
-    return typeof value === 'function' ? value.bind(object) : value;
+  let parent = object;
+  let value;
+  while (pathSegments.length > 0) {
+    const key = pathSegments.shift();
+
+    if (parent === null || typeof parent !== 'object' || !parent.hasOwnProperty(key)) {
+      throw new Error(`${ALIASED_PROP_NOT_FOUND} \`${pathToProp}\`.`);
+    }
+
+    if (pathSegments.length) {
+      parent = parent[key];
+    } else {
+      value = parent[key];
+    }
   }
 
-  const pathToPropOwner = pathSegments.slice(0, -1).join('.');
-  const propOwner = get(object, pathToPropOwner);
-
-  if (propOwner === null || propOwner === undefined) {
-    return undefined;
-  }
-
-  const propKey = pathSegments[pathSegments.length - 1];
-  const value = get(propOwner, propKey);
-
-  return typeof value === 'function' ? value.bind(propOwner) : value;
+  return typeof value === 'function' ? value.bind(parent) : value;
 }
