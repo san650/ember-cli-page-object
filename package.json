@@ -81,7 +81,6 @@
     "ember-maybe-import-regenerator": "^0.1.6",
     "ember-maybe-import-regenerator-for-testing": "^1.0.0",
     "ember-qunit": "^4.5.1",
-    "ember-qunit-assert-helpers": "^0.2.1",
     "ember-qunit-nice-errors": "^1.1.2",
     "ember-qunit-source-map": "1.1.0",
     "ember-resolver": "^5.0.1",
