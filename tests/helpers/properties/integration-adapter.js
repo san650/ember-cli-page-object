@@ -51,7 +51,7 @@ IntegrationAdapter.prototype = {
       page.setContext(test);
     }
 
-    this.context.render(hbs`{{html-render html=raw}}`);
+    this.context.render(hbs`{{html-render html=this.raw}}`);
   },
 
   throws(assert, block, expected, message) {

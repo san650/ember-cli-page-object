@@ -30,6 +30,6 @@ Object.assign(RenderingAdapter.prototype, {
       test.set('raw', template);
     }
 
-    await render(hbs`{{html-render html=raw}}`);
+    await render(hbs`{{html-render html=this.raw}}`);
   }
 });
