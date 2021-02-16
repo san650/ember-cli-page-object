@@ -43,7 +43,7 @@ IntegrationAdapter.prototype = {
       test.set('raw', template);
     }
 
-    await render(test, hbs`{{html-render html=raw}}`);
+    await render(test, hbs`{{html-render html=this.raw}}`);
   },
 
   throws(assert, block, expected, message) {

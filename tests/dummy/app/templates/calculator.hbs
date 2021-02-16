@@ -1,10 +1,10 @@
 <div class="calculator">
   <div class="screen">
-    {{input value=expression}}
+    {{input value=this.expression}}
     <div class="result">
-      {{result}}
+      {{this.result}}
     </div>
-    {{#if loading}}
+    {{#if this.loading}}
       <div class="loading">
         loading...
       </div>
