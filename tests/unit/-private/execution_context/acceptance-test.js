@@ -2,18 +2,31 @@ import moduleForAcceptance from 'dummy/tests/helpers/module-for-acceptance';
 import { testForAcceptance as test } from 'dummy/tests/helpers/properties/acceptance-adapter';
 import { create, visitable } from 'ember-cli-page-object'
 import { createClickTrackerComponent, ClickTrackerDef } from './helpers';
+import hbs from 'htmlbars-inline-precompile';
+import Router from 'dummy/router';
 
 const node = create(
   Object.assign({}, ClickTrackerDef, {
-    visit: visitable('/')
+    visit: visitable('/actions-acceptance')
   })
 );
 
 moduleForAcceptance('Acceptance | acceptance context | actions', {
   beforeEach(assert) {
+    Router.map(function() {
+      this.route('actions-acceptance')
+    });
+
     this.application.register(
       'component:test-component',
       createClickTrackerComponent(assert)
+    );
+
+    this.application.register(
+      'template:actions-acceptance',
+      hbs`{{outlet}}
+
+      {{component "test-component"}}`
     );
 
     return node.visit();
