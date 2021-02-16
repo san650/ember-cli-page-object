@@ -1,6 +1,7 @@
 import { module, test } from 'qunit';
 import { setupRenderingTest } from '../../helpers';
 import hbs from 'htmlbars-inline-precompile';
+import deprecate from 'ember-cli-page-object/test-support/-private/deprecate';
 
 import { create, text, clickOnText } from 'dummy/tests/page-object';
 
@@ -11,6 +12,14 @@ if (require.has('@ember/test-helpers')) {
   module('Deprecation | comma separated selectors', function(hooks) {
     setupRenderingTest(hooks);
 
+    hooks.beforeEach(function() {
+      deprecate.__calls = [];
+    });
+
+    hooks.afterEach(function() {
+      delete deprecate.__calls;
+    });
+
     test('usage of comma-separated selector in the scope leads to a deprecation', async function(assert) {
       let page = create({
         scope: '.A, .B'
@@ -20,7 +29,9 @@ if (require.has('@ember/test-helpers')) {
 
       page.isVisible;
 
-      assert.expectDeprecation('Usage of comma separated selectors is deprecated in ember-cli-page-object');
+      assert.deepEqual(deprecate.__calls, [
+        ['comma-separated-selectors', 'Usage of comma separated selectors is deprecated in ember-cli-page-object', '1.16.0', '2.0.0']
+      ])
     });
 
     test('usage of comma-separated selector in the property leads to a deprecation', async function(assert) {
@@ -32,7 +43,9 @@ if (require.has('@ember/test-helpers')) {
 
       page.text;
 
-      assert.expectDeprecation('Usage of comma separated selectors is deprecated in ember-cli-page-object');
+      assert.deepEqual(deprecate.__calls.map(([name]) => name), [
+        'comma-separated-selectors'
+      ]);
     });
 
     test('usage of comma-separated selector in the property\'s custom scope leads to a deprecation', async function(assert) {
@@ -48,7 +61,9 @@ if (require.has('@ember/test-helpers')) {
 
       page.text;
 
-      assert.expectDeprecation('Usage of comma separated selectors is deprecated in ember-cli-page-object');
+      assert.deepEqual(deprecate.__calls.map(([name]) => name), [
+        'comma-separated-selectors'
+      ]);
     });
 
     test('don\'t show deprecation when selector doesn\'t use comma-separated selectors', async function(assert) {
@@ -67,7 +82,7 @@ if (require.has('@ember/test-helpers')) {
 
       page.text;
 
-      assert.expectNoDeprecation();
+      assert.deepEqual(deprecate.__calls, [])
     });
 
     test('don\'t show deprecation when the selector contains text with comma', async function(assert) {
@@ -81,7 +96,7 @@ if (require.has('@ember/test-helpers')) {
 
       page.clickOnButton('Lorem, Ipsum');
 
-      assert.expectNoDeprecation();
+      assert.deepEqual(deprecate.__calls, [])
     });
   });
 }
