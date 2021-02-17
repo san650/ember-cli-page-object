@@ -4,7 +4,8 @@ import { run as runAction } from '../action';
 import {
   guardMultiple,
   buildSelector,
-  findClosestValue
+  findClosestValue,
+  getCustomTextFilters
 } from '../helpers';
 import {
   fillElement,
@@ -100,10 +101,15 @@ IntegrationExecutionContext.prototype = {
     let container = options.testContainer || findClosestValue(this.pageObjectNode, 'testContainer');
 
     if (container) {
-      result = $(selector, container);
+      result = $(selector, container).toArray();
     } else {
-      result = this.testContext.$(selector);
+      result = this.testContext.$(selector).toArray();
     }
+
+    Object.values(getCustomTextFilters(options))
+      .forEach(customFilter => {
+        result = result.filter($ele => customFilter($ele.textContent.trim(), options.contains));
+      });
 
     if (result.length === 0) {
       throwBetterError(
@@ -113,6 +119,8 @@ IntegrationExecutionContext.prototype = {
         { selector }
       );
     }
+
+    return result;
   },
 
   find(selector, options) {

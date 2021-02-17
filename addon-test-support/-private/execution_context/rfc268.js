@@ -4,6 +4,7 @@ import {
   guardMultiple,
   buildSelector,
   findClosestValue,
+  getCustomTextFilters
 } from '../helpers';
 import {
   getRootElement,
@@ -62,7 +63,12 @@ ExecutionContext.prototype = {
   },
 
   assertElementExists(selector, options) {
-    let result = this.getElements(selector, options);
+    let result = this.getElements(selector, options).toArray();
+
+    Object.values(getCustomTextFilters(options))
+      .forEach(customFilter => {
+        result = result.filter($ele => customFilter($ele.textContent.trim(), options.contains));
+      });
 
     if (result.length === 0) {
       throwBetterError(
@@ -72,6 +78,8 @@ ExecutionContext.prototype = {
         { selector }
       );
     }
+
+    return result;
   },
 
   find(selector, options) {

@@ -12,7 +12,8 @@ import { run } from '../action';
 import {
   guardMultiple,
   buildSelector,
-  findClosestValue
+  findClosestValue,
+  getCustomTextFilters
 } from '../helpers';
 import {
   fillElement,
@@ -114,7 +115,12 @@ ExecutionContext.prototype = {
   assertElementExists(selector, options) {
     let container = options.testContainer || findClosestValue(this.pageObjectNode, 'testContainer');
 
-    let result = this.$(selector, container);
+    let result = this.$(selector, container).toArray();
+
+    Object.values(getCustomTextFilters(options))
+      .forEach(customFilter => {
+        result = result.filter($ele => customFilter($ele.textContent.trim(), options.contains));
+      });
 
     if (result.length === 0) {
       throwBetterError(
@@ -124,6 +130,8 @@ ExecutionContext.prototype = {
         { selector }
       );
     }
+
+    return result;
   },
 
   find(selector, options) {
