@@ -15,6 +15,7 @@
     "pageobject",
     "testing"
   ],
+  "type": "module",
   "repository": {
     "type": "git",
     "url": "https://github.com/san650/ember-cli-page-object.git"
@@ -32,8 +33,9 @@
     "start": "ember serve",
     "test": "ember test",
     "test:all": "ember try:each",
+    "test:ember-node": "mocha node-tests --recursive",
+    "test:node": "node --es-module-specifier-resolution=node ./node_modules/.bin/qunit node-tests/basic-test.js",
     "docs": "node ./docs",
-    "nodetest": "mocha node-tests --recursive",
     "prepublishOnly": "ember ts:precompile",
     "postpublish": "ember ts:clean"
   },
@@ -42,7 +44,7 @@
     "@babel/preset-env": "^7.12.11",
     "broccoli-file-creator": "^2.1.1",
     "broccoli-merge-trees": "^2.0.0",
-    "ceibo": "~2.0.0",
+    "ceibo": "~2.1.0",
     "ember-cli-babel": "^7.24.0-beta.2",
     "ember-cli-node-assets": "^0.2.2",
     "ember-native-dom-helpers": "^0.6.3",
@@ -95,6 +97,7 @@
     "mkdirp": "^0.5.1",
     "mocha": "^4.0.1",
     "ncp": "^2.0.0",
+    "qunit": "^2.14.0",
     "qunit-dom": "^0.8.0",
     "rimraf": "^2.5.2",
     "typescript": "^3.7.5",
@@ -102,6 +105,14 @@
   },
   "engines": {
     "node": "6.* || >= 7.*"
+  },
+  "exports": {
+    ".": "./addon-test-support",
+    "./adapter": "./addon-test-support/adapter",
+    "./adapters": "./addon-test-support/adapters",
+    "./adapters/*": "./addon-test-support/adapters/*.js",
+    "./extend": "./addon-test-support/extend",
+    "./macros": "./addon-test-support/macros"
   },
   "homepage": "http://ember-cli-page-object.js.org",
   "bugs": "https://github.com/san650/ember-cli-page-object/issues",
