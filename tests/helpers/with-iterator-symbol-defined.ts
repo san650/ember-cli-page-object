@@ -9,6 +9,6 @@ export default function withIteratorSymbolDefined(callback: () => unknown) {
   try {
     return callback();
   } finally {
-    delete window.Symbol;
+    delete (window as any).Symbol;
   }
 }

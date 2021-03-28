@@ -3,7 +3,8 @@ import {
   setupRenderingTest as upstreamSetupRenderingTest,
 } from 'ember-qunit';
 
-import { setAdapter, RFC268Adapter } from 'ember-cli-page-object';
+import { setAdapter } from 'ember-cli-page-object/adapters';
+import RFC268Adapter from 'ember-cli-page-object/adapters/rfc268';
 
 import hbs from 'htmlbars-inline-precompile';
 import require from 'require';

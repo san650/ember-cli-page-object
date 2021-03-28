@@ -131,23 +131,23 @@ module('contains', function(hooks) {
     assert.ok(page.foo('ipsum'));
   });
 
-  test('looks for elements that are visibility hidden', async function(assert) {
+  test('looks for elements that are visibility hidden', async function(this: TestContext, assert) {
     let page = create({
       foo: contains('span')
     });
 
-    await this.adapter.createTemplate(this, page, 'Lorem <span style="visibility: hidden;">ipsum</span>');
+    await this.createTemplate('Lorem <span style="visibility: hidden;">ipsum</span>');
 
     assert.ok(!page.foo('Not here'));
     assert.ok(page.foo('ipsum'));
   });
 
-  test('looks for elements that are display none', async function(assert) {
+  test('looks for elements that are display none', async function(this: TestContext, assert) {
     let page = create({
       foo: contains('span')
     });
 
-    await this.adapter.createTemplate(this, page, 'Lorem <span style="display: none;">ipsum</span>');
+    await this.createTemplate('Lorem <span style="display: none;">ipsum</span>');
 
     assert.ok(!page.foo('Not here'));
     assert.ok(page.foo('ipsum'));

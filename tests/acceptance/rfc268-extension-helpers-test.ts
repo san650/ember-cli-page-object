@@ -3,9 +3,11 @@ import { setupApplicationTest } from '../helpers';
 import {
   create,
   visitable,
+} from 'ember-cli-page-object';
+import {
   findElement,
   findElementWithAssert
-} from 'ember-cli-page-object';
+} from 'ember-cli-page-object/extend';
 import require from 'require';
 
 if (require.has('@ember/test-helpers')) {

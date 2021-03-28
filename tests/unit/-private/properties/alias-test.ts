@@ -1,13 +1,15 @@
 import { setupRenderingTest } from '../../../helpers';
 import {
-  alias,
-  getter,
   create,
   clickable,
   collection,
   isVisible,
   text
 } from 'ember-cli-page-object';
+import {
+  alias,
+  getter,
+} from 'ember-cli-page-object/macros';
 import { render, find, settled } from '@ember/test-helpers';
 import hbs from 'htmlbars-inline-precompile';
 import { module, test } from 'qunit';
