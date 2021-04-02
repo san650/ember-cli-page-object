@@ -21,6 +21,11 @@ describe('Acceptance: development build', function() {
       .create('dummy', {
         fixturesPath: 'node-tests/acceptance/fixtures',
         emberVersion: '^3.0.0'
+      }).then(() => {
+        app.editPackageJSON(pkg => {
+          pkg.devDependencies['ember-auto-import'] = "*";
+          pkg.devDependencies['webpack'] = "*";
+        });
       })
       .then(function() {
         return app.runEmberCommand('build', '-dev')
@@ -33,6 +38,11 @@ describe('Acceptance: development build', function() {
       .create('dummy', {
         fixturesPath: 'node-tests/acceptance/fixtures',
         emberVersion: '^3.0.0'
+      }).then(() => {
+        app.editPackageJSON(pkg => {
+          pkg.devDependencies['ember-auto-import'] = "*";
+          pkg.devDependencies['webpack'] = "*";
+        });
       })
       .then(function() {
         return app.runEmberCommand('build', '-prod')
