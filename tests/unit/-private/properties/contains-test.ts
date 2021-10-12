@@ -127,4 +127,26 @@ moduleForProperty('contains', function(test) {
 
     assert.ok(page.foo('ipsum'));
   });
+
+  test('looks for elements that are visibility hidden', async function(assert) {
+    let page = create({
+      foo: contains('span')
+    });
+
+    await this.adapter.createTemplate(this, page, 'Lorem <span style="visibility: hidden;">ipsum</span>');
+
+    assert.ok(!page.foo('Not here'));
+    assert.ok(page.foo('ipsum'));
+  });
+
+  test('looks for elements that are display none', async function(assert) {
+    let page = create({
+      foo: contains('span')
+    });
+
+    await this.adapter.createTemplate(this, page, 'Lorem <span style="display: none;">ipsum</span>');
+
+    assert.ok(!page.foo('Not here'));
+    assert.ok(page.foo('ipsum'));
+  });
 });
