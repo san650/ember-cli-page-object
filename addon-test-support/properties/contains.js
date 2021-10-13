@@ -1,6 +1,6 @@
-import { assign } from '../-private/helpers';
+import { assign, every } from '../-private/helpers';
 import { findMany, findOne } from '../extend';
-import { A } from '@ember/array';
+import $ from 'jquery';
 
 /**
  * Returns a boolean representing whether an element or a set of elements contains the specified text.
@@ -69,7 +69,6 @@ import { A } from '@ember/array';
  *
  * const page = create({
  *   scope: '.scope',
-
  *   spanContains: contains('span')
  * });
  *
@@ -102,7 +101,9 @@ export function contains(selector, userOptions = {}) {
 
         let elements = options.multiple ? findMany(this, selector, options) : [findOne(this, selector, options)];
 
-        return A(elements).every((element) => element.innerText.indexOf(textToSearch) >= 0);
+        return every($(elements), function(element) {
+          return element.text().indexOf(textToSearch) >= 0;
+        });
       };
     }
   };
