@@ -64,8 +64,8 @@ jobs:
           - with-@ember/test-helpers
           - with-ember-qunit@5
           - ember-release
-          - ember-beta
-          - ember-canary
+          # - ember-beta
+          # - ember-canary
 
     steps:
       - uses: actions/checkout@v2
