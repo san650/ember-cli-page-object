@@ -2,7 +2,7 @@ var assert = require('assert');
 var fs = require('fs');
 var AddonTestApp = require('ember-cli-addon-tests').AddonTestApp;
 
-describe('Acceptance: development build', function() {
+describe.skip('Acceptance: development build', function() {
   this.timeout(600000);
 
   var app;
