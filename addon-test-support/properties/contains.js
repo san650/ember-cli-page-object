@@ -1,6 +1,7 @@
-import { assign, every } from '../-private/helpers';
+import { A } from '@ember/array';
+import { assign } from '../-private/helpers';
 import { findMany, findOne } from '../extend';
-import $ from 'jquery';
+import $ from '-jquery';
 
 /**
  * Returns a boolean representing whether an element or a set of elements contains the specified text.
@@ -101,8 +102,8 @@ export function contains(selector, userOptions = {}) {
 
         let elements = options.multiple ? findMany(this, selector, options) : [findOne(this, selector, options)];
 
-        return every($(elements), function(element) {
-          return element.text().indexOf(textToSearch) >= 0;
+        return A(elements).every(function(element) {
+          return $(element).text().indexOf(textToSearch) >= 0;
         });
       };
     }
