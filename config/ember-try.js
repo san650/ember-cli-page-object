@@ -75,6 +75,20 @@ module.exports = function() {
           }
         },
         {
+          name: 'ember-lts-3.28',
+          npm: {
+            devDependencies: {
+              'ember-source': '~3.28.0'
+            }
+          },
+          env: {
+            EMBER_OPTIONAL_FEATURES: JSON.stringify({
+              'jquery-integration': false
+            })
+          }
+        },
+
+        {
           name: 'ember-release',
           npm: {
             devDependencies: {
