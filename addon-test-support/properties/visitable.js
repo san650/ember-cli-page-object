@@ -27,7 +27,7 @@ function fillInDynamicSegments(path, params) {
 
 function appendQueryParams(path, queryParams) {
   if (Object.keys(queryParams).length) {
-    path += `?${$.param(queryParams)}`;
+    path += `${path.includes('?') ? '&' : '?'}${$.param(queryParams)}`;
   }
 
   return path;
