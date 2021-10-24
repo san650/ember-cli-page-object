@@ -12,6 +12,7 @@ yarn.lock
 
 # misc
 /.sass-cache
+/.eslintcache
 /connect.lock
 /coverage/
 /libpeerconnection.log

@@ -9,6 +9,8 @@
 /.bowerrc
 /.editorconfig
 /.ember-cli
+/.env*
+/.eslintcache
 /.eslintignore
 /.eslintrc.js
 /.gitignore
