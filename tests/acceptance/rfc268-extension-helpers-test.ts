@@ -1,13 +1,11 @@
 import { module, test } from 'qunit';
-import { setupApplicationTest } from 'ember-qunit';
+import { setupApplicationTest } from '../helpers';
 import {
   create,
-  visitable
-} from 'ember-cli-page-object';
-import {
+  visitable,
   findElement,
   findElementWithAssert
-} from 'ember-cli-page-object/extend';
+} from 'ember-cli-page-object';
 import require from 'require';
 
 if (require.has('@ember/test-helpers')) {

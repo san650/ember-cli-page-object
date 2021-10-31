@@ -3,7 +3,6 @@ import {
   setupRenderingTest as upstreamSetupRenderingTest,
 } from 'ember-qunit';
 
-// @ts-ignore
 import { setAdapter } from 'ember-cli-page-object/test-support/adapters';
 
 export function setupApplicationTest(hooks: NestedHooks) {
@@ -14,6 +13,10 @@ export function setupApplicationTest(hooks: NestedHooks) {
   hooks.beforeEach(function() {
     setAdapter(new Rfc268Adapter());
   });
+
+  hooks.afterEach(function() {
+    document.getElementById('alternate-ember-testing')!.innerHTML = '';
+  })
 }
 
 export function setupRenderingTest(hooks: NestedHooks) {
@@ -24,6 +27,10 @@ export function setupRenderingTest(hooks: NestedHooks) {
   hooks.beforeEach(function() {
     setAdapter(new Rfc268Adapter());
   });
+
+  hooks.afterEach(function() {
+    document.getElementById('alternate-ember-testing')!.innerHTML = '';
+  })
 }
 
 function requireRfc268Adapter() {

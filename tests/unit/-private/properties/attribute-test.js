@@ -1,13 +1,18 @@
-import { moduleForProperty } from '../../../helpers/properties';
+import { setupRenderingTest } from '../../../helpers';
 import { create, attribute } from 'ember-cli-page-object';
+import { render } from '@ember/test-helpers';
+import hbs from 'htmlbars-inline-precompile';
+import { module, test } from 'qunit';
 
-moduleForProperty('attribute', function(test) {
-  test('returns attribute value', async function(assert) {
+module('attribute', function (hooks) {
+  setupRenderingTest(hooks);
+
+  test('returns attribute value', async function (assert) {
     let page = create({
       foo: attribute('placeholder', ':input')
     });
 
-    await this.adapter.createTemplate(this, page, '<input placeholder="a value">');
+    await render(hbs`<input placeholder="a value">`);
 
     assert.equal(page.foo, 'a value');
   });
@@ -17,7 +22,7 @@ moduleForProperty('attribute', function(test) {
       foo: attribute('placeholder', ':input')
     });
 
-    await this.adapter.createTemplate(this, page, '<input>');
+    await render(hbs`<input>`);
 
     assert.equal(page.foo, null);
   });
@@ -33,7 +38,7 @@ moduleForProperty('attribute', function(test) {
       }
     });
 
-    await this.adapter.createTemplate(this, page);
+    await render(hbs``);
 
     assert.throws(() => page.foo.bar.baz.qux, /page\.foo\.bar\.baz\.qux/);
   });
@@ -43,7 +48,7 @@ moduleForProperty('attribute', function(test) {
       foo: attribute('placeholder', ':input', { scope: '.scope' })
     });
 
-    await this.adapter.createTemplate(this, page, `
+    await render(hbs`
       <div><input></div>
       <div class="scope"><input placeholder="a value"></div>
       <div><input></div>
@@ -59,7 +64,7 @@ moduleForProperty('attribute', function(test) {
       foo: attribute('placeholder', ':input')
     });
 
-    await this.adapter.createTemplate(this, page, `
+    await render(hbs`
       <div><input></div>
       <div class="scope"><input placeholder="a value"></div>
       <div><input></div>
@@ -75,7 +80,7 @@ moduleForProperty('attribute', function(test) {
       foo: attribute('placeholder', ':input', { resetScope: true })
     });
 
-    await this.adapter.createTemplate(this, page, `
+    await render(hbs`
       <div class="scope"></div>
       <div><input placeholder="a value"></div>
     `);
@@ -88,7 +93,7 @@ moduleForProperty('attribute', function(test) {
       foo: attribute('placeholder', ':input')
     });
 
-    await this.adapter.createTemplate(this, page, `
+    await render(hbs`
       <input placeholder="a value">
       <input placeholder="other value">
     `);
@@ -102,7 +107,7 @@ moduleForProperty('attribute', function(test) {
       foo: attribute('placeholder', ':input', { at: 1 })
     });
 
-    await this.adapter.createTemplate(this, page, `
+    await render(hbs`
       <input>
       <input placeholder="a value">
     `);
@@ -115,7 +120,11 @@ moduleForProperty('attribute', function(test) {
       foo: attribute('placeholder', ':input', { testContainer: '#alternate-ember-testing' })
     });
 
-    await this.adapter.createTemplate(this, page, '<input placeholder="a value">', { useAlternateContainer: true });
+    await render(hbs``);
+
+    document.getElementById(
+      'alternate-ember-testing'
+    ).innerHTML = `<input placeholder="a value">`;
 
     assert.equal(page.foo, 'a value');
   });
@@ -126,7 +135,7 @@ moduleForProperty('attribute', function(test) {
       nonExisting: attribute('non-existing', 'span')
     });
 
-    await this.adapter.createTemplate(this, page, '<span disabled>');
+    await render(hbs`<span disabled></span>`);
 
     assert.equal(page.foo, 'disabled');
     assert.strictEqual(page.nonExisting, undefined);

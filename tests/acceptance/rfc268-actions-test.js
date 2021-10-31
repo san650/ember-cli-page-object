@@ -1,6 +1,7 @@
 import { module, test } from 'qunit';
 import require from 'require';
 import {
+  alias,
   clickable,
   clickOnText,
   collection,
@@ -10,9 +11,8 @@ import {
   value,
   visitable
 } from 'ember-cli-page-object';
-import { alias } from 'ember-cli-page-object/macros';
 
-import { setupApplicationTest } from 'dummy/tests/helpers'
+import { setupApplicationTest } from '../helpers';
 
 if (require.has('@ember/test-helpers')) {
   const { settled, waitUntil } = require('@ember/test-helpers');

@@ -1,17 +1,20 @@
-import { moduleForProperty } from '../../../helpers/properties';
+import { setupRenderingTest } from '../../../helpers';
 import {
+  alias,
+  getter,
   create,
   clickable,
   collection,
   isVisible,
   text
 } from 'ember-cli-page-object';
-import {
-  alias,
-  getter
-} from 'ember-cli-page-object/macros';
+import { render, find, settled } from '@ember/test-helpers';
+import hbs from 'htmlbars-inline-precompile';
+import { module, test } from 'qunit';
 
-moduleForProperty('alias', function(test) {
+module('alias', function(hooks) {
+  setupRenderingTest(hooks);
+
   test('can alias a top-level property', async function(assert) {
     assert.expect(1);
 
@@ -20,7 +23,7 @@ moduleForProperty('alias', function(test) {
       aliasedIsButtonVisible: alias('isButtonVisible')
     });
 
-    await this.adapter.createTemplate(this, page, '<button>Look at me</button>');
+    await render(hbs`<button>Look at me</button>`);
 
     assert.ok(page.aliasedIsButtonVisible);
   });
@@ -34,13 +37,15 @@ moduleForProperty('alias', function(test) {
       aliasedClickButton: alias('clickButton')
     });
 
-    await this.adapter.createTemplate(this, page, '<button>Click me</button>');
+    await render(hbs`<button>Click me</button>`);
 
-    this.adapter.$('button').on('click', function() {
+    find('button')!.addEventListener('click', function() {
       assert.ok(true);
     });
 
-    await this.adapter.await(page.aliasedClickButton());
+    await page.aliasedClickButton();
+
+    await settled();
   });
 
   test('returns chainable object from top-level method', async function(assert) {
@@ -51,12 +56,12 @@ moduleForProperty('alias', function(test) {
       aliasedClickButton: alias('clickButton', { chainable: true })
     });
 
-    await this.adapter.createTemplate(this, page, '<button>Click me</button>');
+    await render(hbs`<button>Click me</button>`);
 
     let ret = page.aliasedClickButton();
     assert.ok(ret.clickButton);
 
-    await this.adapter.await(ret);
+    await settled()
   });
 
   test('can alias a top-level collection', async function(assert) {
@@ -65,7 +70,7 @@ moduleForProperty('alias', function(test) {
       aliasedButtons: alias('buttons')
     });
 
-    await this.adapter.createTemplate(this, page, `
+    await render(hbs`
       <button>Button 1</button>
       <button>Button 2</button>
     `);
@@ -85,7 +90,7 @@ moduleForProperty('alias', function(test) {
       aliasedIsButtonVisible: alias('form.button.isVisible')
     });
 
-    await this.adapter.createTemplate(this, page, '<button>Look at me</button>');
+    await render(hbs`<button>Look at me</button>`);
 
     assert.ok(page.aliasedIsButtonVisible);
   });
@@ -103,13 +108,13 @@ moduleForProperty('alias', function(test) {
       aliasedClickButton: alias('form.button.click')
     });
 
-    await this.adapter.createTemplate(this, page, '<button>Click me</button>');
+    await render(hbs`<button>Click me</button>`);
 
-    this.adapter.$('button').on('click', function() {
+    find('button')?.addEventListener('click', function() {
       assert.ok(true);
     });
 
-    await this.adapter.await(page.aliasedClickButton());
+    await page.aliasedClickButton();
   });
 
   test('returns chainable object from nested method', async function(assert) {
@@ -124,12 +129,12 @@ moduleForProperty('alias', function(test) {
       aliasedClickButton: alias('form.button.click', { chainable: true })
     });
 
-    await this.adapter.createTemplate(this, page, '<button>Click me</button>');
+    await render(hbs`<button>Click me</button>`);
 
     let ret = page.aliasedClickButton();
     assert.ok(ret.form.button);
 
-    await this.adapter.await(ret);
+    await settled()
   });
 
   test('can alias a nested collection', async function(assert) {
@@ -142,11 +147,7 @@ moduleForProperty('alias', function(test) {
       aliasedButtons: alias('form.buttons')
     });
 
-    await this.adapter.createTemplate(
-      this,
-      page,
-      '<button>Button 1</button><button>Button 2</button>'
-    );
+    await render(hbs`<button>Button 1</button><button>Button 2</button>`);
 
     assert.equal(page.aliasedButtons.length, 2);
   });
@@ -164,7 +165,7 @@ moduleForProperty('alias', function(test) {
       aliasedIsButtonVisible: alias('form.isButtonVisible')
     });
 
-    await this.adapter.createTemplate(this, page, '<button>Look at me</button>');
+    await render(hbs`<button>Look at me</button>`);
 
     assert.ok(page.aliasedIsButtonVisible);
   });
@@ -183,13 +184,13 @@ moduleForProperty('alias', function(test) {
       aliasedClickButton: alias('form.clickButton')
     });
 
-    await this.adapter.createTemplate(this, page, '<button>Click me</button>');
+    await render(hbs`<button>Click me</button>`);
 
-    this.adapter.$('button').on('click', function() {
+    find('button')!.addEventListener('click', function() {
       assert.ok(true);
     });
 
-    await this.adapter.await(page.aliasedClickButton());
+    await page.aliasedClickButton();
   });
 
   test('returns chainable object from aliased method', async function(assert) {
@@ -205,12 +206,12 @@ moduleForProperty('alias', function(test) {
       aliasedClickButton: alias('form.clickButton', { chainable: true })
     });
 
-    await this.adapter.createTemplate(this, page, '<button>Click me</button>');
+    await render(hbs`<button>Click me</button>`);
 
     let ret = page.aliasedClickButton();
     assert.ok(ret.form.button);
 
-    await this.adapter.await(ret);
+    await settled();
   });
 
   test('can alias an aliased collection', async function(assert) {
@@ -226,11 +227,7 @@ moduleForProperty('alias', function(test) {
       aliasedButtons: alias('form.buttons')
     });
 
-    await this.adapter.createTemplate(
-      this,
-      page,
-      '<button>Button 1</button><button>Button 2</button>'
-    );
+    await render(hbs`<button>Button 1</button><button>Button 2</button>`);
 
     assert.equal(page.aliasedButtons.length, 2);
   });
@@ -248,7 +245,7 @@ moduleForProperty('alias', function(test) {
       aliasedIsButtonReady: alias('form.isButtonReady')
     });
 
-    await this.adapter.createTemplate(this, page, '<button>Ready to Submit!</button>');
+    await render(hbs`<button>Ready to Submit!</button>`);
 
     assert.ok(page.aliasedIsButtonReady);
   });
@@ -289,7 +286,7 @@ moduleForProperty('alias', function(test) {
       aliasedIsButtonVisible: alias('isButtonVisible')
     });
 
-    await this.adapter.createTemplate(this, page, '<span>No button here</span>');
+    await render(hbs`<span>No button here</span>`);
 
     assert.equal(page.aliasedIsButtonVisible, false);
   });
@@ -304,7 +301,7 @@ moduleForProperty('alias', function(test) {
       aliasedIsButtonVisible: alias('button.isVisible')
     });
 
-    await this.adapter.createTemplate(this, page, '<span>No button here</span>');
+    await render(hbs`<span>No button here</span>`);
 
     assert.equal(page.aliasedIsButtonVisible, false);
   });

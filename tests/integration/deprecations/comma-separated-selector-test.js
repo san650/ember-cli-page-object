@@ -2,7 +2,7 @@ import { module, test } from 'qunit';
 import { setupRenderingTest } from '../../helpers';
 import hbs from 'htmlbars-inline-precompile';
 
-import { create, text, clickOnText } from 'dummy/tests/page-object';
+import { create, text, clickOnText } from 'ember-cli-page-object';
 
 import require from 'require';
 if (require.has('@ember/test-helpers')) {

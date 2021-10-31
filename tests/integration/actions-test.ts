@@ -7,10 +7,10 @@ import {
   createCalculatorTemplate,
   createInputsTemplate
 } from './test-helper';
-import { alias } from 'ember-cli-page-object/macros';
 import require from 'require';
 
 import {
+  alias,
   create,
   collection,
   attribute,
