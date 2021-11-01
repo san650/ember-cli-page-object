@@ -1,5 +1,5 @@
-import moduleForAcceptance from '../helpers/module-for-acceptance';
-import { testForAcceptance as test } from '../helpers/properties/acceptance-adapter';
+import { module, test } from 'qunit';
+import { setupApplicationTest } from '../helpers';
 
 import {
   create,
@@ -36,25 +36,26 @@ let page = create({
   screen: screenPage
 });
 
-moduleForAcceptance('Acceptance | composition');
+module('Acceptance | composition', function(hooks) {
+  setupApplicationTest(hooks);
 
-test('allows compose', async function(assert) {
-  await page
-    .visit()
-    .keys
-    .clickOn('1')
-    .clickOn('2')
-    .sum();
-  //click 3
-  await page.keys.numbers.objectAt(2).click()
-  //click =
-  await page.keys.operators.objectAt(3).click();
-  assert.equal(page.screen.value, '15');
+  test('allows compose', async function(assert) {
+    await page
+      .visit()
+      .keys
+      .clickOn('1')
+      .clickOn('2')
+      .sum();
+    //click 3
+    await page.keys.numbers.objectAt(2).click()
+    //click =
+    await page.keys.operators.objectAt(3).click();
+    assert.equal(page.screen.value, '15');
 
-  await page.screen.fillValue('45')
-  //click 6
-  await page.keys.numbers.objectAt(5).click();
+    await page.screen.fillValue('45')
+    //click 6
+    await page.keys.numbers.objectAt(5).click();
 
-  assert.equal(page.screen.value, '456');
+    assert.equal(page.screen.value, '456');
+  });
 });
-
