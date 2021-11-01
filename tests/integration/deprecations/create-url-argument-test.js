@@ -1,19 +1,33 @@
 import { moduleForProperty } from '../../helpers/properties';
 import { create } from 'ember-cli-page-object';
+import deprecate from 'ember-cli-page-object/test-support/-private/deprecate';
 
-moduleForProperty('Deprecation | create url argument', function(test, adapter) {
-  if (adapter === 'application') {
-    test('it shows deprecation', async function(assert) {
-      create('');
+module('Deprecation | create url argument', function (hooks) {
+  hooks.beforeEach(function () {
+    deprecate.__calls = [];
+  });
 
-      assert.expectDeprecation('Passing an URL argument to `create()` is deprecated');
-    });
+  hooks.afterEach(function () {
+    delete deprecate.__calls;
+  });
 
-    test('it does not show deprecation', async function(assert) {
-      create();
-      create({});
+  test('it shows deprecation', async function (assert) {
+    create('');
 
-      assert.expectNoDeprecation();
-    });
-  }
+    assert.deepEqual(deprecate.__calls, [
+      [
+        'create-url-argument',
+        'Passing an URL argument to `create()` is deprecated',
+        '1.17.0',
+        '2.0.0',
+      ],
+    ]);
+  });
+
+  test('it does not show deprecation', async function (assert) {
+    create();
+    create({});
+
+    assert.deepEqual(deprecate.__calls, []);
+  });
 });
