@@ -7,13 +7,13 @@ export default Component.extend({
 
   actions: {
     logIn() {
-      if (this.get('userName') === 'user@example.com' && this.get('password') === 'secret') {
+      if (this.userName === 'user@example.com' && this.password === 'secret') {
         this.set('message', 'Valid user!');
         this.set('isError', false);
       } else {
         this.set('message', 'Invalid user!');
         this.set('isError', true);
       }
-    }
-  }
+    },
+  },
 });

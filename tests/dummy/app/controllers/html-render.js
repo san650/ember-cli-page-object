@@ -1,5 +1,5 @@
 import Controller from '@ember/controller';
 
 export default Controller.extend({
-  html: 'foobar'
+  html: 'foobar',
 });

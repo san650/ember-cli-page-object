@@ -3,10 +3,10 @@ import config from 'dummy/config/environment';
 
 const Router = EmberRouter.extend({
   location: config.locationType,
-  rootURL: config.rootURL
+  rootURL: config.rootURL,
 });
 
-Router.map(function() {
+Router.map(function () {
   this.route('calculator');
   this.route('async-calculator');
   this.route('inputs');
