@@ -93,7 +93,6 @@ import { create, contains } from 'ember-cli-page-object';
 
 const page = create({
   scope: '.scope',
-
   spanContains: contains('span')
 });
 
