@@ -1,14 +1,17 @@
-import { moduleForProperty } from '../../../helpers/properties';
 import { collection, create, hasClass, text } from 'ember-cli-page-object';
 import withIteratorSymbolDefined from '../../../helpers/with-iterator-symbol-defined';
+import { setupRenderingTest, TestContext } from '../../../helpers';
+import { module, test } from 'qunit';
 
-moduleForProperty('collection', function(test) {
-  test('returns the same collection instance', async function(assert) {
+module('collection', function(hooks) {
+  setupRenderingTest(hooks);
+
+  test('returns the same collection instance', async function(this: TestContext, assert) {
     let page = create({
       foo: collection('span')
     });
 
-    await this.adapter.createTemplate(this, page, `
+    await this.createTemplate(`
       <span>Lorem</span>
       <span>Ipsum</span>
     `);
@@ -16,12 +19,12 @@ moduleForProperty('collection', function(test) {
     assert.equal(page.foo, page.foo);
   });
 
-  test(`returns the same collection's item instance`, async function(assert) {
+  test(`returns the same collection's item instance`, async function(this: TestContext, assert) {
     let page = create({
       foo: collection('span')
     });
 
-    await this.adapter.createTemplate(this, page, `
+    await this.createTemplate(`
       <span>Lorem</span>
       <span>Ipsum</span>
     `);
@@ -29,12 +32,12 @@ moduleForProperty('collection', function(test) {
     assert.equal(page.foo[0], page.foo[0]);
   });
 
-  test('generates a length property', async function(assert) {
+  test('generates a length property', async function(this: TestContext, assert) {
     let page = create({
       foo: collection('span')
     });
 
-    await this.adapter.createTemplate(this, page, `
+    await this.createTemplate(`
       <span>Lorem</span>
       <span>Ipsum</span>
     `);
@@ -42,12 +45,12 @@ moduleForProperty('collection', function(test) {
     assert.equal(page.foo.length, 2);
   });
 
-  test('Works with zero length', async function(assert) {
+  test('Works with zero length', async function(this: TestContext, assert) {
     let page = create({
       foo: collection('span')
     });
 
-    await this.adapter.createTemplate(this, page, `
+    await this.createTemplate(`
       <div>Lorem</div>
       <div>Ipsum</div>
     `);
@@ -55,14 +58,14 @@ moduleForProperty('collection', function(test) {
     assert.equal(page.foo.length, 0);
   });
 
-  test('returns an item', async function(assert) {
+  test('returns an item', async function(this: TestContext, assert) {
     let page = create({
       foo: collection('span', {
         text: text()
       })
     });
 
-    await this.adapter.createTemplate(this, page, `
+    await this.createTemplate(`
       <span>Lorem</span>
       <span>Ipsum</span>
     `);
@@ -71,14 +74,14 @@ moduleForProperty('collection', function(test) {
     assert.equal(page.foo.objectAt(1)!.text, 'Ipsum');
   });
 
-  test('collects an array of items', async function(assert) {
+  test('collects an array of items', async function(this: TestContext, assert) {
     let page = create({
       foo: collection('span', {
         text: text()
       })
     });
 
-    await this.adapter.createTemplate(this, page, `
+    await this.createTemplate(`
       <span>Lorem</span>
       <span>Ipsum</span>
     `);
@@ -94,14 +97,14 @@ moduleForProperty('collection', function(test) {
     assert.equal(proxyArray[1].text, 'Ipsum');
   });
 
-  test('produces an iterator for items', async function(assert) {
+  test('produces an iterator for items', async function(this: TestContext, assert) {
     let page = create({
       foo: collection('span', {
         text: text()
       })
     });
 
-    await this.adapter.createTemplate(this, page, `
+    await this.createTemplate(`
       <span>Lorem</span>
       <span>Ipsum</span>
     `);
@@ -116,7 +119,7 @@ moduleForProperty('collection', function(test) {
     assert.deepEqual(textContents, ['Lorem', 'Ipsum']);
   });
 
-  test('looks for elements inside the scope', async function(assert) {
+  test('looks for elements inside the scope', async function(this: TestContext, assert) {
     let page = create({
       scope: '.scope',
 
@@ -125,7 +128,7 @@ moduleForProperty('collection', function(test) {
       })
     });
 
-    await this.adapter.createTemplate(this, page, `
+    await this.createTemplate(`
       <div>
         <span>Lorem</span>
       </div>
@@ -137,7 +140,7 @@ moduleForProperty('collection', function(test) {
     assert.equal(page.foo.objectAt(0)!.text, 'Ipsum');
   });
 
-  test('looks for elements inside multiple scopes', async function(assert) {
+  test('looks for elements inside multiple scopes', async function(this: TestContext, assert) {
     let page = create({
       scope: '.scope',
 
@@ -150,7 +153,7 @@ moduleForProperty('collection', function(test) {
       })
     });
 
-    await this.adapter.createTemplate(this, page, `
+    await this.createTemplate(`
       <ul>
         <li>Blah</li>
         <li>
@@ -176,7 +179,7 @@ moduleForProperty('collection', function(test) {
     assert.equal(page.foo.objectAt(1)!.bar.text, 'Sit');
   });
 
-  test('resets scope for items', async function(assert) {
+  test('resets scope for items', async function(this: TestContext, assert) {
     let page = create({
       scope: 'div',
 
@@ -186,7 +189,7 @@ moduleForProperty('collection', function(test) {
       })
     });
 
-    await this.adapter.createTemplate(this, page, `
+    await this.createTemplate(`
       <span>Lorem</span>
       <div>
         <span>Ipsum</span>
@@ -196,7 +199,7 @@ moduleForProperty('collection', function(test) {
     assert.equal(page.foo.objectAt(0)!.text, 'Lorem');
   });
 
-  test('sets correct scope to child collections', async function(assert) {
+  test('sets correct scope to child collections', async function(this: TestContext, assert) {
     let page = create({
       scope: '.scope',
 
@@ -207,7 +210,7 @@ moduleForProperty('collection', function(test) {
       })
     });
 
-    await this.adapter.createTemplate(this, page, `
+    await this.createTemplate(`
       <div><span><em>Lorem</em></span></div>
       <div class="scope"><span><em>Ipsum</em></span></div>
     `);
@@ -215,7 +218,7 @@ moduleForProperty('collection', function(test) {
     assert.equal(page.foo.objectAt(0)!.bar.objectAt(0)!.text, 'Ipsum');
   });
 
-  test('iterates over scoped items with a for loop', async function(assert) {
+  test('iterates over scoped items with a for loop', async function(this: TestContext, assert) {
     let page = create({
       scope: 'div',
       foo: collection('span', {
@@ -223,7 +226,7 @@ moduleForProperty('collection', function(test) {
       })
     });
 
-    await this.adapter.createTemplate(this, page, `
+    await this.createTemplate(`
       <div>
         <span>Lorem</span>
         <span>Ipsum</span>
@@ -240,7 +243,7 @@ moduleForProperty('collection', function(test) {
     assert.deepEqual(textContents, ['Lorem', 'Ipsum']);
   });
 
-  test('iterates over scoped items with a for of loop', async function(assert) {
+  test('iterates over scoped items with a for of loop', async function(this: TestContext, assert) {
     let page = create({
       scope: 'div',
       foo: collection('span', {
@@ -248,7 +251,7 @@ moduleForProperty('collection', function(test) {
       })
     });
 
-    await this.adapter.createTemplate(this, page, `
+    await this.createTemplate(`
       <div>
         <span>Lorem</span>
         <span>Ipsum</span>
@@ -266,7 +269,7 @@ moduleForProperty('collection', function(test) {
     assert.deepEqual(textContents, ['Lorem', 'Ipsum']);
   });
 
-  test('iterates over scoped items with a forEach loop', async function(assert) {
+  test('iterates over scoped items with a forEach loop', async function(this: TestContext, assert) {
     let page = create({
       scope: 'div',
 
@@ -275,7 +278,7 @@ moduleForProperty('collection', function(test) {
       })
     });
 
-    await this.adapter.createTemplate(this, page, `
+    await this.createTemplate(`
       <div>
         <span>Lorem</span>
         <span>Ipsum</span>
@@ -291,7 +294,7 @@ moduleForProperty('collection', function(test) {
     assert.deepEqual(textContents, ['Lorem', 'Ipsum']);
   });
 
-  test('does not mutate definition object', async function(assert) {
+  test('does not mutate definition object', async function(this: TestContext, assert) {
     let prop = text('.baz');
 
     let expected = {
@@ -308,16 +311,14 @@ moduleForProperty('collection', function(test) {
       }
     };
 
-    let page = create({
+    create({
       foo: collection('.another-scope', actual)
     });
-
-    await this.adapter.createTemplate(this, page);
 
     assert.deepEqual(actual, expected);
   });
 
-  test('looks for elements within test container specified', async function(assert) {
+  test('looks for elements within test container specified', async function(this: TestContext, assert) {
     assert.expect(2);
 
     let expectedContext = '#alternate-ember-testing';
@@ -329,9 +330,7 @@ moduleForProperty('collection', function(test) {
       })
     });
 
-    await this.adapter.createTemplate(
-      this,
-      page,
+    await this.createTemplate(
       '<span>Lorem</span><span>ipsum</span>',
       { useAlternateContainer: true }
     );
@@ -340,14 +339,14 @@ moduleForProperty('collection', function(test) {
     assert.equal(page.foo.objectAt(0)!.text, 'Lorem');
   });
 
-  test('objectAt returns an item', async function(assert) {
+  test('objectAt returns an item', async function(this: TestContext, assert) {
     let page = create({
       foo: collection('span', {
         text: text()
       })
     });
 
-    await this.adapter.createTemplate(this, page, `
+    await this.createTemplate(`
       <span>Lorem</span>
       <span>Ipsum</span>
     `);
@@ -356,14 +355,14 @@ moduleForProperty('collection', function(test) {
     assert.equal(page.foo.objectAt(1)!.text, 'Ipsum');
   });
 
-  test('forEach works correctly', async function(assert) {
+  test('forEach works correctly', async function(this: TestContext, assert) {
     let page = create({
       foo: collection('span', {
         text: text()
       })
     });
 
-    await this.adapter.createTemplate(this, page, `
+    await this.createTemplate(`
       <span class="special">Lorem</span>
       <span>Ipsum</span>
     `);
@@ -376,14 +375,14 @@ moduleForProperty('collection', function(test) {
     assert.deepEqual(textArray, ['Lorem', 'Ipsum']);
   });
 
-  test('map works correctly', async function(assert) {
+  test('map works correctly', async function(this: TestContext, assert) {
     let page = create({
       foo: collection('span', {
         text: text()
       })
     });
 
-    await this.adapter.createTemplate(this, page, `
+    await this.createTemplate(`
       <span>Lorem</span>
       <span>Ipsum</span>
     `);
@@ -391,14 +390,14 @@ moduleForProperty('collection', function(test) {
     assert.deepEqual(page.foo.map((i) => i.text), ['Lorem', 'Ipsum']);
   });
 
-  test('mapBy works correctly', async function(assert) {
+  test('mapBy works correctly', async function(this: TestContext, assert) {
     let page = create({
       foo: collection('span', {
         text: text()
       })
     });
 
-    await this.adapter.createTemplate(this, page, `
+    await this.createTemplate(`
       <span>Lorem</span>
       <span>Ipsum</span>
     `);
@@ -406,14 +405,14 @@ moduleForProperty('collection', function(test) {
     assert.deepEqual(page.foo.mapBy('text'), ['Lorem', 'Ipsum']);
   });
 
-  test('findOneBy works correctly', async function(assert) {
+  test('findOneBy works correctly', async function(this: TestContext, assert) {
     let page = create({
       foo: collection('span', {
         text: text()
       })
     });
 
-    await this.adapter.createTemplate(this, page, `
+    await this.createTemplate(`
       <span>Lorem</span>
       <span>Ipsum</span>
     `);
@@ -421,7 +420,7 @@ moduleForProperty('collection', function(test) {
     assert.equal(page.foo.findOneBy('text', 'Lorem').text, 'Lorem');
   });
 
-  test('findOneBy throws error if > 1 elements found', async function(assert) {
+  test('findOneBy throws error if > 1 elements found', async function(this: TestContext, assert) {
     assert.expect(1);
     let page = create({
       foo: collection('span', {
@@ -429,7 +428,7 @@ moduleForProperty('collection', function(test) {
       })
     });
 
-    await this.adapter.createTemplate(this, page, `
+    await this.createTemplate(`
       <span>Lorem</span>
       <span>Ipsum</span>
       <span>Ipsum</span>
@@ -447,7 +446,7 @@ moduleForProperty('collection', function(test) {
     );
   });
 
-  test('findOneBy throws error if no elements found', async function(assert) {
+  test('findOneBy throws error if no elements found', async function(this: TestContext, assert) {
     assert.expect(1);
     let page = create({
       foo: collection('span', {
@@ -455,7 +454,7 @@ moduleForProperty('collection', function(test) {
       })
     });
 
-    await this.adapter.createTemplate(this, page, `
+    await this.createTemplate(`
       <span>Lorem</span>
       <span>Ipsum</span>
       <span>Ipsum</span>
@@ -472,14 +471,14 @@ moduleForProperty('collection', function(test) {
     );
   });
 
-  test('findOne works correctly', async function(assert) {
+  test('findOne works correctly', async function(this: TestContext, assert) {
     let page = create({
       foo: collection('span', {
         text: text()
       })
     });
 
-    await this.adapter.createTemplate(this, page, `
+    await this.createTemplate(`
       <span>Lorem</span>
       <span>Ipsum</span>
     `);
@@ -487,7 +486,7 @@ moduleForProperty('collection', function(test) {
     assert.equal(page.foo.findOne(i => i.text === 'Lorem').text, 'Lorem');
   });
 
-  test('findOne throws error if > 1 elements found', async function(assert) {
+  test('findOne throws error if > 1 elements found', async function(this: TestContext, assert) {
     assert.expect(1);
     let page = create({
       foo: collection('span', {
@@ -495,7 +494,7 @@ moduleForProperty('collection', function(test) {
       })
     });
 
-    await this.adapter.createTemplate(this, page, `
+    await this.createTemplate(`
       <span>Lorem</span>
       <span>Ipsum</span>
       <span>Ipsum</span>
@@ -512,7 +511,7 @@ moduleForProperty('collection', function(test) {
     );
   });
 
-  test('findOne throws error if no elements found', async function(assert) {
+  test('findOne throws error if no elements found', async function(this: TestContext, assert) {
     assert.expect(1);
     let page = create({
       foo: collection('span', {
@@ -520,7 +519,7 @@ moduleForProperty('collection', function(test) {
       })
     });
 
-    await this.adapter.createTemplate(this, page, `
+    await this.createTemplate(`
       <span>Lorem</span>
       <span>Ipsum</span>
       <span>Ipsum</span>
@@ -537,7 +536,7 @@ moduleForProperty('collection', function(test) {
     );
   });
 
-  test('filter works correctly', async function(assert) {
+  test('filter works correctly', async function(this: TestContext, assert) {
     let page = create({
       foo: collection('span', {
         isSpecial: hasClass('special'),
@@ -545,7 +544,7 @@ moduleForProperty('collection', function(test) {
       })
     });
 
-    await this.adapter.createTemplate(this, page, `
+    await this.createTemplate(`
       <span class="special">Lorem</span>
       <span>Ipsum</span>
     `);
@@ -554,7 +553,7 @@ moduleForProperty('collection', function(test) {
     assert.deepEqual(page.foo.filter((i) => i.isFoo as any).map((i) => i.text), []);
   });
 
-  test('filterBy works correctly', async function(assert) {
+  test('filterBy works correctly', async function(this: TestContext, assert) {
     let page = create({
       foo: collection('span', {
         isSpecial: hasClass('special'),
@@ -562,7 +561,7 @@ moduleForProperty('collection', function(test) {
       })
     });
 
-    await this.adapter.createTemplate(this, page, `
+    await this.createTemplate(`
       <span class="special">Lorem</span>
       <span>Ipsum</span>
     `);
@@ -571,12 +570,12 @@ moduleForProperty('collection', function(test) {
     assert.deepEqual(page.foo.filterBy('isFoo' as any).map((i) => i.text), []);
   });
 
-  test('uses array accessor', async function(assert) {
+  test('uses array accessor', async function(this: TestContext, assert) {
     let page = create({
       foo: collection('span')
     });
 
-    await this.adapter.createTemplate(this, page, `
+    await this.createTemplate(`
       <span>Lorem</span>
       <span>Ipsum</span>
     `);
