@@ -1,8 +1,12 @@
-import { moduleForProperty } from '../../../helpers/properties';
 import { create, triggerable } from 'ember-cli-page-object';
+import { setupRenderingTest, TestContext } from '../../../helpers';
+import { module, test } from 'qunit';
+import { find } from '@ember/test-helpers';
 
-moduleForProperty('triggerable', function(test) {
-  test("calls Ember's triggerEvent helper with proper args", async function(assert) {
+module('triggerable', function(hooks) {
+  setupRenderingTest(hooks);
+
+  test("calls Ember's triggerEvent helper with proper args", async function(this: TestContext, assert) {
     assert.expect(1);
 
     let expectedSelector = 'input';
@@ -10,44 +14,44 @@ moduleForProperty('triggerable', function(test) {
       foo: triggerable('focus', expectedSelector)
     });
 
-    await this.adapter.createTemplate(this, page, '<input />');
+    await this.createTemplate('<input />');
 
-    this.adapter.$(expectedSelector).on('focus', () => {
+    find(expectedSelector)!.addEventListener('focus', () => {
       assert.ok(1);
     });
 
-    await this.adapter.await(page.foo());
+    await page.foo();
   });
 
-  test("calls Ember's triggerEvent helper with static event options", async function(assert) {
+  test("calls Ember's triggerEvent helper with static event options", async function(this: TestContext, assert) {
     assert.expect(1);
 
     let page = create({
       foo: triggerable('keypress', 'input', { eventProperties: { keyCode: 13 } })
     });
 
-    await this.adapter.createTemplate(this, page, '<input />');
+    await this.createTemplate('<input />');
 
-    this.adapter.$('input').on('keypress', (e: KeyboardEvent) => assert.equal(e.keyCode, 13));
+    find('input')!.addEventListener('keypress', (e: KeyboardEvent) => assert.equal(e.keyCode, 13));
 
-    await this.adapter.await(page.foo());
+    await page.foo();
   });
 
-  test("calls Ember's triggerEvent helper with dynamic event options", async function(assert) {
+  test("calls Ember's triggerEvent helper with dynamic event options", async function(this: TestContext, assert) {
     assert.expect(1);
 
     let page = create({
       foo: triggerable('keypress', 'input')
     });
 
-    await this.adapter.createTemplate(this, page, '<input />');
+    await this.createTemplate('<input />');
 
-    this.adapter.$('input').on('keypress', (e: KeyboardEvent) => assert.equal(e.keyCode, 13));
+    find('input')!.addEventListener('keypress', (e: KeyboardEvent) => assert.equal(e.keyCode, 13));
 
-    await this.adapter.await(page.foo({ keyCode: 13 }));
+    await page.foo({ keyCode: 13 });
   });
 
-  test("overrides static event options with dynamic event options", async function(assert) {
+  test("overrides static event options with dynamic event options", async function(this: TestContext, assert) {
     assert.expect(1);
 
     let page = create({
@@ -56,27 +60,27 @@ moduleForProperty('triggerable', function(test) {
       })
     });
 
-    await this.adapter.createTemplate(this, page, '<input />');
+    await this.createTemplate('<input />');
 
-    this.adapter.$('input').on('keypress', (e: KeyboardEvent) => assert.equal(e.keyCode, 13));
+    find('input')!.addEventListener('keypress', (e: KeyboardEvent) => assert.equal(e.keyCode, 13));
 
-    await this.adapter.await(page.foo({ keyCode: 13 }));
+    await page.foo({ keyCode: 13 });
   });
 
-  test('looks for elements inside the scope', async function(assert) {
+  test('looks for elements inside the scope', async function(this: TestContext, assert) {
     assert.expect(1);
 
     let page = create({
       foo: triggerable('focus', 'input', { scope: '.scope' })
     });
 
-    await this.adapter.createTemplate(this, page, '<div class="scope"><input/></div>');
+    await this.createTemplate('<div class="scope"><input/></div>');
 
-    this.adapter.$('.scope input').on('focus', () => assert.ok(1));
-    await this.adapter.await(page.foo());
+    find('.scope input')!.addEventListener('focus', () => assert.ok(1));
+    await page.foo();
   });
 
-  test("looks for elements inside page's scope", async function(assert) {
+  test("looks for elements inside page's scope", async function(this: TestContext, assert) {
     assert.expect(1);
 
     let page = create({
@@ -85,14 +89,14 @@ moduleForProperty('triggerable', function(test) {
       foo: triggerable('focus', 'input')
     });
 
-    await this.adapter.createTemplate(this, page, '<div class="scope"><input /></div>');
+    await this.createTemplate('<div class="scope"><input /></div>');
 
-    this.adapter.$('.scope input').on('focus', () => assert.ok(1));
+    find('.scope input')!.addEventListener('focus', () => assert.ok(1));
 
-    await this.adapter.await(page.foo());
+    await page.foo();
   });
 
-  test('resets scope', async function(assert) {
+  test('resets scope', async function(this: TestContext, assert) {
     assert.expect(1);
 
     let page = create({
@@ -100,73 +104,70 @@ moduleForProperty('triggerable', function(test) {
       foo: triggerable('focus', 'input', { resetScope: true })
     });
 
-    await this.adapter.createTemplate(this, page, '<input></input>');
+    await this.createTemplate('<input></input>');
 
-    this.adapter.$('input').on('focus', () => assert.ok(1));
+    find('input')!.addEventListener('focus', () => assert.ok(1));
 
-    await this.adapter.await(page.foo());
+    await page.foo();
   });
 
-  test('returns chainable object', async function(assert) {
+  test('returns chainable object', async function(this: TestContext, assert) {
     assert.expect(1);
 
     let page = create({
       foo: triggerable('focus', 'input')
     });
 
-    await this.adapter.createTemplate(this, page, '<input/>');
+    await this.createTemplate('<input/>');
 
     let ret = page.foo();
     assert.ok(ret.foo);
-    await this.adapter.await(ret);
+    await ret;
   });
 
-  test('finds element by index', async function(assert) {
+  test('finds element by index', async function(this: TestContext, assert) {
     assert.expect(1);
 
-    let expectedSelector = 'input:eq(3)';
     let page = create({
       foo: triggerable('focus', 'input', { at: 3 })
     });
 
-    await this.adapter.createTemplate(this, page, '<input /><input /><input /><input />');
+    await this.createTemplate('<input /><input /><input /><input />');
 
-    this.adapter.$(expectedSelector).on('focus', () => assert.ok(1));
-    await this.adapter.await(page.foo());
+    find('input:nth-of-type(4)')!.addEventListener('focus', () => assert.ok(1));
+    await page.foo();
   });
 
-  test('looks for elements outside the testing container', async function(assert) {
+  test('looks for elements outside the testing container', async function(this: TestContext, assert) {
     assert.expect(1);
 
-    let expectedContext = '#alternate-ember-testing';
     let page = create({
-      foo: triggerable('focus', 'input', { testContainer: expectedContext })
+      foo: triggerable('focus', 'input', { testContainer: '#alternate-ember-testing' })
     });
 
-    await this.adapter.createTemplate(this, page, '<input />', { useAlternateContainer: true });
+    await this.createTemplate('<input />', { useAlternateContainer: true });
 
-    this.adapter.$('input', expectedContext).on('focus', () => assert.ok(1));
+    document.querySelector('#alternate-ember-testing input')!.addEventListener('focus', () => assert.ok(1));
 
-    await this.adapter.await(page.foo());
+    await page.foo();
   });
 
-  test('looks for elements within test container specified at node level', async function(assert) {
+  test('looks for elements within test container specified at node level', async function(this: TestContext, assert) {
     assert.expect(1);
 
-    let expectedContext = '#alternate-ember-testing';
     let page = create({
-      testContainer: expectedContext,
+      testContainer: '#alternate-ember-testing',
       foo: triggerable('focus', 'input')
     });
 
-    await this.adapter.createTemplate(this, page, '<input />', { useAlternateContainer: true });
+    await this.createTemplate('<input />', { useAlternateContainer: true });
 
-    this.adapter.$('input', expectedContext).on('focus', () => assert.ok(1));
+    document.querySelector('#alternate-ember-testing input')!.addEventListener('focus', () => assert.ok(1));
 
-    await this.adapter.await(page.foo());
+    await page.foo();
   });
 
-  test("raises an error when the element doesn't exist", async function(assert) {
+  test("raises an error when the element doesn't exist", async function(this: TestContext, assert) {
     assert.expect(1);
 
     let page = create({
@@ -179,9 +180,9 @@ moduleForProperty('triggerable', function(test) {
       }
     });
 
-    await this.adapter.createTemplate(this, page);
+    await this.createTemplate('');
 
-    await this.adapter.throws(assert, function() {
+    await assert.throws(function() {
       return page.foo.bar.baz.qux();
     }, /page\.foo\.bar\.baz\.qux/, 'Element not found');
   });
