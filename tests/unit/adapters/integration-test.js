@@ -6,7 +6,10 @@ import { createClickTrackerComponent, ClickTrackerDef } from './helpers';
 import { setAdapter } from 'ember-cli-page-object/test-support/adapters';
 import ModuleForComponentAdapter from 'ember-cli-page-object/test-support/adapters/integration';
 
-if (Ember.hasOwnProperty('$')) {
+import require from 'require';
+const { wait } = require.has('ember-test-helpers') && require('ember-test-helpers');
+
+if (wait && Ember.hasOwnProperty('$')) {
   const node = create(ClickTrackerDef);
 
   moduleForComponent('', 'Integration | integration adapter | actions', {

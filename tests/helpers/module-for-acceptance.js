@@ -6,12 +6,18 @@ import Ember from 'ember';
 import { setAdapter } from 'ember-cli-page-object/test-support/adapters';
 import ModuleForAcceptanceAdapter from 'ember-cli-page-object/test-support/adapters/acceptance';
 import ModuleForAcceptanceNativeDOMAdapter from 'ember-cli-page-object/test-support/adapters/acceptance-native-events';
+import require from 'require'
 
 export default function(name, options = {}) {
+  if (!require('ember-qunit').moduleForComponent) {
+    return;
+  }
+
   [false, true].forEach(_useNativeEvents => {
     let moduleName = name;
     if (_useNativeEvents) {
       moduleName += ' [native-events]';
+    // eslint-disable-next-line no-prototype-builtins
     } else if (!Ember.hasOwnProperty('$')) {
       return;
     }

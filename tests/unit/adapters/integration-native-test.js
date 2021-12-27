@@ -8,7 +8,9 @@ import ModuleForComponentNativeDOMAdapter from 'ember-cli-page-object/test-suppo
 
 const node = create(ClickTrackerDef);
 
+// eslint-disable-next-line no-prototype-builtins
 if (Ember.hasOwnProperty('$')) {
+  // eslint-disable-next-line ember/no-test-module-for
   moduleForComponent('', 'Integration | integration adapter | actions [native-events]', {
     integration: true,
 
@@ -17,6 +19,7 @@ if (Ember.hasOwnProperty('$')) {
 
       setAdapter(new ModuleForComponentNativeDOMAdapter());
 
+      // eslint-disable-next-line ember/no-test-this-render
       this.render(hbs`{{action-tracker}}`);
     },
 

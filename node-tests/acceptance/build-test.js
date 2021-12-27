@@ -19,7 +19,8 @@ describe('Acceptance: development build', function() {
   it('generates a development build', function() {
     return app
       .create('dummy', {
-        fixturesPath: 'node-tests/acceptance/fixtures'
+        fixturesPath: 'node-tests/acceptance/fixtures',
+        emberVersion: '^3.0.0'
       })
       .then(function() {
         return app.runEmberCommand('build', '-dev')
@@ -30,7 +31,8 @@ describe('Acceptance: development build', function() {
   it('generates a production build', function() {
     return app
       .create('dummy', {
-        fixturesPath: 'node-tests/acceptance/fixtures'
+        fixturesPath: 'node-tests/acceptance/fixtures',
+        emberVersion: '^3.0.0'
       })
       .then(function() {
         return app.runEmberCommand('build', '-prod')
