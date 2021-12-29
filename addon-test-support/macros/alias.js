@@ -1,9 +1,5 @@
 import { throwBetterError } from '../-private/better-errors';
-import {
-  getProperty,
-  objectHasProperty
-} from '../-private/helpers';
-import { chainable } from "../-private/chainable";
+import { chainable } from '../-private/chainable';
 
 const ALIASED_PROP_NOT_FOUND = 'PageObject does not contain aliased property';
 
@@ -82,24 +78,56 @@ export function alias(pathToProp, options = {}) {
     isDescriptor: true,
 
     get(key) {
-      if (!objectHasProperty(this, pathToProp)) {
-        throwBetterError(this, key, `${ALIASED_PROP_NOT_FOUND} \`${pathToProp}\`.`);
+      try {
+        const value = getProperty(this, pathToProp);
+
+        if (typeof value !== 'function' || !options.chainable) {
+          return value;
+        }
+
+        return function(...args) {
+          // We can't just return value(...args) here because if the alias points
+          // to a property on a child node, then the return value would be that
+          // child node rather than this node.
+          value(...args);
+
+          return chainable(this);
+        };
+      } catch (e) {
+        throwBetterError(this, key, e);
       }
-
-      const value = getProperty(this, pathToProp);
-
-      if (typeof value !== 'function' || !options.chainable) {
-        return value;
-      }
-
-      return function(...args) {
-        // We can't just return value(...args) here because if the alias points
-        // to a property on a child node, then the return value would be that
-        // child node rather than this node.
-        value(...args);
-
-        return chainable(this);
-      };
     }
   };
+}
+
+/**
+ * @private
+ *
+ * Returns the value of an object property. If the property is a function,
+ * the return value is that function bound to its "owner."
+ *
+ * @param {Object} object - object on which to look up the target property
+ * @param {string} pathToProp - dot-separated path to property
+ * @return {Boolean|String|Number|Function|Null|Undefined} - value of property
+ */
+function getProperty(object, pathToProp) {
+  const pathSegments = pathToProp.split('.');
+
+  let parent = object;
+  let value;
+  while (pathSegments.length > 0) {
+    const key = pathSegments.shift();
+
+    if (parent === null || typeof parent !== 'object' || !parent.hasOwnProperty(key)) {
+      throw new Error(`${ALIASED_PROP_NOT_FOUND} \`${pathToProp}\`.`);
+    }
+
+    if (pathSegments.length) {
+      parent = parent[key];
+    } else {
+      value = parent[key];
+    }
+  }
+
+  return typeof value === 'function' ? value.bind(parent) : value;
 }
