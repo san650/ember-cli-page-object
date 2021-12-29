@@ -7,8 +7,6 @@ import {
 import { render, find } from '@ember/test-helpers';
 import hbs from 'htmlbars-inline-precompile';
 import {
-  alias,
-  getter,
   create,
   triggerable,
   collection,
@@ -16,6 +14,11 @@ import {
   text,
   value
 } from 'ember-cli-page-object';
+
+import {
+  alias,
+  getter,
+} from 'ember-cli-page-object/macros';
 
 module('Unit | composition', function () {
   test('each page object node stores its definition', function (assert) {
