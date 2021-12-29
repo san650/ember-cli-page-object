@@ -6,7 +6,7 @@
 
 Represent the screens of your web app as a series of objects. This ember-cli addon eases the construction of these objects for your acceptance and integration tests.
 
-http://ember-cli-page-object.js.org/
+https://ember-cli-page-object.js.org/
 
 ## What is a Page Object?
 
@@ -45,7 +45,7 @@ $ npm install --save-dev ember-cli-page-object
 
 ## Documentation
 
-Check the [site](http://ember-cli-page-object.js.org/) for full documentation.
+Check the [site](https://ember-cli-page-object.js.org/) for full documentation.
 
 ## Blueprints
 
