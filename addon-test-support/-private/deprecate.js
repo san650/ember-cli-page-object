@@ -1,17 +1,11 @@
-import { deprecate } from '@ember/debug';
-
 const NAMESPACE = 'ember-cli-page-object';
 
-export default function deprecateWrapper(name, message, since, until) {
+export default function deprecate(name, message, since, until) {
+  if (Array.isArray(deprecate.__calls)) {
+    deprecate.__calls.push([name, message, since, until]);
+  }
+
   const [major, minor] = since.split('.');
 
-  deprecate(message, false, {
-    id: `${NAMESPACE}.${name}`,
-    for: NAMESPACE,
-    since: {
-      enabled: since
-    },
-    until,
-    url: `https://ember-cli-page-object.js.org/docs/v${major}.${minor}.x/deprecations#${name}`,
-  });
+  console.warn(`DEPRECATION: ${message} [deprecation id: ${NAMESPACE}.${name}] See https://ember-cli-page-object.js.org/docs/v${major}.${minor}.x/deprecations#${name} for more details.`)
 }
