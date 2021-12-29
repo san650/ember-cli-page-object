@@ -2,14 +2,14 @@
 /* eslint no-console:0 */
 
 /*
-* Parses the JavaScript files in `addon/` and
-* creates documentation Markdown files for use in GitHub Pages.
-* The docs files are written to the 'gh-pages' branch
-* in the directory 'api/methods'.
-*/
+ * Parses the JavaScript files in `addon/` and
+ * creates documentation Markdown files for use in GitHub Pages.
+ * The docs files are written to the 'gh-pages' branch
+ * in the directory 'api/methods'.
+ */
 
 const fs = require('fs');
-const cp = require('child_process')
+const cp = require('child_process');
 const path = require('path');
 const ncp = require('ncp');
 const mkdirp = require('mkdirp');
@@ -19,53 +19,50 @@ const packageJSON = require('./package.json');
 const walkSync = require('walk-sync');
 
 /* Runs an arbitrary shell command.
-*
-* @param {string} command - The shell command to execute
-* @returns {Promise} (resolves {string}, rejects {Error}) A promise that resolves with the stdout of the command, or rejects with an Error that has the stderr as its message.
-*/
+ *
+ * @param {string} command - The shell command to execute
+ * @returns {Promise} (resolves {string}, rejects {Error}) A promise that resolves with the stdout of the command, or rejects with an Error that has the stderr as its message.
+ */
 function execCmd(command) {
-  return new RSVP.Promise(function(resolve, reject) {
+  return new RSVP.Promise(function (resolve, reject) {
     var result;
 
     console.log('> ' + command + '\n');
     try {
       result = cp.execSync(command);
       resolve(result.toString());
-    } catch(error) {
+    } catch (error) {
       reject(error);
     }
   });
 }
 
 /* Parses a source file for JSDoc comments.
-*
-* @param {string} filePath - The path to the source JavaScript file
-* @returns {Promise} (resolves {string}) A promise that resolves with the Markdown text representation
-*/
+ *
+ * @param {string} filePath - The path to the source JavaScript file
+ * @returns {Promise} (resolves {string}) A promise that resolves with the Markdown text representation
+ */
 function parseSourceFile(filePath) {
-  return execCmd('node ./node_modules/documentation/bin/documentation build "' + filePath + '" -f md --shallow');
+  return execCmd(
+    'node ./node_modules/documentation/bin/documentation build "' +
+      filePath +
+      '" -f md --shallow'
+  );
 }
 
 /* Takes Markdown and adds yml frontmatter and a table of contents, and adds 1 to
-* the level of headings.
-*
-* @param {string} markdown - Unmassaged markdown.
-* @returns {Promise} (resolves {string}) A promise that resolves with the massaged Markdown text representation.
-*/
+ * the level of headings.
+ *
+ * @param {string} markdown - Unmassaged markdown.
+ * @returns {Promise} (resolves {string}) A promise that resolves with the massaged Markdown text representation.
+ */
 function massageMarkdown(markdown, options) {
   var headerRegex = /^#{1,6} /;
   var h2Regex = /^## (.*)$/;
   var lines = markdown.split('\n');
-  var tableOfContents = [
-    '### Methods\n'
-  ];
+  var tableOfContents = ['### Methods\n'];
   // The jekyll yml frontmatter
-  var frontmatter = [
-    '---',
-    'layout: page',
-    'title: ' + options.title,
-    '---'
-  ];
+  var frontmatter = ['---', 'layout: page', 'title: ' + options.title, '---'];
   var processedMarkdown;
   var h2;
   var tocLine;
@@ -94,26 +91,29 @@ function massageMarkdown(markdown, options) {
   // Place the markdown inside a Liquid '{% raw %}{% endraw %}' block
   // so that '{{component-name}}' hbs tags are rendered in code blocks.
   // (Liquid will parse them as Liquid tags otherwise.)
-  processedMarkdown = frontmatter.join('\n') + '\n\n' +
+  processedMarkdown =
+    frontmatter.join('\n') +
+    '\n\n' +
     '{% raw %}\n' +
-    tableOfContents.join('\n') + '\n\n' +
+    tableOfContents.join('\n') +
+    '\n\n' +
     lines.join('\n') +
     '{% endraw %}';
 
-  return new RSVP.Promise(function(resolve) {
+  return new RSVP.Promise(function (resolve) {
     resolve(processedMarkdown);
   });
 }
 
 /* Write a documentation Markdown file.
-*
-* @param {string} srcPath - The full path of the source file or directory.
-* @param {string} destDir - The directory in which to write the Markdown file.
-* @param {Object} options
-* @param {string} options.slug - The slug of the documentation. Used to construct the filename.
-* @param {string} options.title - The page title of the documentation.
-* @returns {Promise}
-*/
+ *
+ * @param {string} srcPath - The full path of the source file or directory.
+ * @param {string} destDir - The directory in which to write the Markdown file.
+ * @param {Object} options
+ * @param {string} options.slug - The slug of the documentation. Used to construct the filename.
+ * @param {string} options.title - The page title of the documentation.
+ * @returns {Promise}
+ */
 function writeDocsFile(srcPath, destDir, options) {
   // capture stdout of 'documentation'
   // FIXME: Change this to use documentation Node API
@@ -147,11 +147,11 @@ function writeDocsFile(srcPath, destDir, options) {
   }
 
   return RSVP.all(promises)
-    .then(function(markdownArray) {
+    .then(function (markdownArray) {
       return massageMarkdown(markdownArray.join('\n'), options);
     })
-    .then(function(markdown) {
-      return new RSVP.Promise(function(resolve, reject) {
+    .then(function (markdown) {
+      return new RSVP.Promise(function (resolve, reject) {
         // use {'flags': 'a'} to append and {'flags': 'w'} to erase and write a new file
         var stream = fs.createWriteStream(destPath, { flags: 'w' });
 
@@ -172,36 +172,36 @@ function capitalizeFirstLetter(string) {
 }
 
 /* Write documentation for the files in a directory.
-*
-* Individual files in the directory will each have their own documentation
-* files. Subdirectories will group the docs for all files together.
-*
-* @param {string} srcDir - The directory in which the source files are contained.
-* @param {string} destDir - The directory in which to write the documentation files.
-* @returns {Promise}
-*/
+ *
+ * Individual files in the directory will each have their own documentation
+ * files. Subdirectories will group the docs for all files together.
+ *
+ * @param {string} srcDir - The directory in which the source files are contained.
+ * @param {string} destDir - The directory in which to write the documentation files.
+ * @returns {Promise}
+ */
 function writeApiDocs(srcPaths, destDir) {
   return removeDir(destDir)
     .then(() => createDir(destDir))
     .then(() => {
-      return RSVP.map(srcPaths, srcPath => {
+      return RSVP.map(srcPaths, (srcPath) => {
         let slug = path.basename(srcPath, '.js');
         let title = capitalizeFirstLetter(slug.replace('-', ' '));
 
         return writeDocsFile(srcPath, destDir, { slug, title });
       });
-    })
+    });
 }
 
 /* Copies the documentation files from the temporary directory to the Jekyll
-* docs directory.
-*
-* @param {string} srcDir - The directory in which the source files are contained.
-* @param {string} destDir - The directory in which to write the documentation files.
-* @returns {Promise}
-*/
+ * docs directory.
+ *
+ * @param {string} srcDir - The directory in which the source files are contained.
+ * @param {string} destDir - The directory in which to write the documentation files.
+ * @returns {Promise}
+ */
 function copyDocs(srcDir, destDir) {
-  return new RSVP.Promise(function(resolve, reject) {
+  return new RSVP.Promise(function (resolve, reject) {
     // Copy the docs directory
     ncp(srcDir, destDir, function (err) {
       if (err) {
@@ -215,12 +215,12 @@ function copyDocs(srcDir, destDir) {
 }
 
 /* Creates a directory (and its parent directories, if necessary).
-*
-* @param {string} dir - The directory to create.
-* @returns {Promise}
-*/
+ *
+ * @param {string} dir - The directory to create.
+ * @returns {Promise}
+ */
 function createDir(dir) {
-  return new RSVP.Promise(function(resolve, reject) {
+  return new RSVP.Promise(function (resolve, reject) {
     // Delete the temporary compiled docs directory.
     mkdirp(dir, function (err) {
       if (err) {
@@ -234,12 +234,12 @@ function createDir(dir) {
 }
 
 /* Deletes a directory recursively.
-*
-* @param {string} dir - The directory to delete.
-* @returns {Promise}
-*/
+ *
+ * @param {string} dir - The directory to delete.
+ * @returns {Promise}
+ */
 function removeDir(dir) {
-  return new RSVP.Promise(function(resolve, reject) {
+  return new RSVP.Promise(function (resolve, reject) {
     // Delete the temporary compiled docs directory.
     rimraf(dir, function (err) {
       if (err) {
@@ -252,7 +252,7 @@ function removeDir(dir) {
   });
 }
 
-(function() {
+(function () {
   var versionArray = packageJSON.version.split('.');
   // ex., '1.0.3' -> 'v1.0.x'
   var version = 'v' + versionArray[0] + '.' + versionArray[1] + '.x';
@@ -262,7 +262,7 @@ function removeDir(dir) {
   var guidesDir = path.join(__dirname, 'guides');
 
   const apiSourcesPaths = walkSync('.', {
-    globs: ['addon-test-support/{create.js,properties/*.js,macros/*.js}' ]
+    globs: ['addon-test-support/{create.js,properties/*.js,macros/*.js}'],
   });
 
   // Create the temporary directory for the docs
@@ -287,7 +287,7 @@ function removeDir(dir) {
     .then(() => {
       console.log('Finished writing documentation files.');
     })
-    .catch(function(reason) {
+    .catch(function (reason) {
       console.log(reason.stack);
     });
 })();

@@ -1,11 +1,7 @@
 import { module, test } from 'qunit';
 import { setupApplicationTest } from '../helpers';
 
-import {
-  create,
-  collection,
-  visitable
-} from 'ember-cli-page-object';
+import { create, collection, visitable } from 'ember-cli-page-object';
 
 const page = create({
   visit: visitable('async-calculator'),

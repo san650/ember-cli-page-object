@@ -91,12 +91,12 @@ export function text(selector, userOptions = {}) {
     get(key) {
       let options = {
         pageObjectKey: key,
-        ...userOptions
+        ...userOptions,
       };
 
       let f = options.normalize === false ? identity : normalizeText;
       return f($(findOne(this, selector, options)).text());
-    }
+    },
   };
 }
 

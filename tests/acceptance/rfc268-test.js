@@ -1,9 +1,5 @@
 import { module, test } from 'qunit';
-import {
-  create,
-  value,
-  visitable,
-} from 'ember-cli-page-object';
+import { create, value, visitable } from 'ember-cli-page-object';
 import { setupApplicationTest } from '../helpers';
 
 module('Acceptance | rfc268', function (hooks) {

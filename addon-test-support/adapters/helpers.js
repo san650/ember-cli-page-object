@@ -22,7 +22,9 @@ export function fillElement(selection, content) {
   if ($selection.is('[contenteditable][contenteditable!="false"]')) {
     $selection.html(content);
   } else if ($selection.is('[contenteditable="false"]')) {
-    throw new Error('Element cannot be filled because it has `contenteditable="false"`.');
+    throw new Error(
+      'Element cannot be filled because it has `contenteditable="false"`.'
+    );
   } else {
     $selection.val(content);
   }
@@ -46,8 +48,13 @@ export function assertFocusable(element) {
     error = 'disabled';
   } else if ($element.is('[contenteditable="false"]')) {
     error = 'contenteditable="false"';
-  } else if (!$element.is(':input, a[href], area[href], iframe, [contenteditable], [tabindex]')) {
-    error = 'not a link, input, form element, contenteditable, iframe, or an element with tabindex';
+  } else if (
+    !$element.is(
+      ':input, a[href], area[href], iframe, [contenteditable], [tabindex]'
+    )
+  ) {
+    error =
+      'not a link, input, form element, contenteditable, iframe, or an element with tabindex';
   }
 
   if (error) {

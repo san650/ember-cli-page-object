@@ -65,14 +65,16 @@ export function contains(selector, userOptions = {}) {
     isDescriptor: true,
 
     get(key) {
-      return function(textToSearch) {
+      return function (textToSearch) {
         let options = {
           pageObjectKey: `${key}("${textToSearch}")`,
-          ...userOptions
+          ...userOptions,
         };
 
-        return $(findOne(this, selector, options)).text().indexOf(textToSearch) > -1;
+        return (
+          $(findOne(this, selector, options)).text().indexOf(textToSearch) > -1
+        );
       };
-    }
+    },
   };
 }

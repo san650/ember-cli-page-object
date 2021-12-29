@@ -84,24 +84,27 @@ import { findOne, findMany } from '../extend';
  * @return {Descriptor}
  */
 export function clickOnText(scope, userOptions = {}) {
-  return action({
-    ...userOptions,
-     selector: scope
-  }, function(textToClick) {
-    this.query.contains = textToClick;
-    // find the deepest node containing a text to click
-    this.query.last = true;
+  return action(
+    {
+      ...userOptions,
+      selector: scope,
+    },
+    function (textToClick) {
+      this.query.contains = textToClick;
+      // find the deepest node containing a text to click
+      this.query.last = true;
 
-    const childSelector = `${scope || ''} `;
-    let selector;
-    if (findMany(this.node, childSelector, this.query).length) {
-      selector = childSelector;
-    } else {
-      selector = scope;
+      const childSelector = `${scope || ''} `;
+      let selector;
+      if (findMany(this.node, childSelector, this.query).length) {
+        selector = childSelector;
+      } else {
+        selector = scope;
+      }
+
+      const element = findOne(this.node, selector, this.query);
+
+      return this.adapter.click(element);
     }
-
-    const element = findOne(this.node, selector, this.query);
-
-    return this.adapter.click(element);
-  });
+  );
 }

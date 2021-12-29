@@ -3,7 +3,7 @@ import { create, collection } from 'ember-cli-page-object';
 import {
   fullScope,
   getProperty,
-  objectHasProperty
+  objectHasProperty,
 } from 'ember-cli-page-object/test-support/-private/helpers';
 
 module('Unit | helpers | fullScope', function () {

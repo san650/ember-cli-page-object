@@ -2,16 +2,13 @@
 /* eslint-disable ember/new-module-imports */
 const { $ } = Ember;
 
-import {
-  fillElement,
-  assertFocusable
-} from './helpers';
+import { fillElement, assertFocusable } from './helpers';
 
-import Adapter from "../adapter";
+import Adapter from '../adapter';
 
 export default class AcceptanceAdapter extends Adapter {
   get testContainer() {
-    return  '#ember-testing';
+    return '#ember-testing';
   }
 
   wait() {

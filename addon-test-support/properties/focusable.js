@@ -61,11 +61,11 @@ import { findOne } from '../extend';
  * @param {boolean} options.resetScope - Ignore parent scope
  * @param {string} options.testContainer - Context where to search elements in the DOM
  * @return {Descriptor}
-*/
+ */
 export function focusable(selector = '', userOptions = {}) {
-  const query = { ...userOptions,  selector };
+  const query = { ...userOptions, selector };
 
-  return action(query, function() {
+  return action(query, function () {
     const element = findOne(this.node, this.query.selector, this.query);
 
     return this.adapter.focus(element);

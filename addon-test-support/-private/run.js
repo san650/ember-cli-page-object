@@ -18,7 +18,7 @@ export function run(node, query, cb) {
   const executionContext = Object.freeze({
     query,
     node,
-    adapter
+    adapter,
   });
 
   const root = getRoot(node);
@@ -26,11 +26,12 @@ export function run(node, query, cb) {
     // Our root is already the root of the chained tree,
     // we need to wait on its promise if it has one so the
     // previous invocations can resolve before we run ours.
-    root._promise = resolve(root._promise).then(() => invokeHelper(executionContext, cb));
+    root._promise = resolve(root._promise).then(() =>
+      invokeHelper(executionContext, cb)
+    );
 
     return node;
-  }
-  else {
+  } else {
     // Store our invocation result on the chained root
     // so that chained calls can find it to wait on it.
     root._chainedTree._promise = invokeHelper(executionContext, cb);

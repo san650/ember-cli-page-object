@@ -1,4 +1,4 @@
-import Adapter from "../adapter";
+import Adapter from '../adapter';
 
 let _adapter;
 
@@ -7,7 +7,7 @@ let _adapter;
  */
 export function getAdapter() {
   if (!_adapter) {
-     throw new Error(`Adapter is required.
+    throw new Error(`Adapter is required.
 
 Please use \`setAdapter(\`, to instruct "ember-cli-page-object" about the adapter you want to use.`);
   }

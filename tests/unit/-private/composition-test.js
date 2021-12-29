@@ -12,13 +12,10 @@ import {
   collection,
   isVisible,
   text,
-  value
+  value,
 } from 'ember-cli-page-object';
 
-import {
-  alias,
-  getter,
-} from 'ember-cli-page-object/macros';
+import { alias, getter } from 'ember-cli-page-object/macros';
 
 module('Unit | composition', function () {
   test('each page object node stores its definition', function (assert) {
@@ -303,5 +300,3 @@ module('Unit | composition', function () {
     });
   });
 });
-
-

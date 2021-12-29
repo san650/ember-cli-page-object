@@ -77,17 +77,22 @@ import { findOne } from '../extend';
  * @param {string} options.testContainer - Context where to search elements in the DOM
  * @param {string} options.eventProperties - Event properties that will be passed to trigger function
  * @return {Descriptor}
-*/
+ */
 export function triggerable(event, selector, userOptions = {}) {
-  return action(({
-    ...userOptions,
-    selector
-  }), function (eventProperties = {}) {
-    const mergedEventProperties = { ...userOptions.eventProperties, ...eventProperties };
+  return action(
+    {
+      ...userOptions,
+      selector,
+    },
+    function (eventProperties = {}) {
+      const mergedEventProperties = {
+        ...userOptions.eventProperties,
+        ...eventProperties,
+      };
 
-    const element = findOne(this.node, this.query.selector, this.query);
+      const element = findOne(this.node, this.query.selector, this.query);
 
-    return this.adapter.triggerEvent(element, event, mergedEventProperties);
-  });
+      return this.adapter.triggerEvent(element, event, mergedEventProperties);
+    }
+  );
 }
-

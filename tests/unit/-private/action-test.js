@@ -1,7 +1,7 @@
 import { module, test } from 'qunit';
-import { create } from 'ember-cli-page-object'
-import action from 'ember-cli-page-object/test-support/-private/action'
-import { isPageObject } from 'ember-cli-page-object/test-support/-private/helpers'
+import { create } from 'ember-cli-page-object';
+import action from 'ember-cli-page-object/test-support/-private/action';
+import { isPageObject } from 'ember-cli-page-object/test-support/-private/helpers';
 import { setAdapter } from 'ember-cli-page-object/test-support/adapters';
 import Adapter from 'ember-cli-page-object/test-support/adapter';
 
@@ -15,62 +15,65 @@ const DEFAULT_NEXT_TICK_TIMEOUT = 20;
 
 const next = (timeout = DEFAULT_NEXT_TICK_TIMEOUT) => {
   return new Promise((r) => setTimeout(r, timeout));
-}
+};
 
 class Deferred {
   constructor() {
-    this.promise = new Promise(function(resolve, reject) {
-			this.resolve = resolve;
-			this.reject = reject;
-    }.bind(this));
+    this.promise = new Promise(
+      function (resolve, reject) {
+        this.resolve = resolve;
+        this.reject = reject;
+      }.bind(this)
+    );
 
-		Object.freeze(this);
+    Object.freeze(this);
   }
 }
 
-module('Unit | action', function(hooks) {
-  hooks.beforeEach(function() {
-    setAdapter(new DummyAdapter);
+module('Unit | action', function (hooks) {
+  hooks.beforeEach(function () {
+    setAdapter(new DummyAdapter());
   });
 
-  let invoked,
-    finished,
-    executionContext;
+  let invoked, finished, executionContext;
 
   const testable = (query) => {
-    return action(query, function(id, deferred) {
+    return action(query, function (id, deferred) {
       invoked.push(id);
       executionContext = this;
 
       return deferred.promise.then(() => {
         finished.push(id);
       });
-    })
-  }
+    });
+  };
 
-  hooks.beforeEach(function() {
+  hooks.beforeEach(function () {
     invoked = [];
     finished = [];
     executionContext = null;
-  })
+  });
 
-  test('it works', async function(assert) {
+  test('it works', async function (assert) {
     const p = create({
       scope: 'it works',
 
-      run: testable({ selector: '.Selector' })
+      run: testable({ selector: '.Selector' }),
     });
 
     const d1 = new Deferred();
     p.run(1, d1);
 
-    assert.equal(typeof executionContext === 'object' && executionContext !== null, true);
+    assert.equal(
+      typeof executionContext === 'object' && executionContext !== null,
+      true
+    );
     assert.deepEqual(executionContext.query, {
       key: `run("1", "[object Object]")`,
-      selector: '.Selector'
+      selector: '.Selector',
     });
     assert.equal(executionContext.node, p, '');
-    assert.equal(executionContext.adapter instanceof DummyAdapter, true)
+    assert.equal(executionContext.adapter instanceof DummyAdapter, true);
 
     assert.deepEqual(invoked, [1]);
     assert.deepEqual(finished, []);
@@ -81,53 +84,59 @@ module('Unit | action', function(hooks) {
     assert.deepEqual(finished, [1]);
   });
 
-  test('this is frozen', async function(assert) {
+  test('this is frozen', async function (assert) {
     const p = create({
       scope: 'it works',
 
-      run: action(function() {
+      run: action(function () {
         executionContext = this;
-      })
+      }),
     });
 
     await p.run();
 
     assert.throws(() => {
       executionContext.test = 1;
-    })
+    });
   });
 
-  test('it handles sync errors', async function(assert) {
+  test('it handles sync errors', async function (assert) {
     const p = create({
       scope: '.Scope',
 
-      run: action({ selector: '.Selector' }, function() {
+      run: action({ selector: '.Selector' }, function () {
         throw new Error('it was so fast!');
-      })
-    })
+      }),
+    });
 
-    assert.throws(() => p.run(1), new Error(`it was so fast!
+    assert.throws(
+      () => p.run(1),
+      new Error(`it was so fast!
 
 PageObject: 'page.run("1")'
-  Selector: '.Scope .Selector'`));
+  Selector: '.Scope .Selector'`)
+    );
   });
 
-  test('it handles sync errors w/o query', async function(assert) {
+  test('it handles sync errors w/o query', async function (assert) {
     const p = create({
       scope: '.Scope',
 
-      run: action(function() {
+      run: action(function () {
         throw new Error('it was so fast!');
-      })
-    })
+      }),
+    });
 
-    assert.throws(() => p.run(1), new Error(`it was so fast!
+    assert.throws(
+      () => p.run(1),
+      new Error(`it was so fast!
 
 PageObject: 'page.run("1")'
-  Selector: '.Scope'`));
+  Selector: '.Scope'`)
+    );
   });
 
-  test('it handles async errors', async function(assert) {
+  test('it handles async errors', async function (assert) {
     // when test against some old `ember-cli-qunit`-only scenarios, QUnit@1 is installed.
     // There is no `assert.rejects(` support, so we just ignore the test in such cases.
     // It's still tested on newer scenarios with QUnit@2, even against old "ember-test-helpers" scenarios.
@@ -137,24 +146,27 @@ PageObject: 'page.run("1")'
       const p = create({
         scope: '.Scope',
 
-        run: action({ selector: '.Selector' }, function() {
+        run: action({ selector: '.Selector' }, function () {
           return next().then(() => {
             throw new Error('bed time');
-          })
-        })
-      })
+          });
+        }),
+      });
 
-      assert.rejects(p.run(1), new Error(`bed time
+      assert.rejects(
+        p.run(1),
+        new Error(`bed time
 
 PageObject: 'page.run("1")'
-  Selector: '.Scope .Selector'`));
+  Selector: '.Scope .Selector'`)
+      );
     } else {
       assert.expect(0);
     }
   });
 
-  module('chainability', function() {
-    test('it works', async function(assert) {
+  module('chainability', function () {
+    test('it works', async function (assert) {
       const p = create({
         scope: '.root',
 
@@ -164,7 +176,7 @@ PageObject: 'page.run("1")'
           scope: '.child',
 
           run: testable({ selector: '.Selector2' }),
-        }
+        },
       });
 
       const d1 = new Deferred();
@@ -206,11 +218,11 @@ PageObject: 'page.run("1")'
       assert.deepEqual(finished, [1, 2, 3]);
     });
 
-    test('concurrent from same root', async function(assert) {
+    test('concurrent from same root', async function (assert) {
       const p = create({
         scope: '.root',
 
-        run: testable({ selector: '.Selector1' })
+        run: testable({ selector: '.Selector1' }),
       });
 
       const d1 = new Deferred();
@@ -253,11 +265,11 @@ PageObject: 'page.run("1")'
       assert.deepEqual(finished, ['1', '1.2', '1.1']);
     });
 
-    test('concurrent from same chain root', async function(assert) {
+    test('concurrent from same chain root', async function (assert) {
       const p = create({
         scope: '.root',
 
-        run: testable({ selector: '.Selector1' })
+        run: testable({ selector: '.Selector1' }),
       });
 
       const d1 = new Deferred();
@@ -309,7 +321,7 @@ PageObject: 'page.run("1")'
       assert.deepEqual(finished, ['1', '1.1', '1.2']);
     });
 
-    test('it handles errors', async function(assert) {
+    test('it handles errors', async function (assert) {
       // when test against some old `ember-cli-qunit`-only scenarios, QUnit@1 is installed.
       // There is no `assert.rejects(` support, so we just ignore the test in such cases.
       // It's still tested on newer scenarios with QUnit@2, even against old "ember-test-helpers" scenarios.
@@ -324,18 +336,21 @@ PageObject: 'page.run("1")'
           child: {
             scope: '.child',
 
-            run: action({ selector: '.Selector2' }, function() {
+            run: action({ selector: '.Selector2' }, function () {
               return next().then(() => {
                 throw new Error('bed time');
-              })
-            })
-          }
-        })
+              });
+            }),
+          },
+        });
 
-        assert.rejects(p.emptyRun().child.run(1), new Error(`bed time
+        assert.rejects(
+          p.emptyRun().child.run(1),
+          new Error(`bed time
 
 PageObject: 'page.child.run("1")'
-  Selector: '.root .child .Selector2'`));
+  Selector: '.root .child .Selector2'`)
+        );
       } else {
         assert.expect(0);
       }
