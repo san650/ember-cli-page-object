@@ -1,4 +1,4 @@
-import { moduleForProperty } from '../../helpers/properties';
+import { module, test } from 'qunit';
 import { create } from 'ember-cli-page-object';
 import deprecate from 'ember-cli-page-object/test-support/-private/deprecate';
 
