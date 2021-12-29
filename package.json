@@ -110,7 +110,7 @@
     "npm-run-all": "^4.1.5",
     "prettier": "^2.2.1",
     "qunit": "~2.14.0",
-    "qunit-dom": "^0.8.0",
+    "qunit-dom": "^2.0.0",
     "rimraf": "^2.5.2",
     "typescript": "^3.7.5",
     "walk-sync": "^0.3.2"
