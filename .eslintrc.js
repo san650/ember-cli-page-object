@@ -54,5 +54,15 @@ module.exports = {
       plugins: ['node'],
       extends: ['plugin:node/recommended'],
     },
+    // dummy app @todo update all dummy app code to octane patterns
+    {
+      files: ['tests/dummy/app/**/*.js'],
+      rules: {
+        'ember/no-classic-classes': 0,
+        'ember/no-classic-components': 0,
+        'ember/no-actions-hash': 0,
+        'ember/require-tagless-components': 0,
+      },
+    },
   ],
 };
