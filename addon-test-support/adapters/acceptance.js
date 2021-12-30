@@ -30,7 +30,7 @@ export default class AcceptanceAdapter extends Adapter {
   }
 
   fillIn(element, content) {
-    /* global focus */
+    // global focus
     focus(element);
 
     fillElement(element, content);
@@ -43,7 +43,7 @@ export default class AcceptanceAdapter extends Adapter {
   }
 
   triggerEvent(element, eventName, eventOptions) {
-    /* global triggerEvent */
+    // global triggerEvent
     triggerEvent(element, eventName, eventOptions);
 
     return this.wait();
