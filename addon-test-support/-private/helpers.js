@@ -235,7 +235,7 @@ export function objectHasProperty(object, pathToProp) {
     if (
       object === null ||
       object === undefined ||
-      !object.hasOwnProperty(key)
+      !Object.prototype.hasOwnProperty.call(object, key)
     ) {
       return false;
     } else {
