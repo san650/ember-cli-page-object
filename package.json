@@ -34,7 +34,7 @@
     "lint:js": "eslint . --cache",
     "lint:js:fix": "eslint . --fix",
     "start": "ember serve",
-    "test": "npm-run-all lint test:*",
+    "test": "npm-run-all lint test:ember",
     "docs": "node ./docs",
     "nodetest": "mocha node-tests --recursive",
     "prepublishOnly": "ember ts:precompile",
