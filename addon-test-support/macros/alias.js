@@ -1,5 +1,4 @@
 import { throwBetterError } from '../-private/better-errors';
-import { getProperty, objectHasProperty } from '../-private/helpers';
 import { chainable } from '../-private/chainable';
 
 const ALIASED_PROP_NOT_FOUND = 'PageObject does not contain aliased property';
@@ -79,28 +78,56 @@ export function alias(pathToProp, options = {}) {
     isDescriptor: true,
 
     get(key) {
-      if (!objectHasProperty(this, pathToProp)) {
-        throwBetterError(
-          this,
-          key,
-          `${ALIASED_PROP_NOT_FOUND} \`${pathToProp}\`.`
-        );
+      try {
+        const value = getProperty(this, pathToProp);
+
+        if (typeof value !== 'function' || !options.chainable) {
+          return value;
+        }
+
+        return function(...args) {
+          // We can't just return value(...args) here because if the alias points
+          // to a property on a child node, then the return value would be that
+          // child node rather than this node.
+          value(...args);
+
+          return chainable(this);
+        };
+      } catch (e) {
+        throwBetterError(this, key, e);
       }
-
-      const value = getProperty(this, pathToProp);
-
-      if (typeof value !== 'function' || !options.chainable) {
-        return value;
-      }
-
-      return function (...args) {
-        // We can't just return value(...args) here because if the alias points
-        // to a property on a child node, then the return value would be that
-        // child node rather than this node.
-        value(...args);
-
-        return chainable(this);
-      };
-    },
+    }
   };
 }
+
+/**
+ * @public
+ *
+ * Returns the value of an object property. If the property is a function,
+ * the return value is that function bound to its "owner."
+ *
+ * @param {Object} object - object on which to look up the target property
+ * @param {string} pathToProp - dot-separated path to property
+ * @return {Boolean|String|Number|Function|Null|Undefined} - value of property
+ */
+export function getProperty(object, pathToProp) {
+  const pathSegments = pathToProp.split('.');
+
+  if (pathSegments.length === 1) {
+    const value = get(object, pathToProp);
+    return typeof value === 'function' ? value.bind(object) : value;
+  }
+
+  const pathToPropOwner = pathSegments.slice(0, -1).join('.');
+  const propOwner = get(object, pathToPropOwner);
+
+  if (propOwner === null || propOwner === undefined) {
+    return undefined;
+  }
+
+  const propKey = pathSegments[pathSegments.length - 1];
+  const value = get(propOwner, propKey);
+
+  return typeof value === 'function' ? value.bind(propOwner) : value;
+}
+

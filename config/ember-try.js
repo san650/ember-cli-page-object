@@ -89,6 +89,7 @@ module.exports = function () {
           npm: {
             devDependencies: {
               'ember-source': '~3.28.0',
+              'ember-resolver': '^8.0.0',
             },
           },
           env: {
@@ -187,6 +188,7 @@ module.exports = function () {
               qunit: '~2.14.0',
               '@ember/test-helpers': '^2.0.0',
               'ember-qunit-source-map': null,
+              'ember-resolver': '^8.0.0',
             },
           },
           env: {

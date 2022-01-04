@@ -6,6 +6,21 @@ import { fillElement, assertFocusable } from './helpers';
 import wait from 'ember-test-helpers/wait';
 import Adapter from '../adapter';
 
+const { require } = window;
+let waitFn;
+if (require.has('ember-test-helpers/wait')) {
+  // This is implemented as a function that calls `ember-test-helpers/wait`
+  // rather than just assigning `helpers.wait = require(...).default` because
+  // since this code executes while modules are initially loading, under certain
+  // conditions `ember-test-helpers/wait` can still be in the pending state
+  // at this point, so its exports are still undefined.
+  waitFn = (...args) => require('ember-test-helpers/wait').default(...args);
+} else {
+  waitFn = () => {
+    throw new Error('ember-test-helpers or @ember/test-helpers must be installed');
+  };
+}
+
 export default class IntegrationAdapter extends Adapter {
   get testContainer() {
     // @todo: fix usage of private `_element`
@@ -15,7 +30,7 @@ export default class IntegrationAdapter extends Adapter {
   }
 
   wait() {
-    return wait();
+    return waitFn();
   }
 
   click(element) {
