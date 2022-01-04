@@ -111,59 +111,6 @@ module.exports = function () {
           },
         },
         {
-          name: 'with-ember-test-helpers',
-          bower: {
-            dependencies: {
-              ember: 'components/ember#release',
-            },
-            resolutions: {
-              ember: 'release',
-            },
-          },
-          npm: {
-            devDependencies: {
-              'ember-cli-qunit': '4.0.0',
-              'ember-source': null,
-              'ember-qunit': null,
-            },
-          },
-        },
-        {
-          name: 'with-@ember/test-helpers',
-          bower: {
-            dependencies: {
-              ember: 'components/ember#release',
-            },
-            resolutions: {
-              ember: 'release',
-            },
-          },
-          npm: {
-            devDependencies: {
-              'ember-cli-qunit': '4.3.0',
-              'ember-source': null,
-            },
-          },
-        },
-        {
-          name: 'with-ember-qunit@5',
-          npm: {
-            devDependencies: {
-              'ember-source': '^3.28.0',
-              'ember-qunit': '^5.0.0',
-              qunit: '~2.14.0',
-              '@ember/test-helpers': '^2.0.0',
-              'ember-qunit-source-map': null,
-              'ember-resolver': '^8.0.0',
-            },
-          },
-          env: {
-            EMBER_OPTIONAL_FEATURES: JSON.stringify({
-              'jquery-integration': false,
-            }),
-          },
-        },
-        {
           name: 'node-tests',
           command: 'npm run nodetest',
           bower: {
