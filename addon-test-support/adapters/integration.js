@@ -3,7 +3,6 @@
 const { $ } = Ember;
 
 import { fillElement, assertFocusable } from './helpers';
-import wait from 'ember-test-helpers/wait';
 import Adapter from '../adapter';
 
 const { require } = window;
@@ -17,7 +16,9 @@ if (require.has('ember-test-helpers/wait')) {
   waitFn = (...args) => require('ember-test-helpers/wait').default(...args);
 } else {
   waitFn = () => {
-    throw new Error('ember-test-helpers or @ember/test-helpers must be installed');
+    throw new Error(
+      'ember-test-helpers or @ember/test-helpers must be installed'
+    );
   };
 }
 
