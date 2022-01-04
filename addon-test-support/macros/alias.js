@@ -85,7 +85,7 @@ export function alias(pathToProp, options = {}) {
           return value;
         }
 
-        return function(...args) {
+        return function (...args) {
           // We can't just return value(...args) here because if the alias points
           // to a property on a child node, then the return value would be that
           // child node rather than this node.
@@ -96,12 +96,12 @@ export function alias(pathToProp, options = {}) {
       } catch (e) {
         throwBetterError(this, key, e);
       }
-    }
+    },
   };
 }
 
 /**
- * @public
+ * @private
  *
  * Returns the value of an object property. If the property is a function,
  * the return value is that function bound to its "owner."
@@ -110,24 +110,28 @@ export function alias(pathToProp, options = {}) {
  * @param {string} pathToProp - dot-separated path to property
  * @return {Boolean|String|Number|Function|Null|Undefined} - value of property
  */
-export function getProperty(object, pathToProp) {
+function getProperty(object, pathToProp) {
   const pathSegments = pathToProp.split('.');
 
-  if (pathSegments.length === 1) {
-    const value = get(object, pathToProp);
-    return typeof value === 'function' ? value.bind(object) : value;
+  let parent = object;
+  let value;
+  while (pathSegments.length > 0) {
+    const key = pathSegments.shift();
+
+    if (
+      parent === null ||
+      typeof parent !== 'object' ||
+      !Object.prototype.hasOwnProperty.call(parent, key)
+    ) {
+      throw new Error(`${ALIASED_PROP_NOT_FOUND} \`${pathToProp}\`.`);
+    }
+
+    if (pathSegments.length) {
+      parent = parent[key];
+    } else {
+      value = parent[key];
+    }
   }
 
-  const pathToPropOwner = pathSegments.slice(0, -1).join('.');
-  const propOwner = get(object, pathToPropOwner);
-
-  if (propOwner === null || propOwner === undefined) {
-    return undefined;
-  }
-
-  const propKey = pathSegments[pathSegments.length - 1];
-  const value = get(propOwner, propKey);
-
-  return typeof value === 'function' ? value.bind(propOwner) : value;
+  return typeof value === 'function' ? value.bind(parent) : value;
 }
-
