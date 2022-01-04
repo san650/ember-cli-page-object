@@ -7,7 +7,7 @@ import {
   fillable,
   isVisible,
   value,
-  visitable
+  visitable,
 } from 'ember-cli-page-object';
 
 import { alias } from 'ember-cli-page-object/macros';

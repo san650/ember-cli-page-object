@@ -53,6 +53,6 @@ export function getter(fn) {
       }
 
       return fn.call(this, key);
-    }
+    },
   };
 }

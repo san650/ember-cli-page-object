@@ -7,5 +7,7 @@ export default function deprecate(name, message, since, until) {
 
   const [major, minor] = since.split('.');
 
-  console.warn(`DEPRECATION: ${message} [deprecation id: ${NAMESPACE}.${name}] See https://ember-cli-page-object.js.org/docs/v${major}.${minor}.x/deprecations#${name} for more details.`)
+  console.warn(
+    `DEPRECATION: ${message} [deprecation id: ${NAMESPACE}.${name}] See https://ember-cli-page-object.js.org/docs/v${major}.${minor}.x/deprecations#${name} for more details.`
+  );
 }

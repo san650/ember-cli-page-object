@@ -63,7 +63,7 @@ import { findOne } from '../extend';
  * @return {Descriptor}
  */
 export function clickable(selector, userOptions = {}) {
-  return action({ ...userOptions, selector }, function() {
+  return action({ ...userOptions, selector }, function () {
     const element = findOne(this.node, this.query.selector, this.query);
 
     return this.adapter.click(element);

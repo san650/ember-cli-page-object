@@ -2,19 +2,16 @@
 /* eslint-disable ember/new-module-imports */
 const { $ } = Ember;
 
-import {
-  fillElement,
-  assertFocusable
-} from './helpers';
+import { fillElement, assertFocusable } from './helpers';
 import wait from 'ember-test-helpers/wait';
-import Adapter from "../adapter";
+import Adapter from '../adapter';
 
 export default class IntegrationAdapter extends Adapter {
   get testContainer() {
     // @todo: fix usage of private `_element`
-    return this.testContext && this.testContext._element ?
-      this.testContext._element :
-      '#ember-testing';
+    return this.testContext && this.testContext._element
+      ? this.testContext._element
+      : '#ember-testing';
   }
 
   wait() {

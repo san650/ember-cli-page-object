@@ -25,7 +25,8 @@ export function throwBetterError(node, key, error, { selector } = {}) {
   let path = [key];
   let current;
 
-  let fullErrorMessage = error instanceof Error ? error.message : error.toString();
+  let fullErrorMessage =
+    error instanceof Error ? error.message : error.toString();
 
   for (current = node; current; current = Ceibo.parent(current)) {
     path.unshift(Ceibo.meta(current).key);

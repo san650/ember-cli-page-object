@@ -73,12 +73,12 @@ export function notHasClass(cssClass, selector, userOptions = {}) {
     get(key) {
       let options = {
         pageObjectKey: key,
-        ...userOptions
+        ...userOptions,
       };
 
       let element = findOne(this, selector, options);
 
       return !element.classList.contains(cssClass);
-    }
+    },
   };
 }

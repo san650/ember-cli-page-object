@@ -1,16 +1,13 @@
-import {
-  $,
-  buildSelector,
-  findClosestValue,
-  guardMultiple
-} from './helpers';
+import { $, buildSelector, findClosestValue, guardMultiple } from './helpers';
 import { getAdapter } from '../adapters';
 import { throwBetterError, ELEMENT_NOT_FOUND } from './better-errors';
 
 function getContainer(pageObjectNode, options) {
-  return options.testContainer
-    || findClosestValue(pageObjectNode, 'testContainer')
-    || getAdapter().testContainer;
+  return (
+    options.testContainer ||
+    findClosestValue(pageObjectNode, 'testContainer') ||
+    getAdapter().testContainer
+  );
 }
 
 /**
@@ -27,12 +24,9 @@ export function findOne(pageObjectNode, targetSelector, options = {}) {
   guardMultiple(elements, selector);
 
   if (elements.length === 0) {
-    throwBetterError(
-      pageObjectNode,
-      options.pageObjectKey,
-      ELEMENT_NOT_FOUND,
-      { selector }
-    );
+    throwBetterError(pageObjectNode, options.pageObjectKey, ELEMENT_NOT_FOUND, {
+      selector,
+    });
   }
 
   return elements[0];
@@ -54,7 +48,11 @@ export function findMany(pageObjectNode, targetSelector, options = {}) {
  * @private
  * @deprecated
  */
-export function findElementWithAssert(pageObjectNode, targetSelector, options = {}) {
+export function findElementWithAssert(
+  pageObjectNode,
+  targetSelector,
+  options = {}
+) {
   const selector = buildSelector(pageObjectNode, targetSelector, options);
   const container = getContainer(pageObjectNode, options);
 
@@ -63,12 +61,9 @@ export function findElementWithAssert(pageObjectNode, targetSelector, options = 
   guardMultiple($elements, selector, options.multiple);
 
   if ($elements.length === 0) {
-    throwBetterError(
-      pageObjectNode,
-      options.pageObjectKey,
-      ELEMENT_NOT_FOUND,
-      { selector }
-    );
+    throwBetterError(pageObjectNode, options.pageObjectKey, ELEMENT_NOT_FOUND, {
+      selector,
+    });
   }
 
   return $elements;

@@ -1,7 +1,5 @@
 'use strict';
 
 module.exports = {
-  excludes: [
-    'tests/dummy/**/*'
-  ]
+  excludes: ['tests/dummy/**/*'],
 };

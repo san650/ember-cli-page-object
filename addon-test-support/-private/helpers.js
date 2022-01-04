@@ -30,7 +30,7 @@ class Selector {
         'comma-separated-selectors',
         'Usage of comma separated selectors is deprecated in ember-cli-page-object',
         '1.16.0',
-        '2.0.0',
+        '2.0.0'
       );
     }
 
@@ -93,7 +93,9 @@ class Selector {
 
 export function guardMultiple(items, selector, supportMultiple) {
   if (items.length > 1 && !supportMultiple) {
-    throw new Error(`"${selector}" matched more than one element. If you want to select many elements, use collections instead.`);
+    throw new Error(
+      `"${selector}" matched more than one element. If you want to select many elements, use collections instead.`
+    );
   }
 }
 
@@ -141,9 +143,8 @@ export function guardMultiple(items, selector, supportMultiple) {
  * @return {string} Fully qualified selector
  */
 export function buildSelector(node, targetSelector, options) {
-  return (new Selector(node, options.scope, targetSelector, options)).toString();
+  return new Selector(node, options.scope, targetSelector, options).toString();
 }
-
 
 /**
  * @public
@@ -231,7 +232,11 @@ export function objectHasProperty(object, pathToProp) {
 
   for (let i = 0; i < pathSegments.length; i++) {
     const key = pathSegments[i];
-    if (object === null || object === undefined || !object.hasOwnProperty(key)) {
+    if (
+      object === null ||
+      object === undefined ||
+      !Object.prototype.hasOwnProperty.call(object, key)
+    ) {
       return false;
     } else {
       object = object[key];
@@ -282,14 +287,16 @@ export function isPageObject(property) {
   }
 }
 
-export function getPageObjectDefinition(node){
-  if(!isPageObject(node)){
-    throw new Error('cannot get the page object definition from a node that is not a page object');
-  }else{
+export function getPageObjectDefinition(node) {
+  if (!isPageObject(node)) {
+    throw new Error(
+      'cannot get the page object definition from a node that is not a page object'
+    );
+  } else {
     return Ceibo.meta(node).__poDef__;
   }
 }
 
-export function storePageObjectDefinition(node, definition){
+export function storePageObjectDefinition(node, definition) {
   Ceibo.meta(node).__poDef__ = definition;
 }

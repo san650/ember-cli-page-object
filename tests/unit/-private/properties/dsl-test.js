@@ -9,8 +9,7 @@ module('dsl', function (hooks) {
   test('generates .isVisible', async function (assert) {
     let page = create({
       scope: 'span',
-      foo: {
-      }
+      foo: {},
     });
 
     await this.createTemplate('Lorem <span>ipsum</span>');
@@ -19,11 +18,10 @@ module('dsl', function (hooks) {
     assert.ok(page.foo.isVisible, 'component is visible');
   });
 
-  test('generates .isHidden', async function(assert) {
+  test('generates .isHidden', async function (assert) {
     let page = create({
       scope: 'span',
-      foo: {
-      }
+      foo: {},
     });
 
     await this.createTemplate('Lorem <span style="display:none">ipsum</span>');
@@ -32,11 +30,10 @@ module('dsl', function (hooks) {
     assert.ok(page.foo.isHidden, 'component is hidden');
   });
 
-  test('generates .isPresent', async function(assert) {
+  test('generates .isPresent', async function (assert) {
     let page = create({
       scope: 'span',
-      foo: {
-      }
+      foo: {},
     });
 
     await this.createTemplate('Lorem <span>ipsum</span>');
@@ -45,10 +42,23 @@ module('dsl', function (hooks) {
     assert.ok(page.foo.isPresent, 'component is rendered in DOM');
   });
 
-  ['blur', 'click', 'clickOn', 'contains', 'fillIn', 'focus', 'isHidden', 'isPresent', 'isVisible', 'select', 'text', 'value'].forEach((prop) => {
-    test(`does not override .${prop}`, async function(assert) {
+  [
+    'blur',
+    'click',
+    'clickOn',
+    'contains',
+    'fillIn',
+    'focus',
+    'isHidden',
+    'isPresent',
+    'isVisible',
+    'select',
+    'text',
+    'value',
+  ].forEach((prop) => {
+    test(`does not override .${prop}`, async function (assert) {
       let page = create({
-        [prop]: 'foo bar'
+        [prop]: 'foo bar',
       });
 
       await this.createTemplate('');
@@ -57,13 +67,13 @@ module('dsl', function (hooks) {
     });
   });
 
-  test('generates .blur', async function(assert) {
+  test('generates .blur', async function (assert) {
     assert.expect(1);
 
     let page = create({
       foo: {
-        scope: 'button'
-      }
+        scope: 'button',
+      },
     });
 
     await this.createTemplate('<button>dummy text</button>');
@@ -75,12 +85,11 @@ module('dsl', function (hooks) {
     await page.foo.blur();
   });
 
-  test('generates .clickOn', async function(assert) {
+  test('generates .clickOn', async function (assert) {
     assert.expect(1);
 
     let page = create({
-      foo: {
-      }
+      foo: {},
     });
 
     await this.createTemplate('<button>dummy text</button>');
@@ -92,13 +101,13 @@ module('dsl', function (hooks) {
     await page.foo.clickOn('dummy text');
   });
 
-  test('generates .click', async function(assert) {
+  test('generates .click', async function (assert) {
     assert.expect(1);
 
     let page = create({
       foo: {
-        scope: 'button'
-      }
+        scope: 'button',
+      },
     });
 
     await this.createTemplate('<button>dummy text</button>');
@@ -108,11 +117,11 @@ module('dsl', function (hooks) {
     await page.foo.click();
   });
 
-  test('generates .contains', async function(assert) {
+  test('generates .contains', async function (assert) {
     let page = create({
       foo: {
-        scope: 'span'
-      }
+        scope: 'span',
+      },
     });
 
     await this.createTemplate('Ipsum <span>Dolor</span>');
@@ -120,12 +129,12 @@ module('dsl', function (hooks) {
     assert.ok(page.foo.contains('or'), 'contains');
   });
 
-  test('generates .text', async function(assert) {
+  test('generates .text', async function (assert) {
     let page = create({
       scope: '.scope',
       foo: {
-        scope: 'span'
-      }
+        scope: 'span',
+      },
     });
 
     await this.createTemplate(`
@@ -137,13 +146,13 @@ module('dsl', function (hooks) {
     assert.equal(page.foo.text, 'Dolor');
   });
 
-  test('generates .fillIn', async function(assert) {
+  test('generates .fillIn', async function (assert) {
     assert.expect(1);
 
     let page = create({
       foo: {
-        scope: 'input'
-      }
+        scope: 'input',
+      },
     });
 
     await this.createTemplate('<input name="email">');
@@ -153,13 +162,13 @@ module('dsl', function (hooks) {
     assert.equal(find('input').value, 'lorem ipsum');
   });
 
-  test('generates .focus', async function(assert) {
+  test('generates .focus', async function (assert) {
     assert.expect(1);
 
     let page = create({
       foo: {
-        scope: 'button'
-      }
+        scope: 'button',
+      },
     });
 
     await this.createTemplate('<button>dummy text</button>');
@@ -169,13 +178,13 @@ module('dsl', function (hooks) {
     await page.foo.focus();
   });
 
-  test('generates .select', async function(assert) {
+  test('generates .select', async function (assert) {
     assert.expect(1);
 
     let page = create({
       foo: {
-        scope: 'input'
-      }
+        scope: 'input',
+      },
     });
 
     await this.createTemplate('<input name="email">');
@@ -185,13 +194,13 @@ module('dsl', function (hooks) {
     assert.equal(find('input').value, 'lorem ipsum');
   });
 
-  test('generates .value', async function(assert) {
+  test('generates .value', async function (assert) {
     assert.expect(1);
 
     let page = create({
       foo: {
-        scope: 'input'
-      }
+        scope: 'input',
+      },
     });
 
     await this.createTemplate('<input value="lorem ipsum">');
@@ -199,62 +208,62 @@ module('dsl', function (hooks) {
     assert.equal(page.foo.value, 'lorem ipsum');
   });
 
-  test('generates .then', async function(assert) {
+  test('generates .then', async function (assert) {
     let page = create({
-      foo: {}
+      foo: {},
     });
 
     await this.createTemplate('');
 
-    assert.ok(typeof (page.then) === 'function');
-    assert.ok(typeof (page.foo.then) === 'function');
+    assert.ok(typeof page.then === 'function');
+    assert.ok(typeof page.foo.then === 'function');
   });
 
-  test('generates .as', async function(assert) {
+  test('generates .as', async function (assert) {
     assert.expect(2);
 
     let page = create({
       scope: 'span',
       foo: {
-        baz: 'foobar'
-      }
+        baz: 'foobar',
+      },
     });
 
     await this.createTemplate('Lorem <span>ipsum</span>');
 
-    let foo = page.foo.as(element => {
+    let foo = page.foo.as((element) => {
       assert.equal(element.text, 'ipsum');
     });
 
     assert.equal(foo.baz, 'foobar');
   });
 
-  test('generates .as when nested', async function(assert) {
+  test('generates .as when nested', async function (assert) {
     assert.expect(1);
 
     let page = create({
       scope: 'span',
       foo: {
         bar: {
-          scope: 'strong'
-        }
-      }
+          scope: 'strong',
+        },
+      },
     });
 
     await this.createTemplate(
       'Lorem <span>ipsum <strong>dolor</strong></span>'
     );
 
-    page.foo.bar.as(element => {
+    page.foo.bar.as((element) => {
       assert.equal(element.text, 'dolor');
     });
   });
 
-  test('generates .as in collections', async function(assert) {
+  test('generates .as in collections', async function (assert) {
     assert.expect(2);
 
     let page = create({
-      items: collection('ul li')
+      items: collection('ul li'),
     });
 
     await this.createTemplate(`
@@ -264,11 +273,11 @@ module('dsl', function (hooks) {
       </ul>
     `);
 
-    page.items[0].as(item => {
+    page.items[0].as((item) => {
       assert.equal(item.text, 'foo');
     });
 
-    page.items[1].as(item => {
+    page.items[1].as((item) => {
       assert.equal(item.text, 'bar');
     });
   });

@@ -51,11 +51,10 @@ export function property(propertyName, selector, userOptions = {}) {
     get(key) {
       let options = {
         pageObjectKey: key,
-        ...userOptions
+        ...userOptions,
       };
 
-
       return $(findOne(this, selector, options)).prop(propertyName);
-    }
+    },
   };
 }

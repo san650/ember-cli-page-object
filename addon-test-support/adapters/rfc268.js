@@ -6,9 +6,9 @@ import {
   triggerEvent,
   triggerKeyEvent,
   focus,
-  blur
+  blur,
 } from '@ember/test-helpers';
-import Adapter from "../adapter";
+import Adapter from '../adapter';
 
 export default class RFC268Adapter extends Adapter {
   get testContainer() {
@@ -28,7 +28,10 @@ export default class RFC268Adapter extends Adapter {
   }
 
   triggerEvent(element, eventName, eventOptions) {
-    if (typeof eventOptions.key !== 'undefined' || typeof eventOptions.keyCode !== 'undefined') {
+    if (
+      typeof eventOptions.key !== 'undefined' ||
+      typeof eventOptions.keyCode !== 'undefined'
+    ) {
       const key = eventOptions.key || eventOptions.keyCode;
 
       return triggerKeyEvent(element, eventName, key, eventOptions);

@@ -20,7 +20,7 @@ const thenDescriptor = {
     const chainedRoot = root._chainedTree || root;
 
     return chainedRoot._promise.then(...arguments);
-  }
+  },
 };
 
 const dsl = {
@@ -37,7 +37,7 @@ const dsl = {
   select: fillable(),
   text: text(),
   then: thenDescriptor,
-  value: value()
+  value: value(),
 };
 
 export default dsl;

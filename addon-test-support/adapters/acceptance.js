@@ -2,16 +2,13 @@
 /* eslint-disable ember/new-module-imports */
 const { $ } = Ember;
 
-import {
-  fillElement,
-  assertFocusable
-} from './helpers';
+import { fillElement, assertFocusable } from './helpers';
 
-import Adapter from "../adapter";
+import Adapter from '../adapter';
 
 export default class AcceptanceAdapter extends Adapter {
   get testContainer() {
-    return  '#ember-testing';
+    return '#ember-testing';
   }
 
   wait() {
@@ -33,7 +30,7 @@ export default class AcceptanceAdapter extends Adapter {
   }
 
   fillIn(element, content) {
-    /* global focus */
+    // global focus
     focus(element);
 
     fillElement(element, content);
@@ -46,7 +43,7 @@ export default class AcceptanceAdapter extends Adapter {
   }
 
   triggerEvent(element, eventName, eventOptions) {
-    /* global triggerEvent */
+    // global triggerEvent
     triggerEvent(element, eventName, eventOptions);
 
     return this.wait();

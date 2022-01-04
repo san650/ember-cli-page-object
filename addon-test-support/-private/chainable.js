@@ -40,7 +40,7 @@ function getChildNode(node, key) {
   let match;
   if ((match = /\[(\d+)\]$/.exec(key))) {
     // This is a collection item
-    let [ indexStr, index ] = match;
+    let [indexStr, index] = match;
     let name = key.slice(0, -indexStr.length);
 
     return node[name].objectAt(parseInt(index, 10));

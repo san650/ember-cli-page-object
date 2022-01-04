@@ -79,12 +79,14 @@ export function value(selector, userOptions = {}) {
     get(key) {
       let options = {
         pageObjectKey: key,
-        ...userOptions
+        ...userOptions,
       };
 
       const element = findOne(this, selector, options);
 
-      return element.hasAttribute('contenteditable') ? $(element).html() : $(element).val();
-    }
+      return element.hasAttribute('contenteditable')
+        ? $(element).html()
+        : $(element).val();
+    },
   };
 }

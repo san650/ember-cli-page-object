@@ -1,10 +1,6 @@
 import { test, module } from 'qunit';
 import { create, collection } from 'ember-cli-page-object';
-import {
-  fullScope,
-  getProperty,
-  objectHasProperty
-} from 'ember-cli-page-object/test-support/-private/helpers';
+import { fullScope } from 'ember-cli-page-object/test-support/-private/helpers';
 
 module('Unit | helpers | fullScope', function () {
   let page = create({
