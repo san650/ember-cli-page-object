@@ -1,6 +1,9 @@
 import Ember from 'ember';
 import hbs from 'htmlbars-inline-precompile';
-import { moduleForComponent, test } from 'ember-qunit';
+import {
+  moduleForIntegration as moduleForComponent,
+  testForIntegration as test
+} from 'dummy/tests/helpers/properties/integration-adapter';
 import { create } from 'ember-cli-page-object'
 import { createClickTrackerComponent, ClickTrackerDef } from './helpers';
 import { setAdapter } from 'ember-cli-page-object/test-support/adapters';
@@ -8,8 +11,11 @@ import ModuleForComponentNativeDOMAdapter from 'ember-cli-page-object/test-suppo
 
 const node = create(ClickTrackerDef);
 
-if (Ember.hasOwnProperty('$')) {
-  moduleForComponent('', 'Integration | integration adapter | actions [native-events]', {
+import require from 'require';
+const { wait } = require.has('ember-test-helpers') && require('ember-test-helpers');
+
+if (wait && Ember.hasOwnProperty('$')) {
+  moduleForComponent('', 'Integration | integration context | actions [native-events]', {
     integration: true,
 
     beforeEach(assert) {
@@ -17,6 +23,7 @@ if (Ember.hasOwnProperty('$')) {
 
       setAdapter(new ModuleForComponentNativeDOMAdapter());
 
+      // eslint-disable-next-line ember/no-test-this-render
       this.render(hbs`{{action-tracker}}`);
     },
 

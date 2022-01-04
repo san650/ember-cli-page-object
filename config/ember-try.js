@@ -81,6 +81,21 @@ module.exports = function() {
           }
         },
         {
+          name: 'ember-lts-3.28',
+          npm: {
+            devDependencies: {
+              'ember-source': '~3.28.0',
+              'ember-resolver': '^8.0.0'
+            }
+          },
+          env: {
+            EMBER_OPTIONAL_FEATURES: JSON.stringify({
+              'jquery-integration': false
+            })
+          }
+        },
+
+        {
           name: 'ember-release',
           npm: {
             devDependencies: {
@@ -158,6 +173,24 @@ module.exports = function() {
               'ember-cli-qunit': '4.3.0',
               'ember-source': null
             }
+          }
+        },
+        {
+          name: 'with-ember-qunit@5',
+          npm: {
+            devDependencies: {
+              'ember-source': '^3.28.0',
+              'ember-qunit': '^5.0.0',
+              'qunit': '~2.14.0',
+              '@ember/test-helpers': '^2.0.0',
+              'ember-qunit-source-map': null,
+              "ember-resolver": "^8.0.0",
+            }
+          },
+          env: {
+            EMBER_OPTIONAL_FEATURES: JSON.stringify({
+              'jquery-integration': false
+            })
           }
         },
         {

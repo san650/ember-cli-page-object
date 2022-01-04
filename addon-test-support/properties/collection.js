@@ -16,8 +16,8 @@ import { throwBetterError } from "../-private/better-errors";
  * - `forEach()` - Runs a function for each item in the collection
  * - `map()` - maps over the elements of the collection
  * - `mapBy()` - maps over the elements of the collecton by the specified property
- * - `find()` - finds first item of the array with assert by specified function
- * - `findBy()` - finds first item of the array with assert by property
+ * - `findOne()` - finds first item of the array with assert by specified function
+ * - `findOneBy()` - finds first item of the array with assert by property
  * - `toArray()` - returns an array containing all the items in the collection
  * - `[Symbol.iterator]()` - if supported by the environment, this allows the collection to be iterated with `for/of` and spread with `...` like a normal array
  *

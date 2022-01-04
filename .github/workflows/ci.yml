@@ -1,0 +1,78 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+      - master
+  pull_request: {}
+
+jobs:
+  test:
+    name: "Tests"
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install Node
+        uses: actions/setup-node@v2
+        with:
+          node-version: 10.x
+          cache: npm
+      - name: Install Dependencies
+        run: npm ci
+      - name: Lint js
+        run: npm run lint:js
+      - name: Lint hbs
+        run: npm run lint:hbs
+      - name: Run Tests
+        run: npm test
+
+  floating:
+    name: "Floating Dependencies"
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: 10.x
+          cache: npm
+      - name: Install Dependencies
+        run: npm install --no-shrinkwrap
+      - name: Run Tests
+        run: npm test
+
+  try-scenarios:
+    name: ${{ matrix.try-scenario }}
+    runs-on: ubuntu-latest
+    needs: 'test'
+
+    strategy:
+      fail-fast: true
+      matrix:
+        try-scenario:
+          - node-tests
+          - ember-lts-2.4
+          - ember-lts-2.8
+          - ember-lts-2.12
+          - ember-lts-2.16
+          - ember-lts-2.18
+          - ember-lts-3.28
+          # keep testing integration and acceptance contexts
+          - with-jquery COVERAGE=true
+          - with-ember-test-helpers
+          - with-@ember/test-helpers
+          - with-ember-qunit@5
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install Node
+        uses: actions/setup-node@v2
+        with:
+          node-version: 10.x
+          cache: npm
+      - name: Install Dependencies
+        run: npm ci
+      - name: Run Tests
+        run: ./node_modules/.bin/ember try:one ${{ matrix.try-scenario }}

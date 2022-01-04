@@ -1,3 +1,4 @@
+import { $ } from '../-private/helpers';
 import { findOne } from '../extend';
 
 /**
@@ -40,7 +41,6 @@ import { findOne } from '../extend';
  *
  * const page = create({
  *   scope: '.scope',
-
  *   spanContains: contains('span')
  * });
  *
@@ -71,7 +71,7 @@ export function contains(selector, userOptions = {}) {
           ...userOptions
         };
 
-        return findOne(this, selector, options).innerText.indexOf(textToSearch) > -1;
+        return $(findOne(this, selector, options)).text().indexOf(textToSearch) > -1;
       };
     }
   };
