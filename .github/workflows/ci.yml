@@ -53,8 +53,6 @@ jobs:
       matrix:
         try-scenario:
           - node-tests
-          - ember-lts-2.4
-          - ember-lts-2.8
           - ember-lts-2.12
           - ember-lts-2.16
           - ember-lts-2.18
