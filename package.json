@@ -136,7 +136,7 @@
     "walk-sync": "^0.3.2"
   },
   "engines": {
-    "node": "6.* || >= 7.*"
+    "node": "12.* || 14.* || >= 16"
   },
   "homepage": "http://ember-cli-page-object.js.org",
   "bugs": "https://github.com/san650/ember-cli-page-object/issues",
