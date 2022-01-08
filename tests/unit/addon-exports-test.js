@@ -4,7 +4,6 @@ module('Unit | Exports');
 
 /* global require */
 const Addon = require('ember-cli-page-object');
-const TestSupport = require('dummy/tests/page-object');
 const Extend = require('ember-cli-page-object/extend');
 const Macros = require('ember-cli-page-object/macros');
 
@@ -53,26 +52,6 @@ EXPECTED_METHODS.concat(HELPER_METHODS).forEach((method) => {
   test(`imports { ${method} } from addon`, function (assert) {
     assert.equal(
       typeof Addon[method],
-      'function',
-      `Imports PageObject.${method}`
-    );
-  });
-});
-
-EXPECTED_METHODS.forEach((method) => {
-  test(`imports PageObject.${method} from test-support`, function (assert) {
-    assert.equal(
-      typeof TestSupport['default'][method],
-      'function',
-      `Imports PageObject.${method}`
-    );
-  });
-});
-
-EXPECTED_METHODS.concat(HELPER_METHODS).forEach((method) => {
-  test(`imports { ${method} } from test-support`, function (assert) {
-    assert.equal(
-      typeof TestSupport[method],
       'function',
       `Imports PageObject.${method}`
     );
