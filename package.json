@@ -47,9 +47,6 @@
     "test:ember": "ember test",
     "test:ember-compatibility": "ember try:each"
   },
-  "resolutions": {
-    "sort-package-json": "~1.40.0"
-  },
   "dependencies": {
     "@babel/preset-env": "^7.12.11",
     "broccoli-file-creator": "^2.1.1",
