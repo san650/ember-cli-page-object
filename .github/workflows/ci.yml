@@ -68,7 +68,6 @@ jobs:
     strategy:
       matrix:
         try-scenario:
-          - with-ember-qunit@4
           - ember-lts-3.24
           - ember-lts-3.28
           - ember-release

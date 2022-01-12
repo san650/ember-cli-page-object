@@ -77,14 +77,6 @@ module.exports = async function () {
           },
         },
       },
-      {
-        name: 'with-ember-qunit@4',
-        npm: {
-          devDependencies: {
-            'ember-qunit': '^4.6.0',
-          },
-        },
-      },
       embroiderSafe(),
       embroiderOptimized(),
     ],
