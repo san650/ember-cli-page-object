@@ -10,6 +10,8 @@ import hbs from 'htmlbars-inline-precompile';
 import require from 'require';
 import { TestContext as DefaultTestContext } from 'ember-test-helpers';
 
+import $ from 'jquery';
+
 export interface TestContext extends DefaultTestContext {
   [k: string]: unknown;
 
@@ -21,15 +23,6 @@ export interface TestContext extends DefaultTestContext {
   ): Promise<unknown>
 
   findExternal(selector: string): JQuery;
-}
-
-/* eslint-disable ember/new-module-imports */
-// @ts-expect-error
-let { $ } = globalThis.Ember || {};
-/* eslint-enable ember/new-module-imports */
-
-if (typeof $ !== 'function') {
-  $ = require('jquery').default;
 }
 
 function render(...args: unknown[]) {
