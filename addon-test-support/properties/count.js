@@ -87,10 +87,10 @@ export function count(selector, userOptions = {}) {
     get(key) {
       let options = {
         pageObjectKey: key,
-        ...userOptions
+        ...userOptions,
       };
 
       return findMany(this, selector, options).length;
-    }
+    },
   };
 }

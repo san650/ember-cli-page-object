@@ -2,18 +2,18 @@ import { module, test } from 'qunit';
 import { create } from 'ember-cli-page-object';
 import deprecate from 'ember-cli-page-object/test-support/-private/deprecate';
 
-module('Deprecation | string-properties', function(hooks) {
-  hooks.beforeEach(function() {
+module('Deprecation | string-properties', function (hooks) {
+  hooks.beforeEach(function () {
     deprecate.__calls = [];
   });
 
-  hooks.afterEach(function() {
+  hooks.afterEach(function () {
     delete deprecate.__calls;
   });
 
-  test('works at top-level', function(assert) {
+  test('works at top-level', function (assert) {
     this.page = create({
-      stringProp: ''
+      stringProp: '',
     });
 
     // @todo: figure out and fix double deprecations
@@ -22,22 +22,22 @@ module('Deprecation | string-properties', function(hooks) {
         'string-properties-on-definition',
         'do not use string values on definitions',
         '1.17.0',
-        '2.0.0'
+        '2.0.0',
       ],
       [
         'string-properties-on-definition',
         'do not use string values on definitions',
         '1.17.0',
-        '2.0.0'
-      ]
+        '2.0.0',
+      ],
     ]);
   });
 
-  test('works for nested definitions', function(assert) {
+  test('works for nested definitions', function (assert) {
     this.page = create({
       nested: {
-        stringProp: ''
-      }
+        stringProp: '',
+      },
     });
 
     // @todo: figure out and fix double deprecations
@@ -46,30 +46,30 @@ module('Deprecation | string-properties', function(hooks) {
         'string-properties-on-definition',
         'do not use string values on definitions',
         '1.17.0',
-        '2.0.0'
+        '2.0.0',
       ],
       [
         'string-properties-on-definition',
         'do not use string values on definitions',
         '1.17.0',
-        '2.0.0'
-      ]
+        '2.0.0',
+      ],
     ]);
   });
 
-  test('allows scope', function(assert) {
+  test('allows scope', function (assert) {
     this.page = create({
-      scope: ''
+      scope: '',
     });
 
-    assert.deepEqual(deprecate.__calls, [])
+    assert.deepEqual(deprecate.__calls, []);
   });
 
-  test('allows testContainer', function(assert) {
+  test('allows testContainer', function (assert) {
     this.page = create({
-      testContainer: ''
+      testContainer: '',
     });
 
-    assert.deepEqual(deprecate.__calls, [])
+    assert.deepEqual(deprecate.__calls, []);
   });
 });

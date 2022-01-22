@@ -72,13 +72,13 @@ export function isPresent(selector, userOptions = {}) {
     get(key) {
       let options = {
         pageObjectKey: key,
-        ...userOptions
+        ...userOptions,
       };
 
       let elements = findMany(this, selector, options);
       guardMultiple(elements, selector);
 
       return elements.length === 1;
-    }
+    },
   };
 }

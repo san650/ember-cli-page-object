@@ -10,22 +10,22 @@ export default Controller.extend({
       result: '',
       expression: '',
       op: '',
-      loading: false
+      loading: false,
     });
   },
 
   stack: c({
     get() {
       return [];
-    }
+    },
   }),
 
   actions: {
     keyPress(key, asyncOp) {
       let exec = () => {
-        let result = this.get('expression');
-        let stack = this.get('stack');
-        let op = this.get('op');
+        let result = this.expression;
+        let stack = this.stack;
+        let op = this.op;
 
         switch (key) {
           case '+':
@@ -45,11 +45,11 @@ export default Controller.extend({
             this.set('op', '-');
             break;
           case '=':
-            result = stack.reduce((result, value) => result + value , 0);
+            result = stack.reduce((result, value) => result + value, 0);
             this.set('expression', result.toString());
             break;
         }
-      }
+      };
 
       if (asyncOp) {
         this.set('loading', true);
@@ -60,6 +60,6 @@ export default Controller.extend({
       } else {
         exec();
       }
-    }
-  }
+    },
+  },
 });

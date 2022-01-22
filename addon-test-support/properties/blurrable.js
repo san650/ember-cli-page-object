@@ -61,18 +61,17 @@ import { findOne } from '../extend';
  * @param {boolean} options.resetScope - Ignore parent scope
  * @param {string} options.testContainer - Context where to search elements in the DOM
  * @return {Descriptor}
-*/
+ */
 export function blurrable(selector = '', userOptions = {}) {
   return action(
     {
       ...userOptions,
-      selector
+      selector,
     },
-    function() {
+    function () {
       const element = findOne(this.node, this.query.selector, this.query);
 
       return this.adapter.blur(element);
     }
   );
 }
-

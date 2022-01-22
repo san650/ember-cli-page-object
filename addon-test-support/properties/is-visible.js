@@ -83,13 +83,13 @@ export function isVisible(selector, userOptions = {}) {
     get(key) {
       let options = {
         pageObjectKey: key,
-        ...userOptions
+        ...userOptions,
       };
 
       let elements = findMany(this, selector, options);
       guardMultiple(elements, selector, options.multiple);
 
       return elements.length === 1 && $(elements[0]).is(':visible');
-    }
+    },
   };
 }

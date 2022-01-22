@@ -67,10 +67,10 @@ export function attribute(attributeName, selector, userOptions = {}) {
     get(key) {
       let options = {
         pageObjectKey: key,
-        ...userOptions
+        ...userOptions,
       };
 
       return $(findOne(this, selector, options)).attr(attributeName);
-    }
+    },
   };
 }

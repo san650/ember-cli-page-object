@@ -5,17 +5,17 @@ module.exports = {
 
   options: {
     'ember-cli-babel': {
-      useBabelConfig: true
+      useBabelConfig: true,
     },
     nodeAssets: {
       ceibo: {
-        vendor: ['index.js']
+        vendor: ['index.js'],
       },
       jquery: {
         vendor: ['dist/jquery.js'],
-        destDir: 'ecpo-jquery'
-      }
-    }
+        destDir: 'ecpo-jquery',
+      },
+    },
   },
 
   included() {
@@ -46,38 +46,34 @@ module.exports = {
     //
     // which is a default behavior in ember-cli
     const reexportsTree = mergeTrees(
-      [
-        'index',
-        'extend',
-        'macros',
-        'adapter',
-        'adapters',
-      ].map(publicModuleName =>
-        writeFile(
-          `/${this.moduleName()}/${publicModuleName}.js`,
-          `export * from '${this.moduleName()}/test-support/${publicModuleName}';`
-        )
-      ).concat(
-        [
-          'adapters/acceptance-native-events',
-          'adapters/acceptance',
-          'adapters/integration-native-events',
-          'adapters/integration',
-          'adapters/rfc268',
-        ].map(publicModuleName =>
+      ['index', 'extend', 'macros', 'adapter', 'adapters']
+        .map((publicModuleName) =>
           writeFile(
             `/${this.moduleName()}/${publicModuleName}.js`,
-            `export { default } from '${this.moduleName()}/test-support/${publicModuleName}';`
+            `export * from '${this.moduleName()}/test-support/${publicModuleName}';`
           )
         )
-      )
+        .concat(
+          [
+            'adapters/acceptance-native-events',
+            'adapters/acceptance',
+            'adapters/integration-native-events',
+            'adapters/integration',
+            'adapters/rfc268',
+          ].map((publicModuleName) =>
+            writeFile(
+              `/${this.moduleName()}/${publicModuleName}.js`,
+              `export { default } from '${this.moduleName()}/test-support/${publicModuleName}';`
+            )
+          )
+        )
     );
 
     return mergeTrees([
       testSupportTree,
-      this.preprocessJs(
-        reexportsTree, '/', this.name, { registry: this.registry, }
-      )
+      this.preprocessJs(reexportsTree, '/', this.name, {
+        registry: this.registry,
+      }),
     ]);
   },
 
@@ -90,5 +86,5 @@ module.exports = {
     } while (current.parent.parent && (current = current.parent));
 
     return app;
-  }
+  },
 };

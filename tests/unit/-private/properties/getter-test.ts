@@ -1,13 +1,16 @@
-import { moduleForProperty } from '../../../helpers/properties';
+import { setupRenderingTest, TestContext } from '../../../helpers';
 import {
   create,
   property,
   value
 } from 'ember-cli-page-object';
 import { getter } from 'ember-cli-page-object/macros';
+import { module, test } from 'qunit';
 
-moduleForProperty('getter', function(test) {
-  test('returns the result of the passed-in function', function(assert) {
+module('getter', function(hooks) {
+  setupRenderingTest(hooks);
+
+  test('returns the result of the passed-in function', function(this: TestContext, assert) {
     assert.expect(2);
 
     const page = create({
@@ -23,7 +26,7 @@ moduleForProperty('getter', function(test) {
     assert.equal(page.bar, 'ipsum');
   });
 
-  test('executes the passed-in function with the correct context for `this`', async function (assert) {
+  test('executes the passed-in function with the correct context for `this`', async function (this: TestContext, assert) {
     assert.expect(1);
 
     const page = create({
@@ -34,7 +37,7 @@ moduleForProperty('getter', function(test) {
       })
     });
 
-    await this.adapter.createTemplate(this, page, `
+    await this.createTemplate(`
       <input value="">
       <button disabled="true">Submit</button>
     `);
@@ -42,7 +45,7 @@ moduleForProperty('getter', function(test) {
     assert.ok(page.isFormEmpty);
   });
 
-  test('calls the passed-in function with the property key', function(assert) {
+  test('calls the passed-in function with the property key', function(this: TestContext, assert) {
     assert.expect(2);
 
     const page = create({
@@ -55,7 +58,7 @@ moduleForProperty('getter', function(test) {
     assert.ok(page.foo);
   });
 
-  test('throws an error if a function is not passed in', function(assert) {
+  test('throws an error if a function is not passed in', function(this: TestContext, assert) {
     assert.expect(1);
 
     const page = create({

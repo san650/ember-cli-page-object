@@ -8,14 +8,14 @@ export default Component.extend({
   stack: c({
     get() {
       return [];
-    }
+    },
   }),
 
   actions: {
     keyPress(key) {
-      let result = this.get('result');
-      let stack = this.get('stack');
-      let op = this.get('op');
+      let result = this.result;
+      let stack = this.stack;
+      let op = this.op;
 
       switch (key) {
         case '+':
@@ -34,10 +34,10 @@ export default Component.extend({
           this.set('op', '-');
           break;
         case '=':
-          result = stack.reduce((result, value) => result + value , 0);
+          result = stack.reduce((result, value) => result + value, 0);
           this.set('result', result.toString());
           break;
       }
-    }
-  }
+    },
+  },
 });

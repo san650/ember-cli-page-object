@@ -77,7 +77,7 @@ export function isHidden(selector, userOptions = {}) {
     get(key) {
       let options = {
         pageObjectKey: key,
-        ...userOptions
+        ...userOptions,
       };
 
       let elements = findMany(this, selector, options);
@@ -85,6 +85,6 @@ export function isHidden(selector, userOptions = {}) {
       guardMultiple(elements, selector);
 
       return elements.length === 0 || $(elements[0]).is(':hidden');
-    }
+    },
   };
 }

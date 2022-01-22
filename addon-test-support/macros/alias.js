@@ -85,7 +85,7 @@ export function alias(pathToProp, options = {}) {
           return value;
         }
 
-        return function(...args) {
+        return function (...args) {
           // We can't just return value(...args) here because if the alias points
           // to a property on a child node, then the return value would be that
           // child node rather than this node.
@@ -96,7 +96,7 @@ export function alias(pathToProp, options = {}) {
       } catch (e) {
         throwBetterError(this, key, e);
       }
-    }
+    },
   };
 }
 
@@ -118,7 +118,11 @@ function getProperty(object, pathToProp) {
   while (pathSegments.length > 0) {
     const key = pathSegments.shift();
 
-    if (parent === null || typeof parent !== 'object' || !parent.hasOwnProperty(key)) {
+    if (
+      parent === null ||
+      typeof parent !== 'object' ||
+      !Object.prototype.hasOwnProperty.call(parent, key)
+    ) {
       throw new Error(`${ALIASED_PROP_NOT_FOUND} \`${pathToProp}\`.`);
     }
 

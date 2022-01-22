@@ -1,24 +1,23 @@
 import { module, test } from 'qunit';
 import deprecate from 'ember-cli-page-object/test-support/-private/deprecate';
 
-module('Unit | deprecate', function(hooks) {
-  let origWarn,
-    calls;
+module('Unit | deprecate', function (hooks) {
+  let origWarn, calls;
 
-  hooks.beforeEach(function() {
+  hooks.beforeEach(function () {
     origWarn = console.warn;
 
     calls = [];
     console.warn = (...args) => {
       calls.push(args);
-    }
+    };
   });
 
-  hooks.afterEach(function() {
+  hooks.afterEach(function () {
     console.warn = origWarn;
   });
 
-  test('it renders', function(assert) {
+  test('it renders', function (assert) {
     deprecate('a-name', 'a message', '1.1', '1.2.3');
 
     assert.equal(calls.length, 1);
@@ -29,23 +28,23 @@ module('Unit | deprecate', function(hooks) {
     );
   });
 
-  module('tracking', function(hooks) {
-    hooks.afterEach(function() {
+  module('tracking', function (hooks) {
+    hooks.afterEach(function () {
       delete deprecate.__calls;
     });
 
-    test('disabled by default', function(assert) {
+    test('disabled by default', function (assert) {
       deprecate('a-name', 'a message', '1.1', '1.2.3');
 
       assert.strictEqual(deprecate.__calls, undefined);
     });
 
-    test('it works', function(assert) {
+    test('it works', function (assert) {
       deprecate.__calls = [];
       deprecate('a-name', 'a message', '1.1', '1.2.3');
 
       assert.deepEqual(deprecate.__calls, [
-        ['a-name', 'a message', '1.1', '1.2.3']
+        ['a-name', 'a message', '1.1', '1.2.3'],
       ]);
     });
   });

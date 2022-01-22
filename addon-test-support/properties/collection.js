@@ -1,9 +1,12 @@
-/* global Symbol */
 import Ceibo from 'ceibo';
-import { buildSelector, isPageObject, getPageObjectDefinition } from '../-private/helpers';
+import {
+  buildSelector,
+  isPageObject,
+  getPageObjectDefinition,
+} from '../-private/helpers';
 import { create } from '../create';
 import { count } from './count';
-import { throwBetterError } from "../-private/better-errors";
+import { throwBetterError } from '../-private/better-errors';
 
 /**
  * Creates a enumerable that represents a collection of items. The collection is zero-indexed
@@ -147,7 +150,7 @@ export function collection(scope, definition) {
     throw new Error('collection requires `scope` as the first argument');
   }
 
-  if(isPageObject(definition)){
+  if (isPageObject(definition)) {
     //extract the stored definition from the page object
     definition = getPageObjectDefinition(definition);
   }
@@ -159,8 +162,10 @@ export function collection(scope, definition) {
       // Set the value on the descriptor so that it will be picked up and applied by Ceibo.
       // This does mutate the descriptor, but because `setup` is always called before the
       // value is assigned we are guaranteed to get a new, unique Collection instance each time.
-      descriptor.value = proxyIfSupported(new Collection(scope, definition, node, key));
-    }
+      descriptor.value = proxyIfSupported(
+        new Collection(scope, definition, node, key)
+      );
+    },
   };
 
   return descriptor;
@@ -173,12 +178,15 @@ export class Collection {
     this.parent = parent;
     this.key = key;
 
-    this._itemCounter = create({
-      count: count(scope, {
-        resetScope: this.definition.resetScope,
-        testContainer: this.definition.testContainer
-      })
-    }, { parent });
+    this._itemCounter = create(
+      {
+        count: count(scope, {
+          resetScope: this.definition.resetScope,
+          testContainer: this.definition.testContainer,
+        }),
+      },
+      { parent }
+    );
 
     this._items = [];
   }
@@ -250,7 +258,8 @@ export class Collection {
   }
 
   _assertFoundElements(elements, ...args) {
-    const argsToText = args.length === 1 ? 'condition': `${args[0]}: "${args[1]}"`;
+    const argsToText =
+      args.length === 1 ? 'condition' : `${args[0]}: "${args[1]}"`;
     if (elements.length > 1) {
       throwBetterError(
         this.parent,
@@ -260,7 +269,11 @@ export class Collection {
     }
 
     if (elements.length === 0) {
-      throwBetterError(this.parent, this.key, `cannot find element by ${argsToText}`);
+      throwBetterError(
+        this.parent,
+        this.key,
+        `cannot find element by ${argsToText}`
+      );
     }
   }
 
@@ -277,8 +290,8 @@ export class Collection {
   }
 }
 
-if (typeof (Symbol) !== 'undefined' && Symbol.iterator) {
-  Collection.prototype[Symbol.iterator] = function() {
+if (typeof Symbol !== 'undefined' && Symbol.iterator) {
+  Collection.prototype[Symbol.iterator] = function () {
     let i = 0;
     let items = this.toArray();
     let next = () => ({ done: i >= items.length, value: items[i++] });
@@ -291,7 +304,7 @@ function proxyIfSupported(instance) {
   if (window.Proxy) {
     return new window.Proxy(instance, {
       get: function (target, name) {
-        if (typeof (name) === 'number' || typeof (name) === 'string') {
+        if (typeof name === 'number' || typeof name === 'string') {
           let index = parseInt(name, 10);
 
           if (!isNaN(index)) {
@@ -300,7 +313,7 @@ function proxyIfSupported(instance) {
         }
 
         return target[name];
-      }
+      },
     });
   } else {
     return instance;

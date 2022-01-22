@@ -1,7 +1,12 @@
-import { moduleForProperty } from '../../../helpers/properties';
+import { setupRenderingTest } from '../../../helpers';
 import { create, clickOnText } from 'ember-cli-page-object';
+import { render, find, findAll } from '@ember/test-helpers';
+import hbs from 'htmlbars-inline-precompile';
+import { module, test } from 'qunit';
 
-moduleForProperty('clickOnText', function(test) {
+module('clickOnText', function(hooks) {
+  setupRenderingTest(hooks);
+
   test('calls click helper', async function(assert) {
     assert.expect(2);
 
@@ -10,24 +15,24 @@ moduleForProperty('clickOnText', function(test) {
       bar: clickOnText('button')
     });
 
-    await this.adapter.createTemplate(this, page, `
+    await render(hbs`
       <fieldset>
-        <button>Lorem</button>
-        <button>Ipsum</button>
+        <button id="first">Lorem</button>
+        <button id="last">Ipsum</button>
       </fieldset>
     `);
 
-    this.adapter.$('fieldset :contains("Lorem"):last').one('click', function() {
+    find('#first')!.addEventListener('click', () => {
       assert.ok(true);
     });
 
-    await this.adapter.await(page.foo('Lorem'));
-
-    this.adapter.$('button:contains("Lorem")').one('click', function() {
-      assert.ok(true);
+    find('#last')!.addEventListener('click', () => {
+      assert.ok(false);
     });
 
-    await this.adapter.await(page.bar('Lorem'));
+    await page.foo('Lorem');
+
+    await page.bar('Lorem');
   });
 
   test('looks for elements inside the scope', async function(assert) {
@@ -38,22 +43,26 @@ moduleForProperty('clickOnText', function(test) {
       bar: clickOnText('button', { scope: '.scope' })
     });
 
-    await this.adapter.createTemplate(this, page, `
+    await render(hbs`
       <div class="scope">
         <fieldset>
-          <button>Lorem</button>
-          <button>Ipsum</button>
+          <button id="first">Lorem</button>
+          <button id="last">Ipsum</button>
         </fieldset>
       </div>
     `);
 
-    this.adapter.$('.scope fieldset :contains("Lorem"):last').one('click', () => assert.ok(1));
+    find('#first')!.addEventListener('click', () => {
+      assert.ok(true);
+    });
 
-    await this.adapter.await(page.foo('Lorem'));
+    find('#last')!.addEventListener('click', () => {
+      assert.ok(false);
+    });
 
-    this.adapter.$('.scope button:contains("Lorem")').one('click', () => assert.ok(1));
+    await page.foo('Lorem');
 
-    await this.adapter.await(page.bar('Lorem'));
+    await page.bar('Lorem');
   });
 
   test("looks for elements inside page's scope", async function(assert) {
@@ -65,22 +74,26 @@ moduleForProperty('clickOnText', function(test) {
       bar: clickOnText('button')
     });
 
-    await this.adapter.createTemplate(this, page, `
+    await render(hbs`
       <div class="scope">
         <fieldset>
-          <button>Lorem</button>
-          <button>Ipsum</button>
+          <button id="first">Lorem</button>
+          <button id="last">Ipsum</button>
         </fieldset>
       </div>
     `);
 
-    this.adapter.$('.scope fieldset :contains("Lorem"):last').one('click', () => assert.ok(1));
+    find('#first')!.addEventListener('click', () => {
+      assert.ok(true);
+    });
 
-    await this.adapter.await(page.foo('Lorem'));
+    find('#last')!.addEventListener('click', () => {
+      assert.ok(false);
+    });
 
-    this.adapter.$('.scope button:contains("Lorem")').one('click', () => assert.ok(1));
+    await page.foo('Lorem');
 
-    await this.adapter.await(page.bar('Lorem'));
+    await page.bar('Lorem');
   });
 
   test('resets scope', async function(assert) {
@@ -92,38 +105,40 @@ moduleForProperty('clickOnText', function(test) {
       bar: clickOnText('button', { resetScope: true })
     });
 
-    await this.adapter.createTemplate(this, page, `
+    await render(hbs`
       <fieldset>
-        <button>Lorem</button>
-        <button>Ipsum</button>
+        <button id="first">Lorem</button>
+        <button id="last">Ipsum</button>
       </fieldset>
     `);
 
-    this.adapter.$('fieldset :contains("Lorem"):last').one('click', () => assert.ok(1));
+    find('#first')!.addEventListener('click', () => {
+      assert.ok(true);
+    });
 
-    await this.adapter.await(page.foo('Lorem'));
+    find('#last')!.addEventListener('click', () => {
+      assert.ok(false);
+    });
 
-    this.adapter.$('button:contains("Lorem")').one('click', () => assert.ok(1));
+    await page.foo('Lorem');
 
-    await this.adapter.await(page.bar('Lorem'));
+    await page.bar('Lorem');
   });
 
   test('returns chainable object', async function(assert) {
     assert.expect(1);
 
-    let page;
-
-    page = create({
+    let page = create({
       dummy: 'value',
 
       foo: clickOnText()
     });
 
-    await this.adapter.createTemplate(this, page, '<button>dummy text</button>');
+    await render(hbs`<button>dummy text</button>`);
 
     let ret = page.foo('dummy text');
     assert.ok(ret.foo);
-    await this.adapter.await(ret);
+    await ret;
   });
 
   test('finds element by index', async function(assert) {
@@ -134,22 +149,28 @@ moduleForProperty('clickOnText', function(test) {
       bar: clickOnText('button', { at: 2 })
     });
 
-    await this.adapter.createTemplate(this, page, `
+    await render(hbs`
       <fieldset>
-        <button>Lorem</button>
-        <button>Lorem</button>
-        <button>Lorem</button>
-        <button>Ipsum</button>
+        <button class="other">Lorem</button>
+        <button class="other">Lorem</button>
+        <button id="target">Lorem</button>
+        <button class="other">Ipsum</button>
       </fieldset>
     `);
 
-    this.adapter.$('fieldset :contains("Lorem"):eq(2)').one('click', () => assert.ok(1));
+    find('#target')!.addEventListener('click', () => {
+      assert.ok(true);
+    });
 
-    await this.adapter.await(page.foo('Lorem'));
+    findAll('.other')!.forEach((otherElement) => {
+      otherElement.addEventListener('click', () => {
+        assert.ok(false);
+      });
+    })
 
-    this.adapter.$('button:contains("Lorem"):eq(2)').one('click', () => assert.ok(1));
+    await page.foo('Lorem');
 
-    await this.adapter.await(page.bar('Lorem'));
+    await page.bar('Lorem');
   });
 
   test('looks for elements outside the testing container', async function(assert) {
@@ -162,11 +183,14 @@ moduleForProperty('clickOnText', function(test) {
       foo: clickOnText('button', { testContainer: expectedContext })
     });
 
-    await this.adapter.createTemplate(this, page, '<button>Lorem</button>', { useAlternateContainer: true });
+    document.getElementById(
+      'alternate-ember-testing'
+    )!.innerHTML = `<button type="button">Lorem</button>`;
 
-    this.adapter.$('button', true).one('click', () => assert.ok(1));
+    document.querySelector('#alternate-ember-testing button')!
+      .addEventListener('click', () => assert.ok(1));
 
-    await this.adapter.await(page.foo('Lorem'));
+    await page.foo('Lorem');
   });
 
   test('looks for elements within test container specified at node level', async function(assert) {
@@ -178,12 +202,16 @@ moduleForProperty('clickOnText', function(test) {
       foo: clickOnText('button')
     });
 
-    await this.adapter.createTemplate(this, page, '<button>Lorem</button>', { useAlternateContainer: true });
-    await this.adapter.createTemplate(this, page, '<button>Lorem</button>');
+    document.getElementById(
+      'alternate-ember-testing'
+    )!.innerHTML = `<button type="button">Lorem</button>`;
 
-    this.adapter.$('button', true).one('click', () => assert.ok(1));
+    await render(hbs`<button type="button">Lorem</button>`);
 
-    await this.adapter.await(page.foo('Lorem'));
+    document.querySelector('#alternate-ember-testing button')!
+      .addEventListener('click', () => assert.ok(1));
+
+    await page.foo('Lorem');
   });
 
   test("raises an error when the element doesn't exist", async function(assert) {
@@ -199,9 +227,9 @@ moduleForProperty('clickOnText', function(test) {
       }
     });
 
-    await this.adapter.createTemplate(this, page);
+    await render(hbs``);
 
-    await this.adapter.throws(assert, function() {
+    assert.throws(() => {
       return page.foo.bar.baz.qux('Lorem');
     }, /page\.foo\.bar\.baz\.qux/, 'Element not found');
   });
@@ -213,11 +241,11 @@ moduleForProperty('clickOnText', function(test) {
       foo: clickOnText('button')
     });
 
-    await this.adapter.createTemplate(this, page, '<button style="display:none">Click me</button>');
+    await render(hbs`<button type="button" style="display:none">Click me</button>`);
 
-    this.adapter.$('button').on('click', () => assert.ok(1));
+    find('button')!.addEventListener('click', () => assert.ok(1));
 
-    await this.adapter.await(page.foo('Click me'));
+    await page.foo('Click me');
   });
 
   test('raises an error when the element is not visible and `visible` is true', async function(assert) {
@@ -227,10 +255,12 @@ moduleForProperty('clickOnText', function(test) {
       foo: clickOnText('button', { visible: true })
     });
 
-    await this.adapter.createTemplate(this, page, '<button style="display:none">Click me</button>');
+    await render(hbs`<button type="button" style="display:none">Click me</button>`);
 
-    await this.adapter.throws(assert, function() {
-      return page.foo('Click me');
-    }, /page\.foo/, 'Element not found');
+    await assert.throws(
+      () => page.foo('Click me'),
+      /page\.foo/,
+      'Element not found'
+    );
   });
 });

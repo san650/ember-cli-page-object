@@ -1,26 +1,29 @@
 import { $ } from '../-private/helpers';
-import action from '../-private/action'
+import action from '../-private/action';
 
 function fillInDynamicSegments(path, params) {
-  return path.split('/').map(function(segment) {
-    let match = segment.match(/^:(.+)$/);
+  return path
+    .split('/')
+    .map(function (segment) {
+      let match = segment.match(/^:(.+)$/);
 
-    if (match) {
-      let [, key] = match;
-      let value = params[key];
+      if (match) {
+        let [, key] = match;
+        let value = params[key];
 
-      if (typeof (value) === 'undefined') {
-        throw new Error(`Missing parameter for '${key}'`);
+        if (typeof value === 'undefined') {
+          throw new Error(`Missing parameter for '${key}'`);
+        }
+
+        // Remove dynamic segment key from params
+        delete params[key];
+
+        return encodeURIComponent(value);
       }
 
-      // Remove dynamic segment key from params
-      delete params[key];
-
-      return encodeURIComponent(value);
-    }
-
-    return segment;
-  }).join('/');
+      return segment;
+    })
+    .join('/');
 }
 
 function appendQueryParams(path, queryParams) {
@@ -88,7 +91,7 @@ function appendQueryParams(path, queryParams) {
  * @throws Will throw an error if dynamic segments are not filled
  */
 export function visitable(path) {
-  return action(function(dynamicSegmentsAndQueryParams = {}) {
+  return action(function (dynamicSegmentsAndQueryParams = {}) {
     let params = { ...dynamicSegmentsAndQueryParams };
     let fullPath = fillInDynamicSegments(path, params);
 

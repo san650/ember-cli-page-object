@@ -3,38 +3,73 @@ import {
   setupRenderingTest as upstreamSetupRenderingTest,
 } from 'ember-qunit';
 
-// @ts-ignore
-import { setAdapter } from 'ember-cli-page-object/test-support/adapters';
+import { setAdapter } from 'ember-cli-page-object/adapters';
+import RFC268Adapter from 'ember-cli-page-object/adapters/rfc268';
+
+import hbs from 'htmlbars-inline-precompile';
+import require from 'require';
+import { TestContext as DefaultTestContext } from 'ember-test-helpers';
+
+import $ from 'jquery';
+
+export interface TestContext extends DefaultTestContext {
+  [k: string]: unknown;
+
+  createTemplate(
+    template: string,
+    options?: {
+      useAlternateContainer?: boolean
+    }
+  ): Promise<unknown>
+
+  findExternal(selector: string): JQuery;
+}
+
+function render(...args: unknown[]) {
+  return require('@ember/test-helpers').render(...args);
+}
 
 export function setupApplicationTest(hooks: NestedHooks) {
-  const Rfc268Adapter = requireRfc268Adapter();
-
   upstreamSetupApplicationTest(hooks);
 
   hooks.beforeEach(function() {
-    setAdapter(new Rfc268Adapter());
+    setAdapter(new RFC268Adapter());
   });
+
+  hooks.afterEach(function() {
+    document.getElementById('alternate-ember-testing')!.innerHTML = '';
+  })
 }
 
 export function setupRenderingTest(hooks: NestedHooks) {
-  const Rfc268Adapter = requireRfc268Adapter();
-
   upstreamSetupRenderingTest(hooks);
 
-  hooks.beforeEach(function() {
-    setAdapter(new Rfc268Adapter());
+  hooks.beforeEach(function(this: TestContext) {
+    setAdapter(new RFC268Adapter());
+
+    const testContext = this;
+
+    this.createTemplate = function(template, options): Promise<unknown> {
+      if (options && options.useAlternateContainer) {
+        // The idea is to render the HTML outside the testing container so we
+        // render an empty component
+        $('#alternate-ember-testing').html(template);
+        testContext.set('raw', '');
+      } else {
+        testContext.set('raw', template);
+      }
+
+      return render(hbs`{{html-render html=this.raw}}`);
+    }
+
+    this.findExternal = function(selector: string): JQuery {
+      return $(selector, '#alternate-ember-testing');
+    }
   });
-}
 
-function requireRfc268Adapter() {
-  const { require } = window;
-  const hasRfc268 = ( require as any).has('@ember/test-helpers');
-
-  if (!hasRfc268) {
-    throw new Error(`"@ember/test-helpers" not installed.`)
-  }
-
-  return require('ember-cli-page-object/test-support/adapters/rfc268').default;
+  hooks.afterEach(function() {
+    document.getElementById('alternate-ember-testing')!.innerHTML = '';
+  })
 }
 
 export { setupTest } from 'ember-qunit';

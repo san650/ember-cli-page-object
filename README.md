@@ -24,7 +24,9 @@ You can find more information about this design pattern here:
 * [Page Objects - Selenium wiki](https://github.com/SeleniumHQ/selenium/wiki/PageObjects)
 * [PageObject - Martin Fowler](http://martinfowler.com/bliki/PageObject.html)
 
-## Community
+* Ember.js v3.16 or above
+* Ember CLI v2.13 or above
+* Node.js v10 or above
 
 Let's work together to improve this addon!
 

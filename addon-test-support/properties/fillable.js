@@ -117,7 +117,7 @@ import { findOne } from '../-private/finders';
 export function fillable(selector = '', userOptions = {}) {
   return action(
     { ...userOptions, selector },
-    function(contentOrClue, content) {
+    function (contentOrClue, content) {
       let clue;
       if (content === undefined) {
         content = contentOrClue;
@@ -136,20 +136,22 @@ export function fillable(selector = '', userOptions = {}) {
       const element = findOne(this.node, scopeSelector, this.query);
 
       return this.adapter.fillIn(element, content);
-  });
+    }
+  );
 }
 
 function findSelectorByClue({ node, query }, clue) {
-  let cssClues = ['input', 'textarea', 'select', '[contenteditable]'].map((tag) => [
-    `${tag}[data-test="${clue}"]`,
-    `${tag}[aria-label="${clue}"]`,
-    `${tag}[placeholder="${clue}"]`,
-    `${tag}[name="${clue}"]`,
-    `${tag}#${clue}`
-  ])
-  .reduce((total, other) => total.concat(other), [])
+  let cssClues = ['input', 'textarea', 'select', '[contenteditable]']
+    .map((tag) => [
+      `${tag}[data-test="${clue}"]`,
+      `${tag}[aria-label="${clue}"]`,
+      `${tag}[placeholder="${clue}"]`,
+      `${tag}[name="${clue}"]`,
+      `${tag}#${clue}`,
+    ])
+    .reduce((total, other) => total.concat(other), []);
 
-  return cssClues.find(extraScope => {
+  return cssClues.find((extraScope) => {
     return findMany(node, `${query.selector} ${extraScope}`, query)[0];
   });
 }

@@ -1,6 +1,10 @@
 import Ceibo from 'ceibo';
 import deprecate from './-private/deprecate';
-import { getPageObjectDefinition, isPageObject, storePageObjectDefinition } from './-private/helpers';
+import {
+  getPageObjectDefinition,
+  isPageObject,
+  storePageObjectDefinition,
+} from './-private/helpers';
 import { visitable } from './properties/visitable';
 import dsl from './-private/dsl';
 
@@ -69,10 +73,13 @@ function buildObject(node, blueprintKey, blueprint, defaultBuilder) {
         Object.defineProperty(blueprint, key, {
           value: {
             isDescriptor: true,
-            get
-          }
+            get,
+          },
         });
-      } else if (typeof value === 'string' && !['scope', 'testContainer'].includes(key)) {
+      } else if (
+        typeof value === 'string' &&
+        !['scope', 'testContainer'].includes(key)
+      ) {
         deprecate(
           'string-properties-on-definition',
           'do not use string values on definitions',
@@ -87,7 +94,7 @@ function buildObject(node, blueprintKey, blueprint, defaultBuilder) {
 
   let blueprintToStore = { ...definition };
   //the _chainedTree is an implementation detail that shouldn't make it into the stored
-  if(blueprintToStore._chainedTree){
+  if (blueprintToStore._chainedTree) {
     delete blueprintToStore._chainedTree;
   }
   blueprint = {
@@ -95,12 +102,17 @@ function buildObject(node, blueprintKey, blueprint, defaultBuilder) {
     ...definition,
   };
 
-  const [ instance, blueprintToApply ] = defaultBuilder(node, blueprintKey, blueprint, defaultBuilder);
+  const [instance, blueprintToApply] = defaultBuilder(
+    node,
+    blueprintKey,
+    blueprint,
+    defaultBuilder
+  );
 
   // persist definition once we have an instance
   storePageObjectDefinition(instance, blueprintToStore);
 
-  return [ instance, blueprintToApply ];
+  return [instance, blueprintToApply];
 }
 
 /**
@@ -190,7 +202,7 @@ export function create(definitionOrUrl, definitionOrOptions, optionsOrNothing) {
   let url;
   let options;
 
-  if (typeof (definitionOrUrl) === 'string') {
+  if (typeof definitionOrUrl === 'string') {
     url = definitionOrUrl;
     definition = definitionOrOptions || {};
     options = optionsOrNothing || {};
@@ -210,7 +222,9 @@ export function create(definitionOrUrl, definitionOrOptions, optionsOrNothing) {
     // this is supposed to prevent an infinite recursion, for users who has not migrated
     // from the ModuleForComponent tests yet.
     // @todo: cover by test
-    throw new Error('"context" key is not allowed to be passed at definition root.');
+    throw new Error(
+      '"context" key is not allowed to be passed at definition root.'
+    );
   }
 
   if (typeof url === 'string') {
@@ -218,7 +232,7 @@ export function create(definitionOrUrl, definitionOrOptions, optionsOrNothing) {
       'create-url-argument',
       'Passing an URL argument to `create()` is deprecated',
       '1.17.0',
-      "2.0.0",
+      '2.0.0'
     );
   }
 
@@ -228,11 +242,11 @@ export function create(definitionOrUrl, definitionOrOptions, optionsOrNothing) {
 
   // Build the chained tree
   let chainedBuilder = {
-    object: buildObject
+    object: buildObject,
   };
   let chainedTree = Ceibo.create(definition, {
     builder: chainedBuilder,
-    ...options
+    ...options,
   });
 
   // Attach it to the root in the definition of the primary tree
@@ -241,16 +255,16 @@ export function create(definitionOrUrl, definitionOrOptions, optionsOrNothing) {
 
     get() {
       return chainedTree;
-    }
+    },
   };
 
   // Build the primary tree
   let builder = {
-    object: buildObject
+    object: buildObject,
   };
 
   return Ceibo.create(definition, {
     builder,
-    ...options
+    ...options,
   });
 }
