@@ -2,10 +2,7 @@ name: CI
 
 on:
   push:
-    branches:
-      - main
-      - master
-  pull_request: {}
+  pull_request:
 
 jobs:
   test:
@@ -17,7 +14,7 @@ jobs:
       - name: Install Node
         uses: actions/setup-node@v2
         with:
-          node-version: 10.x
+          node-version: 12.x
           cache: npm
       - name: Install Dependencies
         run: npm ci
@@ -26,22 +23,42 @@ jobs:
       - name: Lint hbs
         run: npm run lint:hbs
       - name: Run Tests
-        run: npm test
+        run: npm run test:ember
 
   floating:
     name: "Floating Dependencies"
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [12.x, 14.x]
 
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
         with:
-          node-version: 10.x
+          node-version: ${{ matrix.node-version }}
           cache: npm
       - name: Install Dependencies
-        run: npm install --no-shrinkwrap
+        run: npm install --no-package-lock
       - name: Run Tests
-        run: npm test
+        run: npm run test:ember
+
+  node-tests:
+    name: "Node tests ${{ matrix.try-scenario }}"
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [12.x, 14.x, 16.x]
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: npm
+      - name: Install Dependencies
+        run: npm ci
+      - name: Run Tests
+        run: npm run nodetest
 
   try-scenarios:
     name: ${{ matrix.try-scenario }}
@@ -49,23 +66,22 @@ jobs:
     needs: 'test'
 
     strategy:
-      fail-fast: true
       matrix:
         try-scenario:
-          - node-tests
-          - ember-lts-2.12
-          - ember-lts-2.16
-          - ember-lts-2.18
+          - ember-lts-3.24
           - ember-lts-3.28
-          # keep testing integration and acceptance contexts
-          - with-jquery COVERAGE=true
+          # - ember-release
+          # - ember-beta
+          # - ember-canary
+          - ember-default-with-jquery
+          - ember-classic
 
     steps:
       - uses: actions/checkout@v2
       - name: Install Node
         uses: actions/setup-node@v2
         with:
-          node-version: 10.x
+          node-version: 12.x
           cache: npm
       - name: Install Dependencies
         run: npm ci
