@@ -1,5 +1,5 @@
 import { module, test } from 'qunit';
-import deprecate from 'ember-cli-page-object/test-support/-private/deprecate';
+import deprecate from 'ember-cli-page-object/-private/deprecate';
 
 module('Unit | deprecate', function (hooks) {
   let origWarn, calls;

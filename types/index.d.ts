@@ -10,36 +10,36 @@ declare module 'ember-cli-page-object' {
     DSL
   } from 'ember-cli-page-object/-private';
 
-  function create<T extends Partial<Definition>>(definition?: T): Component<T>;
-  function collection<T extends Partial<Definition>>(scope: string, definition?: T): Collection<T>;
+  export function create<T extends Partial<Definition>>(definition?: T): Component<T>;
+  export function collection<T extends Partial<Definition>>(scope: string, definition?: T): Collection<T>;
 
   // Attributes
-  function attribute(attributeName: string, scope?: string, options?: FindOptions): GetterDescriptor<string>;
-  function isVisible(scope?: string, options?: FindOptions): GetterDescriptor<boolean>;
-  function isHidden(scope?: string, options?: FindOptions): GetterDescriptor<boolean>;
-  function isPresent(scope?: string, options?: FindOptions): GetterDescriptor<boolean>;
-  function text(scope?: string, options?: FindOptions & { normalize?: boolean }): GetterDescriptor<string>;
-  function value(scope?: string, options?: FindOptions): GetterDescriptor<string>;
-  function property(name: string): GetterDescriptor<any>;
-  function property(scope: string, name: string, options?: FindOptions): GetterDescriptor<any>;
-  function hasClass(className: string): GetterDescriptor<boolean>;
-  function hasClass(scope: string, className: string, options?: FindOptions): GetterDescriptor<boolean>;
-  function notHasClass(className: string): GetterDescriptor<boolean>;
-  function notHasClass(scope: string, className: string, options?: FindOptions): GetterDescriptor<boolean>;
-  function contains(scope?: string, options?: FindOptions): (text: string) => GetterDescriptor<boolean>;
-  function count(scope?: string, options?: FindOptions): () => GetterDescriptor<boolean>;
+  export function attribute(attributeName: string, scope?: string, options?: FindOptions): GetterDescriptor<string>;
+  export function isVisible(scope?: string, options?: FindOptions): GetterDescriptor<boolean>;
+  export function isHidden(scope?: string, options?: FindOptions): GetterDescriptor<boolean>;
+  export function isPresent(scope?: string, options?: FindOptions): GetterDescriptor<boolean>;
+  export function text(scope?: string, options?: FindOptions & { normalize?: boolean }): GetterDescriptor<string>;
+  export function value(scope?: string, options?: FindOptions): GetterDescriptor<string>;
+  export function property(name: string): GetterDescriptor<any>;
+  export function property(scope: string, name: string, options?: FindOptions): GetterDescriptor<any>;
+  export function hasClass(className: string): GetterDescriptor<boolean>;
+  export function hasClass(scope: string, className: string, options?: FindOptions): GetterDescriptor<boolean>;
+  export function notHasClass(className: string): GetterDescriptor<boolean>;
+  export function notHasClass(scope: string, className: string, options?: FindOptions): GetterDescriptor<boolean>;
+  export function contains(scope?: string, options?: FindOptions): (text: string) => GetterDescriptor<boolean>;
+  export function count(scope?: string, options?: FindOptions): () => GetterDescriptor<boolean>;
 
   // Actions
-  function clickable(scope?: string, userOptions?: FindOptions): MethodDescriptor<<T>(this: T) => T>;
-  function clickOnText(scope?: string, userOptions?: FindOptions): MethodDescriptor<<T>(this: T, text: string) => T>;
-  function fillable(scope?: string, userOptions?: FindOptions): MethodDescriptor<<T>(this: T, clueOrContent: string, content?: string) => T>;
-  function selectable(scope?: string, userOptions?: FindOptions): MethodDescriptor<<T>(this: T, clueOrContent: string, content?: string) => T>;
-  function triggerable(event: string, scope?: string, eventOptions?: TriggerOptions, options?: FindOptions): MethodDescriptor<<T>(this: T, options?: {}) => T>;
-  function focusable(scope?: string, options?: FindOptions): MethodDescriptor<<T>(this: T) => T>;
-  function blurrable(scope?: string, options?: FindOptions): MethodDescriptor<<T>(this: T) => T>;
-  function visitable(path: string): MethodDescriptor<<T>(this: T, dynamicSegmentsAndQueryParams?: {}) => T>;
+  export function clickable(scope?: string, userOptions?: FindOptions): MethodDescriptor<<T>(this: T) => T>;
+  export function clickOnText(scope?: string, userOptions?: FindOptions): MethodDescriptor<<T>(this: T, text: string) => T>;
+  export function fillable(scope?: string, userOptions?: FindOptions): MethodDescriptor<<T>(this: T, clueOrContent: string, content?: string) => T>;
+  export function selectable(scope?: string, userOptions?: FindOptions): MethodDescriptor<<T>(this: T, clueOrContent: string, content?: string) => T>;
+  export function triggerable(event: string, scope?: string, eventOptions?: TriggerOptions, options?: FindOptions): MethodDescriptor<<T>(this: T, options?: {}) => T>;
+  export function focusable(scope?: string, options?: FindOptions): MethodDescriptor<<T>(this: T) => T>;
+  export function blurrable(scope?: string, options?: FindOptions): MethodDescriptor<<T>(this: T) => T>;
+  export function visitable(path: string): MethodDescriptor<<T>(this: T, dynamicSegmentsAndQueryParams?: {}) => T>;
 
-  interface Collection<T> {
+  export interface Collection<T> {
     (scope: string, definition?: T): Array<Component<T>>;
 
     [i: number]: Component<T>;

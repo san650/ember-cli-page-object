@@ -1,6 +1,6 @@
 import { module, test } from 'qunit';
 import { create } from 'ember-cli-page-object';
-import deprecate from 'ember-cli-page-object/test-support/-private/deprecate';
+import deprecate from 'ember-cli-page-object/-private/deprecate';
 
 module('Deprecation | string-properties', function (hooks) {
   hooks.beforeEach(function () {

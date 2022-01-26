@@ -1,12 +1,9 @@
 import { module, test } from 'qunit';
 import { create } from 'ember-cli-page-object';
-import action from 'ember-cli-page-object/test-support/-private/action';
-import { isPageObject } from 'ember-cli-page-object/test-support/-private/helpers';
-import {
-  setAdapter,
-  getAdapter,
-} from 'ember-cli-page-object/test-support/adapters';
-import Adapter from 'ember-cli-page-object/test-support/adapter';
+import action from 'ember-cli-page-object/-private/action';
+import { isPageObject } from 'ember-cli-page-object/-private/helpers';
+import { setAdapter, getAdapter } from 'ember-cli-page-object/adapters';
+import Adapter from 'ember-cli-page-object/adapter';
 
 class DummyAdapter extends Adapter {}
 

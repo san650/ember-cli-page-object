@@ -1,7 +1,7 @@
 import { module, test } from 'qunit';
 import { setupRenderingTest } from '../../helpers';
 import hbs from 'htmlbars-inline-precompile';
-import deprecate from 'ember-cli-page-object/test-support/-private/deprecate';
+import deprecate from 'ember-cli-page-object/-private/deprecate';
 
 import { create, text, clickOnText } from 'ember-cli-page-object';
 

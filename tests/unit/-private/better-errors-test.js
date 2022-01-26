@@ -1,6 +1,6 @@
 import { test, module } from 'qunit';
 import { create } from 'ember-cli-page-object';
-import { throwBetterError } from 'ember-cli-page-object/test-support/-private/better-errors';
+import { throwBetterError } from 'ember-cli-page-object/-private/better-errors';
 
 const page = create({
   foo: {
