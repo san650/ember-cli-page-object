@@ -1,4 +1,5 @@
 import Adapter from '../adapter';
+import RFC268Adapter from './rfc268';
 
 let _adapter;
 
@@ -7,9 +8,7 @@ let _adapter;
  */
 export function getAdapter() {
   if (!_adapter) {
-    throw new Error(`Adapter is required.
-
-Please use \`setAdapter(\`, to instruct "ember-cli-page-object" about the adapter you want to use.`);
+    return new RFC268Adapter();
   }
 
   return _adapter;

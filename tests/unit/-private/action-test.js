@@ -2,7 +2,10 @@ import { module, test } from 'qunit';
 import { create } from 'ember-cli-page-object';
 import action from 'ember-cli-page-object/test-support/-private/action';
 import { isPageObject } from 'ember-cli-page-object/test-support/-private/helpers';
-import { setAdapter } from 'ember-cli-page-object/test-support/adapters';
+import {
+  setAdapter,
+  getAdapter,
+} from 'ember-cli-page-object/test-support/adapters';
 import Adapter from 'ember-cli-page-object/test-support/adapter';
 
 class DummyAdapter extends Adapter {}
@@ -31,8 +34,16 @@ class Deferred {
 }
 
 module('Unit | action', function (hooks) {
+  let initialAdapter;
+
   hooks.beforeEach(function () {
+    initialAdapter = getAdapter();
+
     setAdapter(new DummyAdapter());
+  });
+
+  hooks.afterEach(function () {
+    setAdapter(initialAdapter);
   });
 
   let invoked, finished, executionContext;
