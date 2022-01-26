@@ -3,9 +3,6 @@ import {
   setupRenderingTest as upstreamSetupRenderingTest,
 } from 'ember-qunit';
 
-import { setAdapter } from 'ember-cli-page-object/adapters';
-import RFC268Adapter from 'ember-cli-page-object/adapters/rfc268';
-
 import hbs from 'htmlbars-inline-precompile';
 import require from 'require';
 import { TestContext as DefaultTestContext } from 'ember-test-helpers';
@@ -32,10 +29,6 @@ function render(...args: unknown[]) {
 export function setupApplicationTest(hooks: NestedHooks) {
   upstreamSetupApplicationTest(hooks);
 
-  hooks.beforeEach(function() {
-    setAdapter(new RFC268Adapter());
-  });
-
   hooks.afterEach(function() {
     document.getElementById('alternate-ember-testing')!.innerHTML = '';
   })
@@ -45,8 +38,6 @@ export function setupRenderingTest(hooks: NestedHooks) {
   upstreamSetupRenderingTest(hooks);
 
   hooks.beforeEach(function(this: TestContext) {
-    setAdapter(new RFC268Adapter());
-
     const testContext = this;
 
     this.createTemplate = function(template, options): Promise<unknown> {
