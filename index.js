@@ -3,32 +3,6 @@
 module.exports = {
   name: require('./package').name,
 
-  options: {
-    'ember-cli-babel': {
-      useBabelConfig: true,
-    },
-    nodeAssets: {
-      ceibo: {
-        vendor: ['index.js'],
-      },
-      jquery: {
-        vendor: ['dist/jquery.js'],
-        destDir: 'ecpo-jquery',
-      },
-    },
-  },
-
-  included() {
-    this.app = this._findHost();
-
-    this.import('vendor/ceibo/index.js', { type: 'test' });
-
-    this.import('vendor/ecpo-jquery/dist/jquery.js', { type: 'test' });
-    this.import('vendor/shims/ecpo-jquery.js', { type: 'test' });
-
-    this._super.included.apply(this, arguments);
-  },
-
   treeForAddonTestSupport(tree) {
     const testSupportTree = this._super(tree);
 
@@ -54,13 +28,7 @@ module.exports = {
           )
         )
         .concat(
-          [
-            'adapters/acceptance-native-events',
-            'adapters/acceptance',
-            'adapters/integration-native-events',
-            'adapters/integration',
-            'adapters/rfc268',
-          ].map((publicModuleName) =>
+          ['adapters/rfc268'].map((publicModuleName) =>
             writeFile(
               `/${this.moduleName()}/${publicModuleName}.js`,
               `export { default } from '${this.moduleName()}/test-support/${publicModuleName}';`
@@ -75,16 +43,5 @@ module.exports = {
         registry: this.registry,
       }),
     ]);
-  },
-
-  _findHost() {
-    let current = this;
-    let app;
-
-    do {
-      app = current.app || app;
-    } while (current.parent.parent && (current = current.parent));
-
-    return app;
   },
 };
