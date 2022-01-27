@@ -29,7 +29,7 @@
     "test": "tests"
   },
   "exports": {
-    ".": "./test-support/",
+    ".": "./test-support",
     "./adapter": "./test-support/adapter",
     "./adapters": "./test-support/adapters",
     "./adapters/rfc268": "./test-support/adapters/rfc268",

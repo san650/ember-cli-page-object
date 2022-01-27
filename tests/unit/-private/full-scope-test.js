@@ -1,6 +1,6 @@
 import { test, module } from 'qunit';
 import { create, collection } from 'ember-cli-page-object';
-import { fullScope } from 'ember-cli-page-object/-private/helpers';
+import { fullScope } from 'ember-cli-page-object/extend';
 
 module('Unit | helpers | fullScope', function () {
   let page = create({
