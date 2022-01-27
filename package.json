@@ -28,18 +28,17 @@
     "doc": "doc",
     "test": "tests"
   },
-  "module": "./test-support/",
   "exports": {
-    ".": "./test-support/index.js",
+    ".": "./test-support/",
     "./adapter": "./test-support/adapter",
     "./adapters": "./test-support/adapters",
     "./adapters/rfc268": "./test-support/adapters/rfc268",
     "./extend": "./test-support/extend",
     "./macros": "./test-support/macros",
-    "./-private/deprecate": "./test-support/-private/deprecate",
     "./-private/action": "./test-support/-private/action",
-    "./-private/helpers": "./test-support/-private/helpers",
-    "./-private/better-errors": "./test-support/-private/better-errors"
+    "./-private/better-errors": "./test-support/-private/better-errors",
+    "./-private/deprecate": "./test-support/-private/deprecate",
+    "./-private/meta": "./test-support/-private/meta"
   },
   "scripts": {
     "build": "ember build",

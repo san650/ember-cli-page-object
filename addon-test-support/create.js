@@ -4,7 +4,7 @@ import {
   getPageObjectDefinition,
   isPageObject,
   storePageObjectDefinition,
-} from './-private/helpers';
+} from './-private/meta';
 import { visitable } from './properties/visitable';
 import dsl from './-private/dsl';
 
