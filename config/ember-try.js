@@ -29,6 +29,11 @@ module.exports = async function () {
             'ember-source': await getChannelURL('release'),
           },
         },
+        env: {
+          EMBER_OPTIONAL_FEATURES: JSON.stringify({
+            'jquery-integration': false,
+          }),
+        },
       },
       {
         name: 'ember-beta',
@@ -37,6 +42,11 @@ module.exports = async function () {
             'ember-source': await getChannelURL('beta'),
           },
         },
+        env: {
+          EMBER_OPTIONAL_FEATURES: JSON.stringify({
+            'jquery-integration': false,
+          }),
+        },
       },
       {
         name: 'ember-canary',
@@ -44,6 +54,11 @@ module.exports = async function () {
           devDependencies: {
             'ember-source': await getChannelURL('canary'),
           },
+        },
+        env: {
+          EMBER_OPTIONAL_FEATURES: JSON.stringify({
+            'jquery-integration': false,
+          }),
         },
       },
       {
