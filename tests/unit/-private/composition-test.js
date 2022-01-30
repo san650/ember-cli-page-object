@@ -3,7 +3,7 @@ import { test, module } from 'qunit';
 import {
   isPageObject,
   getPageObjectDefinition,
-} from 'ember-cli-page-object/test-support/-private/helpers';
+} from 'ember-cli-page-object/-private/meta';
 import { render, find } from '@ember/test-helpers';
 import hbs from 'htmlbars-inline-precompile';
 import {

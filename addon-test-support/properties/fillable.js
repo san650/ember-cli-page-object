@@ -1,4 +1,4 @@
-import { findMany } from 'ember-cli-page-object/extend';
+import { findMany } from '../extend';
 import action from '../-private/action';
 import { findOne } from '../-private/finders';
 

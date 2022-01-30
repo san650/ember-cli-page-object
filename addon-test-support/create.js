@@ -1,10 +1,10 @@
-import Ceibo from 'ceibo';
+import Ceibo from '@ro0gr/ceibo';
 import deprecate from './-private/deprecate';
 import {
   getPageObjectDefinition,
   isPageObject,
   storePageObjectDefinition,
-} from './-private/helpers';
+} from './-private/meta';
 import { visitable } from './properties/visitable';
 import dsl from './-private/dsl';
 

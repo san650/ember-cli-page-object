@@ -1,9 +1,6 @@
-import Ceibo from 'ceibo';
-import {
-  buildSelector,
-  isPageObject,
-  getPageObjectDefinition,
-} from '../-private/helpers';
+import Ceibo from '@ro0gr/ceibo';
+import { buildSelector } from '../-private/helpers';
+import { isPageObject, getPageObjectDefinition } from '../-private/meta';
 import { create } from '../create';
 import { count } from './count';
 import { throwBetterError } from '../-private/better-errors';

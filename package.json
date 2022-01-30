@@ -28,6 +28,18 @@
     "doc": "doc",
     "test": "tests"
   },
+  "exports": {
+    ".": "./test-support",
+    "./adapter": "./test-support/adapter",
+    "./adapters": "./test-support/adapters",
+    "./adapters/rfc268": "./test-support/adapters/rfc268",
+    "./extend": "./test-support/extend",
+    "./macros": "./test-support/macros",
+    "./-private/action": "./test-support/-private/action",
+    "./-private/better-errors": "./test-support/-private/better-errors",
+    "./-private/deprecate": "./test-support/-private/deprecate",
+    "./-private/meta": "./test-support/-private/meta"
+  },
   "scripts": {
     "build": "ember build",
     "lint": "npm-run-all --aggregate-output --continue-on-error --parallel 'lint:!(fix)'",
@@ -49,9 +61,9 @@
   },
   "dependencies": {
     "@babel/preset-env": "^7.12.11",
+    "@ro0gr/ceibo": "^2.2.0",
     "broccoli-file-creator": "^2.1.1",
     "broccoli-merge-trees": "^2.0.0",
-    "ceibo": "~2.0.0",
     "ember-auto-import": "^2.4.0",
     "ember-cli-babel": "^7.24.0",
     "ember-cli-typescript": "^4.1.0",
@@ -61,10 +73,10 @@
   },
   "devDependencies": {
     "@ember/optional-features": "^2.0.0",
-    "@ember/test-helpers": "^2.1.4",
-    "@embroider/test-setup": "^0.36.0",
-    "@glimmer/component": "^1.0.0",
-    "@glimmer/tracking": "^1.0.0",
+    "@ember/test-helpers": "^2.4.2",
+    "@embroider/test-setup": "^1.0.0",
+    "@glimmer/component": "^1.0.4",
+    "@glimmer/tracking": "^1.0.4",
     "@types/ember": "^3.1.1",
     "@types/ember-qunit": "^3.4.13",
     "@types/ember-resolver": "^5.0.10",
@@ -128,12 +140,12 @@
     "ncp": "^2.0.0",
     "npm-run-all": "^4.1.5",
     "prettier": "^2.2.1",
-    "qunit": "~2.14.0",
+    "qunit": "^2.17.2",
     "qunit-dom": "^2.0.0",
     "rimraf": "^2.5.2",
     "typescript": "^4.2.3",
     "walk-sync": "^0.3.2",
-    "webpack": "^5.65.0"
+    "webpack": "^5.0.0"
   },
   "engines": {
     "node": "12.* || 14.* || >= 16"

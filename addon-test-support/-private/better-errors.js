@@ -1,4 +1,4 @@
-import Ceibo from 'ceibo';
+import Ceibo from '@ro0gr/ceibo';
 import { buildSelector } from './helpers';
 
 export const ELEMENT_NOT_FOUND = 'Element not found.';

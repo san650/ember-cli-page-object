@@ -4,8 +4,8 @@ import {
 } from 'ember-qunit';
 
 import hbs from 'htmlbars-inline-precompile';
-import require from 'require';
 import { TestContext as DefaultTestContext } from 'ember-test-helpers';
+import { render } from '@ember/test-helpers';
 
 import $ from 'jquery';
 
@@ -20,10 +20,6 @@ export interface TestContext extends DefaultTestContext {
   ): Promise<unknown>
 
   findExternal(selector: string): JQuery;
-}
-
-function render(...args: unknown[]) {
-  return require('@ember/test-helpers').render(...args);
 }
 
 export function setupApplicationTest(hooks: NestedHooks) {

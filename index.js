@@ -20,7 +20,14 @@ module.exports = {
     //
     // which is a default behavior in ember-cli
     const reexportsTree = mergeTrees(
-      ['index', 'extend', 'macros', 'adapter', 'adapters']
+      [
+        'index',
+        'extend',
+        'macros',
+        'adapters',
+        '-private/better-errors',
+        '-private/meta',
+      ]
         .map((publicModuleName) =>
           writeFile(
             `/${this.moduleName()}/${publicModuleName}.js`,
@@ -28,7 +35,12 @@ module.exports = {
           )
         )
         .concat(
-          ['adapters/rfc268'].map((publicModuleName) =>
+          [
+            'adapter',
+            'adapters/rfc268',
+            '-private/action',
+            '-private/deprecate',
+          ].map((publicModuleName) =>
             writeFile(
               `/${this.moduleName()}/${publicModuleName}.js`,
               `export { default } from '${this.moduleName()}/test-support/${publicModuleName}';`
