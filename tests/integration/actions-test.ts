@@ -1,3 +1,4 @@
+import 'qunit-dom';
 import { run } from '@ember/runloop';
 
 import { module, test } from 'qunit';
