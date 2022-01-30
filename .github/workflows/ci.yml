@@ -24,6 +24,8 @@ jobs:
         run: npm run lint:hbs
       - name: Run Tests
         run: npm run test:ember
+      - name: Pack
+        run: npm pack
 
   floating:
     name: "Floating Dependencies"
