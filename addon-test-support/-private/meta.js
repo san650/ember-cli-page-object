@@ -1,4 +1,4 @@
-import Ceibo from 'ceibo';
+import Ceibo from '@ro0gr/ceibo';
 
 export function isPageObject(property) {
   if (property && typeof property === 'object') {

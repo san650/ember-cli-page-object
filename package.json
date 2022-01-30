@@ -61,9 +61,9 @@
   },
   "dependencies": {
     "@babel/preset-env": "^7.12.11",
+    "@ro0gr/ceibo": "^2.2.0",
     "broccoli-file-creator": "^2.1.1",
     "broccoli-merge-trees": "^2.0.0",
-    "ceibo": "https://github.com/ro0gr/ceibo#multi-authoring-format",
     "ember-auto-import": "^2.4.0",
     "ember-cli-babel": "^7.24.0",
     "ember-cli-typescript": "^4.1.0",

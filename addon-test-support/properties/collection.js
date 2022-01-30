@@ -1,4 +1,4 @@
-import Ceibo from 'ceibo';
+import Ceibo from '@ro0gr/ceibo';
 import { buildSelector } from '../-private/helpers';
 import { isPageObject, getPageObjectDefinition } from '../-private/meta';
 import { create } from '../create';

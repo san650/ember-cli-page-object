@@ -1,4 +1,4 @@
-import Ceibo from 'ceibo';
+import Ceibo from '@ro0gr/ceibo';
 import { getRoot } from './helpers';
 
 export function isChainedNode(node) {
