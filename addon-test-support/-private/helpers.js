@@ -1,4 +1,4 @@
-export { assign } from '@ember/polyfills';
+
 import { A } from '@ember/array';
 import { assert } from '@ember/debug';
 import { get } from '@ember/object';
@@ -8,6 +8,9 @@ import deprecate from './deprecate';
 import { getContext as getEmberTestHelpersContext } from './compatibility';
 
 import $ from '-jquery';
+
+let assign = Object.assign;
+export { assign };
 
 class Selector {
   constructor(node, scope, selector, filters) {
