@@ -5,6 +5,7 @@ declare module 'ember-cli-page-object' {
     Definition,
     FindOptions,
     TriggerOptions,
+    ClickOnTextOptions,
     GetterDescriptor,
     MethodDescriptor,
     DSL
@@ -31,7 +32,7 @@ declare module 'ember-cli-page-object' {
 
   // Actions
   function clickable(scope?: string, userOptions?: FindOptions): MethodDescriptor<<T>(this: T) => T>;
-  function clickOnText(scope?: string, userOptions?: FindOptions): MethodDescriptor<<T>(this: T, text: string) => T>;
+  function clickOnText(scope?: string, userOptions?: ClickOnTextOptions): MethodDescriptor<<T>(this: T, text: string) => T>;
   function fillable(scope?: string, userOptions?: FindOptions): MethodDescriptor<<T>(this: T, clueOrContent: string, content?: string) => T>;
   function selectable(scope?: string, userOptions?: FindOptions): MethodDescriptor<<T>(this: T, clueOrContent: string, content?: string) => T>;
   function triggerable(event: string, scope?: string, eventOptions?: TriggerOptions, options?: FindOptions): MethodDescriptor<<T>(this: T, options?: {}) => T>;
@@ -161,5 +162,9 @@ declare module 'ember-cli-page-object/-private' {
   interface SelectorQueryOptions {
     resetScope?: boolean;
     testContainer?: string|HTMLElement|JQuery;
+  }
+
+  interface ClickOnTextOptions extends FindOptions {
+    exact?: boolean
   }
 }

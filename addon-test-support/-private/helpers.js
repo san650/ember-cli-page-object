@@ -353,3 +353,22 @@ export function getPageObjectDefinition(node){
 export function storePageObjectDefinition(node, definition){
   Ceibo.meta(node).__poDef__ = definition;
 }
+
+export function getCustomTextFilters(obj) {
+  const requestedCustomFilters = {};
+
+  Object.keys(obj)
+    .forEach(filter => {
+      if (customTextFilters[filter]) {
+        requestedCustomFilters[filter] = customTextFilters[filter];
+      }
+    });
+
+  return requestedCustomFilters;
+}
+
+const customTextFilters = {
+  exact: (a, b) => a === b
+}
+
+export { customTextFilters };
