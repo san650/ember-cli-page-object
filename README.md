@@ -1,4 +1,4 @@
-# Ember Page Objects
+# Ember CLI Page Object
 
 [![Build Status](https://travis-ci.org/san650/ember-cli-page-object.svg?branch=master)](https://travis-ci.org/san650/ember-cli-page-object)
 [![Ember Observer Score](http://emberobserver.com/badges/ember-cli-page-object.svg)](http://emberobserver.com/addons/ember-cli-page-object)
@@ -24,9 +24,12 @@ You can find more information about this design pattern here:
 * [Page Objects - Selenium wiki](https://github.com/SeleniumHQ/selenium/wiki/PageObjects)
 * [PageObject - Martin Fowler](http://martinfowler.com/bliki/PageObject.html)
 
+Compatibility
+------------------------------------------------------------------------------
+
 * Ember.js v3.16 or above
 * Ember CLI v2.13 or above
-* Node.js v10 or above
+* Node.js v12 or above
 
 Let's work together to improve this addon!
 
@@ -45,11 +48,13 @@ Or you can install the NPM package directly.
 $ npm install --save-dev ember-cli-page-object
 ```
 
-## Documentation
+Documentation
+------------------------------------------------------------------------------
 
 Check the [site](http://ember-cli-page-object.js.org/) for full documentation.
 
-## Blueprints
+Blueprints
+------------------------------------------------------------------------------
 
 The addon includes the following blueprints
 
@@ -66,27 +71,10 @@ installing
   create tests/pages/users.js
 ```
 
-## Development
+Contributing
+------------------------------------------------------------------------------
 
-### Installation
-
-```sh
-$ git clone https://github.com/san650/ember-cli-page-object.git
-$ cd $_
-$ yarn install # or npm install
-```
-
-### Linting
-
-* `npm run lint:hbs`
-* `npm run lint:js`
-* `npm run lint:js -- --fix`
-
-### Running Tests
-
-* `ember test` – Runs the test suite on the current Ember version
-* `ember test --server` – Runs the test suite in "watch mode"
-* `ember try:each` – Runs the test suite against multiple Ember versions
+See the [Contributing](CONTRIBUTING.md) guide for details.
 
 ### Project's health
 
@@ -110,4 +98,4 @@ $ yarn install # or npm install
 
 ember-cli-page-object is licensed under the MIT license.
 
-See [LICENSE](./LICENSE) for the full license text.
+See [LICENSE](./LICENSE.md) for the full license text.

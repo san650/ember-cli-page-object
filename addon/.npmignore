@@ -1,0 +1,14 @@
+# dependencies
+/bower_components/
+
+# misc
+/.env*
+/.eslintcache
+/.eslintignore
+/.eslintrc.js
+/.prettierignore
+/.prettierrc.js
+/.template-lintrc.js
+/node-tests
+/package-lock.json
+.gitkeep

@@ -1,0 +1,80 @@
+{
+  "name": "ember-cli-page-object",
+  "version": "2.0.0-beta.3",
+  "description": "This ember-cli addon eases the construction of page objects on your acceptance and integration tests",
+  "keywords": [
+    "acceptance",
+    "integration",
+    "components",
+    "ember",
+    "ember-addon",
+    "ember-cli",
+    "helper",
+    "page object",
+    "page-object",
+    "pageobject",
+    "testing"
+  ],
+  "homepage": "http://ember-cli-page-object.js.org",
+  "bugs": "https://github.com/san650/ember-cli-page-object/issues",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/san650/ember-cli-page-object.git",
+    "directory": "addon"
+  },
+  "license": "MIT",
+  "author": "Santiago Ferreira",
+  "exports": {
+    ".": "./test-support",
+    "./adapter": "./test-support/adapter",
+    "./adapters": "./test-support/adapters",
+    "./adapters/rfc268": "./test-support/adapters/rfc268",
+    "./extend": "./test-support/extend",
+    "./macros": "./test-support/macros",
+    "./-private/action": "./test-support/-private/action",
+    "./-private/better-errors": "./test-support/-private/better-errors",
+    "./-private/deprecate": "./test-support/-private/deprecate",
+    "./-private/meta": "./test-support/-private/meta"
+  },
+  "types": "types.d.ts",
+  "scripts": {
+    "lint": "npm-run-all --aggregate-output --continue-on-error --parallel 'lint:!(fix)'",
+    "lint:fix": "npm-run-all --aggregate-output --continue-on-error --parallel lint:*:fix",
+    "lint:js": "eslint . --cache",
+    "lint:js:fix": "eslint . --fix",
+    "test": "mocha node-tests --recursive"
+  },
+  "dependencies": {
+    "@ro0gr/ceibo": "^2.2.0",
+    "@types/jquery": "^3.5.14",
+    "broccoli-file-creator": "^2.1.1",
+    "broccoli-merge-trees": "^2.0.0",
+    "ember-auto-import": "^2.4.1",
+    "ember-cli-babel": "^7.26.11",
+    "ember-cli-typescript": "^4.2.1",
+    "jquery": "^3.6.0",
+    "rsvp": "^4.8.5"
+  },
+  "devDependencies": {
+    "@babel/eslint-parser": "^7.17.0",
+    "@babel/plugin-proposal-decorators": "^7.17.9",
+    "chai": "^4.1.2",
+    "ember-cli-blueprint-test-helpers": "^0.18.2",
+    "eslint": "^8.14.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-ember": "^10.6.0",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "mocha": "^4.0.1",
+    "prettier": "^2.6.2"
+  },
+  "engines": {
+    "node": "12.* || 14.* || >= 16"
+  },
+  "ember": {
+    "edition": "octane"
+  },
+  "volta": {
+    "extends": "../package.json"
+  }
+}
