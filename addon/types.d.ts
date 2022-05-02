@@ -114,11 +114,11 @@ declare module 'ember-cli-page-object/-private' {
 
   type UnpackedDefinition<T> = {
     [k in keyof T]:
-    T[k] extends GetterDescriptor<infer C> ? C
+      T[k] extends GetterDescriptor<infer C> ? C
       : T[k] extends MethodDescriptor<infer C> ? C
-        : T[k] extends Function | Component ? T[k]
-          : T[k] extends object ? Component<T[k]>
-            : T[k]
+      : T[k] extends Function | Component ? T[k]
+      : T[k] extends object ? Component<T[k]>
+      : T[k]
   };
 
   interface DSL<T> {

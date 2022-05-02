@@ -1,6 +1,21 @@
 import Ceibo from '@ro0gr/ceibo';
 import deprecate from './deprecate';
-export { default as $ } from 'jquery';
+import {
+  dependencySatisfies,
+  macroCondition,
+  importSync,
+} from '@embroider/macros';
+
+let jQuery;
+
+if (macroCondition(dependencySatisfies('@ember/jquery', '*'))) {
+  jQuery = window.jQuery;
+} else {
+  const jqueryImport = importSync('jquery');
+  jQuery = jqueryImport.default;
+}
+
+export { jQuery as $ };
 
 function isPresent(value) {
   return typeof value !== 'undefined';

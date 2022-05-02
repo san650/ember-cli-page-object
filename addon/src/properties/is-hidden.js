@@ -1,5 +1,5 @@
 import { guardMultiple, $ } from '../-private/helpers';
-import { findMany } from '../extend';
+import { findMany } from '../-private/finders';
 
 /**
  * Validates if an element or set of elements is hidden or does not exist in the DOM.

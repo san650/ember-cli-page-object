@@ -1,4 +1,4 @@
-import { findOne } from '../extend';
+import { findOne } from '../-private/finders';
 
 /**
  * @public

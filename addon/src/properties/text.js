@@ -1,5 +1,5 @@
 import { $ } from '../-private/helpers';
-import { findOne } from '../extend';
+import { findOne } from '../-private/finders';
 
 function identity(v) {
   return v;

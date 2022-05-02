@@ -1,5 +1,5 @@
 import { $ } from '../-private/helpers';
-import { findOne } from '../extend';
+import { findOne } from '../-private/finders';
 
 /**
  * Returns a boolean representing whether an element or a set of elements contains the specified text.

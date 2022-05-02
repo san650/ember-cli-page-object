@@ -11,6 +11,13 @@
     "docs",
     "test-app"
   ],
+  "scripts": {
+    "prepare": "cd addon && npm run build",
+    "test": "cd test-app && npm run test:ember"
+  },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org"
+  },
   "volta": {
     "node": "12.22.12",
     "npm": "8.8.0"

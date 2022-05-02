@@ -1,4 +1,4 @@
-import { findOne } from '../extend';
+import { findOne } from '../-private/finders';
 
 /**
  * Validates if an element or a set of elements have a given CSS class.

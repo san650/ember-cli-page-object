@@ -1,5 +1,5 @@
 import { $, buildSelector, findClosestValue, guardMultiple } from './helpers';
-import { getAdapter } from '../adapters';
+import { getAdapter } from '../adapters/index';
 import { throwBetterError, ELEMENT_NOT_FOUND } from './better-errors';
 
 function getContainer(pageObjectNode, options) {

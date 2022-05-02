@@ -1,5 +1,4 @@
-import { resolve } from 'rsvp';
-import { getAdapter } from '../adapters';
+import { getAdapter } from '../adapters/index';
 import { getRoot } from './helpers';
 import { throwContextualError } from './better-errors';
 import { chainable, isChainedNode } from './chainable';
@@ -26,7 +25,7 @@ export function run(node, query, cb) {
     // Our root is already the root of the chained tree,
     // we need to wait on its promise if it has one so the
     // previous invocations can resolve before we run ours.
-    root._promise = resolve(root._promise).then(() =>
+    root._promise = Promise.resolve(root._promise).then(() =>
       invokeHelper(executionContext, cb)
     );
 
@@ -49,7 +48,7 @@ function invokeHelper(context, cb) {
     throwContextualError(context, e);
   }
 
-  return resolve(res).catch((e) => {
+  return Promise.resolve(res).catch((e) => {
     throwContextualError(context, e);
   });
 }

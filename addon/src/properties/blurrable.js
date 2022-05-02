@@ -1,5 +1,5 @@
 import action from '../-private/action';
-import { findOne } from '../extend';
+import { findOne } from '../-private/finders';
 
 /**
  *

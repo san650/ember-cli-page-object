@@ -1,5 +1,5 @@
 import action from '../-private/action';
-import { findOne, findMany } from '../extend';
+import { findOne, findMany } from '../-private/finders';
 
 /**
  * Clicks on an element containing specified text.

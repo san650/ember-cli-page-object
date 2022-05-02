@@ -1,4 +1,4 @@
-import { findMany } from '../extend';
+import { findMany } from '../-private/finders';
 
 /**
  * @public

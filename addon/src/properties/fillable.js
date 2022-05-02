@@ -1,4 +1,4 @@
-import { findMany } from '../extend';
+import { findMany } from '../-private/finders';
 import action from '../-private/action';
 import { findOne } from '../-private/finders';
 

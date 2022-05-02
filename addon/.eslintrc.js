@@ -33,7 +33,7 @@ module.exports = {
       files: [
         './.eslintrc.js',
         './.prettierrc.js',
-        './index.js',
+        './addon-main.js',
         './blueprints/*/index.js',
         './config/**/*.js',
         './node-tests/**/*.js',
