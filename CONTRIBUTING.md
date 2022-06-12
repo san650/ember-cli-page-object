@@ -2,7 +2,7 @@
 
 This repo is divided into multiple packages using npm workspaces:
 
-- `addon` is the actual ember-page-title addon
+- `addon` is the actual ember-cli-page-object addon
 - `test-app` is its test suite
 - `docs` is the documentation/marketing site
 
