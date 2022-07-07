@@ -2,7 +2,7 @@
 /* eslint no-console:0 */
 
 /*
- * Parses the JavaScript files in `addon/` and
+ * Parses the JavaScript files in `addon/src/` and
  * creates documentation Markdown files for use in GitHub Pages.
  * The docs files are written to the 'gh-pages' branch
  * in the directory 'api/methods'.
@@ -264,7 +264,7 @@ function removeDir(dir) {
   var guidesDir = path.join(__dirname, 'guides');
 
   const apiSourcesPaths = walkSync(addonDir, {
-    globs: ['addon-test-support/{create.js,properties/*.js,macros/*.js}'],
+    globs: ['src/{create.js,properties/*.js,macros/*.js}'],
   });
 
   // Create the temporary directory for the docs
