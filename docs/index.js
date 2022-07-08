@@ -15,7 +15,7 @@ const ncp = require('ncp');
 const mkdirp = require('mkdirp');
 const rimraf = require('rimraf');
 const RSVP = require('rsvp');
-const packageJSON = require('./package.json');
+const packageJSON = require('../addon/package.json');
 const walkSync = require('walk-sync');
 
 const addonDir = path.resolve('../addon');
