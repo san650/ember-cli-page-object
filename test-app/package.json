@@ -70,7 +70,7 @@
     "ember-cli-doc-server": "1.1.0",
     "ember-cli-htmlbars": "^6.0.1",
     "ember-cli-inject-live-reload": "^1.8.2",
-    "ember-cli-page-object": "2.0.0-beta.3",
+    "ember-cli-page-object": "*",
     "ember-cli-sri": "^2.1.1",
     "ember-cli-terser": "^4.0.2",
     "ember-cli-typescript": "^4.2.1",
