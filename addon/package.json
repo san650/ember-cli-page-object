@@ -27,7 +27,6 @@
   "exports": {
     ".": "./dist/index.js",
     "./*": "./dist/*",
-    "./test-support": "./dist/test-support/index.js",
     "./addon-main.js": "./addon-main.js"
   },
   "types": "types.d.ts",
