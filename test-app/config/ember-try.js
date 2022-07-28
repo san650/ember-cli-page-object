@@ -92,8 +92,30 @@ module.exports = async function () {
           },
         },
       },
-      embroiderSafe(),
-      embroiderOptimized(),
+      embroiderSafe({
+        npm: {
+          devDependencies: {
+            'ember-source': '^4.0.0',
+          },
+        },
+        env: {
+          EMBER_OPTIONAL_FEATURES: JSON.stringify({
+            'jquery-integration': null,
+          }),
+        },
+      }),
+      embroiderOptimized({
+        npm: {
+          devDependencies: {
+            'ember-source': '^4.0.0',
+          },
+        },
+        env: {
+          EMBER_OPTIONAL_FEATURES: JSON.stringify({
+            'jquery-integration': null,
+          }),
+        },
+      }),
     ],
   };
 };
