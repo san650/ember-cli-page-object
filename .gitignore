@@ -1,7 +1,9 @@
 _site
 .sass-cache
+/addon
 /node_modules
 /bower_components
+/test-app
 /tmp
 /coverage
 /dist
