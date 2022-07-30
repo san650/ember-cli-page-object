@@ -2,7 +2,14 @@ name: CI
 
 on:
   push:
-  pull_request:
+    branches:
+      - main
+      - master
+  pull_request: {}
+
+concurrency:
+  group: ci-${{ github.head_ref || github.ref }}
+  cancel-in-progress: true
 
 jobs:
   test:
@@ -10,57 +17,82 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Install Node
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
           node-version: 12.x
           cache: npm
+
+      - name: npm8
+        run: npm install -g npm@8
+
       - name: Install Dependencies
         run: npm ci
-      - name: Lint js
-        run: npm run lint:js
-      - name: Lint hbs
-        run: npm run lint:hbs
+
+      - name: Lint Addon
+        run: npm run lint
+        working-directory: addon
+
+      - name: Lint Test App
+        run: npm run lint
+        working-directory: test-app
+
       - name: Run Tests
         run: npm run test:ember
-      - name: Pack
-        run: npm pack
+        working-directory: test-app
 
   floating:
-    name: "Floating Dependencies"
+    name: "Floating Dependencies ${{ matrix.node-version }}"
     runs-on: ubuntu-latest
+
     strategy:
+      fail-fast: false
       matrix:
         node-version: [12.x, 14.x]
 
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
           cache: npm
+
+      - name: npm8
+        run: npm install -g npm@8
+
       - name: Install Dependencies
         run: npm install --no-package-lock
+
       - name: Run Tests
         run: npm run test:ember
+        working-directory: test-app
 
   node-tests:
-    name: "Node tests ${{ matrix.try-scenario }}"
+    name: "Node tests ${{ matrix.node-version }}"
     runs-on: ubuntu-latest
+
     strategy:
+      fail-fast: false
       matrix:
         node-version: [12.x, 14.x, 16.x]
+
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
         with:
           node-version: ${{ matrix.node-version }}
           cache: npm
+
+      - name: npm8
+        run: npm install -g npm@8
+
       - name: Install Dependencies
         run: npm ci
+
       - name: Run Tests
-        run: npm run nodetest
+        run: npm run test
+        working-directory: addon
 
   try-scenarios:
     name: ${{ matrix.try-scenario }}
@@ -68,6 +100,7 @@ jobs:
     needs: 'test'
 
     strategy:
+      fail-fast: false
       matrix:
         try-scenario:
           - ember-lts-3.24
@@ -87,7 +120,13 @@ jobs:
         with:
           node-version: 12.x
           cache: npm
+
+      - name: npm8
+        run: npm install -g npm@8
+
       - name: Install Dependencies
         run: npm ci
+
       - name: Run Tests
-        run: ./node_modules/.bin/ember try:one ${{ matrix.try-scenario }}
+        run: ../node_modules/.bin/ember try:one ${{ matrix.try-scenario }}
+        working-directory: test-app
