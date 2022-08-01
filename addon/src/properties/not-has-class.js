@@ -1,4 +1,5 @@
 import { findOne } from '../-private/finders';
+import { getter } from '../macros/index';
 
 /**
  * @public
@@ -67,18 +68,14 @@ import { findOne } from '../-private/finders';
  * @throws Will throw an error if multiple elements are matched by selector
  */
 export function notHasClass(cssClass, selector, userOptions = {}) {
-  return {
-    isDescriptor: true,
+  return getter(function (key) {
+    let options = {
+      pageObjectKey: key,
+      ...userOptions,
+    };
 
-    get(key) {
-      let options = {
-        pageObjectKey: key,
-        ...userOptions,
-      };
+    let element = findOne(this, selector, options);
 
-      let element = findOne(this, selector, options);
-
-      return !element.classList.contains(cssClass);
-    },
-  };
+    return !element.classList.contains(cssClass);
+  });
 }

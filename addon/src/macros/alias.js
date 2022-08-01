@@ -1,3 +1,4 @@
+import { getter } from './index';
 import { throwBetterError } from '../-private/better-errors';
 import { chainable } from '../-private/chainable';
 
@@ -74,30 +75,26 @@ const ALIASED_PROP_NOT_FOUND = 'PageObject does not contain aliased property';
  * @throws Will throw an error if the PageObject does not have the specified property.
  */
 export function alias(pathToProp, options = {}) {
-  return {
-    isDescriptor: true,
+  return getter(function (key) {
+    try {
+      const value = getProperty(this, pathToProp);
 
-    get(key) {
-      try {
-        const value = getProperty(this, pathToProp);
-
-        if (typeof value !== 'function' || !options.chainable) {
-          return value;
-        }
-
-        return function (...args) {
-          // We can't just return value(...args) here because if the alias points
-          // to a property on a child node, then the return value would be that
-          // child node rather than this node.
-          value(...args);
-
-          return chainable(this);
-        };
-      } catch (e) {
-        throwBetterError(this, key, e);
+      if (typeof value !== 'function' || !options.chainable) {
+        return value;
       }
-    },
-  };
+
+      return function (...args) {
+        // We can't just return value(...args) here because if the alias points
+        // to a property on a child node, then the return value would be that
+        // child node rather than this node.
+        value(...args);
+
+        return chainable(this);
+      };
+    } catch (e) {
+      throwBetterError(this, key, e);
+    }
+  });
 }
 
 /**

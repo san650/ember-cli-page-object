@@ -237,14 +237,23 @@ module('alias', function(hooks) {
   test('can alias a property created with the `getter` macro', async function(assert) {
     assert.expect(1);
 
+    type Getter<T> = ReturnType<typeof getter<Record<string, unknown>, T>>;
+
+    type Form = {
+      buttonText: Getter<string>,
+      isButtonReady: Getter<boolean>
+    }
+
+    const form: Form = {
+      buttonText: text('button'),
+      isButtonReady: getter<Form>(function() {
+        return this.buttonText === 'Ready to Submit!';
+      }),
+    };
+
     const page = create({
-      form: {
-        buttonText: text('button'),
-        isButtonReady: getter(function(this: any) {
-          return this.buttonText === 'Ready to Submit!';
-        }),
-      },
-      aliasedIsButtonReady: alias('form.isButtonReady')
+      form,
+      aliasedIsButtonReady: alias('form.isButtonReady') as Form['isButtonReady']
     });
 
     await render(hbs`<button>Ready to Submit!</button>`);

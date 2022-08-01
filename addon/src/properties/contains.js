@@ -1,5 +1,6 @@
 import { $ } from '../-private/helpers';
 import { findOne } from '../-private/finders';
+import { getter } from '../macros/index';
 
 /**
  * Returns a boolean representing whether an element or a set of elements contains the specified text.
@@ -61,20 +62,16 @@ import { findOne } from '../-private/finders';
  * @throws Will throw an error if multiple elements are matched by selector
  */
 export function contains(selector, userOptions = {}) {
-  return {
-    isDescriptor: true,
-
-    get(key) {
-      return function (textToSearch) {
-        let options = {
-          pageObjectKey: `${key}("${textToSearch}")`,
-          ...userOptions,
-        };
-
-        return (
-          $(findOne(this, selector, options)).text().indexOf(textToSearch) > -1
-        );
+  return getter(function (key) {
+    return function (textToSearch) {
+      let options = {
+        pageObjectKey: `${key}("${textToSearch}")`,
+        ...userOptions,
       };
-    },
-  };
+
+      return (
+        $(findOne(this, selector, options)).text().indexOf(textToSearch) > -1
+      );
+    };
+  });
 }

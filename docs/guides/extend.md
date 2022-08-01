@@ -34,15 +34,12 @@ You can create custom helpers by creating `Ceibo` descriptors. (`Ceibo` is a sma
 
 ```javascript
 import { findOne } from 'ember-cli-page-object/extend';
+import { getter } from 'ember-cli-page-object/macros';
 
 export default function isDisabled(selector, options = {}) {
-  return {
-    isDescriptor: true,
-
-    get() {
-      return findOne(this, selector, options).disabled;
-    }
-  };
+  return getter(function() {
+    return findOne(this, selector, options).disabled;
+  });
 }
 ```
 
@@ -65,15 +62,12 @@ export default function isDisabled(selector, options = {}) {
 
 ```javascript
 import { findMany } from 'ember-cli-page-object/extend';
+import { getter } from 'ember-cli-page-object/macros';
 
 export default function count(selector, options = {}) {
-  return {
-    isDescriptor: true,
-
-    get() {
-      return findMany(this, selector, options).length;
-    }
-  };
+  return getter(function() {
+    return findMany(this, selector, options).length;
+  });
 }
 ```
 
@@ -103,15 +97,12 @@ In order to ease the migration, you may find useful the [`find-one`](https://git
 
 ```javascript
 import { findElementWithAssert } from 'ember-cli-page-object/extend';
+import { getter } from 'ember-cli-page-object/macros';
 
-export default function isDisabled(selector, options = {}) {
-  return {
-    isDescriptor: true,
-
-    get() {
-      return findElementWithAssert(this, selector, options).is(':disabled');
-    }
-  };
+export default function count(selector, options = {}) {
+  return getter(function() {
+    return findElementWithAssert(this, selector, options).is(':disabled');
+  });
 }
 ```
 
@@ -138,15 +129,12 @@ Note: in the v2 series we are going to deprecate `findElement`. It's recommended
 
 ```javascript
 import { findElement } from 'ember-cli-page-object/extend';
+import { getter } from 'ember-cli-page-object/macros';
 
 export default function isDisabled(selector, options = {}) {
-  return {
-    isDescriptor: true,
-
-    get() {
-      return findElement(this, selector, options).is(':disabled');
-    }
-  };
+  return getter(function() {
+    return findElement(this, selector, options).is(':disabled');
+  });
 }
 ```
 

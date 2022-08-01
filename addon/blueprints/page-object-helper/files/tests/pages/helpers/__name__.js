@@ -1,11 +1,8 @@
 import { findOne } from 'ember-cli-page-object/extend';
+import { getter } from 'ember-cli-page-object/macros';
 
 export default function <%= camelizedModuleName %>(selector, options = {}) {
-  return {
-    isDescriptor: true,
-
-    get() {
-      return findOne(this, selector, options).disabled;
-    }
-  };
+  return getter(function() {
+    return findOne(this, selector, options).disabled;
+  });
 }

@@ -5,16 +5,13 @@
  *
  * @example
  *
- * import { findMany } from '../extend';
+ * import { getter } from 'ember-cli-page-object/macros';
+ * import { findMany } from 'ember-cli-page-object/extend';
  *
  * export default function count(selector, options = {}) {
- *   return {
- *     isDescriptor: true,
- *
- *     get() {
- *       return findMany(this, selector, options).length;
- *     }
- *   };
+ *   return getter(function (pageObjectKey) {
+ *     return findMany(this, selector, { pageObjectKey }).length;
+ *   });
  * }
  *
  * @param {Ceibo} pageObjectNode - Node of the tree

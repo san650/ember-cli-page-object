@@ -1,4 +1,5 @@
 import { findMany } from '../-private/finders';
+import { getter } from '../macros/index';
 
 /**
  * @public
@@ -81,16 +82,12 @@ import { findMany } from '../-private/finders';
  * @return {Descriptor}
  */
 export function count(selector, userOptions = {}) {
-  return {
-    isDescriptor: true,
+  return getter(function (key) {
+    let options = {
+      pageObjectKey: key,
+      ...userOptions,
+    };
 
-    get(key) {
-      let options = {
-        pageObjectKey: key,
-        ...userOptions,
-      };
-
-      return findMany(this, selector, options).length;
-    },
-  };
+    return findMany(this, selector, options).length;
+  });
 }

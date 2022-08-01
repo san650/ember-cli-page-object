@@ -15,26 +15,21 @@ const NOT_A_FUNCTION_ERROR = 'Argument passed to `getter` must be a function.';
  * import { create, value, property } from 'ember-cli-page-object';
  * import { getter } from 'ember-cli-page-object/macros';
  *
+ * import { getter } from 'ember-cli-page-object/macros';
+ * import { findOne } from 'ember-cli-page-object';
+ *
+ * function isDisabled(selector) {
+ *   return getter(function (pageObjectKey) {
+ *     return findOne(this, selector, { pageObjectKey }).disabled;
+ *   });
+ * }
+ *
  * const page = create({
- *   inputValue: value('input'),
- *   isSubmitButtonDisabled: property('disabled', 'button'),
- *
- *   // with the `getter` macro
- *   isFormEmpty: getter(function() {
- *     return !this.inputValue && this.isSubmitButtonDisabled;
- *   }),
- *
- *   // without the `getter` macro
- *   _isFormEmpty: {
- *     isDescriptor: true,
- *     get() {
- *       return !this.inputValue && this.isSubmitButtonDisabled;
- *     }
- *   }
+ *   isInputDisabled: isDisabled('input'),
  * });
  *
  * // checks the value returned by the function passed into `getter`
- * assert.ok(page.isFormEmpty);
+ * assert.ok(page.isInputDisabled);
  *
  * @public
  *
@@ -47,12 +42,12 @@ export function getter(fn) {
   return {
     isDescriptor: true,
 
-    get(key) {
+    get(pageObjectKey) {
       if (typeof fn !== 'function') {
-        throwBetterError(this, key, NOT_A_FUNCTION_ERROR);
+        throwBetterError(this, pageObjectKey, NOT_A_FUNCTION_ERROR);
       }
 
-      return fn.call(this, key);
+      return fn.call(this, pageObjectKey);
     },
   };
 }
