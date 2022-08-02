@@ -1,5 +1,6 @@
 import action from '../-private/action';
 import { findOne } from '../-private/finders';
+import { getAdapter } from '../adapters/index';
 
 /**
  *
@@ -79,20 +80,16 @@ import { findOne } from '../-private/finders';
  * @return {Descriptor}
  */
 export function triggerable(event, selector, userOptions = {}) {
-  return action(
-    {
-      ...userOptions,
-      selector,
-    },
-    function (eventProperties = {}) {
-      const mergedEventProperties = {
-        ...userOptions.eventProperties,
-        ...eventProperties,
-      };
+  const { eventProperties: initialEventProperties } = userOptions;
 
-      const element = findOne(this.node, this.query.selector, this.query);
+  return action({ ...userOptions, selector }, function (eventProperties = {}) {
+    const mergedEventProperties = {
+      ...initialEventProperties,
+      ...eventProperties,
+    };
 
-      return this.adapter.triggerEvent(element, event, mergedEventProperties);
-    }
-  );
+    const element = findOne(this, selector, userOptions);
+
+    return getAdapter().triggerEvent(element, event, mergedEventProperties);
+  });
 }

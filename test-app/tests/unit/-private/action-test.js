@@ -43,12 +43,12 @@ module('Unit | action', function (hooks) {
     setAdapter(initialAdapter);
   });
 
-  let invoked, finished, executionContext;
+  let invoked, finished, node;
 
   const testable = (query) => {
     return action(query, function (id, deferred) {
       invoked.push(id);
-      executionContext = this;
+      node = this;
 
       return deferred.promise.then(() => {
         finished.push(id);
@@ -59,7 +59,7 @@ module('Unit | action', function (hooks) {
   hooks.beforeEach(function () {
     invoked = [];
     finished = [];
-    executionContext = null;
+    node = null;
   });
 
   test('it works', async function (assert) {
@@ -72,16 +72,8 @@ module('Unit | action', function (hooks) {
     const d1 = new Deferred();
     p.run(1, d1);
 
-    assert.equal(
-      typeof executionContext === 'object' && executionContext !== null,
-      true
-    );
-    assert.deepEqual(executionContext.query, {
-      key: `run("1", "[object Object]")`,
-      selector: '.Selector',
-    });
-    assert.equal(executionContext.node, p, '');
-    assert.equal(executionContext.adapter instanceof DummyAdapter, true);
+    assert.true(typeof node === 'object' && node !== null);
+    assert.equal(node, p, '');
 
     assert.deepEqual(invoked, [1]);
     assert.deepEqual(finished, []);
@@ -90,22 +82,6 @@ module('Unit | action', function (hooks) {
 
     assert.deepEqual(invoked, [1]);
     assert.deepEqual(finished, [1]);
-  });
-
-  test('this is frozen', async function (assert) {
-    const p = create({
-      scope: 'it works',
-
-      run: action(function () {
-        executionContext = this;
-      }),
-    });
-
-    await p.run();
-
-    assert.throws(() => {
-      executionContext.test = 1;
-    });
   });
 
   test('it handles sync errors', async function (assert) {

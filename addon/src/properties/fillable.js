@@ -1,6 +1,7 @@
 import { findMany } from '../-private/finders';
 import action from '../-private/action';
 import { findOne } from '../-private/finders';
+import { getAdapter } from '../adapters/index';
 
 /**
  * Alias for `fillable`, which works for inputs, HTML select menus, and
@@ -127,20 +128,20 @@ export function fillable(selector = '', userOptions = {}) {
 
       let scopeSelector = selector;
       if (clue) {
-        scopeSelector = findSelectorByClue(this, clue);
+        scopeSelector = findSelectorByClue(this, selector, userOptions, clue);
         if (!scopeSelector) {
           throw new Error(`Can not find element by clue: "${clue}".`);
         }
       }
 
-      const element = findOne(this.node, scopeSelector, this.query);
+      const element = findOne(this, scopeSelector, userOptions);
 
-      return this.adapter.fillIn(element, content);
+      return getAdapter().fillIn(element, content);
     }
   );
 }
 
-function findSelectorByClue({ node, query }, clue) {
+function findSelectorByClue(node, selector, findOptions, clue) {
   let cssClues = ['input', 'textarea', 'select', '[contenteditable]']
     .map((tag) => [
       `${tag}[data-test="${clue}"]`,
@@ -152,6 +153,6 @@ function findSelectorByClue({ node, query }, clue) {
     .reduce((total, other) => total.concat(other), []);
 
   return cssClues.find((extraScope) => {
-    return findMany(node, `${query.selector} ${extraScope}`, query)[0];
+    return findMany(node, `${selector} ${extraScope}`, findOptions)[0];
   });
 }
