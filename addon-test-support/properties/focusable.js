@@ -1,4 +1,3 @@
-import { assign } from '../-private/helpers';
 import { getExecutionContext } from '../-private/execution_context';
 
 /**
@@ -69,7 +68,7 @@ export function focusable(selector, userOptions = {}) {
     get(key) {
       return function() {
         const executionContext = getExecutionContext(this);
-        const options = assign({ pageObjectKey: `${key}()` }, userOptions);
+        const options = Object.assign({ pageObjectKey: `${key}()` }, userOptions);
 
         return executionContext.runAsync((context) => {
           return context.focus(selector, options);

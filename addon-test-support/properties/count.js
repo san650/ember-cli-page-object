@@ -1,4 +1,3 @@
-import { assign } from '../-private/helpers';
 import { findMany } from '../extend';
 
 /**
@@ -86,7 +85,7 @@ export function count(selector, userOptions = {}) {
     isDescriptor: true,
 
     get(key) {
-      let options = assign({ pageObjectKey: key }, userOptions);
+      let options = Object.assign({ pageObjectKey: key }, userOptions);
 
       return findMany(this, selector, options).length;
     }

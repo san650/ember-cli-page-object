@@ -1,5 +1,4 @@
 import $ from '-jquery';
-import { assign } from '../-private/helpers';
 import { findMany, findOne } from '../extend';
 
 /**
@@ -81,7 +80,7 @@ export function attribute(attributeName, selector, userOptions = {}) {
     isDescriptor: true,
 
     get(key) {
-      let options = assign({ pageObjectKey: key }, userOptions);
+      let options = Object.assign({ pageObjectKey: key }, userOptions);
 
       if (options.multiple) {
         return findMany(this, selector, options).map(element => $(element).attr(attributeName));

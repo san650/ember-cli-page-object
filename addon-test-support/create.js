@@ -1,7 +1,7 @@
 import Ceibo from 'ceibo';
 import deprecate from './-private/deprecate';
 import { render, setContext, removeContext } from './-private/context';
-import { assign, getPageObjectDefinition, isPageObject, storePageObjectDefinition } from './-private/helpers';
+import { getPageObjectDefinition, isPageObject, storePageObjectDefinition } from './-private/helpers';
 import { visitable } from './properties/visitable';
 import dsl from './-private/dsl';
 
@@ -86,12 +86,12 @@ function buildObject(node, blueprintKey, blueprint, defaultBuilder) {
     definition = blueprint;
   }
 
-  let blueprintToStore = assign({}, definition);
+  let blueprintToStore = Object.assign({}, definition);
   //the _chainedTree is an implementation detail that shouldn't make it into the stored
   if(blueprintToStore._chainedTree){
     delete blueprintToStore._chainedTree;
   }
-  blueprint = assign({}, dsl, definition);
+  blueprint = Object.assign({}, dsl, definition);
 
   const [ instance, blueprintToApply ] = defaultBuilder(node, blueprintKey, blueprint, defaultBuilder);
 
@@ -205,7 +205,7 @@ export function create(definitionOrUrl, definitionOrOptions, optionsOrNothing) {
   // in the instance where the definition is a page object, we must use the stored definition directly
   // or else we will fire off the Ceibo created getters which will error
   definition = isPageObject(definition)
-    ? assign({}, getPageObjectDefinition(definition))
+    ? Object.assign({}, getPageObjectDefinition(definition))
     : assignDescriptors({}, definition);
 
   delete definition.context;
@@ -227,7 +227,7 @@ export function create(definitionOrUrl, definitionOrOptions, optionsOrNothing) {
   let chainedBuilder = {
     object: buildObject
   };
-  let chainedTree = Ceibo.create(definition, assign({ builder: chainedBuilder }, options));
+  let chainedTree = Ceibo.create(definition, Object.assign({ builder: chainedBuilder }, options));
 
   // Attach it to the root in the definition of the primary tree
   definition._chainedTree = {
@@ -243,7 +243,7 @@ export function create(definitionOrUrl, definitionOrOptions, optionsOrNothing) {
     object: buildObject
   };
 
-  let page = Ceibo.create(definition, assign({ builder }, options));
+  let page = Ceibo.create(definition, Object.assign({ builder }, options));
 
   if (page) {
     page.render = render;

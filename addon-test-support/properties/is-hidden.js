@@ -1,4 +1,4 @@
-import { assign, guardMultiple } from '../-private/helpers';
+import { guardMultiple } from '../-private/helpers';
 import { findMany } from '../extend';
 import { A } from '@ember/array';
 import $ from '-jquery';
@@ -106,7 +106,7 @@ export function isHidden(selector, userOptions = {}) {
     isDescriptor: true,
 
     get(key) {
-      let options = assign({ pageObjectKey: key }, userOptions);
+      let options = Object.assign({ pageObjectKey: key }, userOptions);
 
       let elements = findMany(this, selector, options);
 

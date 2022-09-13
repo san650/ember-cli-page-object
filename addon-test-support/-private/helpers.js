@@ -1,4 +1,3 @@
-export { assign } from '@ember/polyfills';
 import { A } from '@ember/array';
 import { assert } from '@ember/debug';
 import { get } from '@ember/object';

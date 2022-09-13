@@ -1,5 +1,4 @@
 import {
-  assign,
   buildSelector as originalBuildSelector
 } from '../../-private/helpers';
 
@@ -8,7 +7,7 @@ function childSelector(pageObjectNode, context, selector, options) {
   // In this case <form> and <button> elements contains "Submit" text, so, we'll
   // want to __always__ click on the __last__ element that contains the text.
   let selectorWithSpace = `${selector || ''} `;
-  let opts = assign({ last: true, multiple: true }, options);
+  let opts = Object.assign({ last: true, multiple: true }, options);
 
   if (context.find(selectorWithSpace, opts).length) {
     return originalBuildSelector(pageObjectNode, selectorWithSpace, opts);

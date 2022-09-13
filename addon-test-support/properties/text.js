@@ -1,4 +1,4 @@
-import { assign, normalizeText } from '../-private/helpers';
+import { normalizeText } from '../-private/helpers';
 import { findMany, findOne } from '../extend';
 import $ from '-jquery';
 
@@ -105,7 +105,7 @@ export function text(selector, userOptions = {}) {
     isDescriptor: true,
 
     get(key) {
-      let options = assign({ pageObjectKey: key }, userOptions);
+      let options = Object.assign({ pageObjectKey: key }, userOptions);
       let f = options.normalize === false ? identity : normalizeText;
 
       if (options.multiple) {

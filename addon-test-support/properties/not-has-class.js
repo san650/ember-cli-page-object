@@ -1,4 +1,3 @@
-import { assign } from '../-private/helpers';
 import { findOne, findMany } from '../extend';
 import { A } from '@ember/array';
 
@@ -102,7 +101,7 @@ export function notHasClass(cssClass, selector, userOptions = {}) {
     isDescriptor: true,
 
     get(key) {
-      let options = assign({ pageObjectKey: key }, userOptions);
+      let options = Object.assign({ pageObjectKey: key }, userOptions);
 
       let elements = options.multiple ? findMany(this, selector, options) : [findOne(this, selector, options)];
 

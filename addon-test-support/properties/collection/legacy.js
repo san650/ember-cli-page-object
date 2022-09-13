@@ -1,6 +1,6 @@
 /* global Symbol */
 import { A } from '@ember/array';
-import { buildSelector, assign as mergeFunction } from '../../-private/helpers';
+import { buildSelector } from '../../-private/helpers';
 import { create } from '../../create';
 import { count } from '../count';
 import Ceibo from 'ceibo';
@@ -8,7 +8,7 @@ import Ceibo from 'ceibo';
 const arrayDelegateMethods = ['map', 'filter', 'mapBy', 'filterBy', 'forEach'];
 
 function merge(target, ...objects) {
-  objects.forEach((o) => mergeFunction(target, o));
+  objects.forEach((o) => Object.assign(target, o));
 
   return target;
 }
@@ -90,7 +90,7 @@ function iteratorMethod() {
 }
 
 export function collection(definition) {
-  definition = mergeFunction({}, definition);
+  definition = Object.assign({}, definition);
 
   let item = {
     scope: definition.scope,
