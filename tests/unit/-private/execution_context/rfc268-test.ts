@@ -60,9 +60,7 @@ if (require.has('@ember/test-helpers')) {
     test('sync chained invocations', async function(assert) {
       node.click().click();
 
-      await settled();
-      await settled();
-      await settled();
+      await node;
 
       assert.verifySteps([
         'begin #0',
