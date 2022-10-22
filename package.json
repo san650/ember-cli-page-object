@@ -7,8 +7,10 @@
     "url": "https://github.com/san650/ember-cli-page-object.git"
   },
   "scripts": {
-    "prepare": "cd addon && npm run build",
-    "test": "cd test-app && npm run test:ember"
+    "test": "pnpm --filter test-app test:ember",
+    "start": "pnpm --parallel --filter test-app... start",
+    "lint": "pnpm -r lint",
+    "lint:fix": "pnpm -r lint:fix"
   },
   "publishConfig": {
     "registry": "https://registry.npmjs.org"
