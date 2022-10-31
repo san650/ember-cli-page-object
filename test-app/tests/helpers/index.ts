@@ -7,8 +7,6 @@ import hbs from 'htmlbars-inline-precompile';
 import { TestContext as DefaultTestContext } from 'ember-test-helpers';
 import { render } from '@ember/test-helpers';
 
-import $ from 'jquery';
-
 export interface TestContext extends DefaultTestContext {
   [k: string]: unknown;
 
