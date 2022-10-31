@@ -6,5 +6,5 @@ declare module 'ember-cli-page-object/templates/*' {
 }
 
 declare module '-jquery' {
-  export { default } from "jquery";
+  export default $;
 }
