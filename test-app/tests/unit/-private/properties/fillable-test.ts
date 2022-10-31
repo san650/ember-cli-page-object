@@ -193,7 +193,7 @@ module('fillable', function(hooks) {
 
     await page.foo(expectedText);
 
-    assert.equal(this.findExternal('input').val(), expectedText);
+    assert.equal(this.findExternal<HTMLInputElement>('input')?.value, expectedText);
   });
 
   test('looks for elements within test container specified at node level', async function(this: TestContext, assert) {
@@ -209,7 +209,7 @@ module('fillable', function(hooks) {
 
     await page.foo(expectedText);
 
-    assert.equal(this.findExternal('input').val(), expectedText);
+    assert.equal(this.findExternal<HTMLInputElement>('input')?.value, expectedText);
   });
 
   test(`raises an error when can't find an element by clue`, async function(assert) {
