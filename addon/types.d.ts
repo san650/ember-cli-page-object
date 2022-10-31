@@ -58,7 +58,8 @@ declare module 'ember-cli-page-object' {
 }
 
 declare module 'ember-cli-page-object/extend' {
-  import 'jquery';
+  import JQuery from 'jquery';
+
   import { Component, FindOptions, FindOneOptions } from 'ember-cli-page-object/-private';
 
   function findElement(pageObject: Component, scope?: string, options?: FindOptions): JQuery;
@@ -92,7 +93,7 @@ declare module 'ember-cli-page-object/adapters' {
 }
 
 declare module 'ember-cli-page-object/-private' {
-  import 'jquery';
+  import JQuery from 'jquery';
 
   interface GetterDescriptor<T> {
     isGetter: true;
