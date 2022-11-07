@@ -1,14 +1,10 @@
 import Ceibo from '@ro0gr/ceibo';
 import deprecate from './deprecate';
-import {
-  dependencySatisfies,
-  macroCondition,
-  importSync,
-} from '@embroider/macros';
+import { importSync } from '@embroider/macros';
 
 let jQuery;
 
-if (macroCondition(dependencySatisfies('@ember/jquery', '*'))) {
+if (window.jQuery) {
   jQuery = window.jQuery;
 } else {
   const jqueryImport = importSync('jquery');
