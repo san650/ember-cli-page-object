@@ -8,9 +8,9 @@
  * import { getter } from 'ember-cli-page-object/macros';
  * import { findElement } from 'ember-cli-page-object/extend';
  *
- * function isDisabled(selector) {
- *   return getter(function (pageObjectKey) {
- *     return findElement(this, selector, { pageObjectKey }).is(':disabled');
+ * function isDisabled(selector, options = {}) {
+ *   return getter(function () {
+ *     return findElement(this, selector, options).is(':disabled');
  *   });
  * }
  *

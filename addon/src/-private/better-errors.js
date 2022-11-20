@@ -20,31 +20,50 @@ export function throwContextualError(node, filters, e) {
  * @return {Ember.Error}
  */
 export function throwBetterError(node, key, error, { selector } = {}) {
-  let path = [key];
+  let message = error instanceof Error ? error.message : error.toString();
+
+  const err = new PageObjectError(key, node, selector, message);
+  if (error instanceof Error && 'stack' in error) {
+    err.stack = error.stack;
+  }
+
+  console.error(err.toString());
+  throw err;
+}
+
+export class PageObjectError extends Error {
+  constructor(label, node, selector, ...args) {
+    super(...args);
+
+    this.label = label;
+    this.node = node;
+    this.selector = selector;
+  }
+
+  toString() {
+    let { message, label, node, selector } = this;
+    if (label) {
+      let path = buildPropertyNamesPath(label, node);
+      message = `${message}\n\nPageObject: '${path.join('.')}'`;
+    }
+
+    if (typeof selector === 'string' && selector.trim().length > 0) {
+      message = `${message}\n  Selector: '${selector}'`;
+    }
+
+    return `Error: ${message}`;
+  }
+}
+
+function buildPropertyNamesPath(leafKey, node) {
+  let path = [leafKey];
+
   let current;
-
-  let fullErrorMessage =
-    error instanceof Error ? error.message : error.toString();
-
   for (current = node; current; current = Ceibo.parent(current)) {
     path.unshift(Ceibo.meta(current).key);
   }
 
   path[0] = 'page';
 
-  if (path.length > 0) {
-    fullErrorMessage += `\n\nPageObject: '${path.join('.')}'`;
-  }
-
-  if (typeof selector === 'string' && selector.trim().length > 0) {
-    fullErrorMessage = `${fullErrorMessage}\n  Selector: '${selector}'`;
-  }
-
-  const err = new Error(fullErrorMessage);
-  if (error instanceof Error && 'stack' in error) {
-    err.stack = error.stack;
-  }
-
-  console.error(err.message);
-  throw err;
+  return path;
 }

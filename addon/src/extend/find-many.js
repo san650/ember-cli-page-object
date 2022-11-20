@@ -9,8 +9,8 @@
  * import { findMany } from 'ember-cli-page-object/extend';
  *
  * export default function count(selector, options = {}) {
- *   return getter(function (pageObjectKey) {
- *     return findMany(this, selector, { pageObjectKey }).length;
+ *   return getter(function () {
+ *     return findMany(this, selector, options).length;
  *   });
  * }
  *

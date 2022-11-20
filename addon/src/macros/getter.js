@@ -1,4 +1,4 @@
-import { throwBetterError } from '../-private/better-errors';
+import { PageObjectError, throwBetterError } from '../-private/better-errors';
 
 const NOT_A_FUNCTION_ERROR = 'Argument passed to `getter` must be a function.';
 
@@ -47,7 +47,19 @@ export function getter(fn) {
         throwBetterError(this, pageObjectKey, NOT_A_FUNCTION_ERROR);
       }
 
-      return fn.call(this, pageObjectKey);
+      try {
+        return fn.call(this, pageObjectKey);
+      } catch (e) {
+        if (e instanceof PageObjectError) {
+          if (!e.label) {
+            e.label = pageObjectKey;
+          }
+
+          throw e;
+        }
+
+        throwBetterError(this, pageObjectKey, e);
+      }
     },
   };
 }

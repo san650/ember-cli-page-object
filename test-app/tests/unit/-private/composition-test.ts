@@ -18,6 +18,20 @@ import {
 
 import { alias, getter } from 'ember-cli-page-object/macros';
 
+function assertThrowsErrorMessage(
+  assert,
+  block,
+  expectedMessage,
+  asserionMessage
+) {
+  try {
+    block();
+    assert.true(false);
+  } catch (e) {
+    assert.strictEqual(e.toString(), expectedMessage, asserionMessage);
+  }
+}
+
 module('Unit | composition', function () {
   test('each page object node stores its definition', function (assert) {
     let definition = {
@@ -153,9 +167,11 @@ module('Unit | composition', function () {
   });
 
   test('getPageObjectDefinition errors if node is not a page object', function (assert) {
-    assert.throws(function () {
-      return getPageObjectDefinition({});
-    }, 'cannot get the page object definition from a node that is not a page object');
+    assertThrowsErrorMessage(
+      assert,
+      () => getPageObjectDefinition({}),
+      'Error: cannot get the page object definition from a node that is not a page object'
+    );
   });
 
   module('all properties via compsition', function (hooks) {
