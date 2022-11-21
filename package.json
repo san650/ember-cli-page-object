@@ -67,7 +67,6 @@
     "ember-auto-import": "^2.4.0",
     "ember-cli-babel": "^7.24.0",
     "ember-cli-typescript": "^4.1.0",
-    "jquery": "^3.4.1",
     "rsvp": "^4.7.0"
   },
   "devDependencies": {
