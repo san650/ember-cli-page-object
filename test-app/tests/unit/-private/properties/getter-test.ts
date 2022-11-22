@@ -29,20 +29,29 @@ module('getter', function(hooks) {
   test('executes the passed-in function with the correct context for `this`', async function (this: TestContext, assert) {
     assert.expect(1);
 
-    const page = create({
+    type Getter<T> = ReturnType<typeof getter<Record<string, unknown>, T>>;
+
+    type Definition = {
+      inputValue: Getter<string>,
+      isSubmitButtonDisabled: Getter<boolean>,
+      isFormEmpty: Getter<boolean>
+    }
+
+    const def: Definition = {
       inputValue: value('input'),
       isSubmitButtonDisabled: property('disabled', 'button'),
-      isFormEmpty: getter(function(this: any): boolean {
+      isFormEmpty: getter<Definition> (function() {
         return !this.inputValue && this.isSubmitButtonDisabled;
       })
-    });
+    }
+    const page = create(def);
 
     await this.createTemplate(`
       <input value="">
       <button disabled="true">Submit</button>
     `);
 
-    assert.ok(page.isFormEmpty);
+    assert.true(page.isFormEmpty);
   });
 
   test('calls the passed-in function with the property key', function(this: TestContext, assert) {

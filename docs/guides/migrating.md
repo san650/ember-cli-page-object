@@ -79,15 +79,12 @@ On version `1.x` this can be represented as:
 
 ```js
 import { findElement } from 'ember-cli-page-object/extend';
+import { getter } from 'ember-cli-page-object/macros';
 
 export default function disabled(selector, options = {}) {
-  return {
-    isDescriptor: true,
-
-    get() {
-      return findElement(this, selector, options).is(':disabled');
-    }
-  }
+  return getter(function() {
+    return findElement(this, selector, options).is(':disabled');
+  });
 }
 ```
 

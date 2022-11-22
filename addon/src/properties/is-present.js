@@ -1,5 +1,6 @@
 import { findMany } from '../-private/finders';
 import { guardMultiple } from '../-private/helpers';
+import { getter } from '../macros/index';
 
 /**
  * Validates if any element matching the target selector is rendered in the DOM.
@@ -67,18 +68,15 @@ import { guardMultiple } from '../-private/helpers';
  * @throws Will throw an error if multiple elements are matched by selector
  */
 export function isPresent(selector, userOptions = {}) {
-  return {
-    isDescriptor: true,
-    get(key) {
-      let options = {
-        pageObjectKey: key,
-        ...userOptions,
-      };
+  return getter(function (key) {
+    let options = {
+      pageObjectKey: key,
+      ...userOptions,
+    };
 
-      let elements = findMany(this, selector, options);
-      guardMultiple(elements, selector);
+    let elements = findMany(this, selector, options);
+    guardMultiple(elements, selector);
 
-      return elements.length === 1;
-    },
-  };
+    return elements.length === 1;
+  });
 }

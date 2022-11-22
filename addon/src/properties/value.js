@@ -1,5 +1,6 @@
 import { $ } from '../-private/helpers';
 import { findOne } from '../-private/finders';
+import { getter } from '../macros/index';
 
 /**
  * @public
@@ -73,20 +74,16 @@ import { findOne } from '../-private/finders';
  * @throws Will throw an error if multiple elements are matched by selector
  */
 export function value(selector, userOptions = {}) {
-  return {
-    isDescriptor: true,
+  return getter(function (key) {
+    let options = {
+      pageObjectKey: key,
+      ...userOptions,
+    };
 
-    get(key) {
-      let options = {
-        pageObjectKey: key,
-        ...userOptions,
-      };
+    const element = findOne(this, selector, options);
 
-      const element = findOne(this, selector, options);
-
-      return element.hasAttribute('contenteditable')
-        ? $(element).html()
-        : $(element).val();
-    },
-  };
+    return element.hasAttribute('contenteditable')
+      ? $(element).html()
+      : $(element).val();
+  });
 }

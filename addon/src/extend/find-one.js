@@ -5,16 +5,13 @@
  *
  * @example
  *
+ * import { getter } from 'ember-cli-page-object/macros';
  * import { findOne } from 'ember-cli-page-object';
  *
- * export default function isDisabled(selector, options = {}) {
- *   return {
- *     isDescriptor: true,
- *
- *     get() {
- *       return findOne(this, selector, options).disabled;
- *     }
- *   };
+ * function isDisabled(selector) {
+ *   return getter(function (pageObjectKey) {
+ *     return findOne(this, selector, { pageObjectKey }).disabled;
+ *   });
  * }
  *
  * @param {Ceibo} pageObjectNode - Node of the tree

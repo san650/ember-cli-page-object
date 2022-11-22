@@ -20,8 +20,8 @@ declare module 'ember-cli-page-object' {
   function isPresent(scope?: string, options?: FindOptions): GetterDescriptor<boolean>;
   function text(scope?: string, options?: FindOptions & { normalize?: boolean }): GetterDescriptor<string>;
   function value(scope?: string, options?: FindOptions): GetterDescriptor<string>;
-  function property(name: string): GetterDescriptor<any>;
-  function property(scope: string, name: string, options?: FindOptions): GetterDescriptor<any>;
+  function property<T = unknown>(name: string): GetterDescriptor<T>;
+  function property<T = unknown>(scope: string, name: string, options?: FindOptions): GetterDescriptor<T>;
   function hasClass(className: string): GetterDescriptor<boolean>;
   function hasClass(scope: string, className: string, options?: FindOptions): GetterDescriptor<boolean>;
   function notHasClass(className: string): GetterDescriptor<boolean>;
@@ -70,9 +70,12 @@ declare module 'ember-cli-page-object/extend' {
 }
 
 declare module 'ember-cli-page-object/macros' {
-  import { GetterDescriptor } from 'ember-cli-page-object/-private';
+  import { Component, GetterDescriptor } from 'ember-cli-page-object/-private';
 
-  function getter<T>(body: (key: string) => T): GetterDescriptor<T>;
+  function getter<P extends Record<string, unknown>, T = any>
+    (body: (this: Component<P>, key: string) => T)
+    : GetterDescriptor<T>;
+
   function alias(path: string, options?: { chainable: boolean }): any;
 }
 

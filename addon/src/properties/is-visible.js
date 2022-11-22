@@ -1,5 +1,6 @@
 import { guardMultiple, $ } from '../-private/helpers';
 import { findMany } from '../-private/finders';
+import { getter } from '../macros/index';
 
 /**
  * Validates if an element or set of elements are visible.
@@ -77,19 +78,15 @@ import { findMany } from '../-private/finders';
  * @throws Will throw an error if multiple elements are matched by selector
  */
 export function isVisible(selector, userOptions = {}) {
-  return {
-    isDescriptor: true,
+  return getter(function (key) {
+    let options = {
+      pageObjectKey: key,
+      ...userOptions,
+    };
 
-    get(key) {
-      let options = {
-        pageObjectKey: key,
-        ...userOptions,
-      };
+    let elements = findMany(this, selector, options);
+    guardMultiple(elements, selector, options.multiple);
 
-      let elements = findMany(this, selector, options);
-      guardMultiple(elements, selector, options.multiple);
-
-      return elements.length === 1 && $(elements[0]).is(':visible');
-    },
-  };
+    return elements.length === 1 && $(elements[0]).is(':visible');
+  });
 }

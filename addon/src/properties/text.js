@@ -1,5 +1,6 @@
 import { $ } from '../-private/helpers';
 import { findOne } from '../-private/finders';
+import { getter } from '../macros/index';
 
 function identity(v) {
   return v;
@@ -85,19 +86,15 @@ function identity(v) {
  * @throws Will throw an error if multiple elements are matched by selector
  */
 export function text(selector, userOptions = {}) {
-  return {
-    isDescriptor: true,
+  return getter(function (key) {
+    let options = {
+      pageObjectKey: key,
+      ...userOptions,
+    };
 
-    get(key) {
-      let options = {
-        pageObjectKey: key,
-        ...userOptions,
-      };
-
-      let f = options.normalize === false ? identity : normalizeText;
-      return f($(findOne(this, selector, options)).text());
-    },
-  };
+    let f = options.normalize === false ? identity : normalizeText;
+    return f($(findOne(this, selector, options)).text());
+  });
 }
 
 /**
