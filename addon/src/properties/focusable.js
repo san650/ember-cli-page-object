@@ -1,5 +1,6 @@
 import action from '../-private/action';
 import { findOne } from '../-private/finders';
+import { getAdapter } from '../adapters/index';
 
 /**
  *
@@ -66,8 +67,8 @@ export function focusable(selector = '', userOptions = {}) {
   const query = { ...userOptions, selector };
 
   return action(query, function () {
-    const element = findOne(this.node, this.query.selector, this.query);
+    const element = findOne(this, selector, query);
 
-    return this.adapter.focus(element);
+    return getAdapter().focus(element);
   });
 }

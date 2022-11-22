@@ -1,5 +1,6 @@
 import { $ } from '../-private/helpers';
 import action from '../-private/action';
+import { getAdapter } from '../adapters/index';
 
 function fillInDynamicSegments(path, params) {
   return path
@@ -97,6 +98,6 @@ export function visitable(path) {
 
     fullPath = appendQueryParams(fullPath, params);
 
-    return this.adapter.visit(fullPath);
+    return getAdapter().visit(fullPath);
   });
 }

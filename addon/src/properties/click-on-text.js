@@ -1,5 +1,6 @@
 import action from '../-private/action';
 import { findOne, findMany } from '../-private/finders';
+import { getAdapter } from '../adapters/index';
 
 /**
  * Clicks on an element containing specified text.
@@ -83,28 +84,22 @@ import { findOne, findMany } from '../-private/finders';
  * @param {string} options.testContainer - Context where to search elements in the DOM
  * @return {Descriptor}
  */
-export function clickOnText(scope, userOptions = {}) {
-  return action(
-    {
+export function clickOnText(selector, userOptions = {}) {
+  return action({ ...userOptions, selector }, function (textToClick) {
+    const options = {
       ...userOptions,
-      selector: scope,
-    },
-    function (textToClick) {
-      this.query.contains = textToClick;
+      contains: textToClick,
       // find the deepest node containing a text to click
-      this.query.last = true;
+      last: true,
+    };
 
-      const childSelector = `${scope || ''} `;
-      let selector;
-      if (findMany(this.node, childSelector, this.query).length) {
-        selector = childSelector;
-      } else {
-        selector = scope;
-      }
+    const childSelector = `${selector || ''} *`;
+    const byTextSelector = findMany(this, childSelector, options).length
+      ? childSelector
+      : selector;
 
-      const element = findOne(this.node, selector, this.query);
+    const element = findOne(this, byTextSelector, options);
 
-      return this.adapter.click(element);
-    }
-  );
+    return getAdapter().click(element);
+  });
 }

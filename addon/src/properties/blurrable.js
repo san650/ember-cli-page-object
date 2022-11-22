@@ -1,5 +1,6 @@
 import action from '../-private/action';
 import { findOne } from '../-private/finders';
+import { getAdapter } from '../adapters/index';
 
 /**
  *
@@ -69,9 +70,9 @@ export function blurrable(selector = '', userOptions = {}) {
       selector,
     },
     function () {
-      const element = findOne(this.node, this.query.selector, this.query);
+      const element = findOne(this, selector, userOptions);
 
-      return this.adapter.blur(element);
+      return getAdapter().blur(element);
     }
   );
 }
