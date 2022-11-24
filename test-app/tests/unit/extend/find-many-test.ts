@@ -73,16 +73,46 @@ module(`Extend | findMany`, function(hooks) {
     assert.deepEqual(findMany(page, '.lorem', { resetScope: true }), findAll('.lorem'));
   });
 
-  test('contains param', async function(assert) {
+  test('contains', async function(assert) {
     let page = create({});
 
     await render(hbs`
       <span class="lorem"></span>
-      <span class="lorem">Word</span>
-      <span class="lorem">Word</span>
+      <span class="lorem" id="a">
+        Word
+        <span id="ab">Word</span>
+      </span>
+      <span class="lorem" id="b">
+        Word
+        <span id="bb">Word</span>
+      </span>
     `);
 
-    assert.deepEqual(findMany(page, '.lorem', { contains: 'Word' }), findAll('.lorem').slice(1, 3));
+    assert.deepEqual(
+      findMany(page, '.lorem', { contains: 'Word' }).map((el) => el.id),
+      ['a', 'b']
+    );
+  });
+
+  test('contains with nested selector', async function(assert) {
+    let page = create({});
+
+    await render(hbs`
+      <span class="lorem"></span>
+      <span class="lorem" id="a">
+        Word
+        <span id="ab">Word</span>
+      </span>
+      <span class="lorem" id="b">
+        Word
+        <span id="bb">Word</span>
+      </span>
+    `);
+
+    assert.deepEqual(
+      findMany(page, '.lorem *', { contains: 'Word' }).map((el) => el.id),
+      ['ab', 'bb']
+    );
   });
 
   test('scope param', async function(assert) {

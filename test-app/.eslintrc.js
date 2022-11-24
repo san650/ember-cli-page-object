@@ -25,6 +25,7 @@ module.exports = {
   },
   rules: {
     'ember/no-global-jquery': 0,
+    'ember/no-jquery': 0,
     'no-console': ['error', { allow: ['warn', 'error'] }],
   },
   overrides: [

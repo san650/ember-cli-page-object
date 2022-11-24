@@ -1,9 +1,9 @@
 import Ceibo from '@ro0gr/ceibo';
-import { buildSelector } from '../-private/helpers';
 import { isPageObject, getPageObjectDefinition } from '../-private/meta';
 import { create } from '../create';
 import { count } from './count';
 import { throwBetterError } from '../-private/better-errors';
+import { getter } from '../macros/index';
 
 /**
  * Creates a enumerable that represents a collection of items. The collection is zero-indexed
@@ -177,6 +177,7 @@ export class Collection {
 
     this._itemCounter = create(
       {
+        // @todo: use locator
         count: count(scope, {
           resetScope: this.definition.resetScope,
           testContainer: this.definition.testContainer,
@@ -197,11 +198,15 @@ export class Collection {
 
     if (typeof this._items[index] === 'undefined') {
       let { scope, definition, parent } = this;
-      let itemScope = buildSelector({}, scope, { at: index });
 
       let finalizedDefinition = { ...definition };
 
-      finalizedDefinition.scope = itemScope;
+      finalizedDefinition.scope = getter(function () {
+        return {
+          selector: scope,
+          at: index,
+        };
+      });
 
       let tree = create(finalizedDefinition, { parent });
 

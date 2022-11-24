@@ -11,10 +11,7 @@ if (window.jQuery) {
 }
 
 export { jQuery as $ };
-
-function isPresent(value) {
-  return typeof value !== 'undefined';
-}
+import { Query } from './query';
 
 class Selector {
   constructor(node, scope, selector, filters) {
@@ -172,21 +169,6 @@ export function getRoot(node) {
   return root;
 }
 
-function getAllValuesForProperty(node, property) {
-  let iterator = node;
-  let values = [];
-
-  while (isPresent(iterator)) {
-    if (isPresent(iterator[property])) {
-      values.push(iterator[property]);
-    }
-
-    iterator = Ceibo.parent(iterator);
-  }
-
-  return values;
-}
-
 /**
  * @public
  *
@@ -196,29 +178,7 @@ function getAllValuesForProperty(node, property) {
  * @return {string} Full scope of node
  */
 export function fullScope(node) {
-  let scopes = getAllValuesForProperty(node, 'scope');
+  const q = new Query(node);
 
-  return scopes.reverse().join(' ');
-}
-
-/**
- * @public
- *
- * Returns the value of property defined on the closest ancestor of given
- * node.
- *
- * @param {Ceibo} node - Node of the tree
- * @param {string} property - Property to look for
- * @return {?Object} The value of property on closest node to the given node
- */
-export function findClosestValue(node, property) {
-  if (isPresent(node[property])) {
-    return node[property];
-  }
-
-  let parent = Ceibo.parent(node);
-
-  if (isPresent(parent)) {
-    return findClosestValue(parent, property);
-  }
+  return q.toString();
 }

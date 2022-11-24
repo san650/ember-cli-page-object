@@ -1,4 +1,4 @@
-import { $ } from '../-private/helpers';
+import { containsText } from '../-private/element';
 import { findOne } from '../-private/finders';
 import { getter } from '../macros/index';
 
@@ -69,9 +69,9 @@ export function contains(selector, userOptions = {}) {
         ...userOptions,
       };
 
-      return (
-        $(findOne(this, selector, options)).text().indexOf(textToSearch) > -1
-      );
+      const element = findOne(this, selector, options);
+
+      return containsText(element, textToSearch);
     };
   });
 }

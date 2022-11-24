@@ -1,6 +1,6 @@
-import { $ } from '../-private/helpers';
 import { findOne } from '../-private/finders';
 import { getter } from '../macros/index';
+import { text as textContent } from '../-private/element';
 
 function identity(v) {
   return v;
@@ -93,7 +93,7 @@ export function text(selector, userOptions = {}) {
     };
 
     let f = options.normalize === false ? identity : normalizeText;
-    return f($(findOne(this, selector, options)).text());
+    return f(textContent(findOne(this, selector, options)));
   });
 }
 
