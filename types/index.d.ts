@@ -36,7 +36,7 @@ declare module 'ember-cli-page-object' {
   export function blurrable(scope?: string, options?: FindOptions): MethodDescriptor<<T>(this: T) => T>;
   export function visitable(path: string): MethodDescriptor<<T>(this: T, dynamicSegmentsAndQueryParams?: {}) => T>;
 
-  interface Collection<T> {
+  export interface Collection<T> {
     (scope: string, definition?: T): Array<Component<T>>;
 
     [i: number]: Component<T>;
