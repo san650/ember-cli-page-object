@@ -2,6 +2,18 @@ import { moduleForProperty } from '../../../helpers/properties';
 import { create, property } from 'ember-cli-page-object';
 
 moduleForProperty('property', function(test) {
+  test('it works', async function(assert) {
+
+    let page = create({
+      scope: 'input',
+      foo: property('checked'),
+    });
+
+    await this.adapter.createTemplate(this, page, '<input type="checkbox" checked>');
+
+    assert.ok(page.foo);
+  });
+
   test('returns property value', async function(assert) {
     let page = create({
       foo: property('checked', ':input')

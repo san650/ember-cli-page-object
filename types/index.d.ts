@@ -20,7 +20,7 @@ declare module 'ember-cli-page-object' {
   export function isPresent(scope?: string, options?: FindOptions): GetterDescriptor<boolean>;
   export function text(scope?: string, options?: FindOptions & { normalize?: boolean }): GetterDescriptor<string>;
   export function value(scope?: string, options?: FindOptions): GetterDescriptor<string>;
-  export function property<T = unknown>(name: string, scope: string, options?: FindOptions): GetterDescriptor<T>;
+  export function property<T = unknown>(name: string, scope?: string, options?: FindOptions): GetterDescriptor<T>;
   export function hasClass(className: string, scope?: string, options?: FindOptions): GetterDescriptor<boolean>;
   export function notHasClass(className: string, scope?: string, options?: FindOptions): GetterDescriptor<boolean>;
   export function contains(scope?: string, options?: FindOptions): (text: string) => GetterDescriptor<boolean>;
