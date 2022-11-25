@@ -5,6 +5,17 @@ import { module, test } from 'qunit';
 module('property', function(hooks) {
   setupRenderingTest(hooks);
 
+  test('it works', async function(this: TestContext, assert) {
+    let page = create({
+      scope: 'input',
+      foo: property('checked')
+    });
+
+    await this.createTemplate('<input type="checkbox" checked>');
+
+    assert.ok(page.foo);
+  });
+
   test('returns property value', async function(this: TestContext, assert) {
     let page = create({
       foo: property('checked', ':input')
