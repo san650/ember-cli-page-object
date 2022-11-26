@@ -3,7 +3,7 @@
     "target": "es2017",
     "allowJs": true,
     "moduleResolution": "node",
-    "allowSyntheticDefaultImports": true,
+    "allowSyntheticDefaultImports": false,
     "noImplicitAny": true,
     "noImplicitThis": true,
     "alwaysStrict": true,
