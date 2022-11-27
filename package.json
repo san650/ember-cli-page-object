@@ -1,6 +1,6 @@
 {
   "name": "ember-cli-page-object",
-  "version": "1.17.11",
+  "version": "1.17.12",
   "description": "This ember-cli addon eases the construction of page objects on your acceptance and integration tests",
   "keywords": [
     "acceptance",
