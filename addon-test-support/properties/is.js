@@ -1,5 +1,5 @@
 import deprecate from '../-private/deprecate';
-import { assign, every } from '../-private/helpers';
+import { every } from '../-private/helpers';
 import { findElementWithAssert } from '../extend';
 
 /**
@@ -54,7 +54,7 @@ export function is(testSelector, targetSelector, userOptions = {}) {
     get(key) {
       deprecate('is-property', ':is property is deprecated', '1.16.0', '2.0.0');
 
-      let options = assign({ pageObjectKey: key }, userOptions);
+      let options = Object.assign({ pageObjectKey: key }, userOptions);
 
       let elements = findElementWithAssert(this, targetSelector, options);
 

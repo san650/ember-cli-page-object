@@ -1,4 +1,4 @@
-import { assign, findClosestValue } from '../-private/helpers';
+import { findClosestValue } from '../-private/helpers';
 import { getExecutionContext } from '../-private/execution_context';
 import { buildSelector } from './click-on-text/helpers';
 
@@ -91,7 +91,7 @@ export function clickOnText(selector, userOptions = {}) {
     get(key) {
       return function(textToClick) {
         let executionContext = getExecutionContext(this);
-        let options = assign({ pageObjectKey: `${key}("${textToClick}")`, contains: textToClick }, userOptions);
+        let options = Object.assign({ pageObjectKey: `${key}("${textToClick}")`, contains: textToClick }, userOptions);
 
         return executionContext.runAsync((context) => {
           let fullSelector = buildSelector(this, context, selector, options);

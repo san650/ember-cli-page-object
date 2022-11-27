@@ -1,6 +1,6 @@
 /* global Symbol */
 import { A } from '@ember/array';
-import { buildSelector, assign, isPageObject, getPageObjectDefinition } from '../../-private/helpers';
+import { buildSelector, isPageObject, getPageObjectDefinition } from '../../-private/helpers';
 import { create } from '../../create';
 import { count } from '../count';
 import Ceibo from 'ceibo';
@@ -34,7 +34,7 @@ export class Collection {
       let { scope, definition, parent } = this;
       let itemScope = buildSelector({}, scope, { at: index });
 
-      let finalizedDefinition = assign({}, definition);
+      let finalizedDefinition = Object.assign({}, definition);
 
       finalizedDefinition.scope = itemScope;
 
