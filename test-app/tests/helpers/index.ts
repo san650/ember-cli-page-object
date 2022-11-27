@@ -7,8 +7,6 @@ import hbs from 'htmlbars-inline-precompile';
 import { TestContext as DefaultTestContext } from 'ember-test-helpers';
 import { render } from '@ember/test-helpers';
 
-import $ from 'jquery';
-
 export interface TestContext extends DefaultTestContext {
   [k: string]: unknown;
 
@@ -19,14 +17,23 @@ export interface TestContext extends DefaultTestContext {
     }
   ): Promise<unknown>
 
-  findExternal(selector: string): JQuery;
+  findExternal<T extends HTMLElement>(selector: string): T | null;
+}
+
+function getAlternateContainer() {
+  const element = document.getElementById('alternate-ember-testing');
+  if (!element) {
+    throw new Error('Can not find an alternative element');
+  }
+
+  return element;
 }
 
 export function setupApplicationTest(hooks: NestedHooks) {
   upstreamSetupApplicationTest(hooks);
 
   hooks.afterEach(function() {
-    document.getElementById('alternate-ember-testing')!.innerHTML = '';
+    getAlternateContainer().innerHTML = '';
   })
 }
 
@@ -40,7 +47,7 @@ export function setupRenderingTest(hooks: NestedHooks) {
       if (options && options.useAlternateContainer) {
         // The idea is to render the HTML outside the testing container so we
         // render an empty component
-        $('#alternate-ember-testing').html(template);
+        getAlternateContainer().innerHTML = template;
         testContext.set('raw', '');
       } else {
         testContext.set('raw', template);
@@ -49,13 +56,13 @@ export function setupRenderingTest(hooks: NestedHooks) {
       return render(hbs`{{html-render html=this.raw}}`);
     }
 
-    this.findExternal = function(selector: string): JQuery {
-      return $(selector, '#alternate-ember-testing');
+    this.findExternal = function(selector: string) {
+      return getAlternateContainer().querySelector(selector);
     }
   });
 
   hooks.afterEach(function() {
-    document.getElementById('alternate-ember-testing')!.innerHTML = '';
+    getAlternateContainer().innerHTML = '';
   })
 }
 
