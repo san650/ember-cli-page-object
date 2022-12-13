@@ -19,7 +19,7 @@ import { getExecutionContext } from '../-private/execution_context';
  * });
  *
  * // clicks on element with selector 'button.continue'
- * page.continue();
+ * await page.continue();
  *
  * @example
  *
@@ -35,7 +35,7 @@ import { getExecutionContext } from '../-private/execution_context';
  * });
  *
  * // clicks on element with selector '.scope button.continue'
- * page.continue();
+ * await page.continue();
  *
  * @example
  *
@@ -52,7 +52,7 @@ import { getExecutionContext } from '../-private/execution_context';
  * });
  *
  * // clicks on element with selector '.scope button.continue'
- * page.continue();
+ * await page.continue();
  *
  * @public
  *

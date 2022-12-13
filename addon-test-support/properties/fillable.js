@@ -38,7 +38,7 @@ import { getExecutionContext } from '../-private/execution_context';
  * });
  *
  * // result: <input value="John Doe">
- * page.fillIn('John Doe');
+ * await page.fillIn('John Doe');
  *
  * @example
  *
@@ -55,7 +55,7 @@ import { getExecutionContext } from '../-private/execution_context';
  *   fillInName: fillable('input', { scope: '.name' })
  * });
  *
- * page.fillInName('John Doe');
+ * await page.fillInName('John Doe');
  *
  * // result
  * // <div class="name">
@@ -78,7 +78,7 @@ import { getExecutionContext } from '../-private/execution_context';
  *   fillInName: fillable('input')
  * });
  *
- * page.fillInName('John Doe');
+ * await page.fillInName('John Doe');
  *
  * // result
  * // <div class="name">
@@ -98,7 +98,7 @@ import { getExecutionContext } from '../-private/execution_context';
  *   fillIn: fillable('input, textarea, [contenteditable]')
  * });
  *
- * page
+ * await page
  *   .fillIn('name', 'Doe')
  *   .fillIn('lastname', 'Doe')
  *   .fillIn('email', 'john@doe')

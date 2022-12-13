@@ -16,7 +16,7 @@ import { getExecutionContext } from '../-private/execution_context';
  * });
  *
  * // focuses on element with selector '.name'
- * page.focus();
+ * await page.focus();
  *
  * @example
  *
@@ -32,7 +32,7 @@ import { getExecutionContext } from '../-private/execution_context';
  * });
  *
  * // focuses on element with selector '.scope .name'
- * page.focus();
+ * await page.focus();
  *
  * @example
  *
@@ -49,7 +49,7 @@ import { getExecutionContext } from '../-private/execution_context';
  * });
  *
  * // focuses on element with selector '.scope .name'
- * page.focus();
+ * await page.focus();
  *
  * @public
  *
