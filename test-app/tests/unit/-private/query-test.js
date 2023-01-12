@@ -1,6 +1,9 @@
 import { test, module, todo } from 'qunit';
-import { create } from 'ember-cli-page-object';
+import { create, collection } from 'ember-cli-page-object';
 import { Query } from 'ember-cli-page-object/-private/query';
+import { setupRenderingTest } from '../../helpers';
+import { render } from '@ember/test-helpers';
+import hbs from 'htmlbars-inline-precompile';
 
 module('Unit | -private/query', function () {
   module('toString()', function () {
@@ -138,5 +141,33 @@ module('Unit | -private/query', function () {
         assert.equal(q2.toString(), '.selector');
       });
     });
+  });
+
+  module('all', function(hooks) {
+    setupRenderingTest(hooks);
+
+    test('it works', async function(assert) {
+      const page = create({
+        scope: 'ul',
+        collection: collection('li', {
+          title: {
+            scope: 'h5'
+          }
+        })
+      });
+
+      const q = new Query(page.collection[1].title, {});
+
+      await render(hbs`<ul>
+        <li>
+          <h5>1</h5>
+        </li>
+        <li>
+          <h5>2</h5>
+        </li>
+      </ul>`)
+
+      assert.strictEqual(q.all().length, 1);
+    })
   });
 });
