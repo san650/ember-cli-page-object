@@ -20,7 +20,7 @@ import { getExecutionContext } from '../-private/execution_context';
  * });
  *
  * // triggers keypress using enter key on element with selector '.name'
- * page.enter();
+ * await page.enter();
  *
  * @example
  *
@@ -34,7 +34,7 @@ import { getExecutionContext } from '../-private/execution_context';
  * });
  *
  * // triggers keypress using enter key on element with selector '.name'
- * page.keydown({ which: 13 });
+ * await page.keydown({ which: 13 });
  *
  * @example
  *
@@ -50,7 +50,7 @@ import { getExecutionContext } from '../-private/execution_context';
  * });
  *
  * // triggers keypress using enter key on element with selector '.name'
- * page.keydown({ which: 13 });
+ * await page.keydown({ which: 13 });
  *
  * @example
  *
@@ -67,7 +67,7 @@ import { getExecutionContext } from '../-private/execution_context';
  * });
  *
  * // triggers keypress using enter key on element with selector '.name'
- * page.keydown({ which: 13 });
+ * await page.keydown({ which: 13 });
  *
  * @public
  *
