@@ -42,7 +42,7 @@ const page = create({
 });
 
 // triggers keypress using enter key on element with selector '.name'
-page.enter();
+await page.enter();
 ```
 
 ```javascript
@@ -56,7 +56,7 @@ const page = create({
 });
 
 // triggers keypress using enter key on element with selector '.name'
-page.keydown({ which: 13 });
+await page.keydown({ which: 13 });
 ```
 
 ```javascript
@@ -72,7 +72,7 @@ const page = create({
 });
 
 // triggers keypress using enter key on element with selector '.name'
-page.keydown({ which: 13 });
+await page.keydown({ which: 13 });
 ```
 
 ```javascript
@@ -89,7 +89,7 @@ const page = create({
 });
 
 // triggers keypress using enter key on element with selector '.name'
-page.keydown({ which: 13 });
+await page.keydown({ which: 13 });
 ```
 
 Returns **Descriptor** 

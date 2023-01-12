@@ -40,7 +40,7 @@ const page = create({
 });
 
 // blurs on element with selector '.name'
-page.blur();
+await page.blur();
 ```
 
 ```javascript
@@ -56,7 +56,7 @@ const page = create({
 });
 
 // blurs on element with selector '.scope .name'
-page.blur();
+await page.blur();
 ```
 
 ```javascript
@@ -73,7 +73,7 @@ const page = create({
 });
 
 // blurs on element with selector '.scope .name'
-page.blur();
+await page.blur();
 ```
 
 Returns **Descriptor** 

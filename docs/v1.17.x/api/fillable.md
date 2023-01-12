@@ -58,7 +58,7 @@ const page = create({
 });
 
 // result: <input value="John Doe">
-page.fillIn('John Doe');
+await page.fillIn('John Doe');
 ```
 
 ```javascript
@@ -75,7 +75,7 @@ const page = create({
   fillInName: fillable('input', { scope: '.name' })
 });
 
-page.fillInName('John Doe');
+await page.fillInName('John Doe');
 
 // result
 // <div class="name">
@@ -98,7 +98,7 @@ const page = create({
   fillInName: fillable('input')
 });
 
-page.fillInName('John Doe');
+await page.fillInName('John Doe');
 
 // result
 // <div class="name">
@@ -121,7 +121,7 @@ const page = create({
   fillIn: fillable('input, textarea, [contenteditable]')
 });
 
-page
+await page
   .fillIn('name', 'Doe')
   .fillIn('lastname', 'Doe')
   .fillIn('email', 'john@doe')

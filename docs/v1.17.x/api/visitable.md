@@ -29,7 +29,7 @@ const page = create({
 });
 
 // visits '/users'
-page.visit();
+await page.visit();
 ```
 
 ```javascript
@@ -40,7 +40,7 @@ const page = create({
 });
 
 // visits '/users/10'
-page.visit({ user_id: 10 });
+await page.visit({ user_id: 10 });
 ```
 
 ```javascript
@@ -51,7 +51,7 @@ const page = create({
 });
 
 // visits '/users?name=john'
-page.visit({ name: 'john' });
+await page.visit({ name: 'john' });
 ```
 
 ```javascript
@@ -62,7 +62,7 @@ const page = create({
 });
 
 // visits '/users/1?name=john'
-page.visit({ user_id: 1, name: 'john' });
+await page.visit({ user_id: 1, name: 'john' });
 ```
 
 -   Throws **any** Will throw an error if dynamic segments are not filled

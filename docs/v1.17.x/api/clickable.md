@@ -41,7 +41,7 @@ const page = create({
 });
 
 // clicks on element with selector 'button.continue'
-page.continue();
+await page.continue();
 ```
 
 ```javascript
@@ -57,7 +57,7 @@ const page = create({
 });
 
 // clicks on element with selector '.scope button.continue'
-page.continue();
+await page.continue();
 ```
 
 ```javascript
@@ -74,7 +74,7 @@ const page = create({
 });
 
 // clicks on element with selector '.scope button.continue'
-page.continue();
+await page.continue();
 ```
 
 Returns **Descriptor** 

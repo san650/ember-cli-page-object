@@ -47,10 +47,10 @@ const page = create({
 });
 
 // queries the DOM with selector 'fieldset :contains("Lorem"):last'
-page.clickOnFieldset('Lorem');
+await page.clickOnFieldset('Lorem');
 
 // queries the DOM with selector 'button:contains("Ipsum")'
-page.clickOnButton('Ipsum');
+await page.clickOnButton('Ipsum');
 ```
 
 ```javascript
@@ -69,7 +69,7 @@ const page = create({
 });
 
 // queries the DOM with selector '.scope fieldset :contains("Lorem"):last'
-page.clickOnFieldset('Lorem');
+await page.clickOnFieldset('Lorem');
 
 // queries the DOM with selector '.scope button:contains("Ipsum")'
 page.clickOnButton('Ipsum');
@@ -92,10 +92,10 @@ const page = create({
 });
 
 // queries the DOM with selector '.scope fieldset :contains("Lorem"):last'
-page.clickOnFieldset('Lorem');
+await page.clickOnFieldset('Lorem');
 
 // queries the DOM with selector '.scope button:contains("Ipsum")'
-page.clickOnButton('Ipsum');
+await page.clickOnButton('Ipsum');
 ```
 
 Returns **Descriptor** 

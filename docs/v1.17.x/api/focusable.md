@@ -40,7 +40,7 @@ const page = create({
 });
 
 // focuses on element with selector '.name'
-page.focus();
+await page.focus();
 ```
 
 ```javascript
@@ -56,7 +56,7 @@ const page = create({
 });
 
 // focuses on element with selector '.scope .name'
-page.focus();
+await page.focus();
 ```
 
 ```javascript
@@ -73,7 +73,7 @@ const page = create({
 });
 
 // focuses on element with selector '.scope .name'
-page.focus();
+await page.focus();
 ```
 
 Returns **Descriptor** 
