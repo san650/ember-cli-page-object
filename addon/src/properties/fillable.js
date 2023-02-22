@@ -37,7 +37,7 @@ import { getAdapter } from '../adapters/index';
  * });
  *
  * // result: <input value="John Doe">
- * page.fillIn('John Doe');
+ * await page.fillIn('John Doe');
  *
  * @example
  *
@@ -54,7 +54,7 @@ import { getAdapter } from '../adapters/index';
  *   fillInName: fillable('input', { scope: '.name' })
  * });
  *
- * page.fillInName('John Doe');
+ * await page.fillInName('John Doe');
  *
  * // result
  * // <div class="name">
@@ -77,7 +77,7 @@ import { getAdapter } from '../adapters/index';
  *   fillInName: fillable('input')
  * });
  *
- * page.fillInName('John Doe');
+ * await page.fillInName('John Doe');
  *
  * // result
  * // <div class="name">
@@ -97,7 +97,7 @@ import { getAdapter } from '../adapters/index';
  *   fillIn: fillable('input, textarea, [contenteditable]')
  * });
  *
- * page
+ * await page
  *   .fillIn('name', 'Doe')
  *   .fillIn('lastname', 'Doe')
  *   .fillIn('email', 'john@doe')

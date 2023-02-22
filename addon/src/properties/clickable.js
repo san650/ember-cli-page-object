@@ -17,7 +17,7 @@ import { getAdapter } from '../adapters/index';
  * });
  *
  * // clicks on element with selector 'button.continue'
- * page.continue();
+ * await page.continue();
  *
  * @example
  *
@@ -33,7 +33,7 @@ import { getAdapter } from '../adapters/index';
  * });
  *
  * // clicks on element with selector '.scope button.continue'
- * page.continue();
+ * await page.continue();
  *
  * @example
  *
@@ -50,7 +50,7 @@ import { getAdapter } from '../adapters/index';
  * });
  *
  * // clicks on element with selector '.scope button.continue'
- * page.continue();
+ * await page.continue();
  *
  * @public
  *

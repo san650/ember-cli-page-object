@@ -51,7 +51,7 @@ function appendQueryParams(path, queryParams) {
  * });
  *
  * // visits '/users'
- * page.visit();
+ * await page.visit();
  *
  * @example
  *
@@ -62,7 +62,7 @@ function appendQueryParams(path, queryParams) {
  * });
  *
  * // visits '/users/10'
- * page.visit({ user_id: 10 });
+ * await page.visit({ user_id: 10 });
  *
  * @example
  *
@@ -73,7 +73,7 @@ function appendQueryParams(path, queryParams) {
  * });
  *
  * // visits '/users?name=john'
- * page.visit({ name: 'john' });
+ * await page.visit({ name: 'john' });
  *
  * @example
  *
@@ -84,7 +84,7 @@ function appendQueryParams(path, queryParams) {
  * });
  *
  * // visits '/users/1?name=john'
- * page.visit({ user_id: 1, name: 'john' });
+ * await page.visit({ user_id: 1, name: 'john' });
  *
  * @param {string} path - Full path of the route to visit
  * @return {Descriptor}

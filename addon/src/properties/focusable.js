@@ -18,7 +18,7 @@ import { getAdapter } from '../adapters/index';
  * });
  *
  * // focuses on element with selector '.name'
- * page.focus();
+ * await page.focus();
  *
  * @example
  *
@@ -34,7 +34,7 @@ import { getAdapter } from '../adapters/index';
  * });
  *
  * // focuses on element with selector '.scope .name'
- * page.focus();
+ * await page.focus();
  *
  * @example
  *
@@ -51,7 +51,7 @@ import { getAdapter } from '../adapters/index';
  * });
  *
  * // focuses on element with selector '.scope .name'
- * page.focus();
+ * await page.focus();
  *
  * @public
  *

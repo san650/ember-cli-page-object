@@ -18,7 +18,7 @@ import { getAdapter } from '../adapters/index';
  * });
  *
  * // blurs on element with selector '.name'
- * page.blur();
+ * await page.blur();
  *
  * @example
  *
@@ -34,7 +34,7 @@ import { getAdapter } from '../adapters/index';
  * });
  *
  * // blurs on element with selector '.scope .name'
- * page.blur();
+ * await page.blur();
  *
  * @example
  *
@@ -51,7 +51,7 @@ import { getAdapter } from '../adapters/index';
  * });
  *
  * // blurs on element with selector '.scope .name'
- * page.blur();
+ * await page.blur();
  *
  * @public
  *
