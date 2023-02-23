@@ -72,4 +72,22 @@ module('visitable', function(hooks) {
     await page.foo({ user_id: 'a/user', comment_id: 1 });
     assert.equal(currentURL(), '/users/a%2Fuser/comments/1');
   });
+
+  test('async error message', async function(assert) {
+    assert.expect(1);
+
+    let page = create({
+      scope: '.scope',
+      foo: visitable('/non-existing-url/:param')
+    });
+
+    assert.rejects(
+      page.foo({ param: 'value'}) as unknown as Promise<unknown>,
+      new Error(`Failed to visit URL '/non-existing-url/value'
+
+PageObject: 'page.foo(\"[object Object]\")'
+  Selector: '.scope'`)
+    );
+  });
+
 });
