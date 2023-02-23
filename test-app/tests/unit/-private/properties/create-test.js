@@ -1,7 +1,6 @@
-import { setupApplicationTest, setupRenderingTest } from '../../../helpers';
+import { setupRenderingTest } from '../../../helpers';
 import { create, text } from 'ember-cli-page-object';
 import { module, test } from 'qunit';
-import { currentURL } from '@ember/test-helpers';
 
 module('create', function () {
   module('default', function (hooks) {
@@ -86,32 +85,12 @@ module('create', function () {
     });
   });
 
-  module('by url', function (hooks) {
-    setupApplicationTest(hooks);
-
-    test('generates default visit helper', async function (assert) {
-      assert.expect(1);
-
-      let page = create('/html-render');
-
-      await page.visit();
-
-      assert.equal(currentURL(), '/html-render');
-    });
-
-    test('generates default visit helper plus a definition', async function (assert) {
-      assert.expect(2);
-
-      let page = create('/html-render', {
-        nonExisting: {
-          scope: '.some-class',
-        },
-      });
-
-      await page.visit();
-
-      assert.equal(currentURL(), '/html-render');
-      assert.equal(page.nonExisting.isVisible, false);
-    });
+  test('string definition errors', async function (assert) {
+    try {
+      create('');
+      assert.true(false, 'should error');
+    } catch (e) {
+      assert.strictEqual(e.message, 'Definition can not be a string');
+    }
   });
 });
