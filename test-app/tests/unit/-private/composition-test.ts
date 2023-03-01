@@ -3,6 +3,7 @@ import { test, module } from 'qunit';
 import {
   isPageObject,
   getPageObjectDefinition,
+// @ts-expect-error no types for import path are provided
 } from 'ember-cli-page-object/-private/meta';
 import { render, find } from '@ember/test-helpers';
 import hbs from 'htmlbars-inline-precompile';
@@ -22,7 +23,9 @@ module('Unit | composition', function () {
     let definition = {
       foo: {
         bar: {
-          baz: 'prop',
+          get baz() {
+            return 'prop'
+           },
         },
       },
     };
@@ -34,24 +37,18 @@ module('Unit | composition', function () {
 
     let fooDef = getPageObjectDefinition(page.foo);
     assert.ok(fooDef);
-    assert.deepEqual(fooDef, {
-      bar: {
-        baz: 'prop',
-      },
-    });
+    assert.deepEqual(fooDef, definition.foo);
 
     let barDef = getPageObjectDefinition(page.foo.bar);
     assert.ok(barDef);
-    assert.deepEqual(barDef, {
-      baz: 'prop',
-    });
+    assert.deepEqual(barDef, definition.foo.bar);
   });
 
   test('page objects can be composed from other page objects', function (assert) {
     let definition = {
       foo: {
         bar: {
-          baz: 'prop',
+          baz: 1
         },
       },
     };
@@ -74,7 +71,7 @@ module('Unit | composition', function () {
 
   test('page objects can be used as the definition to create', function (assert) {
     let definition = {
-      foo: 'prop',
+      foo: 1,
     };
 
     let page = create(definition);
@@ -90,7 +87,9 @@ module('Unit | composition', function () {
     let definition = {
       foo: {
         bar: {
-          baz: 'prop',
+          get baz() {
+            return 'prop';
+          }
         },
       },
     };
@@ -257,7 +256,7 @@ module('Unit | composition', function () {
       });
       await render(hbs`<div class="container"><input /></div>`);
 
-      find(expectedSelector).addEventListener('focus', () => {
+      find(expectedSelector)?.addEventListener('focus', () => {
         assert.ok(1);
       });
 

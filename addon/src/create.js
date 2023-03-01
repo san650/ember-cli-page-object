@@ -1,5 +1,4 @@
 import Ceibo from '@ro0gr/ceibo';
-import deprecate from './-private/deprecate';
 import {
   getPageObjectDefinition,
   isPageObject,
@@ -77,11 +76,10 @@ function buildObject(node, blueprintKey, blueprint, defaultBuilder) {
         typeof value === 'string' &&
         !['scope', 'testContainer'].includes(key)
       ) {
-        deprecate(
-          'string-properties-on-definition',
-          'do not use string values on definitions',
-          '1.17.0',
-          '2.0.0'
+        throw new Error(
+          `string values are not supported in page object definitions
+
+Key: "${key}"`
         );
       }
     });
