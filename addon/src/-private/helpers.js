@@ -1,5 +1,4 @@
 import Ceibo from '@ro0gr/ceibo';
-import deprecate from './deprecate';
 import { importSync } from '@embroider/macros';
 
 let jQuery;
@@ -36,11 +35,8 @@ class Selector {
     }
 
     if (`${scope} ${this.targetSelector}`.indexOf(',') > -1) {
-      deprecate(
-        'comma-separated-selectors',
-        'Usage of comma separated selectors is deprecated in ember-cli-page-object',
-        '1.16.0',
-        '2.0.0'
+      throw new Error(
+        'Usage of comma separated selectors is not supported. Please make sure your selector targets a single selector.'
       );
     }
 

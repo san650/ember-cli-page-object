@@ -134,4 +134,35 @@ module(`Extend | findMany`, function(hooks) {
 
     assert.deepEqual(findMany(page, '.lorem', { last: true }), [findAll('.lorem')[2]]);
   });
+
+  module('comma separated selector', function () {
+    const SELECTOR = 'comma, separated';
+
+    test('page object with comma separated `scope`', async function (assert) {
+      assert.throws(
+        () => findMany(create({ scope: SELECTOR })),
+        new Error(
+          'Usage of comma separated selectors is not supported. Please make sure your selector targets a single selector.'
+        ),
+      );
+    });
+
+    test('comma separated `scope` argument', async function (assert) {
+      assert.throws(
+        () => findMany(create(), SELECTOR),
+        new Error(
+          'Usage of comma separated selectors is not supported. Please make sure your selector targets a single selector.'
+        ),
+      );
+    });
+
+    test('comma separated `scope` option', async function (assert) {
+      assert.throws(
+        () => findMany(create(), '', { scope: SELECTOR }),
+        new Error(
+          'Usage of comma separated selectors is not supported. Please make sure your selector targets a single selector.'
+        ),
+      );
+    });
+  })
 });
