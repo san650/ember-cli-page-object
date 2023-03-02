@@ -122,14 +122,34 @@ module(`Extend | findOne`, function(hooks) {
     assert.equal(findOne(page, '.lorem', { scope: '.ipsum' }), find('.ipsum .lorem'));
   });
 
-  test('visible param', async function(assert) {
-    let page = create({});
+  module('comma separated selector', function () {
+    const SELECTOR = 'comma, separated';
 
-    await render(hbs`
-      <span class="lorem" style="display:none"></span>
-      <span class="lorem"></span>
-    `);
+    test('page object with comma separated `scope`', async function (assert) {
+      assert.throws(
+        () => findOne(create({ scope: SELECTOR })),
+        new Error(
+          'Usage of comma separated selectors is not supported. Please make sure your selector targets a single selector.'
+        ),
+      );
+    });
 
-    assert.equal(findOne(page, '.lorem', { visible: true }), findAll('.lorem')[1]);
+    test('comma separated `scope` argument', async function (assert) {
+      assert.throws(
+        () => findOne(create(), SELECTOR),
+        new Error(
+          'Usage of comma separated selectors is not supported. Please make sure your selector targets a single selector.'
+        ),
+      );
+    });
+
+    test('comma separated `scope` option', async function (assert) {
+      assert.throws(
+        () => findOne(create(), '', { scope: SELECTOR }),
+        new Error(
+          'Usage of comma separated selectors is not supported. Please make sure your selector targets a single selector.'
+        ),
+      );
+    });
   });
 });
