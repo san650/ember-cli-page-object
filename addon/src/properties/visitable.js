@@ -98,6 +98,10 @@ export function visitable(path) {
 
     fullPath = appendQueryParams(fullPath, params);
 
-    return getAdapter().visit(fullPath);
+    return getAdapter()
+      .visit(fullPath)
+      .catch(() => {
+        throw new Error(`Failed to visit URL '${fullPath}'`);
+      });
   });
 }
