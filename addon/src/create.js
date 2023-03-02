@@ -5,7 +5,6 @@ import {
   isPageObject,
   storePageObjectDefinition,
 } from './-private/meta';
-import { visitable } from './properties/visitable';
 import dsl from './-private/dsl';
 import { getter } from './macros/index';
 
@@ -173,21 +172,6 @@ function buildObject(node, blueprintKey, blueprint, defaultBuilder) {
  * // selects an option
  * page.select('country', 'Uruguay');
  *
- * @example Defining path
- *
- * const usersPage = create('/users');
- *
- * // visits user page
- * usersPage.visit();
- *
- * const userTasksPage = create('/users/tasks', {
- *  tasks: collection('.tasks li');
- * });
- *
- * // get user's tasks
- * userTasksPage.visit();
- * userTasksPage.tasks.length
- *
  * @public
  *
  * @param {Object} definition - PageObject definition
@@ -195,19 +179,9 @@ function buildObject(node, blueprintKey, blueprint, defaultBuilder) {
  * @param {Object} options - [private] Ceibo options. Do not use!
  * @return {PageObject}
  */
-export function create(definitionOrUrl, definitionOrOptions, optionsOrNothing) {
-  let definition;
-  let url;
-  let options;
-
-  if (typeof definitionOrUrl === 'string') {
-    url = definitionOrUrl;
-    definition = definitionOrOptions || {};
-    options = optionsOrNothing || {};
-  } else {
-    url = false;
-    definition = definitionOrUrl || {};
-    options = definitionOrOptions || {};
+export function create(definition = {}, options = {}) {
+  if (typeof definition === 'string') {
+    throw new Error('Definition can not be a string');
   }
 
   // in the instance where the definition is a page object, we must use the stored definition directly
@@ -223,19 +197,6 @@ export function create(definitionOrUrl, definitionOrOptions, optionsOrNothing) {
     throw new Error(
       '"context" key is not allowed to be passed at definition root.'
     );
-  }
-
-  if (typeof url === 'string') {
-    deprecate(
-      'create-url-argument',
-      'Passing an URL argument to `create()` is deprecated',
-      '1.17.0',
-      '2.0.0'
-    );
-  }
-
-  if (url) {
-    definition.visit = visitable(url);
   }
 
   // Build the chained tree
