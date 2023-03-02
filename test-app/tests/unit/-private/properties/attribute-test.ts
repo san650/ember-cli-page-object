@@ -126,9 +126,8 @@ module('attribute', function (hooks) {
 
     await render(hbs``);
 
-    document.getElementById(
-      'alternate-ember-testing'
-    ).innerHTML = `<input placeholder="a value">`;
+    (document.getElementById('alternate-ember-testing') as HTMLElement)
+      .innerHTML = `<input placeholder="a value">`;
 
     assert.equal(page.foo, 'a value');
   });

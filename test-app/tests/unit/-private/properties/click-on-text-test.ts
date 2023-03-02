@@ -129,8 +129,6 @@ module('clickOnText', function(hooks) {
     assert.expect(1);
 
     let page = create({
-      dummy: 'value',
-
       foo: clickOnText()
     });
 

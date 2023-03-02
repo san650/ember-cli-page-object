@@ -1,12 +1,12 @@
 import { create, collection } from 'ember-cli-page-object';
-import { setupRenderingTest } from '../../../helpers';
+import { setupRenderingTest, TestContext } from '../../../helpers';
 import { module, test } from 'qunit';
 import { find } from '@ember/test-helpers';
 
 module('dsl', function (hooks) {
   setupRenderingTest(hooks);
 
-  test('generates .isVisible', async function (assert) {
+  test('generates .isVisible', async function (this: TestContext, assert) {
     let page = create({
       scope: 'span',
       foo: {},
@@ -18,7 +18,7 @@ module('dsl', function (hooks) {
     assert.ok(page.foo.isVisible, 'component is visible');
   });
 
-  test('generates .isHidden', async function (assert) {
+  test('generates .isHidden', async function (this: TestContext, assert) {
     let page = create({
       scope: 'span',
       foo: {},
@@ -30,7 +30,7 @@ module('dsl', function (hooks) {
     assert.ok(page.foo.isHidden, 'component is hidden');
   });
 
-  test('generates .isPresent', async function (assert) {
+  test('generates .isPresent', async function (this: TestContext, assert) {
     let page = create({
       scope: 'span',
       foo: {},
@@ -56,9 +56,11 @@ module('dsl', function (hooks) {
     'text',
     'value',
   ].forEach((prop) => {
-    test(`does not override .${prop}`, async function (assert) {
+    test(`does not override .${prop}`, async function (this: TestContext, assert) {
       let page = create({
-        [prop]: 'foo bar',
+        get [prop]() {
+          return 'foo bar';
+        },
       });
 
       await this.createTemplate('');
@@ -67,7 +69,7 @@ module('dsl', function (hooks) {
     });
   });
 
-  test('generates .blur', async function (assert) {
+  test('generates .blur', async function (this: TestContext, assert) {
     assert.expect(1);
 
     let page = create({
@@ -78,14 +80,14 @@ module('dsl', function (hooks) {
 
     await this.createTemplate('<button>dummy text</button>');
 
-    const button = find('button');
+    const button = find('button') as HTMLElement;
     button.focus();
     button.addEventListener('blur', () => assert.ok(1));
 
     await page.foo.blur();
   });
 
-  test('generates .clickOn', async function (assert) {
+  test('generates .clickOn', async function (this: TestContext, assert) {
     assert.expect(1);
 
     let page = create({
@@ -96,12 +98,12 @@ module('dsl', function (hooks) {
 
     // text nodes don't support click events
     // instead we check that click on text content propagates to the parent button
-    find('button').addEventListener('click', () => assert.ok(1));
+    find('button')?.addEventListener('click', () => assert.ok(1));
 
     await page.foo.clickOn('dummy text');
   });
 
-  test('generates .click', async function (assert) {
+  test('generates .click', async function (this: TestContext, assert) {
     assert.expect(1);
 
     let page = create({
@@ -112,12 +114,12 @@ module('dsl', function (hooks) {
 
     await this.createTemplate('<button>dummy text</button>');
 
-    find('button').addEventListener('click', () => assert.ok(1));
+    (find('button') as HTMLElement).addEventListener('click', () => assert.ok(1));
 
     await page.foo.click();
   });
 
-  test('generates .contains', async function (assert) {
+  test('generates .contains', async function (this: TestContext, assert) {
     let page = create({
       foo: {
         scope: 'span',
@@ -129,7 +131,7 @@ module('dsl', function (hooks) {
     assert.ok(page.foo.contains('or'), 'contains');
   });
 
-  test('generates .text', async function (assert) {
+  test('generates .text', async function (this: TestContext, assert) {
     let page = create({
       scope: '.scope',
       foo: {
@@ -146,7 +148,7 @@ module('dsl', function (hooks) {
     assert.equal(page.foo.text, 'Dolor');
   });
 
-  test('generates .fillIn', async function (assert) {
+  test('generates .fillIn', async function (this: TestContext, assert) {
     assert.expect(1);
 
     let page = create({
@@ -159,10 +161,10 @@ module('dsl', function (hooks) {
 
     await page.foo.fillIn('lorem ipsum');
 
-    assert.equal(find('input').value, 'lorem ipsum');
+    assert.equal((find('input') as HTMLInputElement).value, 'lorem ipsum');
   });
 
-  test('generates .focus', async function (assert) {
+  test('generates .focus', async function (this: TestContext, assert) {
     assert.expect(1);
 
     let page = create({
@@ -173,12 +175,12 @@ module('dsl', function (hooks) {
 
     await this.createTemplate('<button>dummy text</button>');
 
-    find('button').addEventListener('focus', () => assert.ok(1));
+    (find('button') as HTMLElement).addEventListener('focus', () => assert.ok(1));
 
     await page.foo.focus();
   });
 
-  test('generates .select', async function (assert) {
+  test('generates .select', async function (this: TestContext, assert) {
     assert.expect(1);
 
     let page = create({
@@ -189,12 +191,14 @@ module('dsl', function (hooks) {
 
     await this.createTemplate('<input name="email">');
 
+    // @ts-expect-error no types exposed.
+    // @todo: deprecate and remove the select
     await page.foo.select('lorem ipsum');
 
-    assert.equal(find('input').value, 'lorem ipsum');
+    assert.equal((find('input') as HTMLInputElement).value, 'lorem ipsum');
   });
 
-  test('generates .value', async function (assert) {
+  test('generates .value', async function (this: TestContext, assert) {
     assert.expect(1);
 
     let page = create({
@@ -208,7 +212,7 @@ module('dsl', function (hooks) {
     assert.equal(page.foo.value, 'lorem ipsum');
   });
 
-  test('generates .then', async function (assert) {
+  test('generates .then', async function (this: TestContext, assert) {
     let page = create({
       foo: {},
     });
@@ -219,18 +223,22 @@ module('dsl', function (hooks) {
     assert.ok(typeof page.foo.then === 'function');
   });
 
-  test('generates .as', async function (assert) {
+  test('generates .as', async function (this: TestContext, assert) {
     assert.expect(2);
 
     let page = create({
       scope: 'span',
       foo: {
-        baz: 'foobar',
+        get baz() {
+          return 'foobar';
+        },
       },
     });
 
     await this.createTemplate('Lorem <span>ipsum</span>');
 
+    // @ts-expect-error no types exposed.
+    // @todo: deprecate and remove the `as()`
     let foo = page.foo.as((element) => {
       assert.equal(element.text, 'ipsum');
     });
@@ -238,7 +246,7 @@ module('dsl', function (hooks) {
     assert.equal(foo.baz, 'foobar');
   });
 
-  test('generates .as when nested', async function (assert) {
+  test('generates .as when nested', async function (this: TestContext, assert) {
     assert.expect(1);
 
     let page = create({
@@ -254,12 +262,14 @@ module('dsl', function (hooks) {
       'Lorem <span>ipsum <strong>dolor</strong></span>'
     );
 
+    // @ts-expect-error no types exposed.
+    // @todo: deprecate and remove the `as()`
     page.foo.bar.as((element) => {
       assert.equal(element.text, 'dolor');
     });
   });
 
-  test('generates .as in collections', async function (assert) {
+  test('generates .as in collections', async function (this: TestContext, assert) {
     assert.expect(2);
 
     let page = create({
@@ -273,10 +283,14 @@ module('dsl', function (hooks) {
       </ul>
     `);
 
+    // @ts-expect-error no types exposed.
+    // @todo: deprecate and remove the `as()`
     page.items[0].as((item) => {
       assert.equal(item.text, 'foo');
     });
 
+    // @ts-expect-error no types exposed.
+    // @todo: deprecate and remove the `as()`
     page.items[1].as((item) => {
       assert.equal(item.text, 'bar');
     });
