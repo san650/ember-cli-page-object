@@ -46,7 +46,7 @@ function execCmd(command) {
  */
 function parseSourceFile(filePath) {
   return execCmd(
-    'node ../node_modules/.bin/documentation build "' +
+    './node_modules/.bin/documentation build "' +
       filePath +
       '" -f md --shallow'
   );
