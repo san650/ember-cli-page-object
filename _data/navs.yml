@@ -12,11 +12,8 @@ v2.0.x:
           name: Components
         - path: /extend
           name: Extend page objects
-
-    - title: Migrating
-      links:
         - path: /migrating
-          name: From v1.x
+          name: Migration Guide
 
     - title: API reference
       links:
