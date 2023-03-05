@@ -7,41 +7,100 @@ on:
       - master
   pull_request: {}
 
+concurrency:
+  group: ci-${{ github.head_ref || github.ref }}
+  cancel-in-progress: true
+
 jobs:
   test:
     name: "Tests"
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
+
       - name: Install Node
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
-          node-version: 10.x
-          cache: npm
-      - name: Install Dependencies
-        run: npm ci
-      - name: Lint js
-        run: npm run lint:js
-      - name: Lint hbs
-        run: npm run lint:hbs
+          node-version: 14.x
+
+      - uses: pnpm/action-setup@v2.2.2
+        with:
+          version: 7.5.2
+          run_install: false
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Lint Addon
+        run: pnpm lint
+        working-directory: addon
+
+      - name: Lint Test App
+        run: pnpm lint
+        working-directory: test-app
+
       - name: Run Tests
-        run: npm test
+        run: pnpm test:ember
+        working-directory: test-app
 
   floating:
-    name: "Floating Dependencies"
+    name: "Floating Dependencies ${{ matrix.node-version }}"
     runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        node-version: [14.x, 16.x]
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 14.x
+
+      - uses: pnpm/action-setup@v2.2.2
+        with:
+          version: 7.5.2
+          run_install: false
+
+      - name: Install Dependencies
+        run: pnpm install --frozen-lockfile=false
+
+      - name: Run Tests
+        run: pnpm test:ember
+        working-directory: test-app
+
+  node-tests:
+    name: "Node tests ${{ matrix.node-version }}"
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        node-version: [14.x, 16.x]
 
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
+
+      - name: Install Node
+        uses: actions/setup-node@v3
         with:
-          node-version: 10.x
-          cache: npm
+          node-version: 14.x
+
+      - uses: pnpm/action-setup@v2.2.2
+        with:
+          version: 7.5.2
+          run_install: false
+
       - name: Install Dependencies
-        run: npm install --no-shrinkwrap
+        run: pnpm install
+
       - name: Run Tests
-        run: npm test
+        run: pnpm test
+        working-directory: addon
 
   try-scenarios:
     name: ${{ matrix.try-scenario }}
@@ -49,30 +108,34 @@ jobs:
     needs: 'test'
 
     strategy:
-      fail-fast: true
+      fail-fast: false
       matrix:
         try-scenario:
-          - node-tests
-          - ember-lts-2.4
-          - ember-lts-2.8
-          - ember-lts-2.12
-          - ember-lts-2.16
-          - ember-lts-2.18
+          - ember-lts-3.24
           - ember-lts-3.28
-          # keep testing integration and acceptance contexts
-          - with-jquery COVERAGE=true
-          - with-ember-test-helpers
-          - with-@ember/test-helpers
-          - with-ember-qunit@5
+          - ember-release
+          - ember-beta
+          - ember-canary
+          - ember-default-with-jquery
+          - ember-classic
+          - embroider-safe
+          - embroider-optimized
 
     steps:
       - uses: actions/checkout@v2
       - name: Install Node
         uses: actions/setup-node@v2
         with:
-          node-version: 10.x
-          cache: npm
+          node-version: 14.x
+
+      - uses: pnpm/action-setup@v2.2.2
+        with:
+          version: 7.5.2
+          run_install: false
+
       - name: Install Dependencies
-        run: npm ci
+        run: pnpm install
+
       - name: Run Tests
         run: ./node_modules/.bin/ember try:one ${{ matrix.try-scenario }}
+        working-directory: test-app

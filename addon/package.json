@@ -1,0 +1,101 @@
+{
+  "name": "ember-cli-page-object",
+  "version": "2.0.0-beta.6",
+  "description": "This ember-cli addon eases the construction of page objects on your acceptance and integration tests",
+  "keywords": [
+    "acceptance",
+    "integration",
+    "components",
+    "ember",
+    "ember-addon",
+    "ember-cli",
+    "helper",
+    "page object",
+    "page-object",
+    "pageobject",
+    "testing"
+  ],
+  "homepage": "http://ember-cli-page-object.js.org",
+  "bugs": "https://github.com/san650/ember-cli-page-object/issues",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/san650/ember-cli-page-object.git",
+    "directory": "addon"
+  },
+  "license": "MIT",
+  "author": "Santiago Ferreira",
+  "exports": {
+    ".": "./dist/index.js",
+    "./*": "./dist/*",
+    "./addon-main.js": "./addon-main.js"
+  },
+  "types": "types.d.ts",
+  "files": [
+    "addon-main.js",
+    "dist",
+    "types.d.ts"
+  ],
+  "scripts": {
+    "build": "rollup --config",
+    "copy:md": "cp ../README.md ../LICENSE.md .",
+    "lint": "npm-run-all --aggregate-output --continue-on-error --parallel 'lint:!(fix)'",
+    "lint:fix": "npm-run-all --aggregate-output --continue-on-error --parallel lint:*:fix",
+    "lint:js": "eslint . --cache",
+    "lint:js:fix": "eslint . --fix",
+    "prepublishOnly": "npm-run-all --aggregate-output --parallel build 'copy:md'",
+    "start": "rollup --config --watch",
+    "test": "mocha node-tests --recursive"
+  },
+  "dependencies": {
+    "@embroider/addon-shim": "^1.8.0",
+    "@ro0gr/ceibo": "^2.2.0",
+    "@types/jquery": "^3.5.14",
+    "jquery": "^3.5.1"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.17.10",
+    "@babel/eslint-parser": "^7.17.0",
+    "@babel/plugin-proposal-class-properties": "^7.16.7",
+    "@babel/plugin-proposal-decorators": "^7.17.9",
+    "@embroider/addon-dev": "^1.8.0",
+    "@rollup/plugin-babel": "^5.3.1",
+    "chai": "^4.1.2",
+    "ember-cli-blueprint-test-helpers": "^0.18.2",
+    "eslint": "^8.14.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-ember": "^10.6.0",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "mocha": "^4.0.1",
+    "npm-run-all": "^4.1.5",
+    "prettier": "^2.6.2",
+    "rollup": "^2.71.1"
+  },
+  "peerDependencies": {
+    "@ember/jquery": "*",
+    "@ember/test-helpers": "^2.5.0"
+  },
+  "peerDependenciesMeta": {
+    "@ember/jquery": {
+      "optional": true
+    }
+  },
+  "engines": {
+    "node": "12.* || 14.* || >= 16"
+  },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org"
+  },
+  "ember": {
+    "edition": "octane"
+  },
+  "ember-addon": {
+    "main": "addon-main.js",
+    "type": "addon",
+    "version": 2,
+    "app-js": {}
+  },
+  "volta": {
+    "extends": "../package.json"
+  }
+}
