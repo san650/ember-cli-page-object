@@ -74,20 +74,20 @@ module('visitable', function(hooks) {
   });
 
   test('async error message', async function(assert) {
-    assert.expect(1);
-
     let page = create({
       scope: '.scope',
       foo: visitable('/non-existing-url/:param')
     });
 
-    assert.rejects(
-      page.foo({ param: 'value'}) as unknown as Promise<unknown>,
-      new Error(`Failed to visit URL '/non-existing-url/value'
+    try {
+      await page.foo({ param: 'value' });
+
+      assert.false(true, 'visit should have failed');
+    } catch (e) {
+      assert.strictEqual(e.toString(), `Error: Failed to visit URL '/non-existing-url/value'
 
 PageObject: 'page.foo(\"[object Object]\")'
-  Selector: '.scope'`)
-    );
+  Selector: '.scope'`);
+    }
   });
-
 });
