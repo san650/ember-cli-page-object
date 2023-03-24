@@ -1,5 +1,5 @@
 import Ceibo from '@ro0gr/ceibo';
-import { getAdapter } from 'ember-cli-page-object/adapters/index';
+import { getAdapter } from 'ember-cli-page-object/adapters';
 
 export default class Selector {
   constructor(node, locator) {
