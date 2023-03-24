@@ -7,14 +7,17 @@
     "url": "https://github.com/san650/ember-cli-page-object.git"
   },
   "scripts": {
-    "prepare": "cd addon && npm run build",
-    "test": "cd test-app && npm run test:ember"
+    "prepare": "pnpm --filter ember-cli-page-object build",
+    "test": "pnpm --filter test-app test:ember",
+    "start": "pnpm run -r --parallel start",
+    "lint": "pnpm -r lint",
+    "lint:fix": "pnpm -r lint:fix"
   },
   "publishConfig": {
     "registry": "https://registry.npmjs.org"
   },
   "volta": {
     "node": "14.18.3",
-    "pnpm": "7.5.2"
+    "pnpm": "7.29.3"
   }
 }

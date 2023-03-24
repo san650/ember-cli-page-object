@@ -5,7 +5,8 @@ export default function withIteratorSymbolDefined(callback: () => unknown) {
     return callback();
   }
 
-  ( window.Symbol as any ) = { iterator: '@@iterator' };
+  // @ts-expect-error
+  window.Symbol = { iterator: '@@iterator' };
   try {
     return callback();
   } finally {
