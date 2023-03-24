@@ -23,9 +23,11 @@ module('Unit | -private/query', function () {
 
     test('scope as a getter', function (assert) {
       const page = create({
-        scope: {
-          selector: '.selector',
-          at: 2,
+        get scope() {
+          return {
+            selector: '.selector',
+            at: 2,
+          };
         },
       });
 
@@ -143,17 +145,17 @@ module('Unit | -private/query', function () {
     });
   });
 
-  module('all', function(hooks) {
+  module('all', function (hooks) {
     setupRenderingTest(hooks);
 
-    test('it works', async function(assert) {
+    test('it works', async function (assert) {
       const page = create({
         scope: 'ul',
         collection: collection('li', {
           title: {
-            scope: 'h5'
-          }
-        })
+            scope: 'h5',
+          },
+        }),
       });
 
       const q = new Query(page.collection[1].title, {});
@@ -165,9 +167,9 @@ module('Unit | -private/query', function () {
         <li>
           <h5>2</h5>
         </li>
-      </ul>`)
+      </ul>`);
 
       assert.strictEqual(q.all().length, 1);
-    })
+    });
   });
 });
