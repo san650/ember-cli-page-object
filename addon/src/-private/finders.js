@@ -2,8 +2,6 @@ import { $, guardMultiple } from './helpers';
 import { throwBetterError, ELEMENT_NOT_FOUND } from './better-errors';
 import { Query } from './query';
 
-const ELEMENT_NOT_FOUND = 'Element not found.';
-
 /**
  * Finds a single element, otherwise fails
  *
