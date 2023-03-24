@@ -99,7 +99,6 @@ function search(selector) {
             .map((root) => {
               const selectors = subpath.map((locator) => locator.selector);
 
-              debugger
               const elements = getQueryEngine().all(selectors, root);
 
               const { at } = subpath[0];
