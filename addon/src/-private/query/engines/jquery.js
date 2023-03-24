@@ -1,5 +1,4 @@
 import { $ } from '../../helpers';
-import deprecate from '../../deprecate';
 
 export default class JQueryQueryEngine {
   static all(path, containerElement) {
@@ -16,11 +15,8 @@ export default class JQueryQueryEngine {
 
 function validate(selector) {
   if (selector.indexOf(',') > -1) {
-    deprecate(
-      'comma-separated-selectors',
-      'Usage of comma separated selectors is deprecated in ember-cli-page-object',
-      '1.16.0',
-      '2.0.0'
-    );
+    throw new Error(
+      'Usage of comma separated selectors is not supported. Please make sure your selector targets a single selector.'
+    )
   }
 }
