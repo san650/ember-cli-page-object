@@ -8,9 +8,9 @@
  * import { getter } from 'ember-cli-page-object/macros';
  * import { findOne } from 'ember-cli-page-object';
  *
- * function isDisabled(selector) {
- *   return getter(function (pageObjectKey) {
- *     return findOne(this, selector, { pageObjectKey }).disabled;
+ * function isDisabled(selector, options = {}) {
+ *   return getter(function () {
+ *     return findOne(this, selector, options).disabled;
  *   });
  * }
  *

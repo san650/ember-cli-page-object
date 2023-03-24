@@ -19,8 +19,8 @@ module('Unit | throwBetterError', function () {
     const fn = () => {
       throwBetterError(page.foo.bar, 'focus', 'Oops!');
     };
-    const expectedError = new Error(
-      "Oops!\n\nPageObject: 'page.foo.bar.focus'"
+    const expectedError = new RegExp(
+      `Oops!\n\nPageObject: 'page.foo.bar.focus'`
     );
 
     assert.throws(fn, expectedError, 'should show message & property path');
@@ -37,8 +37,8 @@ module('Unit | throwBetterError', function () {
       });
     } catch (e) {
       assert.equal(
-        e.message,
-        "Oops!\n\nPageObject: 'page.foo.bar.focus'\n  Selector: '.foo .bar'"
+        e.toString(),
+        "Error: Oops!\n\nPageObject: 'page.foo.bar.focus'\n  Selector: '.foo .bar'"
       );
       assert.equal(e.stack, sourceError.stack, 'stack is preserved');
     }
@@ -51,7 +51,7 @@ module('Unit | throwBetterError', function () {
 
     try {
       console.error = (msg) => {
-        assert.equal(msg, "Oops!\n\nPageObject: 'page.foo.bar.focus'");
+        assert.equal(msg, "Error: Oops!\n\nPageObject: 'page.foo.bar.focus'");
       };
 
       assert.throws(() => throwBetterError(page.foo.bar, 'focus', 'Oops!'));

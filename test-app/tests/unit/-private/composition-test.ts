@@ -153,9 +153,12 @@ module('Unit | composition', function () {
   });
 
   test('getPageObjectDefinition errors if node is not a page object', function (assert) {
-    assert.throws(function () {
-      return getPageObjectDefinition({});
-    }, 'cannot get the page object definition from a node that is not a page object');
+    try {
+      getPageObjectDefinition({});
+      assert.true(false);
+    } catch (e) {
+      assert.strictEqual(e.toString(), 'Error: cannot get the page object definition from a node that is not a page object');
+    }
   });
 
   module('all properties via compsition', function (hooks) {
@@ -174,7 +177,7 @@ module('Unit | composition', function () {
         aliasPage: aliasPage,
       });
       await render(
-        hbs`<div class="container"><button>Look at me</button></div>`
+        hbs`<div class="container"><button type="button">Look at me</button></div>`
       );
 
       assert.ok(page.aliasPage.aliasedIsButtonVisible);

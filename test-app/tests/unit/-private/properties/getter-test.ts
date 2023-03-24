@@ -6,6 +6,7 @@ import {
 } from 'ember-cli-page-object';
 import { getter } from 'ember-cli-page-object/macros';
 import { module, test } from 'qunit';
+import { findOne } from 'ember-cli-page-object/extend';
 
 module('getter', function(hooks) {
   setupRenderingTest(hooks);
@@ -74,10 +75,44 @@ module('getter', function(hooks) {
       foo: getter('not a function' as any)
     });
 
-    assert.throws(
-      () => page.foo,
-      /must be a function/,
-      'Argument passed to getter must be a function'
-    );
+    try {
+      page.foo;
+      assert.true(false);
+    } catch (e) {
+      assert.strictEqual(e.toString(), `Error: Argument passed to \`getter\` must be a function.
+
+PageObject: \'page.foo\'`)
+    }
+  });
+
+  test('supplies correct path in error message', function(this: TestContext, assert) {
+    assert.expect(1);
+
+    const page = create({
+      foo: getter(function() {
+        throw new Error('custom error message');
+      }),
+    });
+
+    try {
+      page.foo;
+      assert.true(false);
+    } catch (e) {
+      assert.strictEqual(e.toString(), `Error: custom error message
+
+PageObject: \'page.foo\'`)
+    }
+  });
+
+  test('supplies correct selector in error message', function(this: TestContext, assert) {
+    assert.expect(1);
+
+    const page = create({
+      foo: getter(function(this: any) {
+        findOne(this, '.non-existing-scope');
+      }),
+    });
+
+    assert.throws(() => page.foo, /Selector: '.non-existing-scope'/);
   });
 });

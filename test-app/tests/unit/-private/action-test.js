@@ -7,6 +7,20 @@ import Adapter from 'ember-cli-page-object/adapter';
 
 class DummyAdapter extends Adapter {}
 
+function assertThrowsErrorMessage(
+  assert,
+  block,
+  expectedMessage,
+  asserionMessage
+) {
+  try {
+    block();
+    assert.true(false);
+  } catch (e) {
+    assert.strictEqual(e.toString(), expectedMessage, asserionMessage);
+  }
+}
+
 // Normally it should work with "0".
 // However, since Promises are not supported in IE11, for async we rely on "RSVP" library,
 // Unfortunatelly, for some of old "ember" versions there are timing lags coming from "RSVP",
@@ -93,12 +107,13 @@ module('Unit | action', function (hooks) {
       }),
     });
 
-    assert.throws(
+    assertThrowsErrorMessage(
+      assert,
       () => p.run(1),
-      new Error(`it was so fast!
+      `Error: it was so fast!
 
 PageObject: 'page.run("1")'
-  Selector: '.Scope .Selector'`)
+  Selector: '.Scope .Selector'`
     );
   });
 
@@ -111,42 +126,40 @@ PageObject: 'page.run("1")'
       }),
     });
 
-    assert.throws(
+    assertThrowsErrorMessage(
+      assert,
       () => p.run(1),
-      new Error(`it was so fast!
+      `Error: it was so fast!
 
 PageObject: 'page.run("1")'
-  Selector: '.Scope'`)
+  Selector: '.Scope'`
     );
   });
 
   test('it handles async errors', async function (assert) {
-    // when test against some old `ember-cli-qunit`-only scenarios, QUnit@1 is installed.
-    // There is no `assert.rejects(` support, so we just ignore the test in such cases.
-    // It's still tested on newer scenarios with QUnit@2, even against old "ember-test-helpers" scenarios.
-    //
-    // @todo: remove after `ember-cli-qunit` support is removed.
-    if (typeof assert.rejects === 'function') {
-      const p = create({
-        scope: '.Scope',
+    const p = create({
+      scope: '.Scope',
 
-        run: action({ selector: '.Selector' }, function () {
-          return next().then(() => {
-            throw new Error('bed time');
-          });
-        }),
-      });
+      run: action({ selector: '.Selector' }, function () {
+        return next().then(() => {
+          throw new Error('bed time');
+        });
+      }),
+    });
 
-      assert.rejects(
-        p.run(1),
-        new Error(`bed time
+    return p.run(1).then(
+      () => {
+        assert.true(false);
+      },
+      (e) => {
+        assert.strictEqual(
+          e.toString(),
+          `Error: bed time
 
-PageObject: 'page.run("1")'
-  Selector: '.Scope .Selector'`)
-      );
-    } else {
-      assert.expect(0);
-    }
+PageObject: 'page.run("1")'\n  Selector: '.Scope .Selector'`
+        );
+      }
+    );
   });
 
   module('chainability', function () {
@@ -306,38 +319,38 @@ PageObject: 'page.run("1")'
     });
 
     test('it handles errors', async function (assert) {
-      // when test against some old `ember-cli-qunit`-only scenarios, QUnit@1 is installed.
-      // There is no `assert.rejects(` support, so we just ignore the test in such cases.
-      // It's still tested on newer scenarios with QUnit@2, even against old "ember-test-helpers" scenarios.
-      //
-      // @todo: remove after `ember-cli-qunit` support is removed.
-      if (typeof assert.rejects === 'function') {
-        const p = create({
-          scope: '.root',
+      const p = create({
+        scope: '.root',
 
-          emptyRun: action({ selector: '.Selector1' }, () => {}),
+        emptyRun: action({ selector: '.Selector1' }, () => {}),
 
-          child: {
-            scope: '.child',
+        child: {
+          scope: '.child',
 
-            run: action({ selector: '.Selector2' }, function () {
-              return next().then(() => {
-                throw new Error('bed time');
-              });
-            }),
+          run: action({ selector: '.Selector2' }, function () {
+            return next().then(() => {
+              throw new Error('bed time');
+            });
+          }),
+        },
+      });
+
+      return p
+        .emptyRun()
+        .child.run(1)
+        .then(
+          () => {
+            assert.true(false);
           },
-        });
+          (e) => {
+            assert.strictEqual(
+              e.toString(),
+              `Error: bed time
 
-        assert.rejects(
-          p.emptyRun().child.run(1),
-          new Error(`bed time
-
-PageObject: 'page.child.run("1")'
-  Selector: '.root .child .Selector2'`)
+PageObject: 'page.child.run("1")'\n  Selector: '.root .child .Selector2'`
+            );
+          }
         );
-      } else {
-        assert.expect(0);
-      }
     });
   });
 });

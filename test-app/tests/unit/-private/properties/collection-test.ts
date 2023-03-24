@@ -435,9 +435,7 @@ module('collection', function(hooks) {
       <span>Ipsum</span>
     `);
 
-    const expectedError = new Error(
-      `3 elements found by text: "Ipsum", but expected 1\n\nPageObject: 'page.foo'`
-    );
+    const expectedError = new RegExp(`3 elements found by text: "Ipsum", but expected 1\n\nPageObject: 'page.foo'`);
 
     assert.throws(
       () => page.foo.findOneBy('text', 'Ipsum'),
@@ -460,7 +458,7 @@ module('collection', function(hooks) {
       <span>Ipsum</span>
     `);
 
-    const expectedError = new Error(
+    const expectedError = new RegExp(
       `cannot find element by text: "Wrong"\n\nPageObject: 'page.foo'`
     );
 
@@ -500,7 +498,7 @@ module('collection', function(hooks) {
       <span>Ipsum</span>
     `);
 
-    const expectedError = new Error(
+    const expectedError = new RegExp(
       `2 elements found by condition, but expected 1\n\nPageObject: 'page.foo'`
     );
 
@@ -525,7 +523,7 @@ module('collection', function(hooks) {
       <span>Ipsum</span>
     `);
 
-    const expectedError = new Error(
+    const expectedError = new RegExp(
       `cannot find element by condition\n\nPageObject: 'page.foo'`
     );
 
