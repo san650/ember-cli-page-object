@@ -1,22 +1,12 @@
 import Ceibo from '@ro0gr/ceibo';
-import { getAdapter } from 'ember-cli-page-object/adapters';
 
 export default class Selector {
   constructor(node, locator) {
     this.node = node;
 
     if (locator) {
-      this.locator =
-        typeof locator === 'string' ? { selector: locator } : locator;
+      this.locator = normalizeLocator(locator);
     }
-  }
-
-  get container() {
-    return (
-      (this.locator && this.locator.testContainer) ||
-      findClosestValue(this.node, 'testContainer') ||
-      getAdapter().testContainer
-    );
   }
 
   get path() {
@@ -34,6 +24,7 @@ export default class Selector {
           resetScope: n.resetScope,
         };
       }),
+      // @todo: test resetScope with nested `scope`
     ].filter((n) => n && Boolean(n.scope));
 
     const startIndex = wayBackToRoot.findIndex((node) => node.resetScope);
@@ -42,14 +33,7 @@ export default class Selector {
 
     const path = breadcrumbs
       .reverse()
-      .map((n) => n.scope)
-      .map((locator) => {
-        if (typeof locator === 'string') {
-          return { selector: locator };
-        } else {
-          return locator;
-        }
-      })
+      .map((n) => normalizeLocator(n.scope))
       .reduce((batches, locator) => {
         const [currentBatch] = batches.slice(-1);
 
@@ -117,6 +101,10 @@ export default class Selector {
   }
 }
 
+function normalizeLocator(locator) {
+  return typeof locator === 'string' ? { selector: locator } : locator;
+}
+
 function mapToRoot(node, mapper) {
   let iterator = node;
   let values = [];
@@ -128,16 +116,4 @@ function mapToRoot(node, mapper) {
   }
 
   return values;
-}
-
-function findClosestValue(node, property) {
-  if (typeof node[property] !== 'undefined') {
-    return node[property];
-  }
-
-  let parent = Ceibo.parent(node);
-
-  if (typeof parent !== 'undefined') {
-    return findClosestValue(parent, property);
-  }
 }

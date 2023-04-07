@@ -1,3 +1,5 @@
+import Ceibo from '@ro0gr/ceibo';
+import { getAdapter } from 'ember-cli-page-object/adapters';
 import Selector from './query/selector';
 import { getQueryEngine } from './query/engines';
 import { isVisible, containsText } from './element';
@@ -5,14 +7,12 @@ import { isVisible, containsText } from './element';
 /**
  * @public
  *
- * Builds a CSS selector from a target selector and a PageObject or a node in a PageObject, along with optional parameters.
+ * DOM Elements Query.
  *
  * @example
  *
- * const component = PageObject.create({ scope: '.component'});
- *
- * buildSelector(component, '.my-element');
- * // returns '.component .my-element'
+ * const query = new Query(pageObjectNode, '.child-element');
+ * query.all();
  *
  * @example
  *
@@ -36,13 +36,15 @@ import { isVisible, containsText } from './element';
  * // returns '.my-element:last'
  *
  * @param {Ceibo} node - Node of the tree
- * @param {string} targetSelector - CSS selector
- * @param {Object} options - Additional options
- * @param {boolean} options.resetScope - Do not use inherited scope
- * @param {string} options.contains - Filter by using :contains('foo') pseudo-class
- * @param {number} options.at - Filter by index using :eq(x) pseudo-class
- * @param {boolean} options.last - Filter by using :last pseudo-class
- * @param {boolean} options.visible - Filter by using :visible pseudo-class
+ * @param {Object|string} locator - Additional options
+ * @param {boolean} locator.resetScope - Do not use inherited scope
+ * @param {string} locator.contains - Filter by using :contains('foo') pseudo-class
+ * @param {number} locator.at - Filter by index using :eq(x) pseudo-class
+ * @param {boolean} locator.last - Filter by using :last pseudo-class
+ * @param {boolean} locator.visible - Filter by using :visible pseudo-class
+ * @param {boolean} locator.selector - Filter by using :visible pseudo-class
+ * @param {boolean} locator.scope - Filter by using :visible pseudo-class
+ * @param {boolean} locator.testContainer - Filter by using :visible pseudo-class
  * @return {string} Fully qualified selector
  *
  * @todo: update doc
@@ -55,7 +57,7 @@ export class Query {
   }
 
   all() {
-    const elements = search(this.selector);
+    const elements = search(this.container, this.selector.path);
 
     // filters
     const { visible, contains } = this.selector.locator;
@@ -82,15 +84,23 @@ export class Query {
     ).filter(Boolean);
   }
 
+  get container() {
+    const { locator } = this.selector;
+
+    return (
+      (locator && locator.testContainer) ||
+      findClosestValue(this.node, 'testContainer') ||
+      getAdapter().testContainer
+    );
+  }
+
   // @todo: tests for filters via findOne
   toString() {
     return this.selector.toString();
   }
 }
 
-function search(selector) {
-  const { path, container } = selector;
-
+function search(container, path) {
   return path
     .reduce(
       (queryRootElements, subpath) => {
@@ -114,4 +124,16 @@ function search(selector) {
       [container]
     )
     .filter(Boolean);
+}
+
+function findClosestValue(node, property) {
+  if (typeof node[property] !== 'undefined') {
+    return node[property];
+  }
+
+  let parent = Ceibo.parent(node);
+
+  if (typeof parent !== 'undefined') {
+    return findClosestValue(parent, property);
+  }
 }
