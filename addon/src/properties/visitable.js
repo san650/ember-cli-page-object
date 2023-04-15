@@ -1,4 +1,4 @@
-import { $ } from '../-private/helpers';
+import { $ } from '../-private/jquery';
 import action from '../-private/action';
 import { getAdapter } from '../adapters/index';
 
