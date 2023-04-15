@@ -1,4 +1,5 @@
-import { guardMultiple, $ } from '../-private/helpers';
+import { $ } from '../-private/jquery';
+import { guardMultiple } from '../-private/helpers';
 import { findMany } from '../-private/finders';
 import { getter } from '../macros/index';
 

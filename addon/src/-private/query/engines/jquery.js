@@ -1,4 +1,4 @@
-import { $ } from '../../helpers';
+import { $ } from '../../jquery';
 
 export default class JQueryQueryEngine {
   static all(path, containerElement) {
