@@ -7,7 +7,7 @@ import { isVisible, containsText } from './element';
 /**
  * @public
  *
- * DOM Elements Query.
+ * DOM Elements Query
  *
  * @example
  *
@@ -16,24 +16,11 @@ import { isVisible, containsText } from './element';
  *
  * @example
  *
- * const page = PageObject.create({});
- *
- * buildSelector(page, '.my-element', { at: 0 });
- * // returns '.my-element:eq(0)'
- *
- * @example
- *
- * const page = PageObject.create({});
- *
- * buildSelector(page, '.my-element', { contains: "Example" });
- * // returns ".my-element :contains('Example')"
- *
- * @example
- *
- * const page = PageObject.create({});
- *
- * buildSelector(page, '.my-element', { last: true });
- * // returns '.my-element:last'
+ * const query = new Query(pageObjectNode, {
+ *   selector: '.child-element',
+ *   at: 2,
+ * });
+ * query.all();
  *
  * @param {Ceibo} node - Node of the tree
  * @param {Object|string} locator - Additional options
@@ -45,9 +32,7 @@ import { isVisible, containsText } from './element';
  * @param {boolean} locator.selector - Filter by using :visible pseudo-class
  * @param {boolean} locator.scope - Filter by using :visible pseudo-class
  * @param {boolean} locator.testContainer - Filter by using :visible pseudo-class
- * @return {string} Fully qualified selector
- *
- * @todo: update doc
+ * @return {Element[]} Fully qualified selector
  */
 export class Query {
   constructor(node, locator) {
