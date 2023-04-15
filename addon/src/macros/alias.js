@@ -1,4 +1,4 @@
-import { getter } from './index';
+import { getter } from './getter';
 import { throwBetterError } from '../-private/better-errors';
 import { chainable } from '../-private/chainable';
 
