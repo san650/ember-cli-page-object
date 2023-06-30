@@ -1,4 +1,4 @@
-import { test, module, todo } from 'qunit';
+import { test, module } from 'qunit';
 import { create, collection } from 'ember-cli-page-object';
 import { Query } from 'ember-cli-page-object/-private/query';
 import { setupRenderingTest } from '../../helpers';
@@ -105,25 +105,6 @@ module('Unit | -private/query', function () {
         assert.equal(q.toString(), '.selector:contains("some text")');
       });
 
-      todo('respects testContainer', function (assert) {
-        const page = create({
-          scope: '.selector',
-        });
-
-        const q1 = new Query(page, {
-          testContainer: '.external',
-        });
-
-        assert.equal(q1.toString(), '.selector');
-
-        const q2 = new Query(page, {
-          selector: '.nestedSelector',
-          testContainer: '.external',
-        });
-
-        assert.equal(q2.toString(), '.external .nestedSelector');
-      });
-
       test('respects resetScope', function (assert) {
         const page = create({
           scope: '.selector',
@@ -168,6 +149,37 @@ module('Unit | -private/query', function () {
           <h5>2</h5>
         </li>
       </ul>`);
+
+      assert.strictEqual(q.all().length, 1);
+    });
+
+    test('testContainer', async function (assert) {
+      const page = create({
+        scope: 'ul',
+        testContainer: '#alternate-ember-testing',
+
+        collection: collection('li', {
+          title: {
+            scope: 'h5',
+          },
+        }),
+      });
+
+      const q = new Query(page.collection[1].title, {});
+
+      await this.createTemplate(
+        `<ul>
+        <li>
+          <h5>1</h5>
+        </li>
+        <li>
+          <h5>2</h5>
+        </li>
+      </ul>`,
+        {
+          useAlternateContainer: true,
+        }
+      );
 
       assert.strictEqual(q.all().length, 1);
     });
