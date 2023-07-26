@@ -38,6 +38,24 @@ module.exports = async function () {
         },
       },
       {
+        name: 'ember-release-typescript-5',
+        npm: {
+          devDependencies: {
+            '@ember/string': '^3.1.1',
+            '@tsconfig/ember': '^3.0.0',
+            'ember-cli-typescript': '^5.2.1',
+            'ember-resolver': '^10.1.1',
+            'ember-source': await getChannelURL('release'),
+            typescript: '^5.1.6',
+          },
+        },
+        env: {
+          EMBER_OPTIONAL_FEATURES: JSON.stringify({
+            'jquery-integration': false,
+          }),
+        },
+      },
+      {
         name: 'ember-beta',
         npm: {
           devDependencies: {

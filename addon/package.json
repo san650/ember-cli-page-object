@@ -25,9 +25,21 @@
   "license": "MIT",
   "author": "Santiago Ferreira",
   "exports": {
-    ".": "./dist/index.js",
-    "./*": "./dist/*",
-    "./addon-main.js": "./addon-main.js"
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.js",
+      "types": "./types.d.ts"
+    },
+    "./*": {
+      "import": "./dist/*",
+      "require": "./dist/*",
+      "types": "./types.d.ts"
+    },
+    "./addon-main.js": {
+      "import": "./addon-main.js",
+      "require": "./addon-main.js",
+      "types": "./types.d.ts"
+    }
   },
   "types": "types.d.ts",
   "files": [
