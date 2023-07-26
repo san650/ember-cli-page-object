@@ -88,13 +88,13 @@ module('collection', function(hooks) {
 
     let array = page.foo.toArray();
     assert.equal(array.length, 2);
-    assert.equal(array[0].text, 'Lorem');
-    assert.equal(array[1].text, 'Ipsum');
+    assert.equal(array[0]?.text, 'Lorem');
+    assert.equal(array[1]?.text, 'Ipsum');
 
     let proxyArray = page.foo.toArray();
     assert.equal(proxyArray.length, 2);
-    assert.equal(proxyArray[0].text, 'Lorem');
-    assert.equal(proxyArray[1].text, 'Ipsum');
+    assert.equal(proxyArray[0]?.text, 'Lorem');
+    assert.equal(proxyArray[1]?.text, 'Ipsum');
   });
 
   test('produces an iterator for items', async function(this: TestContext, assert) {
@@ -548,7 +548,7 @@ module('collection', function(hooks) {
     `);
 
     assert.deepEqual(page.foo.filter((i) => i.isSpecial).map((i) => i.text), ['Lorem']);
-    assert.deepEqual(page.foo.filter((i) => i.isFoo as any).map((i) => i.text), []);
+    assert.deepEqual(page.foo.filter((i) => i['isFoo'] as any).map((i) => i.text), []);
   });
 
   test('filterBy works correctly', async function(this: TestContext, assert) {
@@ -578,7 +578,7 @@ module('collection', function(hooks) {
       <span>Ipsum</span>
     `);
 
-    assert.equal(page.foo[0].text, 'Lorem');
-    assert.equal(page.foo[1].text, 'Ipsum');
+    assert.equal(page.foo[0]?.text, 'Lorem');
+    assert.equal(page.foo[1]?.text, 'Ipsum');
   });
 });
