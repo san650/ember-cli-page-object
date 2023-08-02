@@ -79,7 +79,7 @@ module('getter', function(hooks) {
       page.foo;
       assert.true(false);
     } catch (e) {
-      assert.strictEqual(e.toString(), `Error: Argument passed to \`getter\` must be a function.
+      assert.strictEqual(e?.toString(), `Error: Argument passed to \`getter\` must be a function.
 
 PageObject: \'page.foo\'`)
     }
@@ -98,7 +98,7 @@ PageObject: \'page.foo\'`)
       page.foo;
       assert.true(false);
     } catch (e) {
-      assert.strictEqual(e.toString(), `Error: custom error message
+      assert.strictEqual(e?.toString(), `Error: custom error message
 
 PageObject: \'page.foo\'`)
     }

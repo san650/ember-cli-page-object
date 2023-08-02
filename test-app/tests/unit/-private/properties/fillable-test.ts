@@ -59,7 +59,7 @@ module('fillable', function(hooks) {
         foo: fillable()
       });
 
-      await this.createTemplate(`<div class="scope">${this.template}</div>`);
+      await this.createTemplate(`<div class="scope">${this['template']}</div>`);
 
       await page.foo(clue, expectedText);
 
@@ -80,10 +80,10 @@ module('fillable', function(hooks) {
         foo: fillable()
       });
 
-      this.attrName = attrName;
+      this[attrName] = attrName;
 
       await this.createTemplate(`<div class="scope">
-        <div contenteditable ${this.attrName}="clue"></div>
+        <div contenteditable ${this[attrName]}="clue"></div>
       </div>`);
 
       await page.foo(clue, expectedText);

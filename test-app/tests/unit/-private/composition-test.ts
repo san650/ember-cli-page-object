@@ -157,11 +157,11 @@ module('Unit | composition', function () {
       getPageObjectDefinition({});
       assert.true(false);
     } catch (e) {
-      assert.strictEqual(e.toString(), 'Error: cannot get the page object definition from a node that is not a page object');
+      assert.strictEqual(e?.toString(), 'Error: cannot get the page object definition from a node that is not a page object');
     }
   });
 
-  module('all properties via compsition', function (hooks) {
+  module('all properties via composition', function (hooks) {
     setupRenderingTest(hooks);
 
     test('can alias through composition', async function (assert) {

@@ -84,7 +84,7 @@ module('visitable', function(hooks) {
 
       assert.false(true, 'visit should have failed');
     } catch (e) {
-      assert.strictEqual(e.toString(), `Error: Failed to visit URL '/non-existing-url/value'
+      assert.strictEqual(e?.toString(), `Error: Failed to visit URL '/non-existing-url/value'
 
 PageObject: 'page.foo(\"[object Object]\")'
   Selector: '.scope'`);

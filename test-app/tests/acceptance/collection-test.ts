@@ -13,7 +13,7 @@ module('Acceptance | collection', function (hooks) {
   setupApplicationTest(hooks);
 
   test(`allows to traverse nodes while they don't exist`, async function (assert) {
-    await page.visit().numbers[2].click();
+    await page.visit().numbers[2]?.click();
 
     assert.ok(1, 'exception is not thrown');
   });
