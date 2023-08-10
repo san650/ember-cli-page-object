@@ -12,7 +12,7 @@ importers:
       '@babel/plugin-proposal-class-properties': ^7.16.7
       '@babel/plugin-proposal-decorators': ^7.17.9
       '@ember/jquery': '*'
-      '@ember/test-helpers': ^2.5.0
+      '@ember/test-helpers': '>= 2.5.0'
       '@embroider/addon-dev': ^1.8.0
       '@embroider/addon-shim': ^1.8.0
       '@ro0gr/ceibo': ^2.2.0

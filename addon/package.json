@@ -85,7 +85,7 @@
   },
   "peerDependencies": {
     "@ember/jquery": "*",
-    "@ember/test-helpers": "^2.5.0"
+    "@ember/test-helpers": ">= 2.5.0"
   },
   "peerDependenciesMeta": {
     "@ember/jquery": {
