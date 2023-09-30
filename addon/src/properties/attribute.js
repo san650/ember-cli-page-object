@@ -1,4 +1,3 @@
-import { $ } from '../-private/jquery';
 import { findOne } from '../-private/finders';
 import { getter } from '../macros/index';
 
@@ -63,11 +62,60 @@ import { getter } from '../macros/index';
  */
 export function attribute(attributeName, selector, userOptions = {}) {
   return getter(function (key) {
-    let options = {
+    const element = findOne(this, selector, {
       pageObjectKey: key,
       ...userOptions,
-    };
+    });
 
-    return $(findOne(this, selector, options)).attr(attributeName);
+    return attr(element, attributeName);
   });
+}
+
+const BOOL_ATTRS = [
+  'checked',
+  'selected',
+  'async',
+  'autofocus',
+  'autoplay',
+  'controls',
+  'defer',
+  'disabled',
+  'hidden',
+  'ismap',
+  'loop',
+  'multiple',
+  'open',
+  'readonly',
+  'required',
+  'scoped',
+];
+
+/**
+ * Get `Element` attribute value
+ *
+ * For backward compatibility reasons we aim to follow the way the `$.attr(` works
+ * @see: https://github.com/jquery/jquery/blob/a684e6ba836f7c553968d7d026ed7941e1a612d8/src/attributes/attr.js
+ *
+ * @param {Element} element
+ * @param {string} attributeName
+ * @returns string|undefined
+ */
+function attr(element, attributeName) {
+  const value = element.getAttribute(attributeName);
+  if (value) {
+    // Non-existent attributes return `null`, we normalize to undefined
+    return value == null ? undefined : value;
+  }
+
+  const attributeNode = element.getAttributeNode(attributeName);
+  if (attributeNode) {
+    const { specified, value } = attributeNode;
+
+    if (specified && value !== null) {
+      const lcAttributeName = attributeName.toLowerCase();
+      return BOOL_ATTRS.includes(lcAttributeName) ? lcAttributeName : value;
+    }
+  }
+
+  return undefined;
 }
