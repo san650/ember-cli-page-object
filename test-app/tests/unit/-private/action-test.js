@@ -98,6 +98,30 @@ module('Unit | action', function (hooks) {
     assert.deepEqual(finished, [1]);
   });
 
+  test('fails without arguments', async function (assert) {
+    try {
+      action();
+      assert.false(true, 'throws an exception for no argument');
+    } catch (e) {
+      assert.strictEqual(
+        e?.toString(),
+        'Error: `action()` expects a function argument.'
+      );
+    }
+  });
+
+  test('fails without an action callback', async function (assert) {
+    try {
+      action({});
+      assert.false(true, 'throws an exception for a single object argument');
+    } catch (e) {
+      assert.strictEqual(
+        e?.toString(),
+        'Error: `action()` expects a function argument.'
+      );
+    }
+  });
+
   test('it handles sync errors', async function (assert) {
     const p = create({
       scope: '.Scope',
