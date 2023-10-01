@@ -94,7 +94,7 @@ declare module 'ember-cli-page-object/extend' {
 declare module 'ember-cli-page-object/macros' {
   import { Component, GetterDescriptor } from 'ember-cli-page-object/-private';
 
-  function getter<P extends Record<string, unknown>, T = any>
+  function getter<P, T = any>
     (body: (this: Component<P>, key: string) => T)
     : GetterDescriptor<T>;
 

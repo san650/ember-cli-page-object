@@ -30,7 +30,7 @@ module('getter', function(hooks) {
   test('executes the passed-in function with the correct context for `this`', async function (this: TestContext, assert) {
     assert.expect(1);
 
-    type Getter<T> = ReturnType<typeof getter<Record<string, unknown>, T>>;
+    type Getter<T> = ReturnType<typeof getter<unknown, T>>;
 
     type Definition = {
       inputValue: Getter<string>,
@@ -59,7 +59,7 @@ module('getter', function(hooks) {
     assert.expect(2);
 
     const page = create({
-      foo: getter(function(key: string) {
+      foo: getter(function(key) {
         assert.equal(key, 'foo');
         return true;
       })
@@ -108,7 +108,7 @@ PageObject: \'page.foo\'`)
     assert.expect(1);
 
     const page = create({
-      foo: getter(function(this: any) {
+      foo: getter(function() {
         findOne(this, '.non-existing-scope');
       }),
     });
