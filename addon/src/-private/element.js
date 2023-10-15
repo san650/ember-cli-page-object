@@ -21,3 +21,6 @@ export function text(element) {
   return element.textContent;
 }
 
+export function containsText(element, searchText) {
+  return text(element).indexOf(searchText) > -1;
+}
