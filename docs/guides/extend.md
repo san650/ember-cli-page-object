@@ -71,13 +71,11 @@ export default function count(selector, options = {}) {
 }
 ```
 
-## findElementWithAssert
+## findElementWithAssert (deprecated)
 
 [addon/-private/extend/find-element-with-assert.js:38-44](https://github.com/san650/ember-cli-page-object/blob/c521335ffba9955a6acaf1006ed503cbb61ba72d/addon/-private/extend/find-element-with-assert.js#L38-L44 "Source code on GitHub")
 
 Note: in the v2 series we are going to deprecate `findElementWithAssert`. It's recommended to migrate to use `findOne` instead.
-
-In order to ease the migration, you may find useful the [`find-one`](https://github.com/ro0gr/ember-page-object-codemod/tree/master/transforms/find-one) codemod to perform the migration.
 
 **Parameters**
 
@@ -106,11 +104,9 @@ export default function count(selector, options = {}) {
 }
 ```
 
-## findElement
+## findElement (deprecated)
 
 [addon/-private/extend/find-element.js:36-42](https://github.com/san650/ember-cli-page-object/blob/c521335ffba9955a6acaf1006ed503cbb61ba72d/addon/-private/extend/find-element.js#L36-L42 "Source code on GitHub")
-
-Note: in the v2 series we are going to deprecate `findElement`. It's recommended to migrate to use `findMany` instead.
 
 **Parameters**
 

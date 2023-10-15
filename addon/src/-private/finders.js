@@ -1,3 +1,4 @@
+import deprecate from './deprecate';
 import { $, buildSelector, findClosestValue, guardMultiple } from './helpers';
 import { getAdapter } from '../adapters/index';
 import { throwBetterError, ELEMENT_NOT_FOUND } from './better-errors';
@@ -53,6 +54,13 @@ export function findElementWithAssert(
   targetSelector,
   options = {}
 ) {
+  deprecate(
+    'find-element',
+    '`findElementWithAssert(` is deprecated. Please, consider using the `findOne(` instead.',
+    '2.2.0',
+    '3.0.0'
+  );
+
   const selector = buildSelector(pageObjectNode, targetSelector, options);
   const container = getContainer(pageObjectNode, options);
 
@@ -74,6 +82,13 @@ export function findElementWithAssert(
  * @deprecated
  */
 export function findElement(pageObjectNode, targetSelector, options = {}) {
+  deprecate(
+    'find-element',
+    '`findElement(` is deprecated. Please, consider using the `findOne(` or `findMany(` instead.',
+    '2.2.0',
+    '3.0.0'
+  );
+
   const selector = buildSelector(pageObjectNode, targetSelector, options);
   const container = getContainer(pageObjectNode, options);
 
