@@ -93,10 +93,11 @@ export function clickOnText(selector, userOptions = {}) {
       last: true,
     };
 
-    const childSelector = `${selector || ''} *`;
+    const selectorString = selector ?? '';
+    const childSelector = `${selectorString} *`;
     const byTextSelector = findMany(this, childSelector, options).length
       ? childSelector
-      : selector;
+      : selectorString;
 
     const element = findOne(this, byTextSelector, options);
 

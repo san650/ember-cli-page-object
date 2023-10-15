@@ -1,9 +1,12 @@
 import Ceibo from '@ro0gr/ceibo';
-import { buildSelector, assignDescriptors } from '../-private/helpers';
+import { assignDescriptors } from '../-private/helpers';
 import { isPageObject, getPageObjectDefinition } from '../-private/meta';
 import { create } from '../create';
 import { count } from './count';
 import { throwBetterError } from '../-private/better-errors';
+import { getter } from '../macros/index';
+import Locator from '../-private/query/locator';
+import { isQuerySelector } from '../-private/query/selector';
 
 /**
  * Creates a enumerable that represents a collection of items. The collection is zero-indexed
@@ -143,7 +146,7 @@ import { throwBetterError } from '../-private/better-errors';
  * @return {Descriptor}
  */
 export function collection(scope, definition) {
-  if (typeof scope !== 'string') {
+  if (typeof scope !== 'string' && !isQuerySelector(scope)) {
     throw new Error('collection requires `scope` as the first argument');
   }
 
@@ -177,6 +180,7 @@ export class Collection {
 
     this._itemCounter = create(
       {
+        // @todo: use locator
         count: count(scope, {
           resetScope: this.definition.resetScope,
           testContainer: this.definition.testContainer,
@@ -197,11 +201,12 @@ export class Collection {
 
     if (typeof this._items[index] === 'undefined') {
       let { scope, definition, parent } = this;
-      let itemScope = buildSelector({}, scope, { at: index });
 
       let finalizedDefinition = assignDescriptors({}, definition);
 
-      finalizedDefinition.scope = itemScope;
+      finalizedDefinition.scope = getter(function () {
+        return new Locator(scope, { at: index });
+      });
 
       let tree = create(finalizedDefinition, { parent });
 

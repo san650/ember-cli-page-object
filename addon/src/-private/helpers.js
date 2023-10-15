@@ -1,88 +1,5 @@
 import Ceibo from '@ro0gr/ceibo';
-function isPresent(value) {
-  return typeof value !== 'undefined';
-}
-
-class Selector {
-  constructor(node, scope, selector, filters) {
-    this.targetNode = node;
-    this.targetScope = scope || '';
-    this.targetSelector = selector || '';
-    this.targetFilters = filters;
-  }
-
-  toString() {
-    let scope;
-    let filters;
-
-    if (this.targetFilters.resetScope) {
-      scope = this.targetScope;
-    } else {
-      scope = this.calculateScope(this.targetNode, this.targetScope);
-    }
-
-    if (`${scope} ${this.targetSelector}`.indexOf(',') > -1) {
-      throw new Error(
-        'Usage of comma separated selectors is not supported. Please make sure your selector targets a single selector.'
-      );
-    }
-
-    filters = this.calculateFilters(this.targetFilters);
-
-    let selector = `${scope} ${this.targetSelector}${filters}`.trim();
-
-    if (!selector.length) {
-      // When an empty selector is resolved take the first direct child of the
-      // testing container.
-      selector = ':first';
-    }
-
-    return selector;
-  }
-
-  calculateFilters() {
-    let filters = [];
-
-    if (this.targetFilters.visible) {
-      filters.push(`:visible`);
-    }
-
-    if (this.targetFilters.contains) {
-      filters.push(`:contains("${this.targetFilters.contains}")`);
-    }
-
-    if (typeof this.targetFilters.at === 'number') {
-      filters.push(`:eq(${this.targetFilters.at})`);
-    } else if (this.targetFilters.last) {
-      filters.push(':last');
-    }
-
-    return filters.join('');
-  }
-
-  calculateScope(node, targetScope) {
-    let scopes = this.getScopes(node);
-
-    scopes.reverse();
-    scopes.push(targetScope);
-
-    return scopes.join(' ').trim();
-  }
-
-  getScopes(node) {
-    let scopes = [];
-
-    if (node.scope) {
-      scopes.push(node.scope);
-    }
-
-    if (!node.resetScope && Ceibo.parent(node)) {
-      scopes = scopes.concat(this.calculateScope(Ceibo.parent(node)));
-    }
-
-    return scopes;
-  }
-}
+import { Query } from './query';
 
 export function guardMultiple(items, selector, supportMultiple) {
   if (items.length > 1 && !supportMultiple) {
@@ -136,7 +53,11 @@ export function guardMultiple(items, selector, supportMultiple) {
  * @return {string} Fully qualified selector
  */
 export function buildSelector(node, targetSelector, options) {
-  return new Selector(node, options.scope, targetSelector, options).toString();
+  return new Query(
+    node,
+    [options.scope, targetSelector].filter(Boolean).join(' '),
+    options
+  ).toString();
 }
 
 /**
@@ -159,21 +80,6 @@ export function getRoot(node) {
   return root;
 }
 
-function getAllValuesForProperty(node, property) {
-  let iterator = node;
-  let values = [];
-
-  while (isPresent(iterator)) {
-    if (isPresent(iterator[property])) {
-      values.push(iterator[property]);
-    }
-
-    iterator = Ceibo.parent(iterator);
-  }
-
-  return values;
-}
-
 /**
  * @public
  *
@@ -183,31 +89,9 @@ function getAllValuesForProperty(node, property) {
  * @return {string} Full scope of node
  */
 export function fullScope(node) {
-  let scopes = getAllValuesForProperty(node, 'scope');
+  const q = new Query(node);
 
-  return scopes.reverse().join(' ');
-}
-
-/**
- * @public
- *
- * Returns the value of property defined on the closest ancestor of given
- * node.
- *
- * @param {Ceibo} node - Node of the tree
- * @param {string} property - Property to look for
- * @return {?Object} The value of property on closest node to the given node
- */
-export function findClosestValue(node, property) {
-  if (isPresent(node[property])) {
-    return node[property];
-  }
-
-  let parent = Ceibo.parent(node);
-
-  if (isPresent(parent)) {
-    return findClosestValue(parent, property);
-  }
+  return q.toString();
 }
 
 export function assignDescriptors(target, source) {

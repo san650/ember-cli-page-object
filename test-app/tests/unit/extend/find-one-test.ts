@@ -19,9 +19,12 @@ module(`Extend | findOne`, function (hooks) {
   test('finds deeper in scope', async function (assert) {
     const page = create({ scope: '.lorem' });
 
-    await render(
-      hbs`<em class="lorem"><span class="dolor"></span></em><span class="ipsum"><span class="dolor"></span></span>`
-    );
+    await render(hbs`<em class="lorem">
+      <span class="dolor"></span>
+    </em>
+    <span class="ipsum">
+      <span class="dolor"></span>
+    </span>`);
 
     assert.equal(findOne(page, '.dolor', {}), find('.lorem .dolor'));
   });

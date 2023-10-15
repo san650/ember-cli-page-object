@@ -1,32 +1,29 @@
-import { buildSelector, findClosestValue, guardMultiple } from './helpers';
-import { getAdapter } from '../adapters/index';
-import { $ } from './jquery';
+import { guardMultiple } from './helpers';
+import { $ } from './query/selectors/jquery';
 import { throwBetterError, ELEMENT_NOT_FOUND } from './better-errors';
-
-function getContainer(pageObjectNode, options) {
-  return (
-    options.testContainer ||
-    findClosestValue(pageObjectNode, 'testContainer') ||
-    getAdapter().testContainer
-  );
-}
+import { Query } from './query';
 
 /**
  * Finds a single element, otherwise fails
  *
  * @private
  */
-export function findOne(pageObjectNode, targetSelector, options = {}) {
-  const selector = buildSelector(pageObjectNode, targetSelector, options);
-  const container = getContainer(pageObjectNode, options);
+export function findOne(pageObjectNode, selector, options = {}) {
+  const query = new Query(
+    pageObjectNode,
+    normalizeOptions({
+      ...options,
+      selector,
+    })
+  );
 
-  const elements = $(selector, container).toArray();
+  const elements = query.all();
 
-  guardMultiple(elements, selector);
+  guardMultiple(elements, query);
 
   if (elements.length === 0) {
     throwBetterError(pageObjectNode, options.pageObjectKey, ELEMENT_NOT_FOUND, {
-      selector,
+      selector: query.toString(),
     });
   }
 
@@ -38,49 +35,66 @@ export function findOne(pageObjectNode, targetSelector, options = {}) {
  *
  * @private
  */
-export function findMany(pageObjectNode, targetSelector, options = {}) {
-  const selector = buildSelector(pageObjectNode, targetSelector, options);
-  const container = getContainer(pageObjectNode, options);
+export function findMany(pageObjectNode, selector, options = {}) {
+  const query = new Query(
+    pageObjectNode,
+    normalizeOptions({
+      ...options,
+      selector,
+    })
+  );
 
-  return $(selector, container).toArray();
+  return query.all();
 }
 
 /**
  * @private
  * @deprecated
  */
-export function findElementWithAssert(
-  pageObjectNode,
-  targetSelector,
-  options = {}
-) {
-  const selector = buildSelector(pageObjectNode, targetSelector, options);
-  const container = getContainer(pageObjectNode, options);
-
-  let $elements = $(selector, container);
-
-  guardMultiple($elements, selector, options.multiple);
-
-  if ($elements.length === 0) {
-    throwBetterError(pageObjectNode, options.pageObjectKey, ELEMENT_NOT_FOUND, {
+export function findElementWithAssert(pageObjectNode, selector, options = {}) {
+  const query = new Query(
+    pageObjectNode,
+    normalizeOptions({
+      ...options,
       selector,
+    })
+  );
+
+  let elements = query.all();
+
+  guardMultiple(elements, query, options.multiple);
+
+  if (elements.length === 0) {
+    throwBetterError(pageObjectNode, options.pageObjectKey, ELEMENT_NOT_FOUND, {
+      selector: query.toString(),
     });
   }
 
-  return $elements;
+  return $(elements);
 }
 
 /**
  * @private
  * @deprecated
  */
-export function findElement(pageObjectNode, targetSelector, options = {}) {
-  const selector = buildSelector(pageObjectNode, targetSelector, options);
-  const container = getContainer(pageObjectNode, options);
+export function findElement(pageObjectNode, selector, options = {}) {
+  const elements = findMany(pageObjectNode, selector, options);
 
-  let $elements = $(selector, container);
+  return $(elements);
+}
 
-  guardMultiple($elements, selector, options.multiple);
+function normalizeOptions(options) {
+  if (options && options.scope) {
+    // TODO: deprecate options.scope
+    const selector = [options.scope, options.selector]
+      .filter(Boolean)
+      .join(' ');
 
-  return $elements;
+    return {
+      ...options,
+      selector,
+    };
+  }
+
+  return options;
 }

@@ -79,18 +79,45 @@ module(`Extend | findMany`, function (hooks) {
     );
   });
 
-  test('contains param', async function (assert) {
+  test('contains', async function (assert) {
     const page = create({});
 
     await render(hbs`
       <span class="lorem"></span>
-      <span class="lorem">Word</span>
-      <span class="lorem">Word</span>
+      <span class="lorem" id="a">
+        Word
+        <span id="ab">Word</span>
+      </span>
+      <span class="lorem" id="b">
+        Word
+        <span id="bb">Word</span>
+      </span>
     `);
 
     assert.deepEqual(
-      findMany(page, '.lorem', { contains: 'Word' }),
-      findAll('.lorem').slice(1, 3)
+      findMany(page, '.lorem', { contains: 'Word' }).map((el) => el.id),
+      ['a', 'b']
+    );
+  });
+
+  test('contains with nested selector', async function (assert) {
+    const page = create({});
+
+    await render(hbs`
+      <span class="lorem"></span>
+      <span class="lorem" id="a">
+        Word
+        <span id="ab">Word</span>
+      </span>
+      <span class="lorem" id="b">
+        Word
+        <span id="bb">Word</span>
+      </span>
+    `);
+
+    assert.deepEqual(
+      findMany(page, '.lorem *', { contains: 'Word' }).map((el) => el.id),
+      ['ab', 'bb']
     );
   });
 
