@@ -2,14 +2,20 @@ import { getter } from '../macros/index';
 import { run } from './run';
 import { throwContextualError } from './better-errors';
 
-export default function action(options, cb) {
+export default function action(options, act) {
+  [act, options] = normalizeArgs(options, act);
+
+  if (typeof act !== 'function') {
+    throw new Error('`action()` expects a function argument.');
+  }
+
   return getter(function (key) {
     return function (...args) {
-      ({ options, cb } = normalizeArgs(key, options, cb, args));
+      options.pageObjectKey = formatKey(key, args);
 
       return run(this, () => {
         try {
-          const invocation = cb.bind(this)(...args);
+          const invocation = act.bind(this)(...args);
 
           return Promise.resolve(invocation).catch((e) => {
             throwContextualError(this, options, e);
@@ -22,22 +28,16 @@ export default function action(options, cb) {
   });
 }
 
-function normalizeArgs(key, options, cb, args) {
-  const formattedKey = `${key}(${
-    args.length ? `"${args.map((a) => String(a)).join('", "')}"` : ``
-  })`;
-
-  if (typeof options === 'function') {
-    cb = options;
-    options = {
-      pageObjectKey: formattedKey,
-    };
-  } else {
-    options = {
-      ...options,
-      pageObjectKey: formattedKey,
-    };
+function normalizeArgs(options, act) {
+  if (!act) {
+    return [options, {}];
   }
 
-  return { options, cb };
+  return [act, { ...options }];
+}
+
+function formatKey(key, args) {
+  return `${key}(${
+    args.length ? `"${args.map((a) => String(a)).join('", "')}"` : ``
+  })`;
 }

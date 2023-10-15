@@ -71,17 +71,10 @@ module('getter', function(hooks) {
   test('throws an error if a function is not passed in', function(this: TestContext, assert) {
     assert.expect(1);
 
-    const page = create({
-      foo: getter('not a function' as any)
-    });
-
     try {
-      page.foo;
-      assert.true(false);
+      getter('not a function' as any);
     } catch (e) {
-      assert.strictEqual(e?.toString(), `Error: Argument passed to \`getter\` must be a function.
-
-PageObject: \'page.foo\'`)
+      assert.strictEqual(e?.toString(), `Error: Argument passed to \`getter\` must be a function.`)
     }
   });
 

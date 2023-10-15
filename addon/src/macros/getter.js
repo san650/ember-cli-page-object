@@ -1,7 +1,5 @@
 import { PageObjectError, throwBetterError } from '../-private/better-errors';
 
-const NOT_A_FUNCTION_ERROR = 'Argument passed to `getter` must be a function.';
-
 /**
  * Creates a Descriptor whose value is determined by the passed-in function.
  * The passed-in function must not be bound and must not be an arrow function,
@@ -39,14 +37,14 @@ const NOT_A_FUNCTION_ERROR = 'Argument passed to `getter` must be a function.';
  * @throws Will throw an error if a function is not passed in as the first argument
  */
 export function getter(fn) {
+  if (typeof fn !== 'function') {
+    throw new Error('Argument passed to `getter` must be a function.');
+  }
+
   return {
     isDescriptor: true,
 
     get(pageObjectKey) {
-      if (typeof fn !== 'function') {
-        throwBetterError(this, pageObjectKey, NOT_A_FUNCTION_ERROR);
-      }
-
       try {
         return fn.call(this, pageObjectKey);
       } catch (e) {
