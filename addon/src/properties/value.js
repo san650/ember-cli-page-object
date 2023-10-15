@@ -1,4 +1,4 @@
-import { $ } from '../-private/helpers';
+import { $ } from '../-private/jquery';
 import { findOne } from '../-private/finders';
 import { getter } from '../macros/index';
 
