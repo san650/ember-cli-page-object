@@ -1,4 +1,4 @@
-import { $ } from '../-private/jquery';
+import { isVisible as isDOMElementVisible } from '../-private/element';
 import { guardMultiple } from '../-private/helpers';
 import { findMany } from '../-private/finders';
 import { getter } from '../macros/index';
@@ -83,6 +83,6 @@ export function isHidden(selector, userOptions = {}) {
 
     guardMultiple(elements, selector);
 
-    return elements.length === 0 || $(elements[0]).is(':hidden');
+    return elements.length === 0 || !isDOMElementVisible(elements[0]);
   });
 }

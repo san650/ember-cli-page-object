@@ -1,6 +1,6 @@
-import { $ } from '../-private/jquery';
 import { guardMultiple } from '../-private/helpers';
 import { findMany } from '../-private/finders';
+import { isVisible as isDOMElementVisible } from '../-private/element';
 import { getter } from '../macros/index';
 
 /**
@@ -85,9 +85,9 @@ export function isVisible(selector, userOptions = {}) {
       ...userOptions,
     };
 
-    let elements = findMany(this, selector, options);
-    guardMultiple(elements, selector, options.multiple);
+    let elements = findMany(this, selector, options, options.multiple);
+    guardMultiple(elements, selector);
 
-    return elements.length === 1 && $(elements[0]).is(':visible');
+    return elements.length === 1 && isDOMElementVisible(elements[0]);
   });
 }
