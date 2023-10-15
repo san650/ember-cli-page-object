@@ -82,12 +82,12 @@ declare module 'ember-cli-page-object' {
 declare module 'ember-cli-page-object/extend' {
   import type * as JQuery from 'jquery';
 
-  import { Component, FindOptions, FindOneOptions } from 'ember-cli-page-object/-private';
+  import { Component, FindElementOptions, FindOptions } from 'ember-cli-page-object/-private';
 
-  function findElement(pageObject: Component, scope?: string, options?: FindOptions): JQuery;
-  function findElementWithAssert(pageObject: Component, scope?: string, options?: FindOptions): JQuery;
+  function findElement(pageObject: Component, scope?: string, options?: FindElementOptions): JQuery;
+  function findElementWithAssert(pageObject: Component, scope?: string, options?: FindElementOptions): JQuery;
 
-  function findOne(pageObject: Component, scope?: string, options?: FindOneOptions): Element;
+  function findOne(pageObject: Component, scope?: string, options?: FindOptions): Element;
   function findMany(pageObject: Component, scope?: string, options?: FindOptions): Element[];
 }
 
@@ -173,16 +173,12 @@ declare module 'ember-cli-page-object/-private' {
     [l: string]: unknown;
   }
 
-  interface FindOptions extends FindOneOptions {
+  interface FindElementOptions extends FindOptions {
     multiple?: boolean;
   }
 
-  interface FindOneOptions extends DomElementQueryOptions {
-    contains?: string;
+  interface FindOptions extends DomElementQueryOptions, QueryFilterOptions {
     scope?: string;
-    last?: boolean;
-    visible?: boolean;
-    at?: number;
   }
 
   interface TriggerOptions extends FindOptions {
@@ -196,5 +192,12 @@ declare module 'ember-cli-page-object/-private' {
   interface SelectorQueryOptions {
     resetScope?: boolean;
     testContainer?: string|HTMLElement|JQuery;
+  }
+
+  interface QueryFilterOptions {
+    at?: number;
+    contains?: string;
+    last?: boolean;
+    visible?: boolean;
   }
 }
