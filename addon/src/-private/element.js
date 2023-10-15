@@ -16,3 +16,8 @@ export function isVisible(element) {
     element.getClientRects().length
   );
 }
+
+export function text(element) {
+  return element.textContent;
+}
+
