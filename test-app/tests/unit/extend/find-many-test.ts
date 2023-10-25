@@ -154,6 +154,29 @@ module(`Extend | findMany`, function (hooks) {
     ]);
   });
 
+  test('ambiguous parent selector', async function (assert) {
+    const page = create({
+      scope: 'span',
+      child: {
+        scope: '.lorem',
+      },
+    });
+
+    await render(hbs`
+      <span>
+        <span>
+          <span id="lorem" class="lorem"></span>
+        </span>
+      </span>
+    `);
+
+    assert.deepEqual(
+      findMany(page, '.lorem').map((e) => e.id),
+      ['lorem'],
+      'single element found'
+    );
+  });
+
   module('comma separated selector', function () {
     const SELECTOR = 'comma, separated';
 
