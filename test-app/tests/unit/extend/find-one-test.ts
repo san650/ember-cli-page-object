@@ -40,13 +40,18 @@ module(`Extend | findOne`, function (hooks) {
   });
 
   test('throws error if 0 elements found', async function (assert) {
-    const page = create({});
+    const page = create({
+      child: {},
+    });
 
     await render(hbs`<span class="ipsum"></span>`);
 
     assert.throws(
-      () => findOne(page, '.unknown', {}),
-      /Error: Element not found./
+      () => findOne(page.child, '.unknown', {}),
+      new Error(`Element not found.
+
+PageObject: 'page.child'
+  Selector: '.unknown'`)
     );
   });
 

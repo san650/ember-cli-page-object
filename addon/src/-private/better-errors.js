@@ -22,41 +22,56 @@ export function throwContextualError(node, filters, e) {
 export function throwBetterError(node, key, error, { selector } = {}) {
   let message = error instanceof Error ? error.message : error.toString();
 
-  const err = new PageObjectError(key, node, selector, message);
+  const wrapperError = new PageObjectError(message, {
+    cause: {
+      message,
+      key,
+      node,
+      selector,
+    },
+  });
+
   if (error instanceof Error && 'stack' in error) {
-    err.stack = error.stack;
+    wrapperError.stack = error.stack;
   }
 
-  console.error(err.toString());
-  throw err;
+  console.error(wrapperError.toString());
+  throw wrapperError;
 }
 
 export class PageObjectError extends Error {
-  constructor(label, node, selector, ...args) {
-    super(...args);
+  constructor(message, options = {}, ...args) {
+    const { cause } = options;
+    const { node, key, selector } = cause || {};
 
-    this.label = label;
-    this.node = node;
-    this.selector = selector;
-  }
+    const errorDescription = buildErrorDescription(node, key, selector);
 
-  toString() {
-    let { message, label, node, selector } = this;
-    if (label) {
-      let path = buildPropertyNamesPath(label, node);
-      message = `${message}\n\nPageObject: '${path.join('.')}'`;
-    }
-
-    if (typeof selector === 'string' && selector.trim().length > 0) {
-      message = `${message}\n  Selector: '${selector}'`;
-    }
-
-    return `Error: ${message}`;
+    super(
+      [message, errorDescription].filter(Boolean).join('\n'),
+      options,
+      ...args
+    );
   }
 }
 
-function buildPropertyNamesPath(leafKey, node) {
-  let path = [leafKey];
+function buildErrorDescription(node, key, selector) {
+  const lines = [];
+
+  const path = buildPropertyNamesPath(node);
+  if (key) {
+    path.push(key);
+  }
+  lines.push(`\nPageObject: '${path.join('.')}'`);
+
+  if (typeof selector === 'string' && selector.trim().length > 0) {
+    lines.push(`  Selector: '${selector}'`);
+  }
+
+  return lines.join('\n');
+}
+
+function buildPropertyNamesPath(node) {
+  let path = [];
 
   let current;
   for (current = node; current; current = Ceibo.parent(current)) {

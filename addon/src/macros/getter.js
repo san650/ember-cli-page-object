@@ -49,8 +49,19 @@ export function getter(fn) {
         return fn.call(this, pageObjectKey);
       } catch (e) {
         if (e instanceof PageObjectError) {
-          if (!e.label) {
-            e.label = pageObjectKey;
+          if (!e.cause.key) {
+            // re-throw with a page object key to have a complete error message
+            const { message, node, selector } = e.cause;
+            const wrapperError = new PageObjectError(message, {
+              cause: {
+                key: pageObjectKey,
+                node,
+                selector,
+              },
+            });
+            wrapperError.stack = e.stack;
+
+            throw wrapperError;
           }
 
           throw e;
