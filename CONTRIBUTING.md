@@ -23,7 +23,7 @@ Inside any of the packages you can run:
 
 - `cd addon && pnpm start` – Builds the addon in "watch mode" so changes picked up by test app.
 - `pnpm test` – Runs the test suite on the current Ember version
-- `pnpm test --server` – Runs the test suite in "watch mode"
+- `pnpm test -- --server` – Runs the test suite in "watch mode"
 - `cd test-app && ember try:each` – Runs the test suite against multiple Ember versions
 
 ## Running the test application

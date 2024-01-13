@@ -1,4 +1,3 @@
-import { $ } from '../-private/jquery';
 import action from '../-private/action';
 import { getAdapter } from '../adapters/index';
 
@@ -27,9 +26,48 @@ function fillInDynamicSegments(path, params) {
     .join('/');
 }
 
+function addValue(
+  urlSearchParams,
+  key,
+  value,
+  parentKey = '',
+  isArrayValue = false
+) {
+  let keyWithParent = parentKey ? `${parentKey}[${key}]` : key;
+
+  if (Array.isArray(value)) {
+    // array
+    value.forEach((arrayItem) =>
+      addValue(urlSearchParams, key, arrayItem, parentKey, true)
+    );
+  } else if (typeof value === 'object' && value !== null) {
+    // object
+    Object.keys(value).forEach((_key) =>
+      addValue(urlSearchParams, _key, value[_key], keyWithParent)
+    );
+  } else {
+    // primitive
+    if (isArrayValue) {
+      urlSearchParams.append(`${keyWithParent}[]`, value);
+    } else {
+      urlSearchParams.append(keyWithParent, value);
+    }
+  }
+
+  return urlSearchParams;
+}
+
 function appendQueryParams(path, queryParams) {
-  if (Object.keys(queryParams).length) {
-    path += `?${$.param(queryParams)}`;
+  let keys = Object.keys(queryParams);
+
+  if (keys.length) {
+    let urlSearchParams = keys.reduce(
+      (urlSearchParams, key) =>
+        addValue(urlSearchParams, key, queryParams[key]),
+      new URLSearchParams()
+    );
+
+    path += `?${urlSearchParams}`;
   }
 
   return path;
