@@ -2,7 +2,7 @@
 
 module.exports = {
   root: true,
-  parser: '@babel/eslint-parser',
+  parser: '@typescript-eslint/parser',
   parserOptions: {
     ecmaVersion: 2021,
     sourceType: 'module',
@@ -10,9 +10,6 @@ module.exports = {
       legacyDecorators: true,
     },
     requireConfigFile: false,
-    babelOptions: {
-      plugins: [['@babel/plugin-proposal-decorators', { legacy: true }]],
-    },
   },
   plugins: ['ember'],
   extends: [
@@ -28,6 +25,16 @@ module.exports = {
     'no-console': ['error', { allow: ['warn', 'error'] }],
   },
   overrides: [
+    {
+      files: ['**/*.ts', '**/*.gts'],
+      extends: [
+        'plugin:@typescript-eslint/eslint-recommended',
+        'plugin:@typescript-eslint/recommended',
+      ],
+      rules: {
+        // Add any custom rules here
+      },
+    },
     // node files
     {
       files: [
