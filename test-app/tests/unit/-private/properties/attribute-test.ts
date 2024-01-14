@@ -8,7 +8,7 @@ module('attribute', function (hooks) {
   setupRenderingTest(hooks);
 
   test('returns attribute value', async function (assert) {
-    let page = create({
+    const page = create({
       foo: attribute('placeholder', ':input'),
     });
 
@@ -18,7 +18,7 @@ module('attribute', function (hooks) {
   });
 
   test("returns null when attribute doesn't exist", async function (assert) {
-    let page = create({
+    const page = create({
       placeholder: attribute('placeholder', ':input'),
       disabled: attribute('placeholder', ':input'),
     });
@@ -30,7 +30,7 @@ module('attribute', function (hooks) {
   });
 
   test("raises an error when the element doesn't exist", async function (assert) {
-    let page = create({
+    const page = create({
       foo: {
         bar: {
           baz: {
@@ -46,7 +46,7 @@ module('attribute', function (hooks) {
   });
 
   test('looks for elements inside the scope', async function (assert) {
-    let page = create({
+    const page = create({
       foo: attribute('placeholder', ':input', { scope: '.scope' }),
     });
 
@@ -60,7 +60,7 @@ module('attribute', function (hooks) {
   });
 
   test("looks for elements inside page's scope", async function (assert) {
-    let page = create({
+    const page = create({
       scope: '.scope',
 
       foo: attribute('placeholder', ':input'),
@@ -76,7 +76,7 @@ module('attribute', function (hooks) {
   });
 
   test('resets scope', async function (assert) {
-    let page = create({
+    const page = create({
       scope: '.scope',
 
       foo: attribute('placeholder', ':input', { resetScope: true }),
@@ -91,7 +91,7 @@ module('attribute', function (hooks) {
   });
 
   test('throws error if selector matches more than one element', async function (assert) {
-    let page = create({
+    const page = create({
       foo: attribute('placeholder', ':input'),
     });
 
@@ -107,7 +107,7 @@ module('attribute', function (hooks) {
   });
 
   test('finds element by index', async function (assert) {
-    let page = create({
+    const page = create({
       foo: attribute('placeholder', ':input', { at: 1 }),
     });
 
@@ -120,7 +120,7 @@ module('attribute', function (hooks) {
   });
 
   test('looks for elements outside the testing container', async function (assert) {
-    let page = create({
+    const page = create({
       foo: attribute('placeholder', ':input', {
         testContainer: '#alternate-ember-testing',
       }),
@@ -128,14 +128,15 @@ module('attribute', function (hooks) {
 
     await render(hbs``);
 
-    (document.getElementById('alternate-ember-testing') as HTMLElement)
-      .innerHTML = `<input placeholder="a value">`;
+    (
+      document.getElementById('alternate-ember-testing') as HTMLElement
+    ).innerHTML = `<input placeholder="a value">`;
 
     assert.strictEqual(page.foo, 'a value');
   });
 
   test('no value attributes', async function (assert) {
-    let page = create({
+    const page = create({
       scope: 'span',
       disabled: attribute('disabled'),
       datatest: attribute('data-test'),
@@ -148,10 +149,10 @@ module('attribute', function (hooks) {
   });
 
   test('uppercase', async function (assert) {
-    let page = create({
+    const page = create({
       scope: 'span',
       disabled: attribute('DISABLED'),
-      withValueSpecified: attribute('DATA-TEST')
+      withValueSpecified: attribute('DATA-TEST'),
     });
 
     await render(hbs`<span disabled data-test="test" ></span>`);
@@ -162,7 +163,7 @@ module('attribute', function (hooks) {
 
   module('tabindex', function () {
     test('no value', async function (assert) {
-      let page = create({
+      const page = create({
         scope: 'span',
         tabindex: attribute('tabindex'),
       });
@@ -173,7 +174,7 @@ module('attribute', function (hooks) {
     });
 
     test('with value', async function (assert) {
-      let page = create({
+      const page = create({
         scope: 'span',
         tabindex: attribute('tabindex'),
       });
@@ -184,7 +185,7 @@ module('attribute', function (hooks) {
     });
 
     test('uppercase', async function (assert) {
-      let page = create({
+      const page = create({
         scope: 'span',
         tabindex: attribute('TABINDEX'),
       });
@@ -193,5 +194,5 @@ module('attribute', function (hooks) {
 
       assert.strictEqual(page.tabindex, '');
     });
-  })
+  });
 });

@@ -3,14 +3,14 @@ import { setupRenderingTest, TestContext } from '../../../helpers';
 import { module, test } from 'qunit';
 import { find } from '@ember/test-helpers';
 
-module('focusable', function(hooks) {
+module('focusable', function (hooks) {
   setupRenderingTest(hooks);
 
-  test('calls focus with proper args', async function(this: TestContext, assert) {
+  test('calls focus with proper args', async function (this: TestContext, assert) {
     assert.expect(1);
 
-    let page = create({
-      foo: focusable('input')
+    const page = create({
+      foo: focusable('input'),
     });
 
     await this.createTemplate('<input />');
@@ -22,17 +22,17 @@ module('focusable', function(hooks) {
     await page.foo();
   });
 
-  test('actually focuses the element', async function(this: TestContext, assert) {
+  test('actually focuses the element', async function (this: TestContext, assert) {
     assert.expect(2);
 
-    let expectedSelector = 'input';
-    let page = create({
-      foo: focusable(expectedSelector)
+    const expectedSelector = 'input';
+    const page = create({
+      foo: focusable(expectedSelector),
     });
 
     await this.createTemplate('<input />');
 
-    let input = find('input')!;
+    const input = find('input')!;
 
     input.addEventListener('focus', () => {
       assert.ok(1, 'focussed');
@@ -42,11 +42,11 @@ module('focusable', function(hooks) {
     await page.foo();
   });
 
-  test('looks for elements inside the scope', async function(this: TestContext, assert) {
+  test('looks for elements inside the scope', async function (this: TestContext, assert) {
     assert.expect(1);
 
-    let page = create({
-      foo: focusable('input', { scope: '.scope' })
+    const page = create({
+      foo: focusable('input', { scope: '.scope' }),
     });
 
     await this.createTemplate('<div class="scope"><input/></div>');
@@ -55,13 +55,13 @@ module('focusable', function(hooks) {
     await page.foo();
   });
 
-  test("looks for elements inside page's scope", async function(this: TestContext, assert) {
+  test("looks for elements inside page's scope", async function (this: TestContext, assert) {
     assert.expect(1);
 
-    let page = create({
+    const page = create({
       scope: '.scope',
 
-      foo: focusable('input')
+      foo: focusable('input'),
     });
 
     await this.createTemplate('<div class="scope"><input /></div>');
@@ -71,12 +71,12 @@ module('focusable', function(hooks) {
     await page.foo();
   });
 
-  test('resets scope', async function(this: TestContext, assert) {
+  test('resets scope', async function (this: TestContext, assert) {
     assert.expect(1);
 
-    let page = create({
+    const page = create({
       scope: '.scope',
-      foo: focusable('input', { resetScope: true })
+      foo: focusable('input', { resetScope: true }),
     });
 
     await this.createTemplate('<input/>');
@@ -86,27 +86,27 @@ module('focusable', function(hooks) {
     await page.foo();
   });
 
-  test('returns chainable object', async function(this: TestContext, assert) {
+  test('returns chainable object', async function (this: TestContext, assert) {
     assert.expect(1);
 
-    let page = create({
-      foo: focusable('input')
+    const page = create({
+      foo: focusable('input'),
     });
 
     await this.createTemplate('<input/>');
 
-    let ret = page.foo();
+    const ret = page.foo();
 
     assert.ok(ret.foo);
 
     return ret;
   });
 
-  test('finds element by index', async function(this: TestContext, assert) {
+  test('finds element by index', async function (this: TestContext, assert) {
     assert.expect(1);
 
-    let page = create({
-      foo: focusable('input', { at: 3 })
+    const page = create({
+      foo: focusable('input', { at: 3 }),
     });
 
     await this.createTemplate('<input /><input /><input /><input />');
@@ -115,59 +115,67 @@ module('focusable', function(hooks) {
     await page.foo();
   });
 
-  test('looks for elements outside the testing container', async function(this: TestContext, assert) {
+  test('looks for elements outside the testing container', async function (this: TestContext, assert) {
     assert.expect(1);
 
-    let page = create({
-      foo: focusable('input', { testContainer: '#alternate-ember-testing' })
+    const page = create({
+      foo: focusable('input', { testContainer: '#alternate-ember-testing' }),
     });
 
     await this.createTemplate('<input />', { useAlternateContainer: true });
 
-    document.querySelector('#alternate-ember-testing input')!.addEventListener('focus', () => assert.ok(1));
+    document
+      .querySelector('#alternate-ember-testing input')!
+      .addEventListener('focus', () => assert.ok(1));
 
     await page.foo();
   });
 
-  test('looks for elements within test container specified at node level', async function(this: TestContext, assert) {
+  test('looks for elements within test container specified at node level', async function (this: TestContext, assert) {
     assert.expect(1);
 
-    let page = create({
+    const page = create({
       testContainer: '#alternate-ember-testing',
-      foo: focusable('input')
+      foo: focusable('input'),
     });
 
     await this.createTemplate('<input />', { useAlternateContainer: true });
 
-    document.querySelector('#alternate-ember-testing input')!.addEventListener('focus', () => assert.ok(1));
+    document
+      .querySelector('#alternate-ember-testing input')!
+      .addEventListener('focus', () => assert.ok(1));
 
     await page.foo();
   });
 
-  test("raises an error when the element doesn't exist", async function(this: TestContext, assert) {
+  test("raises an error when the element doesn't exist", async function (this: TestContext, assert) {
     assert.expect(1);
 
-    let page = create({
+    const page = create({
       foo: {
         bar: {
           baz: {
-            qux: focusable('button')
-          }
-        }
-      }
+            qux: focusable('button'),
+          },
+        },
+      },
     });
 
     await this.createTemplate('');
 
-    await assert.throws(function() {
-      return page.foo.bar.baz.qux();
-    }, /page\.foo\.bar\.baz\.qux/, 'Element not found');
+    await assert.throws(
+      function () {
+        return page.foo.bar.baz.qux();
+      },
+      /page\.foo\.bar\.baz\.qux/,
+      'Element not found'
+    );
   });
 
-  test('Does not raise error when focussing focusable elements', async function(this: TestContext, assert) {
+  test('Does not raise error when focussing focusable elements', async function (this: TestContext, assert) {
     assert.expect(0);
 
-    let page = create({
+    const page = create({
       foo: {
         bar: {
           input: focusable('input'),
@@ -176,8 +184,8 @@ module('focusable', function(hooks) {
           button: focusable('button'),
           contentEditable: focusable('[contenteditable]'),
           tabindex: focusable('[tabindex]'),
-        }
-      }
+        },
+      },
     });
 
     await this.createTemplate(`
@@ -197,18 +205,18 @@ module('focusable', function(hooks) {
     await page.foo.bar.tabindex();
   });
 
-  test('raises an error when the element is not focusable', async function(this: TestContext, assert) {
+  test('raises an error when the element is not focusable', async function (this: TestContext, assert) {
     assert.expect(2);
 
-    let page = create({
+    const page = create({
       foo: {
         bar: {
           baz: focusable('span'),
           qux: focusable('input'),
           quux: focusable('button'),
-          quuz: focusable('[contenteditable]')
-        }
-      }
+          quuz: focusable('[contenteditable]'),
+        },
+      },
     });
 
     await this.createTemplate(`

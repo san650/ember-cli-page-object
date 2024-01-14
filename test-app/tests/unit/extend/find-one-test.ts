@@ -5,45 +5,53 @@ import { findOne } from 'ember-cli-page-object/extend';
 import hbs from 'htmlbars-inline-precompile';
 import { find, findAll, render } from '@ember/test-helpers';
 
-module(`Extend | findOne`, function(hooks) {
+module(`Extend | findOne`, function (hooks) {
   setupRenderingTest(hooks);
 
-  test('finds by selector and returns Element', async function(assert) {
-    let page = create({});
+  test('finds by selector and returns Element', async function (assert) {
+    const page = create({});
 
     await render(hbs`<em class="lorem"></em><span class="ipsum"></span>`);
 
     assert.equal(findOne(page, '.lorem', {}), find('.lorem'));
   });
 
-  test('finds deeper in scope', async function(assert) {
-    let page = create({ scope: '.lorem' });
+  test('finds deeper in scope', async function (assert) {
+    const page = create({ scope: '.lorem' });
 
-    await render(hbs`<em class="lorem"><span class="dolor"></span></em><span class="ipsum"><span class="dolor"></span></span>`);
+    await render(
+      hbs`<em class="lorem"><span class="dolor"></span></em><span class="ipsum"><span class="dolor"></span></span>`
+    );
 
     assert.equal(findOne(page, '.dolor', {}), find('.lorem .dolor'));
   });
 
-  test('throws error if more than 1 element found', async function(assert) {
-    let page = create({});
+  test('throws error if more than 1 element found', async function (assert) {
+    const page = create({});
 
-    await render(hbs`<em class="lorem"></em><em class="lorem"></em><span class="ipsum"></span>`);
+    await render(
+      hbs`<em class="lorem"></em><em class="lorem"></em><span class="ipsum"></span>`
+    );
 
-    assert.throws(() => findOne(page, '.lorem', {}),
-      /Error: ".lorem" matched more than one element. If you want to select many elements, use collections instead./);
+    assert.throws(
+      () => findOne(page, '.lorem', {}),
+      /Error: ".lorem" matched more than one element. If you want to select many elements, use collections instead./
+    );
   });
 
-  test('throws error if 0 elements found', async function(assert) {
-    let page = create({});
+  test('throws error if 0 elements found', async function (assert) {
+    const page = create({});
 
     await render(hbs`<span class="ipsum"></span>`);
 
-    assert.throws(() => findOne(page, '.unknown', {}),
-      /Error: Element not found./);
+    assert.throws(
+      () => findOne(page, '.unknown', {}),
+      /Error: Element not found./
+    );
   });
 
-  test('testContainer param', async function(assert) {
-    let page = create({});
+  test('testContainer param', async function (assert) {
+    const page = create({});
 
     await render(hbs`
       <span class="ipsum"></span>
@@ -52,11 +60,14 @@ module(`Extend | findOne`, function(hooks) {
       </div>
     `);
 
-    assert.equal(findOne(page, '.ipsum', { testContainer: '.new-test-root' }), find('.new-test-root .ipsum'));
+    assert.equal(
+      findOne(page, '.ipsum', { testContainer: '.new-test-root' }),
+      find('.new-test-root .ipsum')
+    );
   });
 
-  test('resetScope param', async function(assert) {
-    let page = create({ scope: 'my-page' });
+  test('resetScope param', async function (assert) {
+    const page = create({ scope: 'my-page' });
 
     await render(hbs`
       <span class="lorem"></span>
@@ -68,8 +79,8 @@ module(`Extend | findOne`, function(hooks) {
     assert.equal(findOne(page, '.lorem', { resetScope: true }), find('.lorem'));
   });
 
-  test('at param', async function(assert) {
-    let page = create({});
+  test('at param', async function (assert) {
+    const page = create({});
 
     await render(hbs`
       <span class="lorem"></span>
@@ -79,19 +90,22 @@ module(`Extend | findOne`, function(hooks) {
     assert.equal(findOne(page, '.lorem', { at: 1 }), findAll('.lorem')[1]);
   });
 
-  test('contains param', async function(assert) {
-    let page = create({});
+  test('contains param', async function (assert) {
+    const page = create({});
 
     await render(hbs`
       <span class="lorem"></span>
       <span class="lorem">Word</span>
     `);
 
-    assert.equal(findOne(page, '.lorem', { contains: 'Word' }), findAll('.lorem')[1]);
+    assert.equal(
+      findOne(page, '.lorem', { contains: 'Word' }),
+      findAll('.lorem')[1]
+    );
   });
 
-  test('last param', async function(assert) {
-    let page = create({});
+  test('last param', async function (assert) {
+    const page = create({});
 
     await render(hbs`
       <span class="lorem"><span class="lorem">Word</span></span>
@@ -100,26 +114,31 @@ module(`Extend | findOne`, function(hooks) {
     assert.equal(findOne(page, '.lorem', { last: true }), findAll('.lorem')[1]);
   });
 
-  test('pageObjectKey param', async function(assert) {
-    let page = create({});
+  test('pageObjectKey param', async function (assert) {
+    const page = create({});
 
     await render(hbs`
       <span class="lorem"></span>
     `);
 
-    assert.throws(() => findOne(page, '.unknown', {pageObjectKey: 'CUSTOM KEY'}),
-      /PageObject: 'page.CUSTOM KEY'/);
+    assert.throws(
+      () => findOne(page, '.unknown', { pageObjectKey: 'CUSTOM KEY' }),
+      /PageObject: 'page.CUSTOM KEY'/
+    );
   });
 
-  test('scope param', async function(assert) {
-    let page = create({});
+  test('scope param', async function (assert) {
+    const page = create({});
 
     await render(hbs`
       <span class="lorem"></span>
       <span class="ipsum"><span class="lorem"></span></span>
     `);
 
-    assert.equal(findOne(page, '.lorem', { scope: '.ipsum' }), find('.ipsum .lorem'));
+    assert.equal(
+      findOne(page, '.lorem', { scope: '.ipsum' }),
+      find('.ipsum .lorem')
+    );
   });
 
   module('comma separated selector', function () {
@@ -130,7 +149,7 @@ module(`Extend | findOne`, function(hooks) {
         () => findOne(create({ scope: SELECTOR })),
         new Error(
           'Usage of comma separated selectors is not supported. Please make sure your selector targets a single selector.'
-        ),
+        )
       );
     });
 
@@ -139,7 +158,7 @@ module(`Extend | findOne`, function(hooks) {
         () => findOne(create(), SELECTOR),
         new Error(
           'Usage of comma separated selectors is not supported. Please make sure your selector targets a single selector.'
-        ),
+        )
       );
     });
 
@@ -148,7 +167,7 @@ module(`Extend | findOne`, function(hooks) {
         () => findOne(create(), '', { scope: SELECTOR }),
         new Error(
           'Usage of comma separated selectors is not supported. Please make sure your selector targets a single selector.'
-        ),
+        )
       );
     });
   });

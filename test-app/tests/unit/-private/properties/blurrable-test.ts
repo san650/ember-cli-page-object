@@ -4,20 +4,20 @@ import { find, render } from '@ember/test-helpers';
 import hbs from 'htmlbars-inline-precompile';
 import { module, test } from 'qunit';
 
-module('blurrable', function(hooks) {
+module('blurrable', function (hooks) {
   setupRenderingTest(hooks);
 
-  test('calls blur with proper args', async function(assert) {
+  test('calls blur with proper args', async function (assert) {
     assert.expect(1);
 
-    let expectedSelector = 'input';
-    let page = create({
-      foo: blurrable(expectedSelector)
+    const expectedSelector = 'input';
+    const page = create({
+      foo: blurrable(expectedSelector),
     });
 
     await render(hbs`<input />`);
 
-    const element = (find(expectedSelector) as HTMLElement)
+    const element = find(expectedSelector) as HTMLElement;
     element.focus();
     element.addEventListener('blur', () => {
       assert.ok(1);
@@ -26,17 +26,17 @@ module('blurrable', function(hooks) {
     await page.foo();
   });
 
-  test('actually blurs the element', async function(assert) {
+  test('actually blurs the element', async function (assert) {
     assert.expect(2);
 
-    let expectedSelector = 'input';
-    let page = create({
-      foo: blurrable(expectedSelector)
+    const expectedSelector = 'input';
+    const page = create({
+      foo: blurrable(expectedSelector),
     });
 
     await render(hbs`<input />`);
 
-    const element = (find(expectedSelector) as HTMLElement)
+    const element = find(expectedSelector) as HTMLElement;
     element.focus();
     element.addEventListener('blur', () => {
       assert.ok(1, 'blurred');
@@ -46,149 +46,151 @@ module('blurrable', function(hooks) {
     await page.foo();
   });
 
-  test('looks for elements inside the scope', async function(assert) {
+  test('looks for elements inside the scope', async function (assert) {
     assert.expect(1);
 
-    let page = create({
-      foo: blurrable('input', { scope: '.scope' })
+    const page = create({
+      foo: blurrable('input', { scope: '.scope' }),
     });
 
     await render(hbs`<div class="scope"><input/></div>`);
 
-    const element = (find('.scope input') as HTMLElement)
+    const element = find('.scope input') as HTMLElement;
     element.focus();
     element.addEventListener('blur', () => {
-      assert.ok(1)
+      assert.ok(1);
     });
 
     await page.foo();
   });
 
-  test("looks for elements inside page's scope", async function(assert) {
+  test("looks for elements inside page's scope", async function (assert) {
     assert.expect(1);
 
-    let page = create({
+    const page = create({
       scope: '.scope',
 
-      foo: blurrable('input')
+      foo: blurrable('input'),
     });
 
     await render(hbs`<div class="scope"><input /></div>`);
 
-    const element = (find('.scope input') as HTMLElement)
+    const element = find('.scope input') as HTMLElement;
     element.focus();
     element.addEventListener('blur', () => {
-      assert.ok(1)
+      assert.ok(1);
     });
 
     await page.foo();
   });
 
-  test('resets scope', async function(assert) {
+  test('resets scope', async function (assert) {
     assert.expect(1);
 
-    let page = create({
+    const page = create({
       scope: '.scope',
-      foo: blurrable('input', { resetScope: true })
+      foo: blurrable('input', { resetScope: true }),
     });
 
     await render(hbs`<input/>`);
 
-    const element = (find('input') as HTMLElement)
+    const element = find('input') as HTMLElement;
     element.focus();
     element.addEventListener('blur', () => {
-      assert.ok(1)
+      assert.ok(1);
     });
 
     await page.foo();
   });
 
-  test('returns chainable object', async function(assert) {
+  test('returns chainable object', async function (assert) {
     assert.expect(1);
 
-    let page = create({
-      foo: blurrable('input')
+    const page = create({
+      foo: blurrable('input'),
     });
 
     await render(hbs`<input/>`);
 
-    const element = (find('input') as HTMLElement)
+    const element = find('input') as HTMLElement;
     element.focus();
 
     assert.ok(page.foo);
   });
 
-  test('finds element by index', async function(assert) {
+  test('finds element by index', async function (assert) {
     assert.expect(1);
 
-    let page = create({
+    const page = create({
       blur: blurrable('input', { at: 3 }),
-      focus: focusable('input', { at: 3 })
+      focus: focusable('input', { at: 3 }),
     });
 
     await render(hbs`<input /><input /><input /><input />`);
 
-    await page.focus()
+    await page.focus();
 
-    const element = (find('input:nth-of-type(4)') as HTMLElement)
+    const element = find('input:nth-of-type(4)') as HTMLElement;
     element.addEventListener('blur', () => {
-      assert.ok(1)
+      assert.ok(1);
     });
 
     await page.blur();
   });
 
-  test('looks for elements outside the testing container', async function(assert) {
+  test('looks for elements outside the testing container', async function (assert) {
     assert.expect(1);
 
-    let expectedContextId = 'alternate-ember-testing';
-    let page = create({
-      foo: blurrable('input', { testContainer: `#${expectedContextId}` })
+    const expectedContextId = 'alternate-ember-testing';
+    const page = create({
+      foo: blurrable('input', { testContainer: `#${expectedContextId}` }),
     });
 
     const expectedContext = document.getElementById(expectedContextId)!;
     expectedContext.innerHTML = `<input />`;
-    const input = (expectedContext.querySelector('input') as HTMLElement)
+    const input = expectedContext.querySelector('input') as HTMLElement;
     input.focus();
     input.addEventListener('blur', () => {
-      assert.ok(1)
+      assert.ok(1);
     });
 
     await page.foo();
   });
 
-  test('looks for elements within test container specified at node level', async function(assert) {
+  test('looks for elements within test container specified at node level', async function (assert) {
     assert.expect(1);
 
-    let expectedContext = '#alternate-ember-testing';
-    let page = create({
+    const expectedContext = '#alternate-ember-testing';
+    const page = create({
       testContainer: expectedContext,
-      foo: blurrable('input')
+      foo: blurrable('input'),
     });
 
-    const alternatveContainer = document.getElementById('alternate-ember-testing')!;
+    const alternatveContainer = document.getElementById(
+      'alternate-ember-testing'
+    )!;
     alternatveContainer.innerHTML = `<input />`;
 
     const element = alternatveContainer?.querySelector('input') as HTMLElement;
     element.focus();
     element.addEventListener('blur', () => {
-      assert.ok(1)
+      assert.ok(1);
     });
 
     await page.foo();
   });
 
-  test("raises an error when the element doesn't exist", async function(assert) {
+  test("raises an error when the element doesn't exist", async function (assert) {
     assert.expect(1);
 
-    let page = create({
+    const page = create({
       foo: {
         bar: {
           baz: {
-            qux: blurrable('button')
-          }
-        }
-      }
+            qux: blurrable('button'),
+          },
+        },
+      },
     });
 
     await render(hbs``);
@@ -201,16 +203,16 @@ module('blurrable', function(hooks) {
     );
   });
 
-  test('raises an error when the element is not focusable', async function(assert) {
-    let page = create({
+  test('raises an error when the element is not focusable', async function (assert) {
+    const page = create({
       foo: {
         bar: {
           baz: blurrable('span'),
           qux: blurrable('input'),
           quux: blurrable('button'),
-          quuz: blurrable('[contenteditable]')
-        }
-      }
+          quuz: blurrable('[contenteditable]'),
+        },
+      },
     });
 
     await render(hbs`
@@ -222,8 +224,8 @@ module('blurrable', function(hooks) {
 
     await assert.rejects(
       page.foo.bar.baz() as unknown as Promise<unknown>,
-     /page\.foo\.bar\.baz/,
-     'Element is not focusable because it is not a link'
+      /page\.foo\.bar\.baz/,
+      'Element is not focusable because it is not a link'
     );
 
     await assert.rejects(

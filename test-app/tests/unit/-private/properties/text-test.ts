@@ -2,12 +2,12 @@ import { create, text } from 'ember-cli-page-object';
 import { setupRenderingTest, TestContext } from '../../../helpers';
 import { module, test } from 'qunit';
 
-module('text', function(hooks) {
+module('text', function (hooks) {
   setupRenderingTest(hooks);
 
-  test('returns the inner text of the element', async function(this: TestContext, assert) {
-    let page = create({
-      foo: text('span')
+  test('returns the inner text of the element', async function (this: TestContext, assert) {
+    const page = create({
+      foo: text('span'),
     });
 
     await this.createTemplate('Hello <span>world!</span>');
@@ -15,10 +15,9 @@ module('text', function(hooks) {
     assert.equal(page.foo, 'world!');
   });
 
-  test('removes white spaces from the beginning and end of the text', async function(this: TestContext, assert) {
-
-    let page = create({
-      foo: text('span')
+  test('removes white spaces from the beginning and end of the text', async function (this: TestContext, assert) {
+    const page = create({
+      foo: text('span'),
     });
 
     await this.createTemplate('<span>  awesome!  </span>');
@@ -26,21 +25,30 @@ module('text', function(hooks) {
     assert.equal(page.foo, 'awesome!');
   });
 
-  test('normalizes inner text of the element containing newlines', async function(this: TestContext, assert) {
-    let page = create({
-      foo: text('span')
+  test('normalizes inner text of the element containing newlines', async function (this: TestContext, assert) {
+    const page = create({
+      foo: text('span'),
     });
 
-    await this.createTemplate(['<span>', 'Hello', 'multi-line', 'world!', '</span>'].join('\n'));
+    await this.createTemplate(
+      ['<span>', 'Hello', 'multi-line', 'world!', '</span>'].join('\n')
+    );
 
     assert.equal(page.foo, 'Hello multi-line world!');
   });
 
-  test('avoid text normalization if normalize:false', async function(this: TestContext, assert) {
-    let denormalizedText = [' \n ', 'Hello', 'multi-line', 'world! ', '\t', '\n'].join('\n');
+  test('avoid text normalization if normalize:false', async function (this: TestContext, assert) {
+    const denormalizedText = [
+      ' \n ',
+      'Hello',
+      'multi-line',
+      'world! ',
+      '\t',
+      '\n',
+    ].join('\n');
 
-    let page = create({
-      foo: text('span', { normalize: false })
+    const page = create({
+      foo: text('span', { normalize: false }),
     });
 
     await this.createTemplate(`<span>${denormalizedText}</span>`);
@@ -48,9 +56,9 @@ module('text', function(hooks) {
     assert.equal(page.foo, denormalizedText);
   });
 
-  test('converts &nbsp; characters into standard whitespace characters', async function(this: TestContext, assert) {
-    let page = create({
-      foo: text('span')
+  test('converts &nbsp; characters into standard whitespace characters', async function (this: TestContext, assert) {
+    const page = create({
+      foo: text('span'),
     });
 
     await this.createTemplate('<span>This&nbsp;is&nbsp;awesome.</span>');
@@ -58,9 +66,9 @@ module('text', function(hooks) {
     assert.equal(page.foo, 'This is awesome.');
   });
 
-  test("returns empty text when the element doesn't have text", async function(this: TestContext, assert) {
-    let page = create({
-      foo: text('span')
+  test("returns empty text when the element doesn't have text", async function (this: TestContext, assert) {
+    const page = create({
+      foo: text('span'),
     });
 
     await this.createTemplate('<span />');
@@ -68,15 +76,15 @@ module('text', function(hooks) {
     assert.equal(page.foo, '');
   });
 
-  test("raises an error when the element doesn't exist", async function(this: TestContext, assert) {
-    let page = create({
+  test("raises an error when the element doesn't exist", async function (this: TestContext, assert) {
+    const page = create({
       foo: {
         bar: {
           baz: {
-            qux: text('span')
-          }
-        }
-      }
+            qux: text('span'),
+          },
+        },
+      },
     });
 
     await this.createTemplate('');
@@ -84,9 +92,9 @@ module('text', function(hooks) {
     assert.throws(() => page.foo.bar.baz.qux, /page\.foo\.bar\.baz\.qux/);
   });
 
-  test('looks for elements inside the scope', async function(this: TestContext, assert) {
-    let page = create({
-      foo: text('span', { scope: '.scope' })
+  test('looks for elements inside the scope', async function (this: TestContext, assert) {
+    const page = create({
+      foo: text('span', { scope: '.scope' }),
     });
 
     await this.createTemplate(`
@@ -98,11 +106,11 @@ module('text', function(hooks) {
     assert.equal(page.foo, 'ipsum');
   });
 
-  test("looks for elements inside page's scope", async function(this: TestContext, assert) {
-    let page = create({
+  test("looks for elements inside page's scope", async function (this: TestContext, assert) {
+    const page = create({
       scope: '.scope',
 
-      foo: text('span')
+      foo: text('span'),
     });
 
     await this.createTemplate(`
@@ -114,11 +122,11 @@ module('text', function(hooks) {
     assert.equal(page.foo, 'ipsum');
   });
 
-  test('resets scope', async function(this: TestContext, assert) {
-    let page = create({
+  test('resets scope', async function (this: TestContext, assert) {
+    const page = create({
       scope: '.scope',
 
-      foo: text('span', { at: 0, resetScope: true })
+      foo: text('span', { at: 0, resetScope: true }),
     });
 
     await this.createTemplate(`
@@ -130,9 +138,9 @@ module('text', function(hooks) {
     assert.equal(page.foo, 'lorem');
   });
 
-  test('finds element by index', async function(this: TestContext, assert) {
-    let page = create({
-      foo: text('span', { at: 1 })
+  test('finds element by index', async function (this: TestContext, assert) {
+    const page = create({
+      foo: text('span', { at: 1 }),
     });
 
     await this.createTemplate(`
@@ -144,8 +152,8 @@ module('text', function(hooks) {
     assert.equal(page.foo, 'ipsum');
   });
 
-  test('finds element without using a selector', async function(this: TestContext, assert) {
-    let page = create({
+  test('finds element without using a selector', async function (this: TestContext, assert) {
+    const page = create({
       scope: 'p',
 
       foo: text(),
@@ -153,8 +161,8 @@ module('text', function(hooks) {
       bar: {
         scope: 'span',
 
-        baz: text()
-      }
+        baz: text(),
+      },
     });
 
     await this.createTemplate('<p>Hello <span>world!</span></p>');
@@ -163,9 +171,9 @@ module('text', function(hooks) {
     assert.equal(page.bar.baz, 'world!');
   });
 
-  test('throws error if selector matches more than one element', async function(this: TestContext, assert) {
-    let page = create({
-      foo: text('span')
+  test('throws error if selector matches more than one element', async function (this: TestContext, assert) {
+    const page = create({
+      foo: text('span'),
     });
 
     await this.createTemplate(`
@@ -174,27 +182,33 @@ module('text', function(hooks) {
       <span>dolor</span>
     `);
 
-    assert.throws(() => page.foo,
-      /matched more than one element. If you want to select many elements, use collections instead./);
+    assert.throws(
+      () => page.foo,
+      /matched more than one element. If you want to select many elements, use collections instead./
+    );
   });
 
-  test('looks for elements outside the testing container', async function(this: TestContext, assert) {
-    let page = create({
-      foo: text('h1', { testContainer: '#alternate-ember-testing' })
+  test('looks for elements outside the testing container', async function (this: TestContext, assert) {
+    const page = create({
+      foo: text('h1', { testContainer: '#alternate-ember-testing' }),
     });
 
-    await this.createTemplate('<h1>lorem ipsum</h1>', { useAlternateContainer: true });
+    await this.createTemplate('<h1>lorem ipsum</h1>', {
+      useAlternateContainer: true,
+    });
 
     assert.equal(page.foo, 'lorem ipsum');
   });
 
-  test('looks for elements within test container specified at node level', async function(this: TestContext, assert) {
-    let page = create({
+  test('looks for elements within test container specified at node level', async function (this: TestContext, assert) {
+    const page = create({
       testContainer: '#alternate-ember-testing',
-      foo: text('h1')
+      foo: text('h1'),
     });
 
-    await this.createTemplate('<h1>lorem ipsum</h1>', { useAlternateContainer: true });
+    await this.createTemplate('<h1>lorem ipsum</h1>', {
+      useAlternateContainer: true,
+    });
 
     assert.equal(page.foo, 'lorem ipsum');
   });

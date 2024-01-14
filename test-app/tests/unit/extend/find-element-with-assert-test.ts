@@ -5,11 +5,11 @@ import { findElementWithAssert } from 'ember-cli-page-object/extend';
 import hbs from 'htmlbars-inline-precompile';
 import { render } from '@ember/test-helpers';
 
-module(`Extend | findElementWithAssert`, function(hooks) {
+module(`Extend | findElementWithAssert`, function (hooks) {
   setupRenderingTest(hooks);
 
-  test('finds by selector and returns jQuery elements collection', async function(assert) {
-    let page = create({});
+  test('finds by selector and returns jQuery elements collection', async function (assert) {
+    const page = create({});
 
     await render(hbs`<em class="lorem">1</em><span class="ipsum">2</span>`);
 
@@ -23,8 +23,8 @@ module(`Extend | findElementWithAssert`, function(hooks) {
     );
   });
 
-  test('finds deeper in scope', async function(assert) {
-    let page = create({ scope: '.lorem' });
+  test('finds deeper in scope', async function (assert) {
+    const page = create({ scope: '.lorem' });
 
     await render(hbs`
     <em class="lorem">
@@ -43,25 +43,32 @@ module(`Extend | findElementWithAssert`, function(hooks) {
     );
   });
 
-  test('throws error if more than 1 element found', async function(assert) {
-    let page = create({});
+  test('throws error if more than 1 element found', async function (assert) {
+    const page = create({});
 
-    await render(hbs`<em class="lorem"></em><em class="lorem"></em><span class="ipsum"></span>`);
+    await render(
+      hbs`<em class="lorem"></em><em class="lorem"></em><span class="ipsum"></span>`
+    );
 
-    assert.throws(() => findElementWithAssert(page, '.lorem', {}),
-      /Error: ".lorem" matched more than one element. If you want to select many elements, use collections instead./);
+    assert.throws(
+      () => findElementWithAssert(page, '.lorem', {}),
+      /Error: ".lorem" matched more than one element. If you want to select many elements, use collections instead./
+    );
   });
 
-  test('throws error if no elements found', async function(assert) {
-    let page = create({});
+  test('throws error if no elements found', async function (assert) {
+    const page = create({});
 
     await render(hbs``);
 
-    assert.throws(() => findElementWithAssert(page, '.lorem', {}), /Error: Element not found\./);
+    assert.throws(
+      () => findElementWithAssert(page, '.lorem', {}),
+      /Error: Element not found\./
+    );
   });
 
-  test('testContainer param', async function(assert) {
-    let page = create({});
+  test('testContainer param', async function (assert) {
+    const page = create({});
 
     await render(hbs`
       <span class="ipsum">1</span>
@@ -72,14 +79,16 @@ module(`Extend | findElementWithAssert`, function(hooks) {
 
     assert.deepEqual(
       findElementWithAssert(page, '.ipsum', {
-        testContainer: '.new-test-root'
-      }).toArray().map(e => e.innerText),
+        testContainer: '.new-test-root',
+      })
+        .toArray()
+        .map((e) => e.innerText),
       ['2']
     );
   });
 
-  test('resetScope param', async function(assert) {
-    let page = create({ scope: 'my-page' });
+  test('resetScope param', async function (assert) {
+    const page = create({ scope: 'my-page' });
 
     await render(hbs`
       <span class="lorem">1</span>
@@ -90,13 +99,15 @@ module(`Extend | findElementWithAssert`, function(hooks) {
     `);
 
     assert.deepEqual(
-      findElementWithAssert(page, '.lorem', { resetScope: true }).toArray().map((el) => el.innerText),
+      findElementWithAssert(page, '.lorem', { resetScope: true })
+        .toArray()
+        .map((el) => el.innerText),
       ['1']
     );
   });
 
-  test('contains param', async function(assert) {
-    let page = create({});
+  test('contains param', async function (assert) {
+    const page = create({});
 
     await render(hbs`
       <span class="lorem" id="1"></span>
@@ -104,13 +115,15 @@ module(`Extend | findElementWithAssert`, function(hooks) {
     `);
 
     assert.deepEqual(
-      findElementWithAssert(page, '.lorem', { contains: 'Word' }).toArray().map((el) => el.id),
+      findElementWithAssert(page, '.lorem', { contains: 'Word' })
+        .toArray()
+        .map((el) => el.id),
       ['2']
     );
   });
 
-  test('scope param', async function(assert) {
-    let page = create({});
+  test('scope param', async function (assert) {
+    const page = create({});
 
     await render(hbs`
       <span class="lorem">1</span>
@@ -120,13 +133,15 @@ module(`Extend | findElementWithAssert`, function(hooks) {
     `);
 
     assert.deepEqual(
-      findElementWithAssert(page, '.lorem', { scope: '.ipsum' }).toArray().map((el) => el.innerText),
+      findElementWithAssert(page, '.lorem', { scope: '.ipsum' })
+        .toArray()
+        .map((el) => el.innerText),
       ['2']
     );
   });
 
-  test('visible param', async function(assert) {
-    let page = create({});
+  test('visible param', async function (assert) {
+    const page = create({});
 
     await render(hbs`
       <span class="lorem" style="display:none">1</span>
@@ -134,13 +149,15 @@ module(`Extend | findElementWithAssert`, function(hooks) {
     `);
 
     assert.deepEqual(
-      findElementWithAssert(page, '.lorem', { visible: true }).toArray().map((el) => el.innerText),
+      findElementWithAssert(page, '.lorem', { visible: true })
+        .toArray()
+        .map((el) => el.innerText),
       ['2']
     );
   });
 
-  test('at param', async function(assert) {
-    let page = create({});
+  test('at param', async function (assert) {
+    const page = create({});
 
     await render(hbs`
       <span class="lorem">1</span>
@@ -149,13 +166,15 @@ module(`Extend | findElementWithAssert`, function(hooks) {
     `);
 
     assert.deepEqual(
-      findElementWithAssert(page, '.lorem', { at: 1 }).toArray().map((el) => el.innerText),
+      findElementWithAssert(page, '.lorem', { at: 1 })
+        .toArray()
+        .map((el) => el.innerText),
       ['2']
     );
   });
 
-  test('last param', async function(assert) {
-    let page = create({});
+  test('last param', async function (assert) {
+    const page = create({});
 
     await render(hbs`
       <span class="lorem">1</span>
@@ -164,13 +183,15 @@ module(`Extend | findElementWithAssert`, function(hooks) {
     `);
 
     assert.deepEqual(
-      findElementWithAssert(page, '.lorem', { last: true }).toArray().map((el) => el.innerText),
+      findElementWithAssert(page, '.lorem', { last: true })
+        .toArray()
+        .map((el) => el.innerText),
       ['3']
     );
   });
 
-  test('multiple param', async function(assert) {
-    let page = create({});
+  test('multiple param', async function (assert) {
+    const page = create({});
 
     await render(hbs`
       <span class="lorem">1</span>
@@ -179,7 +200,9 @@ module(`Extend | findElementWithAssert`, function(hooks) {
     `);
 
     assert.deepEqual(
-      findElementWithAssert(page, '.lorem', { multiple: true }).toArray().map((el) => el.innerText),
+      findElementWithAssert(page, '.lorem', { multiple: true })
+        .toArray()
+        .map((el) => el.innerText),
       ['1', '2', '3']
     );
   });

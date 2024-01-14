@@ -18,7 +18,7 @@ import { settled, waitUntil } from '@ember/test-helpers';
 module('Acceptance | actions [rfc268]', function (hooks) {
   setupApplicationTest(hooks);
 
-  let page = create({
+  const page = create({
     visit: visitable('/calculator'),
     keys: {
       clickOn: clickOnText('.numbers'),
@@ -116,7 +116,7 @@ module('Acceptance | actions [rfc268]', function (hooks) {
     await page.keys.clickOn('2');
     await page.keys.sum();
     await page.keys.clickOn('3');
-    let promise = page.keys.asyncEqual();
+    const promise = page.keys.asyncEqual();
 
     await waitUntil(() => page.isLoading);
 
@@ -155,7 +155,7 @@ module('Acceptance | actions [rfc268]', function (hooks) {
   });
 
   test('fill in by attribute', async function (assert) {
-    let page = create({
+    const page = create({
       visit: visitable('/inputs'),
       fillIn: fillable(),
     });

@@ -13,9 +13,9 @@ export interface TestContext extends DefaultTestContext {
   createTemplate(
     template: string,
     options?: {
-      useAlternateContainer?: boolean
+      useAlternateContainer?: boolean;
     }
-  ): Promise<unknown>
+  ): Promise<unknown>;
 
   findExternal<T extends HTMLElement>(selector: string): T | null;
 }
@@ -32,18 +32,18 @@ function getAlternateContainer() {
 export function setupApplicationTest(hooks: NestedHooks) {
   upstreamSetupApplicationTest(hooks);
 
-  hooks.afterEach(function() {
+  hooks.afterEach(function () {
     getAlternateContainer().innerHTML = '';
-  })
+  });
 }
 
 export function setupRenderingTest(hooks: NestedHooks) {
   upstreamSetupRenderingTest(hooks);
 
-  hooks.beforeEach(function(this: TestContext) {
+  hooks.beforeEach(function (this: TestContext) {
     const testContext = this;
 
-    this.createTemplate = function(template, options): Promise<unknown> {
+    this.createTemplate = function (template, options): Promise<unknown> {
       if (options && options.useAlternateContainer) {
         // The idea is to render the HTML outside the testing container so we
         // render an empty component
@@ -54,16 +54,16 @@ export function setupRenderingTest(hooks: NestedHooks) {
       }
 
       return render(hbs`{{html-render html=this.raw}}`);
-    }
+    };
 
-    this.findExternal = function(selector: string) {
+    this.findExternal = function (selector: string) {
       return getAlternateContainer().querySelector(selector);
-    }
+    };
   });
 
-  hooks.afterEach(function() {
+  hooks.afterEach(function () {
     getAlternateContainer().innerHTML = '';
-  })
+  });
 }
 
 export { setupTest } from 'ember-qunit';

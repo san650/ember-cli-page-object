@@ -1,18 +1,15 @@
 import { module, test } from 'qunit';
 import { setupApplicationTest } from '../helpers';
-import {
-  create,
-  visitable,
-} from 'ember-cli-page-object';
+import { create, visitable } from 'ember-cli-page-object';
 import {
   findElement,
-  findElementWithAssert
+  findElementWithAssert,
 } from 'ember-cli-page-object/extend';
 
-module('Acceptance | extends [rfc268]', function(hooks) {
+module('Acceptance | extends [rfc268]', function (hooks) {
   setupApplicationTest(hooks);
 
-  let page = create({
+  const page = create({
     visit: visitable('/calculator'),
 
     findElement(this: any, selector: string) {
@@ -21,10 +18,10 @@ module('Acceptance | extends [rfc268]', function(hooks) {
 
     findElementWithAssert(this: any, selector: string) {
       return findElementWithAssert(this, selector);
-    }
+    },
   });
 
-  test('finds an element in the DOM', async function(assert) {
+  test('finds an element in the DOM', async function (assert) {
     await page.visit();
 
     let element = page.findElement('.screen');

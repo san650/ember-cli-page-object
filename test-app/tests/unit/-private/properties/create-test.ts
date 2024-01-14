@@ -7,13 +7,13 @@ module('create', function () {
     setupRenderingTest(hooks);
 
     test('creates new page object', async function (this: TestContext, assert) {
-      let page = create({
+      const page = create({
         get foo() {
           return 'a value';
         },
         bar: {
           get baz() {
-            return 'another value'
+            return 'another value';
           },
         },
       });
@@ -25,7 +25,7 @@ module('create', function () {
     });
 
     test('resets scope', async function (this: TestContext, assert) {
-      let page = create({
+      const page = create({
         scope: '.invalid-scope',
 
         foo: {
@@ -45,8 +45,8 @@ module('create', function () {
     });
 
     test('does not mutate definition object', async function (this: TestContext, assert) {
-      let prop = text('.baz');
-      let expected = {
+      const prop = text('.baz');
+      const expected = {
         scope: '.a-scope',
         foo: {
           baz: prop,
@@ -54,7 +54,7 @@ module('create', function () {
 
         bar: prop,
       };
-      let actual = {
+      const actual = {
         scope: '.a-scope',
         foo: {
           baz: prop,
@@ -69,7 +69,7 @@ module('create', function () {
     });
 
     test('generates a default scope', async function (this: TestContext, assert) {
-      let page = create({});
+      const page = create({});
 
       await this.createTemplate('<p>Lorem ipsum</p>');
 

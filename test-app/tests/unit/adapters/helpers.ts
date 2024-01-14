@@ -6,20 +6,20 @@ function spyAction(assert: Assert) {
   let i = 0;
 
   return () => {
-    let id = i++;
+    const id = i++;
 
     assert.step(`begin #${id}`);
 
     return later(() => {
       assert.step(`complete #${id}`);
-    }, 10)
+    }, 10);
   };
 }
 
 export function createClickTrackerComponent(assert: Assert) {
   const trackAction = spyAction(assert);
 
-  const layout = hbs`<input onclick={{action "trackAction"}}>`
+  const layout = hbs`<input onclick={{action "trackAction"}}>`;
 
   return Component.extend({
     layout,
@@ -27,11 +27,11 @@ export function createClickTrackerComponent(assert: Assert) {
     actions: {
       trackAction() {
         return trackAction();
-      }
-    }
+      },
+    },
   });
 }
 
 export const ClickTrackerDef = {
-  scope: 'input'
+  scope: 'input',
 };

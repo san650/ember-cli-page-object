@@ -3,7 +3,7 @@ import { test, module } from 'qunit';
 import {
   isPageObject,
   getPageObjectDefinition,
-// @ts-expect-error no types for import path are provided
+  // @ts-expect-error no types for import path are provided
 } from 'ember-cli-page-object/-private/meta';
 import { render, find } from '@ember/test-helpers';
 import hbs from 'htmlbars-inline-precompile';
@@ -20,63 +20,63 @@ import { alias, getter } from 'ember-cli-page-object/macros';
 
 module('Unit | composition', function () {
   test('each page object node stores its definition', function (assert) {
-    let definition = {
+    const definition = {
       foo: {
         bar: {
           get baz() {
-            return 'prop'
-           },
+            return 'prop';
+          },
         },
       },
     };
 
-    let page = create(definition);
-    let storedDef = getPageObjectDefinition(page);
+    const page = create(definition);
+    const storedDef = getPageObjectDefinition(page);
     assert.ok(storedDef);
     assert.deepEqual(storedDef, definition);
 
-    let fooDef = getPageObjectDefinition(page.foo);
+    const fooDef = getPageObjectDefinition(page.foo);
     assert.ok(fooDef);
     assert.deepEqual(fooDef, definition.foo);
 
-    let barDef = getPageObjectDefinition(page.foo.bar);
+    const barDef = getPageObjectDefinition(page.foo.bar);
     assert.ok(barDef);
     assert.deepEqual(barDef, definition.foo.bar);
   });
 
   test('page objects can be composed from other page objects', function (assert) {
-    let definition = {
+    const definition = {
       foo: {
         bar: {
-          baz: 1
+          baz: 1,
         },
       },
     };
 
-    let page = create(definition);
-    let pageComposer = create({
+    const page = create(definition);
+    const pageComposer = create({
       somePage: page,
     });
     assert.ok(pageComposer);
     assert.ok(pageComposer.somePage);
 
-    let pageComposerDef = getPageObjectDefinition(pageComposer);
+    const pageComposerDef = getPageObjectDefinition(pageComposer);
     assert.ok(pageComposerDef);
     assert.ok(isPageObject(pageComposerDef.somePage));
     // we cant deep equal the definition since it contains a page object so we check the keys instead
     assert.deepEqual(Object.keys(pageComposerDef), ['somePage']);
-    let somePageStoredDef = getPageObjectDefinition(pageComposerDef.somePage);
+    const somePageStoredDef = getPageObjectDefinition(pageComposerDef.somePage);
     assert.deepEqual(somePageStoredDef, definition);
   });
 
   test('page objects can be used as the definition to create', function (assert) {
-    let definition = {
+    const definition = {
       foo: 1,
     };
 
-    let page = create(definition);
+    const page = create(definition);
 
-    let pageComposer = create(page);
+    const pageComposer = create(page);
     assert.ok(pageComposer);
     assert.ok(pageComposer.foo);
 
@@ -84,19 +84,19 @@ module('Unit | composition', function () {
   });
 
   test('page object composition supports many levels deep', function (assert) {
-    let definition = {
+    const definition = {
       foo: {
         bar: {
           get baz() {
             return 'prop';
-          }
+          },
         },
       },
     };
 
-    let page = create(definition);
+    const page = create(definition);
 
-    let pageComposer = create({
+    const pageComposer = create({
       bar: {
         baz: page,
       },
@@ -105,14 +105,14 @@ module('Unit | composition', function () {
     assert.ok(pageComposer.bar.baz);
 
     // test that the definition is stored "as is"
-    let pageComposerDef = getPageObjectDefinition(pageComposer);
+    const pageComposerDef = getPageObjectDefinition(pageComposer);
     assert.ok(pageComposerDef);
     assert.ok(pageComposerDef.bar);
     assert.notOk(isPageObject(pageComposerDef.bar));
     assert.ok(pageComposer.bar.baz);
     assert.ok(isPageObject(pageComposerDef.bar.baz));
 
-    let bazDefiniton = getPageObjectDefinition(pageComposerDef.bar.baz);
+    const bazDefiniton = getPageObjectDefinition(pageComposerDef.bar.baz);
     assert.ok(bazDefiniton);
     pageComposerDef.bar.baz = bazDefiniton;
     // cant do a true deep equal without firing of page object selectors
@@ -137,12 +137,12 @@ module('Unit | composition', function () {
     const bar = create({ foo });
     assert.ok(bar);
 
-    let barDefinition = getPageObjectDefinition(bar);
+    const barDefinition = getPageObjectDefinition(bar);
     assert.ok(barDefinition);
     assert.ok(barDefinition.foo);
     assert.ok(isPageObject(barDefinition.foo));
 
-    let fooDefFromBar = getPageObjectDefinition(bar.foo);
+    const fooDefFromBar = getPageObjectDefinition(bar.foo);
     assert.ok(fooDefFromBar);
 
     // cannot do a true deep equal since foo is a page object
@@ -157,7 +157,10 @@ module('Unit | composition', function () {
       getPageObjectDefinition({});
       assert.true(false);
     } catch (e) {
-      assert.strictEqual(e?.toString(), 'Error: cannot get the page object definition from a node that is not a page object');
+      assert.strictEqual(
+        e?.toString(),
+        'Error: cannot get the page object definition from a node that is not a page object'
+      );
     }
   });
 
@@ -172,7 +175,7 @@ module('Unit | composition', function () {
         aliasedIsButtonVisible: alias('isButtonVisible'),
       });
 
-      let page = create({
+      const page = create({
         scope: '.container',
         aliasPage: aliasPage,
       });
@@ -184,13 +187,13 @@ module('Unit | composition', function () {
     });
 
     test('new pages can be composed from pages containing collections', async function (assert) {
-      let collectionPage = create({
+      const collectionPage = create({
         foo: collection('span', {
           text: text(),
         }),
       });
 
-      let page = create({
+      const page = create({
         scope: '.container',
         collectionPage: collectionPage,
       });
@@ -208,7 +211,7 @@ module('Unit | composition', function () {
       const textPage = create({
         spanText: text('span'),
       });
-      let page = create({
+      const page = create({
         scope: '.container',
         collection: collection('li', textPage),
       });
@@ -228,7 +231,7 @@ module('Unit | composition', function () {
       const textPage = create({
         spanText: text('span'),
       });
-      let page = create({
+      const page = create({
         scope: '.container',
         collection: collection('li', {
           textPage: textPage,
@@ -248,12 +251,12 @@ module('Unit | composition', function () {
     test("the composition of pages containing 'action' based descriptors is supported", async function (assert) {
       assert.expect(1);
 
-      let expectedSelector = 'input';
-      let triggerPage = create({
+      const expectedSelector = 'input';
+      const triggerPage = create({
         foo: triggerable('focus', expectedSelector),
       });
 
-      let page = create({
+      const page = create({
         scope: '.container',
         triggerPage: triggerPage,
       });
@@ -277,7 +280,7 @@ module('Unit | composition', function () {
           return 'ipsum';
         }),
       });
-      let page = create({
+      const page = create({
         scope: '.container',
         getterPage: getterPage,
       });
@@ -286,11 +289,11 @@ module('Unit | composition', function () {
     });
 
     test('the composition of pages containing a getter based attribute is supported', async function (assert) {
-      let inputPage = create({
+      const inputPage = create({
         foo: value('input'),
       });
 
-      let page = create({
+      const page = create({
         scope: '.container',
         input: inputPage,
       });
