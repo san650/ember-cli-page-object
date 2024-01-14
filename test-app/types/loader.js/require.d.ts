@@ -1,6 +1,6 @@
 declare module 'require' {
   interface Require {
-    (moduleName: string, ...args: any[]): any;
+    (moduleName: string, ...args: unknown[]): unknown;
 
     has(name: string): boolean;
   }

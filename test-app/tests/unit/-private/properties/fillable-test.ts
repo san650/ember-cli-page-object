@@ -54,7 +54,7 @@ module('fillable', function (hooks) {
     const [tagName, attrName] = name.split(' ');
 
     test(`looks for ${tagName} with ${attrName}`, async function (this: TestContext, assert) {
-      (this as any).template = template;
+      this['template'] = template;
       const expectedText = 'dummy text';
       const clue = 'clue';
       const page = create({

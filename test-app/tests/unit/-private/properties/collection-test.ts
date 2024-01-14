@@ -556,7 +556,7 @@ module('collection', function (hooks) {
       ['Lorem']
     );
     assert.deepEqual(
-      page.foo.filter((i) => i['isFoo'] as any).map((i) => i.text),
+      page.foo.filter((i) => Boolean(i['isFoo'])).map((i) => i.text),
       []
     );
   });
@@ -579,7 +579,8 @@ module('collection', function (hooks) {
       ['Lorem']
     );
     assert.deepEqual(
-      page.foo.filterBy('isFoo' as any).map((i) => i.text),
+      // @ts-expect-error intentionally test against a non-existing property
+      page.foo.filterBy('isFoo').map((i) => i.text),
       []
     );
   });

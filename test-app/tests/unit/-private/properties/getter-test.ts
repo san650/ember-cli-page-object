@@ -68,7 +68,8 @@ module('getter', function (hooks) {
     assert.expect(1);
 
     try {
-      getter('not a function' as any);
+      // @ts-expect-error internally pass a wrong type to check the runtime error
+      getter('not a function' as () => unknown);
     } catch (e) {
       assert.strictEqual(
         e?.toString(),

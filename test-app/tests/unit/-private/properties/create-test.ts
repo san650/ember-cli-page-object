@@ -94,7 +94,8 @@ module('create', function () {
       // @ts-expect-error violate types to check if it fails in weakly-typed envs
       create('');
       assert.true(false, 'should error');
-    } catch (e: any) {
+    } catch (e) {
+      // @ts-expect-error workaround the `unknown` error type typings
       assert.strictEqual(e.message, 'Definition can not be a string');
     }
   });

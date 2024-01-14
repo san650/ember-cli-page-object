@@ -6,17 +6,18 @@ import {
   findElementWithAssert,
 } from 'ember-cli-page-object/extend';
 
+type Instance = ReturnType<typeof create>;
 module('Acceptance | extends [rfc268]', function (hooks) {
   setupApplicationTest(hooks);
 
   const page = create({
     visit: visitable('/calculator'),
 
-    findElement(this: any, selector: string) {
+    findElement(this: Instance, selector: string) {
       return findElement(this, selector);
     },
 
-    findElementWithAssert(this: any, selector: string) {
+    findElementWithAssert(this: Instance, selector: string) {
       return findElementWithAssert(this, selector);
     },
   });
