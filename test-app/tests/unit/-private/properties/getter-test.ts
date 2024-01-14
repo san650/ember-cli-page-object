@@ -95,7 +95,7 @@ module('getter', function (hooks) {
         e?.toString(),
         `Error: custom error message
 
-PageObject: \'page.foo\'`
+PageObject: 'page.foo'`
       );
     }
   });

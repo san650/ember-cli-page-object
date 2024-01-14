@@ -36,7 +36,7 @@ module('visitable', function (hooks) {
       foo: visitable('/users/:user_id'),
     });
 
-    assert.throws(() => page.foo(), /Missing parameter for \'user_id\'/);
+    assert.throws(() => page.foo(), /Missing parameter for 'user_id'/);
     assert.throws(() => page.foo(), /page\.foo\(\)/);
   });
 
@@ -110,7 +110,7 @@ module('visitable', function (hooks) {
         e?.toString(),
         `Error: Failed to visit URL '/non-existing-url/value'
 
-PageObject: 'page.foo(\"[object Object]\")'
+PageObject: 'page.foo("[object Object]")'
   Selector: '.scope'`
       );
     }

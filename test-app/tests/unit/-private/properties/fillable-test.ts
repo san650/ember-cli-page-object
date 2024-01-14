@@ -256,7 +256,7 @@ module('fillable', function (hooks) {
 
     return assert.throws(() => {
       return page.fillInByClue(clue, 'dummy text');
-    }, /Can\ not\ find\ element\ by\ clue:\ \"clue\"\./);
+    }, /Can not find element by clue: "clue"\./);
   });
 
   test("raises an error when the element doesn't exist", async function (assert) {
