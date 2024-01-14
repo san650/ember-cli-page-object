@@ -175,9 +175,8 @@ module('clickOnText', function (hooks) {
     assert.expect(1);
 
     const expectedContext = '#alternate-ember-testing';
-    let page;
 
-    page = create({
+    const page = create({
       foo: clickOnText('button', { testContainer: expectedContext }),
     });
 

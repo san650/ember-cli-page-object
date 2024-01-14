@@ -28,9 +28,8 @@ module('clickable', function (hooks) {
     assert.expect(1);
 
     const expectedSelector = '.scope span';
-    let page;
 
-    page = create({
+    const page = create({
       foo: clickable('span', { scope: '.scope' }),
     });
 
@@ -47,9 +46,8 @@ module('clickable', function (hooks) {
     assert.expect(1);
 
     const expectedSelector = '.scope span';
-    let page;
 
-    page = create({
+    const page = create({
       scope: '.scope',
 
       foo: clickable('span'),
@@ -66,9 +64,8 @@ module('clickable', function (hooks) {
     assert.expect(1);
 
     const expectedSelector = 'span';
-    let page;
 
-    page = create({
+    const page = create({
       scope: '.scope',
       foo: clickable('span', { resetScope: true }),
     });
@@ -114,9 +111,8 @@ module('clickable', function (hooks) {
     assert.expect(1);
 
     const expectedContext = '#alternate-ember-testing';
-    let page;
 
-    page = create({
+    const page = create({
       foo: clickable('span', { testContainer: expectedContext }),
     });
 
@@ -135,9 +131,8 @@ module('clickable', function (hooks) {
     assert.expect(1);
 
     const expectedContext = '#alternate-ember-testing';
-    let page;
 
-    page = create({
+    const page = create({
       testContainer: expectedContext,
       foo: clickable('span'),
     });

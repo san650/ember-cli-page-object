@@ -322,9 +322,8 @@ module('collection', function (hooks) {
     assert.expect(2);
 
     const expectedContext = '#alternate-ember-testing';
-    let page;
 
-    page = create({
+    const page = create({
       foo: collection('span', {
         testContainer: expectedContext,
       }),

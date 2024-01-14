@@ -12,9 +12,8 @@ module('fillable', function (hooks) {
 
     const expectedSelector = 'input';
     const expectedText = 'dummy text';
-    let page;
 
-    page = create({
+    const page = create({
       foo: fillable(expectedSelector),
     });
 
