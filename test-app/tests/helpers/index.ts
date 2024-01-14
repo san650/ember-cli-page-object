@@ -41,20 +41,24 @@ export function setupRenderingTest(hooks: NestedHooks) {
   upstreamSetupRenderingTest(hooks);
 
   hooks.beforeEach(function (this: TestContext) {
-    const testContext = this;
-
-    this.createTemplate = function (template, options): Promise<unknown> {
+    this.createTemplate = function (
+      this: TestContext,
+      template: string,
+      options?: {
+        useAlternateContainer?: boolean;
+      }
+    ): Promise<unknown> {
       if (options && options.useAlternateContainer) {
         // The idea is to render the HTML outside the testing container so we
         // render an empty component
         getAlternateContainer().innerHTML = template;
-        testContext.set('raw', '');
+        this.set('raw', '');
       } else {
-        testContext.set('raw', template);
+        this.set('raw', template);
       }
 
       return render(hbs`{{html-render html=this.raw}}`);
-    };
+    }.bind(this);
 
     this.findExternal = function (selector: string) {
       return getAlternateContainer().querySelector(selector);
