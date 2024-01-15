@@ -8,7 +8,7 @@ module('comma separated selectors', function (hooks) {
   setupRenderingTest(hooks);
 
   test('usage in `definition scope` leads to error', async function (assert) {
-    let page = create({
+    const page = create({
       scope: '.A, .B',
     });
 
@@ -23,7 +23,7 @@ module('comma separated selectors', function (hooks) {
   });
 
   test('usage in a `property scope` leads to error', async function (assert) {
-    let page = create({
+    const page = create({
       text: text('.A, .B'),
     });
 
@@ -38,7 +38,7 @@ module('comma separated selectors', function (hooks) {
   });
 
   test('usage in `property custom scope` leads to error', async function (assert) {
-    let page = create({
+    const page = create({
       text: text('.root', {
         scope: '.A, .B',
       }),
@@ -57,7 +57,7 @@ module('comma separated selectors', function (hooks) {
   });
 
   test("doesn't error when the selector contains text with comma", async function (assert) {
-    let page = create({
+    const page = create({
       clickOnButton: clickOnText('button'),
     });
 

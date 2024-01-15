@@ -4,25 +4,27 @@ import { render, find } from '@ember/test-helpers';
 import hbs from 'htmlbars-inline-precompile';
 import { module, test } from 'qunit';
 
-module('fillable', function(hooks) {
+module('fillable', function (hooks) {
   setupRenderingTest(hooks);
 
-  test("calls fillIn method belonging to execution context", async function(assert) {
+  test('calls fillIn method belonging to execution context', async function (assert) {
     assert.expect(1);
 
-    let expectedSelector = 'input';
-    let expectedText = 'dummy text';
-    let page;
+    const expectedSelector = 'input';
+    const expectedText = 'dummy text';
 
-    page = create({
-      foo: fillable(expectedSelector)
+    const page = create({
+      foo: fillable(expectedSelector),
     });
 
     await render(hbs`<input>`);
 
     await page.foo(expectedText);
 
-    assert.equal((find(expectedSelector) as HTMLInputElement).value, expectedText);
+    assert.equal(
+      (find(expectedSelector) as HTMLInputElement).value,
+      expectedText
+    );
   });
 
   const formControlTemplates = [
@@ -45,18 +47,18 @@ module('fillable', function(hooks) {
     '<select id="clue"><option></option><option>dummy text</option></select>',
   ];
 
-  formControlTemplates.forEach(template => {
-    let gtPos = template.indexOf('=');
-    let name = template.substr(1, gtPos - 1);
+  formControlTemplates.forEach((template) => {
+    const gtPos = template.indexOf('=');
+    const name = template.substr(1, gtPos - 1);
     const [tagName, attrName] = name.split(' ');
 
-    test(`looks for ${tagName} with ${attrName}`, async function(this: TestContext, assert) {
-      ( this as any ).template = template;
-      let expectedText = 'dummy text';
-      let clue = 'clue';
-      let page = create({
+    test(`looks for ${tagName} with ${attrName}`, async function (this: TestContext, assert) {
+      this['template'] = template;
+      const expectedText = 'dummy text';
+      const clue = 'clue';
+      const page = create({
         scope: '.scope',
-        foo: fillable()
+        foo: fillable(),
       });
 
       await this.createTemplate(`<div class="scope">${this['template']}</div>`);
@@ -64,20 +66,31 @@ module('fillable', function(hooks) {
       await page.foo(clue, expectedText);
 
       assert.equal(
-        (find(`${tagName}[${attrName}="${clue}"]`) as HTMLInputElement|HTMLSelectElement|HTMLTextAreaElement).value,
+        (
+          find(`${tagName}[${attrName}="${clue}"]`) as
+            | HTMLInputElement
+            | HTMLSelectElement
+            | HTMLTextAreaElement
+        ).value,
         expectedText
       );
     });
   });
 
-  const targetAttributes = ['data-test', 'aria-label', 'placeholder', 'name', 'id'];
-  targetAttributes.forEach(attrName => {
-    test(`looks for [contenteditable] with ${attrName}`, async function(this: TestContext, assert) {
-      let expectedText = 'dummy text';
-      let clue = 'clue';
-      let page = create({
+  const targetAttributes = [
+    'data-test',
+    'aria-label',
+    'placeholder',
+    'name',
+    'id',
+  ];
+  targetAttributes.forEach((attrName) => {
+    test(`looks for [contenteditable] with ${attrName}`, async function (this: TestContext, assert) {
+      const expectedText = 'dummy text';
+      const clue = 'clue';
+      const page = create({
         scope: '.scope',
-        foo: fillable()
+        foo: fillable(),
       });
 
       this[attrName] = attrName;
@@ -92,42 +105,48 @@ module('fillable', function(hooks) {
     });
   });
 
-  test('looks for elements inside the scope', async function(assert) {
+  test('looks for elements inside the scope', async function (assert) {
     assert.expect(1);
 
-    let page = create({
-      foo: fillable('input', { scope: '.scope' })
+    const page = create({
+      foo: fillable('input', { scope: '.scope' }),
     });
 
     await render(hbs`<div class="scope"><input></div>`);
 
     await page.foo('dummy text');
 
-    assert.equal((find('.scope input') as HTMLInputElement).value, 'dummy text');
+    assert.equal(
+      (find('.scope input') as HTMLInputElement).value,
+      'dummy text'
+    );
   });
 
-  test("looks for elements inside page's scope", async function(assert) {
+  test("looks for elements inside page's scope", async function (assert) {
     assert.expect(1);
 
-    let page = create({
+    const page = create({
       scope: '.scope',
 
-      foo: fillable('input')
+      foo: fillable('input'),
     });
 
     await render(hbs`<div class="scope"><input></div>`);
 
     await page.foo('dummy text');
 
-    assert.equal((find('.scope input') as HTMLInputElement).value, 'dummy text');
+    assert.equal(
+      (find('.scope input') as HTMLInputElement).value,
+      'dummy text'
+    );
   });
 
-  test('resets scope', async function(assert) {
+  test('resets scope', async function (assert) {
     assert.expect(1);
 
-    let page = create({
+    const page = create({
       scope: '.scope',
-      foo: fillable('input', { resetScope: true })
+      foo: fillable('input', { resetScope: true }),
     });
 
     await render(hbs`<input>`);
@@ -137,107 +156,119 @@ module('fillable', function(hooks) {
     assert.equal((find('input') as HTMLInputElement).value, 'dummy text');
   });
 
-  test('returns chainable object', async function(assert) {
+  test('returns chainable object', async function (assert) {
     assert.expect(1);
 
-    let page = create({
-      foo: fillable('input')
+    const page = create({
+      foo: fillable('input'),
     });
 
     await render(hbs`<input>`);
 
-    let ret = page.foo('dummy text');
+    const ret = page.foo('dummy text');
     assert.ok(ret.foo);
     await ret;
   });
 
-  test('finds element by index', async function(assert) {
+  test('finds element by index', async function (assert) {
     assert.expect(1);
 
-    let page = create({
-      foo: fillable('input', { at: 3 })
+    const page = create({
+      foo: fillable('input', { at: 3 }),
     });
 
     await render(hbs`<input><input><input><input>`);
 
     await page.foo('dummy text');
 
-    assert.equal((find('input:nth-of-type(4)') as HTMLInputElement).value, 'dummy text');
+    assert.equal(
+      (find('input:nth-of-type(4)') as HTMLInputElement).value,
+      'dummy text'
+    );
   });
 
-  test('is aliased to selectable', async function(assert) {
+  test('is aliased to selectable', async function (assert) {
     assert.expect(1);
 
-    let expectedSelector = 'input';
-    let expectedText = 'dummy text';
-    let page = create({
-      foo: selectable(expectedSelector)
+    const expectedSelector = 'input';
+    const expectedText = 'dummy text';
+    const page = create({
+      foo: selectable(expectedSelector),
     });
 
     await render(hbs`<input>`);
 
     await page.foo(expectedText);
 
-    assert.equal((find(expectedSelector) as HTMLInputElement).value, expectedText);
+    assert.equal(
+      (find(expectedSelector) as HTMLInputElement).value,
+      expectedText
+    );
   });
 
-  test('looks for elements outside the testing container', async function(this: TestContext, assert) {
+  test('looks for elements outside the testing container', async function (this: TestContext, assert) {
     assert.expect(1);
 
-    let expectedText = 'foo';
-    let page = create({
-      foo: fillable('input', { testContainer: '#alternate-ember-testing' })
+    const expectedText = 'foo';
+    const page = create({
+      foo: fillable('input', { testContainer: '#alternate-ember-testing' }),
     });
 
     await this.createTemplate(`<input>`, { useAlternateContainer: true });
 
     await page.foo(expectedText);
 
-    assert.equal(this.findExternal<HTMLInputElement>('input')?.value, expectedText);
+    assert.equal(
+      this.findExternal<HTMLInputElement>('input')?.value,
+      expectedText
+    );
   });
 
-  test('looks for elements within test container specified at node level', async function(this: TestContext, assert) {
+  test('looks for elements within test container specified at node level', async function (this: TestContext, assert) {
     assert.expect(1);
 
-    let expectedText = 'foo';
-    let page = create({
+    const expectedText = 'foo';
+    const page = create({
       testContainer: '#alternate-ember-testing',
-      foo: fillable('input')
+      foo: fillable('input'),
     });
 
     await this.createTemplate(`<input>`, { useAlternateContainer: true });
 
     await page.foo(expectedText);
 
-    assert.equal(this.findExternal<HTMLInputElement>('input')?.value, expectedText);
+    assert.equal(
+      this.findExternal<HTMLInputElement>('input')?.value,
+      expectedText
+    );
   });
 
-  test(`raises an error when can't find an element by clue`, async function(assert) {
-    let clue = 'clue';
+  test(`raises an error when can't find an element by clue`, async function (assert) {
+    const clue = 'clue';
 
-    let page = create({
+    const page = create({
       scope: '.scope',
-      fillInByClue: fillable()
+      fillInByClue: fillable(),
     });
 
     await render(hbs``);
 
     return assert.throws(() => {
       return page.fillInByClue(clue, 'dummy text');
-    }, /Can\ not\ find\ element\ by\ clue:\ \"clue\"\./);
+    }, /Can not find element by clue: "clue"\./);
   });
 
-  test("raises an error when the element doesn't exist", async function(assert) {
+  test("raises an error when the element doesn't exist", async function (assert) {
     assert.expect(1);
 
-    let page = create({
+    const page = create({
       foo: {
         bar: {
           baz: {
-            qux: fillable('input')
-          }
-        }
-      }
+            qux: fillable('input'),
+          },
+        },
+      },
     });
 
     await render(hbs``);
@@ -251,9 +282,9 @@ module('fillable', function(hooks) {
     );
   });
 
-  test('raises an error when the element has contenteditable="false"', async function(assert) {
-    let page = create({
-      foo: fillable('[contenteditable]')
+  test('raises an error when the element has contenteditable="false"', async function (assert) {
+    const page = create({
+      foo: fillable('[contenteditable]'),
     });
 
     await render(hbs`<div contenteditable="false"></div>`);

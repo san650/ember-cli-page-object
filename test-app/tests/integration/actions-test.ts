@@ -2,12 +2,9 @@ import 'qunit-dom';
 import { run } from '@ember/runloop';
 
 import { module, test } from 'qunit';
-import { render }  from '@ember/test-helpers';
+import { render } from '@ember/test-helpers';
 import { setupRenderingTest } from '../helpers';
-import {
-  createCalculatorTemplate,
-  createInputsTemplate
-} from './test-helper';
+import { createCalculatorTemplate, createInputsTemplate } from './test-helper';
 
 import {
   create,
@@ -24,24 +21,24 @@ import {
   count,
   isHidden,
   isPresent,
-  isVisible
+  isVisible,
 } from 'ember-cli-page-object';
 
 import { alias } from 'ember-cli-page-object/macros';
 
-const button = function(scope: string) {
+const button = function (scope: string) {
   return {
     scope,
 
     click: clickable(),
-    text: text()
+    text: text(),
   };
 };
 
 const page = create({
   numbers: collection('.numbers button', {
     click: clickable(),
-    text: text()
+    text: text(),
   }),
 
   clickOnNumber: clickOnText('.numbers'),
@@ -51,11 +48,11 @@ const page = create({
 
     plus: button('button:nth-of-type(1)'),
     minus: button('button:nth-of-type(2)'),
-    equals: button('button:nth-of-type(3)')
+    equals: button('button:nth-of-type(3)'),
   },
 
   screen: {
-    text: text('.screen')
+    text: text('.screen'),
   },
 
   clickOn: clickOnText('', { scope: '.calculator' }),
@@ -63,7 +60,7 @@ const page = create({
   calculator: {
     scope: '.calculator',
 
-    clickOn: clickOnText()
+    clickOn: clickOnText(),
   },
 
   clickOnAlias: alias('clickOn', { chainable: true }),
@@ -88,43 +85,37 @@ const page = create({
     count: count(),
     isHidden: isHidden(),
     isPresent: isPresent(),
-    isVisible: isVisible()
-  }
+    isVisible: isVisible(),
+  },
 });
 
-module('Integration | actions', function(hooks) {
+module('Integration | actions', function (hooks) {
   setupRenderingTest(hooks);
 
-  test('Actions work when defined inside collections', async function(assert) {
-    let template = createCalculatorTemplate();
+  test('Actions work when defined inside collections', async function (assert) {
+    const template = createCalculatorTemplate();
 
     await render(template);
 
-    await page
-      .numbers
-      .objectAt(0)
-      .click();
+    await page.numbers.objectAt(0).click();
 
     assert.equal(page.screen.text, '1');
   });
 
-  test('Chaining of custom actions works', async function(assert) {
-    let template = createCalculatorTemplate();
+  test('Chaining of custom actions works', async function (assert) {
+    const template = createCalculatorTemplate();
 
     await render(template);
 
-    await page
-      .clickOnNumber('1')
-      .clickOnNumber('2')
-      .clickOnNumber('3');
+    await page.clickOnNumber('1').clickOnNumber('2').clickOnNumber('3');
 
     assert.equal(page.screen.text, '123');
   });
 
-  test('Chaining of actions on the root works', async function(assert) {
-    let template = createCalculatorTemplate();
+  test('Chaining of actions on the root works', async function (assert) {
+    const template = createCalculatorTemplate();
 
-    await render(template)
+    await render(template);
 
     await page
       .clickOn('1')
@@ -132,20 +123,17 @@ module('Integration | actions', function(hooks) {
       .clickOn('4')
       .clickOn('-')
       .clickOn('2')
-      .operators
-      .equals
-      .click();
+      .operators.equals.click();
 
     assert.equal(page.screen.text, '3');
   });
 
-  test('Chaining of actions on a component works', async function(assert) {
-    let template = createCalculatorTemplate();
+  test('Chaining of actions on a component works', async function (assert) {
+    const template = createCalculatorTemplate();
 
-    await render(template)
+    await render(template);
 
-    await page
-      .calculator
+    await page.calculator
       .clickOn('1')
       .clickOn('+')
       .clickOn('5')
@@ -156,34 +144,28 @@ module('Integration | actions', function(hooks) {
     assert.equal(page.screen.text, '2');
   });
 
-  test('Chaining of aliased root actions works', async function(assert) {
-    let template = createCalculatorTemplate();
+  test('Chaining of aliased root actions works', async function (assert) {
+    const template = createCalculatorTemplate();
 
-    await render(template)
+    await render(template);
 
-    await page
-      .clickOnAlias('1')
-      .clickOnAlias('4');
+    await page.clickOnAlias('1').clickOnAlias('4');
 
     assert.equal(page.screen.text, '14');
   });
 
-  test('Chaining of aliased component actions works', async function(assert) {
-    let template = createCalculatorTemplate();
+  test('Chaining of aliased component actions works', async function (assert) {
+    const template = createCalculatorTemplate();
 
-    await render(template)
+    await render(template);
 
-    await page
-      .clickOn('1')
-      .clickPlusAlias()
-      .clickOn('4')
-      .clickEqualsAlias();
+    await page.clickOn('1').clickPlusAlias().clickOn('4').clickEqualsAlias();
 
     assert.equal(page.screen.text, '5');
   });
 
-  test('fill in by attribute', async function(assert) {
-    let template = createInputsTemplate();
+  test('fill in by attribute', async function (assert) {
+    const template = createInputsTemplate();
 
     await render(template);
 
@@ -240,40 +222,76 @@ module('Integration | actions', function(hooks) {
     assert.dom('.select5-value').hasValue('select 5 option 2');
   });
 
-  test('Queries and actions handle non-existant elements correctly', async function(assert) {
+  test('Queries and actions handle non-existant elements correctly', async function (assert) {
     assert.expect(13);
 
-    let message = /Element not found./;
-    let template = createCalculatorTemplate();
+    const message = /Element not found./;
+    const template = createCalculatorTemplate();
 
     await render(template);
 
     run(() => {
-      assert.throws(() => page.nonExistant.attribute, message, 'attribute query did not throw an error');
+      assert.throws(
+        () => page.nonExistant.attribute,
+        message,
+        'attribute query did not throw an error'
+      );
     });
     run(() => {
-      assert.throws(() => page.nonExistant.clickOnText('qux'), message, 'clickOnText action did not throw an error');
+      assert.throws(
+        () => page.nonExistant.clickOnText('qux'),
+        message,
+        'clickOnText action did not throw an error'
+      );
     });
     run(() => {
-      assert.throws(() => page.nonExistant.clickable(), message, 'clickable action did not throw an error');
+      assert.throws(
+        () => page.nonExistant.clickable(),
+        message,
+        'clickable action did not throw an error'
+      );
     });
     run(() => {
-      assert.throws(() => page.nonExistant.contains('something'), message, 'contains action did not throw an error');
+      assert.throws(
+        () => page.nonExistant.contains('something'),
+        message,
+        'contains action did not throw an error'
+      );
     });
     run(() => {
-      assert.throws(() => page.nonExistant.fillable('baz'), message, 'fillable action did not throw an error');
+      assert.throws(
+        () => page.nonExistant.fillable('baz'),
+        message,
+        'fillable action did not throw an error'
+      );
     });
     run(() => {
-      assert.throws(() => page.nonExistant.hasClass, message, 'hasClass query did not throw an error');
+      assert.throws(
+        () => page.nonExistant.hasClass,
+        message,
+        'hasClass query did not throw an error'
+      );
     });
     run(() => {
-      assert.throws(() => page.nonExistant.notHasClass, message, 'notHasClass query did not throw an error');
+      assert.throws(
+        () => page.nonExistant.notHasClass,
+        message,
+        'notHasClass query did not throw an error'
+      );
     });
     run(() => {
-      assert.throws(() => page.nonExistant.text, message, 'text query did not throw an error');
+      assert.throws(
+        () => page.nonExistant.text,
+        message,
+        'text query did not throw an error'
+      );
     });
     run(() => {
-      assert.throws(() => page.nonExistant.value, message, 'value query did not throw an error');
+      assert.throws(
+        () => page.nonExistant.value,
+        message,
+        'value query did not throw an error'
+      );
     });
 
     assert.equal(page.nonExistant.count, 0);
@@ -283,17 +301,17 @@ module('Integration | actions', function(hooks) {
   });
 });
 
-module('Integration | actions', function(hooks) {
+module('Integration | actions', function (hooks) {
   setupRenderingTest(hooks);
 
-  hooks.afterEach(function() {
+  hooks.afterEach(function () {
     const element = document.getElementById('alternate-ember-testing');
     if (element) {
       element.innerHTML = '';
     }
   });
 
-  test('looks for elements outside the testing container', async function(assert) {
+  test('looks for elements outside the testing container', async function (assert) {
     assert.expect(0);
 
     const element = document.getElementById('alternate-ember-testing');
@@ -301,19 +319,22 @@ module('Integration | actions', function(hooks) {
       element.innerHTML = '<button>lorem</button><input>';
     }
 
-    let page = create({
-      clickOnText: clickOnText('button', { testContainer: '#alternate-ember-testing' }),
-      clickable: clickable('button', { testContainer: '#alternate-ember-testing' }),
-      fillable: fillable('input', { testContainer: '#alternate-ember-testing' })
+    const page = create({
+      clickOnText: clickOnText('button', {
+        testContainer: '#alternate-ember-testing',
+      }),
+      clickable: clickable('button', {
+        testContainer: '#alternate-ember-testing',
+      }),
+      fillable: fillable('input', {
+        testContainer: '#alternate-ember-testing',
+      }),
     });
 
-    await page
-      .clickOnText('lorem')
-      .clickable()
-      .fillable('foo');
+    await page.clickOnText('lorem').clickable().fillable('foo');
   });
 
-  test('looks for elements within test container specified at node level', async function(assert) {
+  test('looks for elements within test container specified at node level', async function (assert) {
     assert.expect(0);
 
     const element = document.getElementById('alternate-ember-testing');
@@ -321,16 +342,13 @@ module('Integration | actions', function(hooks) {
       element.innerHTML = '<button>lorem</button><input>';
     }
 
-    let page = create({
+    const page = create({
       testContainer: '#alternate-ember-testing',
       clickOnText: clickOnText('button'),
       clickable: clickable('button'),
-      fillable: fillable('input')
+      fillable: fillable('input'),
     });
 
-    await page
-      .clickOnText('lorem')
-      .clickable()
-      .fillable('foo');
+    await page.clickOnText('lorem').clickable().fillable('foo');
   });
 });

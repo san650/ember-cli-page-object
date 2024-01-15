@@ -7,7 +7,7 @@ module('dsl', function (hooks) {
   setupRenderingTest(hooks);
 
   test('generates .isVisible', async function (this: TestContext, assert) {
-    let page = create({
+    const page = create({
       scope: 'span',
       foo: {},
     });
@@ -19,7 +19,7 @@ module('dsl', function (hooks) {
   });
 
   test('generates .isHidden', async function (this: TestContext, assert) {
-    let page = create({
+    const page = create({
       scope: 'span',
       foo: {},
     });
@@ -31,7 +31,7 @@ module('dsl', function (hooks) {
   });
 
   test('generates .isPresent', async function (this: TestContext, assert) {
-    let page = create({
+    const page = create({
       scope: 'span',
       foo: {},
     });
@@ -57,7 +57,7 @@ module('dsl', function (hooks) {
     'value',
   ].forEach((prop) => {
     test(`does not override .${prop}`, async function (this: TestContext, assert) {
-      let page = create({
+      const page = create({
         get [prop]() {
           return 'foo bar';
         },
@@ -72,7 +72,7 @@ module('dsl', function (hooks) {
   test('generates .blur', async function (this: TestContext, assert) {
     assert.expect(1);
 
-    let page = create({
+    const page = create({
       foo: {
         scope: 'button',
       },
@@ -90,7 +90,7 @@ module('dsl', function (hooks) {
   test('generates .clickOn', async function (this: TestContext, assert) {
     assert.expect(1);
 
-    let page = create({
+    const page = create({
       foo: {},
     });
 
@@ -106,7 +106,7 @@ module('dsl', function (hooks) {
   test('generates .click', async function (this: TestContext, assert) {
     assert.expect(1);
 
-    let page = create({
+    const page = create({
       foo: {
         scope: 'button',
       },
@@ -114,13 +114,15 @@ module('dsl', function (hooks) {
 
     await this.createTemplate('<button>dummy text</button>');
 
-    (find('button') as HTMLElement).addEventListener('click', () => assert.ok(1));
+    (find('button') as HTMLElement).addEventListener('click', () =>
+      assert.ok(1)
+    );
 
     await page.foo.click();
   });
 
   test('generates .contains', async function (this: TestContext, assert) {
-    let page = create({
+    const page = create({
       foo: {
         scope: 'span',
       },
@@ -132,7 +134,7 @@ module('dsl', function (hooks) {
   });
 
   test('generates .text', async function (this: TestContext, assert) {
-    let page = create({
+    const page = create({
       scope: '.scope',
       foo: {
         scope: 'span',
@@ -151,7 +153,7 @@ module('dsl', function (hooks) {
   test('generates .fillIn', async function (this: TestContext, assert) {
     assert.expect(1);
 
-    let page = create({
+    const page = create({
       foo: {
         scope: 'input',
       },
@@ -167,7 +169,7 @@ module('dsl', function (hooks) {
   test('generates .focus', async function (this: TestContext, assert) {
     assert.expect(1);
 
-    let page = create({
+    const page = create({
       foo: {
         scope: 'button',
       },
@@ -175,7 +177,9 @@ module('dsl', function (hooks) {
 
     await this.createTemplate('<button>dummy text</button>');
 
-    (find('button') as HTMLElement).addEventListener('focus', () => assert.ok(1));
+    (find('button') as HTMLElement).addEventListener('focus', () =>
+      assert.ok(1)
+    );
 
     await page.foo.focus();
   });
@@ -183,7 +187,7 @@ module('dsl', function (hooks) {
   test('generates .select', async function (this: TestContext, assert) {
     assert.expect(1);
 
-    let page = create({
+    const page = create({
       foo: {
         scope: 'input',
       },
@@ -201,7 +205,7 @@ module('dsl', function (hooks) {
   test('generates .value', async function (this: TestContext, assert) {
     assert.expect(1);
 
-    let page = create({
+    const page = create({
       foo: {
         scope: 'input',
       },
@@ -213,7 +217,7 @@ module('dsl', function (hooks) {
   });
 
   test('generates .then', async function (this: TestContext, assert) {
-    let page = create({
+    const page = create({
       foo: {},
     });
 
@@ -226,7 +230,7 @@ module('dsl', function (hooks) {
   test('generates .as', async function (this: TestContext, assert) {
     assert.expect(2);
 
-    let page = create({
+    const page = create({
       scope: 'span',
       foo: {
         get baz() {
@@ -239,7 +243,7 @@ module('dsl', function (hooks) {
 
     // @ts-expect-error no types exposed.
     // @todo: deprecate and remove the `as()`
-    let foo = page.foo.as((element) => {
+    const foo = page.foo.as((element) => {
       assert.equal(element.text, 'ipsum');
     });
 
@@ -249,7 +253,7 @@ module('dsl', function (hooks) {
   test('generates .as when nested', async function (this: TestContext, assert) {
     assert.expect(1);
 
-    let page = create({
+    const page = create({
       scope: 'span',
       foo: {
         bar: {
@@ -272,7 +276,7 @@ module('dsl', function (hooks) {
   test('generates .as in collections', async function (this: TestContext, assert) {
     assert.expect(2);
 
-    let page = create({
+    const page = create({
       items: collection('ul li'),
     });
 

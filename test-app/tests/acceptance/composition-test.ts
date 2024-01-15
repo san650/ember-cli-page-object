@@ -12,7 +12,7 @@ import {
   clickOnText,
 } from 'ember-cli-page-object';
 
-let keyboard = create({
+const keyboard = create({
   scope: '.keyboard',
   numbers: collection('.numbers button', {
     text: text(),
@@ -26,11 +26,11 @@ let keyboard = create({
   equal: clickable('button', { scope: '.operators', at: 2 }),
 });
 
-let screenPage = create({
+const screenPage = create({
   value: value('.screen input'),
   fillValue: fillable('.screen input'),
 });
-let page = create({
+const page = create({
   visit: visitable('/calculator'),
   keys: keyboard,
   screen: screenPage,

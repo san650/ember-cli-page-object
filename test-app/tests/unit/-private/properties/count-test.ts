@@ -2,12 +2,12 @@ import { setupRenderingTest, TestContext } from '../../../helpers';
 import { create, count } from 'ember-cli-page-object';
 import { module, test } from 'qunit';
 
-module('count', function(hooks) {
+module('count', function (hooks) {
   setupRenderingTest(hooks);
 
-  test('returns the number of elements that match the selector', async function(this: TestContext, assert) {
-    let page = create({
-      foo: count('span')
+  test('returns the number of elements that match the selector', async function (this: TestContext, assert) {
+    const page = create({
+      foo: count('span'),
     });
 
     await this.createTemplate(`
@@ -18,9 +18,9 @@ module('count', function(hooks) {
     assert.equal(page.foo, 2);
   });
 
-  test('returns 0 when the no element is matched', async function(this: TestContext, assert) {
-    let page = create({
-      foo: count('span')
+  test('returns 0 when the no element is matched', async function (this: TestContext, assert) {
+    const page = create({
+      foo: count('span'),
     });
 
     await this.createTemplate('');
@@ -28,9 +28,9 @@ module('count', function(hooks) {
     assert.equal(page.foo, 0);
   });
 
-  test('looks for elements inside the scope', async function(this: TestContext, assert) {
-    let page = create({
-      foo: count('span', { scope: '.scope' })
+  test('looks for elements inside the scope', async function (this: TestContext, assert) {
+    const page = create({
+      foo: count('span', { scope: '.scope' }),
     });
 
     await this.createTemplate(`
@@ -41,11 +41,11 @@ module('count', function(hooks) {
     assert.equal(page.foo, 2);
   });
 
-  test("looks for elements inside page's scope", async function(this: TestContext, assert) {
-    let page = create({
+  test("looks for elements inside page's scope", async function (this: TestContext, assert) {
+    const page = create({
       scope: '.scope',
 
-      foo: count('span')
+      foo: count('span'),
     });
 
     await this.createTemplate(`
@@ -56,11 +56,11 @@ module('count', function(hooks) {
     assert.equal(page.foo, 2);
   });
 
-  test('resets scope', async function(this: TestContext, assert) {
-    let page = create({
+  test('resets scope', async function (this: TestContext, assert) {
+    const page = create({
       scope: '.scope',
 
-      foo: count('span', { resetScope: true })
+      foo: count('span', { resetScope: true }),
     });
 
     await this.createTemplate(`
@@ -71,23 +71,27 @@ module('count', function(hooks) {
     assert.equal(page.foo, 1);
   });
 
-  test('looks for elements outside the testing container', async function(this: TestContext, assert) {
-    let page = create({
-      foo: count('span', { testContainer: '#alternate-ember-testing' })
+  test('looks for elements outside the testing container', async function (this: TestContext, assert) {
+    const page = create({
+      foo: count('span', { testContainer: '#alternate-ember-testing' }),
     });
 
-    await this.createTemplate('<span></span><span></span>', { useAlternateContainer: true });
+    await this.createTemplate('<span></span><span></span>', {
+      useAlternateContainer: true,
+    });
 
     assert.equal(page.foo, 2);
   });
 
-  test('looks for elements within test container specified at node level', async function(this: TestContext, assert) {
-    let page = create({
+  test('looks for elements within test container specified at node level', async function (this: TestContext, assert) {
+    const page = create({
       testContainer: '#alternate-ember-testing',
-      foo: count('span')
+      foo: count('span'),
     });
 
-    await this.createTemplate('<span></span><span></span>', { useAlternateContainer: true });
+    await this.createTemplate('<span></span><span></span>', {
+      useAlternateContainer: true,
+    });
 
     assert.equal(page.foo, 2);
   });

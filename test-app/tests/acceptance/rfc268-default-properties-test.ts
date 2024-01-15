@@ -2,28 +2,28 @@ import { module, test } from 'qunit';
 import { setupApplicationTest } from '../helpers';
 import PageObject from 'ember-cli-page-object';
 
-module('Acceptance | default properties [rfc268]', function(hooks) {
+module('Acceptance | default properties [rfc268]', function (hooks) {
   setupApplicationTest(hooks);
 
-  test('Adds default properties', async function(assert) {
-    let page = PageObject.create({
+  test('Adds default properties', async function (assert) {
+    const page = PageObject.create({
       visit: PageObject.visitable('/calculator'),
 
       one: {
-        scope: '.numbers button:nth-of-type(1)'
+        scope: '.numbers button:nth-of-type(1)',
       },
 
       screen: {
         scope: '.screen',
 
         expression: {
-          scope: 'input'
+          scope: 'input',
         },
 
         result: {
-          scope: '.result'
-        }
-      }
+          scope: '.result',
+        },
+      },
     });
 
     await page.visit();
@@ -39,8 +39,8 @@ module('Acceptance | default properties [rfc268]', function(hooks) {
     assert.ok(!page.screen.isHidden, 'isHidden');
   });
 
-  test('Overrides default properties', async function(assert) {
-    let page = PageObject.create({
+  test('Overrides default properties', async function (assert) {
+    const page = PageObject.create({
       dummy: {
         click() {
           return 'click';
@@ -62,8 +62,8 @@ module('Acceptance | default properties [rfc268]', function(hooks) {
         },
         text() {
           return 'text';
-        }
-      }
+        },
+      },
     });
 
     assert.equal(page.dummy.click(), 'click');

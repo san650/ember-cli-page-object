@@ -4,26 +4,23 @@ import { setupRenderingTest } from '../helpers';
 import { createCalculatorTemplate } from './test-helper';
 import { create } from 'ember-cli-page-object';
 
-module('Integration | default properties', function(hooks) {
+module('Integration | default properties', function (hooks) {
   setupRenderingTest(hooks);
 
-  test('Adds default properties', async function(assert) {
-    let page = create({
+  test('Adds default properties', async function (assert) {
+    const page = create({
       one: {
-        scope: '.numbers button:nth-of-type(1)'
+        scope: '.numbers button:nth-of-type(1)',
       },
 
       screen: {
-        scope: '.screen'
-      }
+        scope: '.screen',
+      },
     });
 
     await render(createCalculatorTemplate());
 
-    await page
-      .clickOn('9')
-      .one
-      .click();
+    await page.clickOn('9').one.click();
 
     assert.equal(page.screen.text, '91', 'text');
     assert.ok(page.screen.contains('91'), 'contains');
@@ -33,8 +30,8 @@ module('Integration | default properties', function(hooks) {
     assert.notOk(page.screen.isHidden, 'isHidden');
   });
 
-  test('Overrides default properties', function(assert) {
-    let page = create({
+  test('Overrides default properties', function (assert) {
+    const page = create({
       dummy: {
         click() {
           return 'click';
@@ -56,8 +53,8 @@ module('Integration | default properties', function(hooks) {
         },
         text() {
           return 'text';
-        }
-      }
+        },
+      },
     });
 
     assert.equal(page.dummy.click(), 'click');
@@ -69,8 +66,8 @@ module('Integration | default properties', function(hooks) {
     assert.equal(page.dummy.text(), 'text');
   });
 
-  test('allows empty create', async function(assert) {
-    let page = create();
+  test('allows empty create', async function (assert) {
+    const page = create();
 
     await render(createCalculatorTemplate());
 

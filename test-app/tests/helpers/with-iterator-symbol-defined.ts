@@ -5,11 +5,12 @@ export default function withIteratorSymbolDefined(callback: () => unknown) {
     return callback();
   }
 
-  // @ts-expect-error
+  // @ts-expect-error support old browsers
   window.Symbol = { iterator: '@@iterator' };
   try {
     return callback();
   } finally {
-    delete (window as any).Symbol;
+    // @ts-expect-error support old browsers
+    delete window.Symbol;
   }
 }
