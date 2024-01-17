@@ -214,12 +214,12 @@ module('property', function (hooks) {
 
     test('contenteditable', async function (this: TestContext, assert) {
       const page = create({
-        scope: 'div',
+        scope: 'span',
         lowercase: property('contenteditable'),
         camelCase: property('contentEditable'),
       });
 
-      await this.createTemplate('<div contenteditable>');
+      await this.createTemplate('<span contenteditable>');
 
       assert.strictEqual(page.lowercase, 'true', 'lowercase');
       assert.strictEqual(page.camelCase, 'true', 'camelCase');
@@ -227,12 +227,12 @@ module('property', function (hooks) {
 
     test('not contenteditable', async function (this: TestContext, assert) {
       const page = create({
-        scope: 'div',
+        scope: 'span',
         lowercase: property('contenteditable'),
         camelCase: property('contentEditable'),
       });
 
-      await this.createTemplate('<div>');
+      await this.createTemplate('<span>');
 
       assert.strictEqual(page.lowercase, 'inherit', 'lowercase');
       assert.strictEqual(page.camelCase, 'inherit', 'camelCase');
@@ -240,13 +240,13 @@ module('property', function (hooks) {
 
     test('non-standard', async function (this: TestContext, assert) {
       const page = create({
-        scope: 'div',
+        scope: 'span',
         lowercase: property('neverexisted'),
         camelCase: property('neverExisted'),
         dasherized: property('never-existed'),
       });
 
-      await this.createTemplate('<div neverexisted="true">');
+      await this.createTemplate('<span neverexisted="true">');
 
       assert.strictEqual(page.lowercase, undefined, 'lowercase');
       assert.strictEqual(page.camelCase, undefined, 'camelCase');
@@ -255,13 +255,13 @@ module('property', function (hooks) {
 
     test('[data-*]', async function (this: TestContext, assert) {
       const page = create({
-        scope: 'div',
+        scope: 'span',
         lowercase: property('data-test'),
         camelCase: property('neverTest'),
         dasherized: property('never-test'),
       });
 
-      await this.createTemplate('<div date-test="true">');
+      await this.createTemplate('<span date-test="true">');
 
       assert.strictEqual(page.lowercase, undefined, 'lowercase');
       assert.strictEqual(page.camelCase, undefined, 'camelCase');
