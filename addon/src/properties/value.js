@@ -1,4 +1,3 @@
-import { $ } from '../-private/jquery';
 import { findOne } from '../-private/finders';
 import { getter } from '../macros/index';
 
@@ -83,7 +82,33 @@ export function value(selector, userOptions = {}) {
     const element = findOne(this, selector, options);
 
     return element.hasAttribute('contenteditable')
-      ? $(element).html()
-      : $(element).val();
+      ? element.innerHTML
+      : getValue(element);
   });
+}
+
+function getValue(element) {
+  const { value } = element;
+  if (value !== undefined && element.tagName.toLowerCase() === 'select') {
+    return selectValue(element);
+  }
+
+  return element.value;
+}
+
+function selectValue(element) {
+  const selectedOptions = Array.from(element.selectedOptions).filter(
+    (option) =>
+      !option.disabled &&
+      (option.parentNode.tagName.toLowerCase() !== 'optgroup' ||
+        !option.parentNode.disabled)
+  );
+
+  if (element.multiple) {
+    return selectedOptions.map((option) => option.value);
+  } else if (selectedOptions.length === 0) {
+    return null;
+  }
+
+  return element.value;
 }

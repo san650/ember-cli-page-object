@@ -1,6 +1,8 @@
 import { create, value } from 'ember-cli-page-object';
 import { setupRenderingTest, TestContext } from '../../../helpers';
 import { module, test } from 'qunit';
+import { render } from '@ember/test-helpers';
+import hbs from 'htmlbars-inline-precompile';
 
 module('value', function (hooks) {
   setupRenderingTest(hooks);
@@ -148,5 +150,429 @@ module('value', function (hooks) {
     });
 
     assert.equal(page.foo, 'lorem');
+  });
+
+  module('jquery compatibility', function () {
+    module('input', function (hooks) {
+      test('no value', async function (this: TestContext, assert) {
+        const page = create({
+          value: value('input'),
+        });
+
+        await render(hbs`<input />`);
+
+        assert.strictEqual(page.value, '');
+      });
+
+      test('with value', async function (this: TestContext, assert) {
+        const page = create({
+          value: value('input'),
+        });
+
+        this.set('value', 'lorem');
+        await render(hbs`<input value={{this.value}} />`);
+
+        assert.strictEqual(page.value, 'lorem');
+
+        this.set('value', null);
+
+        assert.strictEqual(page.value, '');
+      });
+
+      test('disabled', async function (this: TestContext, assert) {
+        const page = create({
+          value: value('input'),
+        });
+
+        this.set('value', 'lorem');
+        await render(hbs`<input value={{this.value}} disabled />`);
+
+        assert.strictEqual(page.value, 'lorem');
+      });
+    });
+
+    module('checkbox', function () {
+      test('no value', async function (this: TestContext, assert) {
+        const page = create({
+          value: value('input'),
+        });
+
+        await render(hbs`<input type="checkbox" checked={{this.checked}} />`);
+
+        assert.strictEqual(page.value, 'on');
+
+        this.set('checked', '');
+
+        assert.strictEqual(page.value, 'on');
+      });
+
+      test('with value', async function (this: TestContext, assert) {
+        const page = create({
+          value: value('input'),
+        });
+
+        this.set('value', 'lorem');
+        await render(
+          hbs`<input type="checkbox" value={{this.value}} checked={{this.checked}} />`
+        );
+
+        assert.strictEqual(page.value, 'lorem');
+
+        this.set('value', null);
+
+        assert.strictEqual(page.value, '');
+
+        this.set('checked', '');
+
+        assert.strictEqual(page.value, '');
+      });
+
+      test('disabled', async function (this: TestContext, assert) {
+        const page = create({
+          value: value('input'),
+        });
+
+        this.set('value', 'lorem');
+        await render(
+          hbs`<input type="checkbox" value={{this.value}} checked={{this.checked}} disabled />`
+        );
+
+        assert.strictEqual(page.value, 'lorem');
+
+        this.set('checked', '');
+
+        assert.strictEqual(page.value, 'lorem');
+      });
+    });
+
+    module('select', function () {
+      test('selected with [value]', async function (this: TestContext, assert) {
+        const page = create({
+          value: value('select'),
+        });
+
+        await this.createTemplate(`<select>
+            <option value="1">lorem</option>
+            <option selected value="2">Ipsum</option>
+            <option value="3">dolor</option>
+          </select>`);
+
+        assert.strictEqual(page.value, '2');
+      });
+
+      test('[disabled] selected option', async function (this: TestContext, assert) {
+        const page = create({
+          value: value('select'),
+        });
+
+        await this.createTemplate(`<select disabled>
+            <option value="1">lorem</option>
+            <option selected value="2">Ipsum</option>
+            <option value="3">dolor</option>
+          </select>`);
+
+        assert.strictEqual(page.value, '2');
+      });
+
+      test('selected option[disabled] ', async function (this: TestContext, assert) {
+        const page = create({
+          value: value('select'),
+        });
+
+        await this.createTemplate(`<select>
+            <option value="1">lorem</option>
+            <option selected value="2" disabled>Ipsum</option>
+            <option value="3">dolor</option>
+          </select>`);
+
+        assert.strictEqual(page.value, null);
+      });
+
+      test('no selected with [value]', async function (this: TestContext, assert) {
+        const page = create({
+          value: value('select'),
+        });
+
+        await this.createTemplate(`<select>
+            <option value="1">lorem</option>
+            <option value="2">Ipsum</option>
+            <option value="3">dolor</option>
+          </select>`);
+
+        assert.strictEqual(page.value, '1');
+      });
+
+      test('selected with no [value]', async function (this: TestContext, assert) {
+        const page = create({
+          value: value('select'),
+        });
+
+        await this.createTemplate(`<select>
+            <option>lorem</option>
+            <option selected>Ipsum</option>
+            <option>dolor</option>
+          </select>`);
+
+        assert.strictEqual(page.value, 'Ipsum');
+      });
+
+      test('not selected with no [value]', async function (this: TestContext, assert) {
+        const page = create({
+          value: value('select'),
+        });
+
+        await this.createTemplate(`<select>
+            <option>lorem</option>
+            <option>Ipsum</option>
+            <option>dolor</option>
+          </select>`);
+
+        assert.strictEqual(page.value, 'lorem');
+      });
+
+      module('optgroup', function () {
+        test('selected with [value]', async function (this: TestContext, assert) {
+          const page = create({
+            value: value('select'),
+          });
+
+          await this.createTemplate(`<select>
+            <optgroup label="optgroup 1">
+              <option value="1">lorem</option>
+              <option selected value="2">Ipsum</option>
+              <option value="3">dolor</option>
+            </optgroup>
+          </select>`);
+
+          assert.strictEqual(page.value, '2');
+        });
+
+        test('[disabled] selected with [value]', async function (this: TestContext, assert) {
+          const page = create({
+            value: value('select'),
+          });
+
+          await this.createTemplate(`<select>
+            <optgroup label="optgroup 1" disabled>
+              <option value="1">lorem</option>
+              <option selected value="2">Ipsum</option>
+              <option value="3">dolor</option>
+            </optgroup>
+          </select>`);
+
+          assert.strictEqual(page.value, null);
+        });
+
+        test('selected with [value][disabled]', async function (this: TestContext, assert) {
+          const page = create({
+            value: value('select'),
+          });
+
+          await this.createTemplate(`<select>
+            <optgroup label="optgroup 1">
+              <option value="1">lorem</option>
+              <option selected value="2" disabled>Ipsum</option>
+              <option value="3">dolor</option>
+            </optgroup>
+          </select>`);
+
+          assert.strictEqual(page.value, null);
+        });
+      });
+    });
+
+    module('select[multiple]', function () {
+      test('selected with [value]', async function (this: TestContext, assert) {
+        const page = create({
+          value: value<string[]>('select'),
+        });
+
+        await this.createTemplate(`<select multiple>
+            <option value="1">lorem</option>
+            <option selected value="2">Ipsum</option>
+            <option value="3">dolor</option>
+          </select>`);
+
+        assert.deepEqual(page.value, ['2']);
+      });
+
+      test('[disabled] selected option', async function (this: TestContext, assert) {
+        const page = create({
+          value: value<string[]>('select'),
+        });
+
+        await this.createTemplate(`<select multiple disabled>
+            <option value="1">lorem</option>
+            <option selected value="2">Ipsum</option>
+            <option value="3">dolor</option>
+          </select>`);
+
+        assert.deepEqual(page.value, ['2']);
+      });
+
+      test('selected option[disabled] ', async function (this: TestContext, assert) {
+        const page = create({
+          value: value<string[]>('select'),
+        });
+
+        await this.createTemplate(`<select multiple>
+            <option value="1">lorem</option>
+            <option selected value="2" disabled>Ipsum</option>
+            <option value="3">dolor</option>
+          </select>`);
+
+        assert.deepEqual(page.value, [] as string[]);
+      });
+
+      test('no selected with [value]', async function (this: TestContext, assert) {
+        const page = create({
+          value: value<string[]>('select'),
+        });
+
+        await this.createTemplate(`<select multiple>
+            <option value="1">lorem</option>
+            <option value="2">Ipsum</option>
+            <option value="3">dolor</option>
+          </select>`);
+
+        assert.deepEqual(page.value, [] as string[]);
+      });
+
+      test('selected with no [value]', async function (this: TestContext, assert) {
+        const page = create({
+          value: value<string[]>('select'),
+        });
+
+        await this.createTemplate(`<select multiple>
+            <option>lorem</option>
+            <option selected>Ipsum</option>
+            <option>dolor</option>
+          </select>`);
+
+        assert.deepEqual(page.value, ['Ipsum']);
+      });
+
+      test('not selected with no [value]', async function (this: TestContext, assert) {
+        const page = create({
+          value: value<string[]>('select'),
+        });
+
+        await this.createTemplate(`<select multiple>
+            <option>lorem</option>
+            <option>Ipsum</option>
+            <option>dolor</option>
+          </select>`);
+
+        assert.deepEqual(page.value, [] as string[]);
+      });
+
+      module('optgroup', function () {
+        test('selected with [value]', async function (this: TestContext, assert) {
+          const page = create({
+            value: value('select'),
+          });
+
+          await this.createTemplate(`<select>
+            <optgroup label="optgroup 1">
+              <option value="1">lorem</option>
+              <option selected value="2">Ipsum</option>
+              <option value="3">dolor</option>
+            </optgroup>
+          </select>`);
+
+          assert.strictEqual(page.value, '2');
+        });
+
+        test('[disabled] selected with [value]', async function (this: TestContext, assert) {
+          const page = create({
+            value: value('select'),
+          });
+
+          await this.createTemplate(`<select>
+            <optgroup label="optgroup 1" disabled>
+              <option value="1">lorem</option>
+              <option selected value="2">Ipsum</option>
+              <option value="3">dolor</option>
+            </optgroup>
+          </select>`);
+
+          assert.strictEqual(page.value, null);
+        });
+
+        test('selected with [value][disabled]', async function (this: TestContext, assert) {
+          const page = create({
+            value: value('select'),
+          });
+
+          await this.createTemplate(`<select>
+            <optgroup label="optgroup 1">
+              <option value="1">lorem</option>
+              <option selected value="2" disabled>Ipsum</option>
+              <option value="3">dolor</option>
+            </optgroup>
+          </select>`);
+
+          assert.strictEqual(page.value, null);
+        });
+      });
+    });
+
+    module('option', function () {
+      test('selected', async function (this: TestContext, assert) {
+        const page = create({
+          value: value('option[selected]'),
+        });
+
+        await this.createTemplate(`<select>
+            <option value="1">lorem</option>
+            <option selected value="2">Ipsum</option>
+            <option value="3">dolor</option>
+          </select>`);
+
+        assert.strictEqual(page.value, '2');
+      });
+
+      test('not selected with [value]', async function (this: TestContext, assert) {
+        const page = create({
+          value: value('option[value=1]'),
+        });
+
+        await this.createTemplate(`<select>
+            <option value="1">lorem</option>
+            <option selected value="2">Ipsum</option>
+            <option value="3">dolor</option>
+          </select>`);
+
+        assert.strictEqual(page.value, '1');
+      });
+
+      test('selected with no [value]', async function (this: TestContext, assert) {
+        const page = create({
+          value: value('#secondOption'),
+        });
+
+        await this.createTemplate(`<select>
+            <option id="firstOption">lorem</option>
+            <option id="secondOption" selected>Ipsum</option>
+            <option id="thirdOption">dolor</option>
+          </select>`);
+
+        assert.strictEqual(page.value, 'Ipsum');
+      });
+
+      test('not selected with no [value]', async function (this: TestContext, assert) {
+        const page = create({
+          value: value('#secondOption'),
+        });
+
+        await this.createTemplate(`<select>
+            <option id="firstOption">lorem</option>
+            <option id="secondOption">Ipsum</option>
+            <option id="thirdOption">dolor</option>
+          </select>`);
+
+        assert.strictEqual(page.value, 'Ipsum');
+      });
+    });
   });
 });
