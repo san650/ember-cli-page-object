@@ -158,4 +158,166 @@ module('property', function (hooks) {
 
     assert.ok(page.foo);
   });
+
+  module('jquery compatibility', function () {
+    test('readonly', async function (this: TestContext, assert) {
+      const page = create({
+        scope: 'input',
+        lowercase: property('readonly'),
+        camelCase: property('readOnly'),
+      });
+
+      await this.createTemplate('<input type="checkbox" readonly>');
+
+      assert.true(page.lowercase, 'lowercase');
+      assert.true(page.camelCase, 'camelCase');
+    });
+
+    test('not readonly', async function (this: TestContext, assert) {
+      const page = create({
+        scope: 'input',
+        lowecase: property('readonly'),
+        camelCase: property('readOnly'),
+      });
+
+      await this.createTemplate('<input type="checkbox">');
+
+      assert.false(page.lowecase, 'lowercase');
+      assert.false(page.camelCase, 'camelCase');
+    });
+
+    test('maxlength', async function (this: TestContext, assert) {
+      const page = create({
+        scope: 'input',
+        lowercase: property('maxlength'),
+        camelCase: property('maxLength'),
+      });
+
+      await this.createTemplate('<input type="checkbox" maxlength="1">');
+
+      assert.strictEqual(page.lowercase, 1, 'lowercase');
+      assert.strictEqual(page.camelCase, 1, 'camelCase');
+    });
+
+    test('no maxlength', async function (this: TestContext, assert) {
+      const page = create({
+        scope: 'input',
+        lowercase: property('maxlength'),
+        camelCase: property('maxLength'),
+      });
+
+      await this.createTemplate('<input type="checkbox">');
+
+      assert.strictEqual(page.lowercase, -1, 'lowercase');
+      assert.strictEqual(page.camelCase, -1, 'camelCase');
+    });
+
+    test('contenteditable', async function (this: TestContext, assert) {
+      const page = create({
+        scope: 'div',
+        lowercase: property('contenteditable'),
+        camelCase: property('contentEditable'),
+      });
+
+      await this.createTemplate('<div contenteditable>');
+
+      assert.strictEqual(page.lowercase, 'true', 'lowercase');
+      assert.strictEqual(page.camelCase, 'true', 'camelCase');
+    });
+
+    test('not contenteditable', async function (this: TestContext, assert) {
+      const page = create({
+        scope: 'div',
+        lowercase: property('contenteditable'),
+        camelCase: property('contentEditable'),
+      });
+
+      await this.createTemplate('<div>');
+
+      assert.strictEqual(page.lowercase, 'inherit', 'lowercase');
+      assert.strictEqual(page.camelCase, 'inherit', 'camelCase');
+    });
+
+    test('non-standard', async function (this: TestContext, assert) {
+      const page = create({
+        scope: 'div',
+        lowercase: property('neverexisted'),
+        camelCase: property('neverExisted'),
+        dasherized: property('never-existed'),
+      });
+
+      await this.createTemplate('<div neverexisted="true">');
+
+      assert.strictEqual(page.lowercase, undefined, 'lowercase');
+      assert.strictEqual(page.camelCase, undefined, 'camelCase');
+      assert.strictEqual(page.dasherized, undefined, 'dash-erized');
+    });
+
+    test('[data-*]', async function (this: TestContext, assert) {
+      const page = create({
+        scope: 'div',
+        lowercase: property('data-test'),
+        camelCase: property('neverTest'),
+        dasherized: property('never-test'),
+      });
+
+      await this.createTemplate('<div date-test="true">');
+
+      assert.strictEqual(page.lowercase, undefined, 'lowercase');
+      assert.strictEqual(page.camelCase, undefined, 'camelCase');
+      assert.strictEqual(page.dasherized, undefined, 'dash-erized');
+    });
+
+    module('tabindex', function () {
+      test('camelCase', async function (this: TestContext, assert) {
+        const page = create({
+          foo: property('tabIndex', 'input'),
+        });
+
+        await this.createTemplate('<input type="checkbox" tabindex="2">');
+
+        assert.strictEqual(page.foo, 2);
+      });
+
+      test('explicitly specified', async function (this: TestContext, assert) {
+        const page = create({
+          foo: property('tabindex', 'input'),
+        });
+
+        await this.createTemplate('<input type="checkbox" tabindex="2">');
+
+        assert.strictEqual(page.foo, 2);
+      });
+
+      test('unspecified on interactive', async function (this: TestContext, assert) {
+        const page = create({
+          foo: property('tabindex', 'input'),
+        });
+
+        await this.createTemplate('<input type="checkbox">');
+
+        assert.strictEqual(page.foo, 0);
+      });
+
+      test('unspecified on non-interactive', async function (this: TestContext, assert) {
+        const page = create({
+          foo: property('tabindex', 'span'),
+        });
+
+        await this.createTemplate('<span></span>');
+
+        assert.strictEqual(page.foo, -1);
+      });
+
+      test('uspecified on an interactive link(with href)', async function (this: TestContext, assert) {
+        const page = create({
+          foo: property('tabindex', 'a'),
+        });
+
+        await this.createTemplate('<a href="javascript:;"></a>');
+
+        assert.strictEqual(page.foo, 0);
+      });
+    });
+  });
 });
