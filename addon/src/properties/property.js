@@ -1,4 +1,3 @@
-import { $ } from '../-private/jquery';
 import { findOne } from '../-private/finders';
 import { getter } from '../macros/index';
 
@@ -52,6 +51,20 @@ export function property(propertyName, selector, userOptions = {}) {
       ...userOptions,
     };
 
-    return $(findOne(this, selector, options)).prop(propertyName);
+    const element = findOne(this, selector, options);
+    const propName = normalizePropertyName(propertyName);
+
+    return element[propName];
   });
+}
+
+const camelCaseMap = {
+  tabindex: 'tabIndex',
+  readonly: 'readOnly',
+  maxlength: 'maxLength',
+  contenteditable: 'contentEditable',
+};
+
+function normalizePropertyName(propertyName) {
+  return camelCaseMap[propertyName] ?? propertyName;
 }
