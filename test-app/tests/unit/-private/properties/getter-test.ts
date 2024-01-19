@@ -89,7 +89,7 @@ module('getter', function (hooks) {
 
     try {
       page.foo;
-      assert.true(false);
+      assert.false(true, 'should not succeed');
     } catch (e) {
       assert.strictEqual(
         e?.toString(),
@@ -109,6 +109,14 @@ PageObject: 'page.foo'`
       }),
     });
 
-    assert.throws(() => page.foo, /Selector: '.non-existing-scope'/);
+    try {
+      page.foo;
+      assert.false(true, 'should not succeed');
+    } catch (e: any) {
+      assert.strictEqual(
+        e.toString(),
+        `Error: Element not found.\n\nPageObject: 'page.foo'\n  Selector: '.non-existing-scope'`
+      );
+    }
   });
 });

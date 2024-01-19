@@ -16,7 +16,7 @@ module('comma separated selectors', function (hooks) {
 
     assert.throws(
       () => page.isVisible,
-      new Error(
+      new RegExp(
         'Usage of comma separated selectors is not supported. Please make sure your selector targets a single selector.'
       )
     );
@@ -31,7 +31,7 @@ module('comma separated selectors', function (hooks) {
 
     assert.throws(
       () => page.text,
-      new Error(
+      new RegExp(
         'Usage of comma separated selectors is not supported. Please make sure your selector targets a single selector.'
       )
     );
@@ -50,7 +50,7 @@ module('comma separated selectors', function (hooks) {
 
     assert.throws(
       () => page.text,
-      new Error(
+      new RegExp(
         'Usage of comma separated selectors is not supported. Please make sure your selector targets a single selector.'
       )
     );
