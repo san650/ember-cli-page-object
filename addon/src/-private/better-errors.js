@@ -78,6 +78,7 @@ function buildPropertyNamesPath(node) {
     path.unshift(Ceibo.meta(current).key);
   }
 
+  // replace "root" with "page"
   path[0] = 'page';
 
   return path;

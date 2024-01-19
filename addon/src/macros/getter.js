@@ -50,13 +50,11 @@ export function getter(fn) {
       } catch (e) {
         if (e instanceof PageObjectError) {
           if (!e.cause.key) {
-            // re-throw with a page object key to have a complete error message
-            const { message, node, selector } = e.cause;
-            const wrapperError = new PageObjectError(message, {
+            // re-throw with a `pageObjectKey` to have a complete error message
+            const wrapperError = new PageObjectError(e.cause.message, {
               cause: {
+                ...e.cause,
                 key: pageObjectKey,
-                node,
-                selector,
               },
             });
             wrapperError.stack = e.stack;
