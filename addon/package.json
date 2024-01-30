@@ -41,7 +41,11 @@
       "types": "./types.d.ts"
     }
   },
-  "types": "types.d.ts",
+  "typesVersions": {
+    "*": {
+      "*": ["./types.d.ts"]
+    }
+  },
   "files": [
     "addon-main.js",
     "dist",
