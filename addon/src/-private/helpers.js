@@ -209,3 +209,13 @@ export function findClosestValue(node, property) {
     return findClosestValue(parent, property);
   }
 }
+
+export function assignDescriptors(target, source) {
+  Object.getOwnPropertyNames(source).forEach((key) => {
+    const descriptor = Object.getOwnPropertyDescriptor(source, key);
+
+    Object.defineProperty(target, key, descriptor);
+  });
+
+  return target;
+}
