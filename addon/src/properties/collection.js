@@ -1,5 +1,5 @@
 import Ceibo from '@ro0gr/ceibo';
-import { buildSelector } from '../-private/helpers';
+import { buildSelector, assignDescriptors } from '../-private/helpers';
 import { isPageObject, getPageObjectDefinition } from '../-private/meta';
 import { create } from '../create';
 import { count } from './count';
@@ -199,7 +199,7 @@ export class Collection {
       let { scope, definition, parent } = this;
       let itemScope = buildSelector({}, scope, { at: index });
 
-      let finalizedDefinition = { ...definition };
+      let finalizedDefinition = assignDescriptors({}, definition);
 
       finalizedDefinition.scope = itemScope;
 

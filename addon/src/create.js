@@ -6,16 +6,7 @@ import {
 } from './-private/meta';
 import dsl from './-private/dsl';
 import { getter } from './macros/index';
-
-function assignDescriptors(target, source) {
-  Object.getOwnPropertyNames(source).forEach((key) => {
-    const descriptor = Object.getOwnPropertyDescriptor(source, key);
-
-    Object.defineProperty(target, key, descriptor);
-  });
-
-  return target;
-}
+import { assignDescriptors } from './-private/helpers';
 
 //
 // When running RFC268 tests, we have to play some tricks to support chaining.
