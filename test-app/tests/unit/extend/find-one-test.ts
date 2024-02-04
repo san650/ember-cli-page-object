@@ -47,11 +47,15 @@ module(`Extend | findOne`, function (hooks) {
     await render(hbs`<span class="ipsum"></span>`);
 
     assert.throws(
-      () => findOne(page.child, '.unknown', {}),
+      () =>
+        findOne(page.child, '.unknown', {
+          // ensure filters are included to the error message
+          contains: 'Word',
+        }),
       new Error(`Element not found.
 
 PageObject: 'page.child'
-  Selector: '.unknown'`)
+  Selector: '.unknown:contains("Word")'`)
     );
   });
 
