@@ -19,7 +19,7 @@
  * @param {Object} options - Additional options
  * @param {boolean} options.resetScope - Do not use inherited scope
  * @param {string} options.contains - Filter by using :contains('foo') pseudo-class
- * @param {string} options.scope
+ * @param {string} options.scope Selector to prepend to the target selector
  * @param {number} options.at - Filter by index using :eq(x) pseudo-class
  * @param {boolean} options.last - Filter by using :last pseudo-class
  * @param {boolean} options.visible - Filter by using :visible pseudo-class

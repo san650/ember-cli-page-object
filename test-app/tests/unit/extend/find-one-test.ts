@@ -19,9 +19,12 @@ module(`Extend | findOne`, function (hooks) {
   test('finds deeper in scope', async function (assert) {
     const page = create({ scope: '.lorem' });
 
-    await render(
-      hbs`<em class="lorem"><span class="dolor"></span></em><span class="ipsum"><span class="dolor"></span></span>`
-    );
+    await render(hbs`<em class="lorem">
+      <span class="dolor"></span>
+    </em>
+    <span class="ipsum">
+      <span class="dolor"></span>
+    </span>`);
 
     assert.equal(findOne(page, '.dolor', {}), find('.lorem .dolor'));
   });
@@ -47,11 +50,15 @@ module(`Extend | findOne`, function (hooks) {
     await render(hbs`<span class="ipsum"></span>`);
 
     assert.throws(
-      () => findOne(page.child, '.unknown', {}),
+      () =>
+        findOne(page.child, '.unknown', {
+          // ensure filters are included to the error message
+          contains: 'Word',
+        }),
       new Error(`Element not found.
 
 PageObject: 'page.child'
-  Selector: '.unknown'`)
+  Selector: '.unknown:contains("Word")'`)
     );
   });
 

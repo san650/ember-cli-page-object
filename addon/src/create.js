@@ -7,6 +7,7 @@ import {
 import dsl from './-private/dsl';
 import { getter } from './macros/index';
 import { assignDescriptors } from './-private/helpers';
+import { QuerySelector } from './-private/query/selector';
 
 //
 // When running RFC268 tests, we have to play some tricks to support chaining.
@@ -50,16 +51,25 @@ import { assignDescriptors } from './-private/helpers';
 function buildObject(node, blueprintKey, blueprint, defaultBuilder) {
   let definition;
 
-  // to allow page objects to exist in definitions, we store the definition that
-  // created the page object, allowing us to substitute a page object with its
-  // definition during creation
-  if (isPageObject(blueprint)) {
+  if (blueprint instanceof QuerySelector) {
+    // let instances of the QuerySelector class pass through without modification
+    return null;
+  } else if (isPageObject(blueprint)) {
+    // to allow page objects to exist in definitions, we store the definition that
+    // created the page object, allowing us to substitute a page object with its
+    // definition during creation
     definition = getPageObjectDefinition(blueprint);
   } else {
     Object.getOwnPropertyNames(blueprint).forEach((key) => {
       const { get, value } = Object.getOwnPropertyDescriptor(blueprint, key);
 
-      if (typeof get === 'function') {
+      if (value instanceof QuerySelector) {
+        Object.defineProperty(blueprint, key, {
+          get() {
+            return value;
+          },
+        });
+      } else if (typeof get === 'function') {
         Object.defineProperty(blueprint, key, {
           value: getter(get),
         });
