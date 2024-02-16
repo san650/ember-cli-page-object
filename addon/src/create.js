@@ -50,6 +50,12 @@ import { assignDescriptors } from './-private/helpers';
 function buildObject(node, blueprintKey, blueprint, defaultBuilder) {
   let definition;
 
+  // Preserve plain arrays, prevent `Error: string values are not supported in page object definitions Key: "0"` error
+  if (Array.isArray(blueprint)) {
+    node[blueprintKey] = blueprint;
+    return;
+  }
+
   // to allow page objects to exist in definitions, we store the definition that
   // created the page object, allowing us to substitute a page object with its
   // definition during creation

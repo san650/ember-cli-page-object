@@ -89,4 +89,12 @@ Key: "stringProp"`)
 
     assert.strictEqual(po.items[0]?.foo, 'bar');
   });
+
+  test('allows plain arrays', function (assert) {
+    const po = create({
+      items: ['one', 'two', 'three'],
+    });
+
+    assert.deepEqual(po.items, ['one', 'two', 'three']);
+  });
 });
