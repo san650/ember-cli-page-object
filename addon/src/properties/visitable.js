@@ -138,8 +138,8 @@ export function visitable(path) {
 
     return getAdapter()
       .visit(fullPath)
-      .catch(() => {
-        throw new Error(`Failed to visit URL '${fullPath}'`);
+      .catch((e) => {
+        throw new Error(`Failed to visit URL '${fullPath}': ${e.message}`);
       });
   });
 }
