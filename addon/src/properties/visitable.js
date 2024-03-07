@@ -139,7 +139,9 @@ export function visitable(path) {
     return getAdapter()
       .visit(fullPath)
       .catch((e) => {
-        throw new Error(`Failed to visit URL '${fullPath}': ${e.message}`);
+        throw new Error(`Failed to visit URL '${fullPath}': ${e.toString()}`, {
+          cause: e,
+        });
       });
   });
 }

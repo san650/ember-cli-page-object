@@ -24,7 +24,7 @@ export function throwBetterError(node, key, error, { selector } = {}) {
 
   const wrapperError = new PageObjectError(message, {
     cause: {
-      message,
+      message: error.cause ? error.cause.toString() : message,
       key,
       node,
       selector,
