@@ -127,7 +127,9 @@ function appendQueryParams(path, queryParams) {
  * @param {string} path - Full path of the route to visit
  * @return {Descriptor}
  *
- * @throws Will throw an error if dynamic segments are not filled
+ * @throws Will throw an error if dynamic segments are not filled.
+ *         Note: An error instance may contain a `cause.error` property
+ *         with the original error thrown by an underlying test helper.
  */
 export function visitable(path) {
   return action(function (dynamicSegmentsAndQueryParams = {}) {
