@@ -114,10 +114,15 @@ PageObject: 'page.foo("[object Object]")'
   Selector: '.scope'`
       );
 
-      assert.strictEqual(
-        (e as any).cause.message,
-        'UnrecognizedURLError: /non-existing-url/value'
+      const originalError = (e as any).cause.error;
+      assert.true(
+        originalError instanceof Error,
+        '`cause.error` is an instance of `Error`'
       );
+
+      assert.strictEqual(originalError.name, 'UnrecognizedURLError');
+
+      assert.strictEqual(originalError.message, '/non-existing-url/value');
     }
   });
 });
