@@ -108,11 +108,21 @@ module('visitable', function (hooks) {
     } catch (e) {
       assert.strictEqual(
         e?.toString(),
-        `Error: Failed to visit URL '/non-existing-url/value'
+        `Error: Failed to visit URL '/non-existing-url/value': UnrecognizedURLError: /non-existing-url/value
 
 PageObject: 'page.foo("[object Object]")'
   Selector: '.scope'`
       );
+
+      const originalError = (e as any).cause.error;
+      assert.true(
+        originalError instanceof Error,
+        '`cause.error` is an instance of `Error`'
+      );
+
+      assert.strictEqual(originalError.name, 'UnrecognizedURLError');
+
+      assert.strictEqual(originalError.message, '/non-existing-url/value');
     }
   });
 });
