@@ -24,7 +24,7 @@ jobs:
         with:
           node-version: 14.x
 
-      - uses: pnpm/action-setup@v2.2.2
+      - uses: pnpm/action-setup@v2.4.1
         with:
           version: 7.29.3
           run_install: false
@@ -61,7 +61,7 @@ jobs:
         with:
           node-version: 14.x
 
-      - uses: pnpm/action-setup@v2.2.2
+      - uses: pnpm/action-setup@v2.4.1
         with:
           version: 7.29.3
           run_install: false
@@ -90,7 +90,7 @@ jobs:
         with:
           node-version: 14.x
 
-      - uses: pnpm/action-setup@v2.2.2
+      - uses: pnpm/action-setup@v2.4.1
         with:
           version: 7.29.3
           run_install: false
@@ -128,7 +128,7 @@ jobs:
         with:
           node-version: 14.x
 
-      - uses: pnpm/action-setup@v2.2.2
+      - uses: pnpm/action-setup@v2.4.1
         with:
           version: 7.29.3
           run_install: false
