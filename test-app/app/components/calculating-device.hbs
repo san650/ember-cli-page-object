@@ -1,14 +1,9 @@
 <div class="calculator">
   <div class="screen">
-    {{input value=this.expression}}
-    <div class="result">
-      {{this.result}}
+    {{this.result}}
+    <div class="expression">
+      {{this.expression}}
     </div>
-    {{#if this.loading}}
-      <div class="loading">
-        loading...
-      </div>
-    {{/if}}
   </div>
   <div class="keyboard">
     <div class="numbers">
@@ -27,10 +22,6 @@
       <button type="button" onclick={{fn this.keyPress "+"}}>+</button>
       <button type="button" onclick={{fn this.keyPress "-"}}>-</button>
       <button type="button" onclick={{fn this.keyPress "="}}>=</button>
-      <button
-        type="button"
-        onclick={{fn this.keyPress "=" true}}
-      >async=</button>
     </div>
   </div>
 </div>
