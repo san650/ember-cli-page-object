@@ -50,6 +50,7 @@
   },
   "files": [
     "addon-main.js",
+    "blueprints",
     "dist",
     "types.d.ts"
   ],
