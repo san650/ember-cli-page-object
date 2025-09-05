@@ -30,6 +30,21 @@
       "require": "./dist/index.js",
       "types": "./types.d.ts"
     },
+    "./adapters": {
+      "import": "./dist/adapters/index.js",
+      "require": "./dist/adapters/index.js",
+      "types": "./types.d.ts"
+    },
+    "./extend": {
+      "import": "./dist/extend/index.js",
+      "require": "./dist/extend/index.js",
+      "types": "./types.d.ts"
+    },
+    "./macros": {
+      "import": "./dist/macros/index.js",
+      "require": "./dist/macros/index.js",
+      "types": "./types.d.ts"
+    },
     "./*": {
       "import": "./dist/*",
       "require": "./dist/*",
