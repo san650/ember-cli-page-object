@@ -1,6 +1,5 @@
 # Ember CLI Page Object
 
-[![Build Status](https://travis-ci.org/san650/ember-cli-page-object.svg?branch=master)](https://travis-ci.org/san650/ember-cli-page-object)
 [![Ember Observer Score](http://emberobserver.com/badges/ember-cli-page-object.svg)](http://emberobserver.com/addons/ember-cli-page-object)
 ![Latest version](https://img.shields.io/npm/v/ember-cli-page-object.svg)
 
@@ -76,19 +75,9 @@ Contributing
 
 See the [Contributing](CONTRIBUTING.md) guide for details.
 
-### Project's health
-
-[![Build Status](https://travis-ci.org/san650/ember-cli-page-object.svg?branch=master)](https://travis-ci.org/san650/ember-cli-page-object)
-[![Ember Observer Score](http://emberobserver.com/badges/ember-cli-page-object.svg)](http://emberobserver.com/addons/ember-cli-page-object)
-[![Dependency Status](https://david-dm.org/san650/ember-cli-page-object.svg)](https://david-dm.org/san650/ember-cli-page-object)
-[![devDependency Status](https://david-dm.org/san650/ember-cli-page-object/dev-status.svg)](https://david-dm.org/san650/ember-cli-page-object#info=devDependencies)
-[![Codacy Badge](https://api.codacy.com/project/badge/grade/35545e8e8ade48dfa999a3f5e1aa4b3b)](https://www.codacy.com/app/san650/ember-cli-page-object)
-[![Code Climate](https://codeclimate.com/github/san650/ember-cli-page-object/badges/gpa.svg)](https://codeclimate.com/github/san650/ember-cli-page-object)
-[![Coverage Status](https://coveralls.io/repos/github/san650/ember-cli-page-object/badge.svg?branch=master)](https://coveralls.io/github/san650/ember-cli-page-object?branch=master)
-
 ### Maintainers
 
-- Santiago Ferreira (@san650)
+- Santiago Ferreira (gh:san650)
 - Juan Manuel Azambuja (@juanazam)
 - Jerad Gallinger (@jeradg)
 - Anna Andresian (@magistrula)
