@@ -2,6 +2,7 @@
 
 [![Ember Observer Score](http://emberobserver.com/badges/ember-cli-page-object.svg)](http://emberobserver.com/addons/ember-cli-page-object)
 ![Latest version](https://img.shields.io/npm/v/ember-cli-page-object.svg)
+[![CI](https://github.com/san650/ember-cli-page-object/actions/workflows/ci.yml/badge.svg)](https://github.com/san650/ember-cli-page-object/actions/workflows/ci.yml)
 
 Represent the screens of your web app as a series of objects. This ember-cli addon eases the construction of these objects for your acceptance and integration tests.
 
